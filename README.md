@@ -14,3 +14,6 @@ TeachReach will take a small percentage of the tutoring fees, with the majority 
 
 ## Features
 - [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?label_name%5B%5D=Feature)
+
+## User Stories
+- [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?label_name%5B%5D=User%20Story)
