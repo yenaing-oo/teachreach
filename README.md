@@ -10,3 +10,7 @@ Administrators play an important role in maintaining platform integrity by revie
 TeachReach is valuable due to the nature of post secondary education. It addresses the lack of personalized aid, which is often absent in this stage of education. The platform also enables students to connect with tutors faster and more directly, while providing the ability to personally select a tutor that meets their needs. Financial strain associated with post-secondary education is also a growing issue. The platform will provide high-achieving students with an accessible and flexible opportunity to earn income.  
 
 TeachReach will take a small percentage of the tutoring fees, with the majority going to the tutors. Success for TeachReach is defined by three key metrics. Firstly, our goal is to cultivate an engaged user base, striving for 1000 active users. Secondly, we aim for the platform to extend its impact to a minimum of five distinct post-secondary institutions, each with a user base of at least a hundred students. Lastly, we aim to achieve a minimum monthly profit of $10,000, ensuring the platform's viability and sustainability for the product owner. If all of these targets are met, we consider TeachReach to be a success.
+
+
+## Features
+- [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?label_name%5B%5D=Feature)
