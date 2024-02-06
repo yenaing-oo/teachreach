@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Teach Reach</string>
+
+    <string-array name="user_names">
+        <item>Matt</item>
+        <item>Grace</item>
+        <item>Ethan</item>
+        <item>Olivia</item>
+        <item>Nathan</item>
+        <item>Ava</item>
+        <item>Liam</item>
+        <item>Isabella</item>
+        <item>Noah</item>
+        <item>Sophia</item>
+        <item>Logan</item>
+        <item>Emma</item>
+        <item>Lucas</item>
+        <item>Mia</item>
+        <item>James</item>
+        <item>Emily</item>
+    </string-array>
 </resources>
