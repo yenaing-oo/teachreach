@@ -1,3 +1,5 @@
+package comp3350.teachreach.objects;
+
 public class Course {
     private String courseCode;
     private String courseName;

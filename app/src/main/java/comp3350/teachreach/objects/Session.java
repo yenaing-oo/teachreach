@@ -3,7 +3,7 @@ package comp3350.teachreach.objects;
 public class Session {
     private Student student;
     private Tutor tutor;
-    private int[] date
+    private int day, month, year;
     private int hour;
     private boolean accepted;
     private String location;
@@ -11,7 +11,9 @@ public class Session {
     public Session(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
         this.student = student;
         this.tutor = tutor;
-        this.date = {day, month, year};
+        this.day = day;
+        this.month = month;
+        this.year = year;
         this.hour = hour;
         this.accepted = false;
         this.location = location;
@@ -29,12 +31,14 @@ public class Session {
         return this.tutor;
     }
 
-    public int[] getDate() {
-        return this.date;
-    }
+    // public int[] getDate() {
+    //     return this.date;
+    // }
 
     public void setDate(int day, int month, int year) {
-        this.date = {date,month,year}
+        this.day = day;
+        this.month = month;
+        this.year = year;
     }
 
     public String getLocation() {

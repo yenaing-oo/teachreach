@@ -1,3 +1,5 @@
+package comp3350.teachreach.objects;
+
 public class Account {
     private String email;
     private String password;
