@@ -1,3 +1,5 @@
+package comp3350.teachreach.objects;
+
 public class Session {
     private Student student;
     private Tutor tutor;
@@ -42,4 +44,6 @@ public class Session {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public int getHour(){ return this.hour; }
 }
