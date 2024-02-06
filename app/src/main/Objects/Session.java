@@ -4,13 +4,15 @@ public class Session {
     private int[] date
     private int hour;
     private boolean accepted;
+    private String location;
 
-    public Session(Student student, Tutor tutor, int day, int month, int year, int hour) {
+    public Session(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
         this.student = student;
         this.tutor = tutor;
         this.date = {day, month, year};
         this.hour = hour;
         this.accepted = false;
+        this.location = location;
     }
 
     public void acceptSession() {
@@ -33,5 +35,11 @@ public class Session {
         this.date = {date,month,year}
     }
 
-    
+    public String getLocation() {
+        return this.location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }
