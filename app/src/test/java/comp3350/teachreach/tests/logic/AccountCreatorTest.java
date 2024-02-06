@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import comp3350.teachreach.logic.AccountCreator;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.AccountType;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
@@ -23,12 +22,8 @@ public class AccountCreatorTest {
 
     @Test
     public void testCreateStudent() {
-        Account newStudent = null;
-        try {
-            newStudent = accountCreator.createAccount(AccountType.Student, "Alice", "he/him", "CS", "alice" + "@example.com", "12345678");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Account newStudent = accountCreator.createStudentAccount("Alice", "he" +
+                "/him", "CS", "alice@example.com", "qwerasdfaadd");
         assertNotNull(newStudent);
         assertTrue("New account should be a student", newStudent instanceof Student);
         System.out.println("Finished testCreateStudent");
@@ -36,12 +31,8 @@ public class AccountCreatorTest {
 
     @Test
     public void testCreateTutor() {
-        Account newTutor = null;
-        try {
-            newTutor = accountCreator.createAccount(AccountType.Tutor, "Bob", "he" + "/him", "CS", "bob" + "@example.com", "12345678");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
+                "CS", "bob@example.com", "qawsedrfccss");
         assertNotNull(newTutor);
         assertTrue("New account should be a Tutor", newTutor instanceof Tutor);
         System.out.println("Finished testCreateTutor");
