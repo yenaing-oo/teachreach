@@ -5,6 +5,7 @@ import java.util.Random;
 public class stubCreation {
     ArrayList<Tutor> tutors;
     ArrayList<Course> courses;
+    ArrayList<Session> sessions;
 
     public stubCreation() {
         this.tutors.add(new Tutor("Jackson Pankratz", "He/Him", "Computer Science", "pankratz25@myumanitoba.ca", "password", 13.5));
@@ -28,6 +29,9 @@ public class stubCreation {
                 }
             }
             this.tutors[i].setCourses(courses);
+
+            Student student = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "password");
+            Session session = new Session(student, tutors[3], 26, 5, 11, "Library");
         }
 
     }
