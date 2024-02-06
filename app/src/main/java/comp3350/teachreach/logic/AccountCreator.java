@@ -54,8 +54,9 @@ public class AccountCreator implements IAccountCreator {
         String processedPassword = processPassword(password);
         Tutor newTutor = new Tutor(name, pronouns, major, email,
                 processedPassword);
+        boolean validEmail = isValidEmail(email);
 
-        if (!isValidEmail(email)) {
+        if (!validEmail) {
             newTutor = null;
             // throw new Exception("Not an email!");
         }
