@@ -1,15 +1,15 @@
 package comp3350.teachreach.tests.logic;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+// import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import comp3350.teachreach.logic.AccountCreator;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
+//import comp3350.teachreach.objects.Student;
+//import comp3350.teachreach.objects.Tutor;
 
 public class AccountCreatorTest {
     private AccountCreator accountCreator;
