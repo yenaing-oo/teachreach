@@ -1,24 +1,26 @@
-
-import comp3350.teachreach.objects;
+package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
+
+import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.Tutor;
 
 public class SearchSort {
 
     public ArrayList<Tutor> searchTutorClass(ArrayList<Tutor> tutors, Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
         boolean flag = false;
-        for(int i=0; i<tutors.size(); i++) {
-            ArrayList<Course> tutored = tutors[i].getCourses
+        for (int i = 0; i < tutors.size(); i++) {
+            ArrayList<Course> tutored = tutors.get(i).getCourses();
             flag = false;
-            for(int j=0; j<tutored.size(); j++) {
-                flag |= tutored[j].equals(course);
+            for (int j = 0; j < tutored.size(); j++) {
+                flag |= tutored.get(j).equals(course);
             }
-            if(flag) {
-                output.add(tutors[i]);
+            if (flag) {
+                output.add(tutors.get(i));
             }
         }
-        
+
         return output;
     }
 
@@ -27,39 +29,37 @@ public class SearchSort {
     }
 
     private ArrayList<Tutor> ratingMergeSort(ArrayList<Tutor> tutors) {
-        if(tutors.size() <= 1) {
+        if (tutors.size() <= 1) {
             return tutors;
-        }
-        else {
-            int middle = (tutors.size() - 1)/2;
-            ArrayList<Tutor> left = ratingMergeSort(tutors.subList(0,middle));
-            ArrayList<Tutor> right = ratingMergeSort(middle+1, tutors.size()-1)
+        } else {
+            int middle = (tutors.size() - 1) / 2;
+            ArrayList<Tutor> left = ratingMergeSort((ArrayList<Tutor>) tutors.subList(0, middle));
+            ArrayList<Tutor> right = ratingMergeSort((ArrayList<Tutor>) tutors.subList(middle + 1, tutors.size() - 1));
             return ratingMerge(left, right);
         }
     }
 
-    private ArrayList<Tutor> ratingMerge(<ArrayList<Tutor> left, ArrayList<Tutor> right) {
+    private ArrayList<Tutor> ratingMerge(ArrayList<Tutor> left, ArrayList<Tutor> right) {
         int leftCount = 0;
         int rightCount = 0;
         ArrayList<Tutor> out = new ArrayList<Tutor>();
 
-        while(leftCount < left.size() && rightCount < right.size()) {
-            if(right[rightCount].getAverageScore() > left[leftScore].getAverageScore()) {
-                out.add(right[rightCount]);
+        while (leftCount < left.size() && rightCount < right.size()) {
+            if (right.get(rightCount).getAverageScore() > left.get(leftCount).getAverageScore()) {
+                out.add(right.get(rightCount));
                 rightCount++;
-            }
-            else {
-                out.add(left[leftCount]);
+            } else {
+                out.add(left.get(leftCount));
                 leftCount++;
             }
         }
-        while(leftCount < left.size()) {
-            out.add(left[leftCount]);
+        while (leftCount < left.size()) {
+            out.add(left.get(leftCount));
             leftCount++;
         }
-        while(rightCount < right.size()) {
-            out.add(right[rightCount]);
-                rightCount++;
+        while (rightCount < right.size()) {
+            out.add(left.get(leftCount));
+            rightCount++;
         }
 
         return out;
@@ -70,39 +70,37 @@ public class SearchSort {
     }
 
     private ArrayList<Tutor> priceMergeSort(ArrayList<Tutor> tutors) {
-        if(tutors.size() <= 1) {
+        if (tutors.size() <= 1) {
             return tutors;
-        }
-        else {
-            int middle = (tutors.size() - 1)/2;
-            ArrayList<Tutor> left = priceMergeSort(tutors.subList(0,middle));
-            ArrayList<Tutor> right = priceMergeSort(middle+1, tutors.size()-1)
+        } else {
+            int middle = (tutors.size() - 1) / 2;
+            ArrayList<Tutor> left = priceMergeSort((ArrayList<Tutor>) tutors.subList(0, middle));
+            ArrayList<Tutor> right = priceMergeSort((ArrayList<Tutor>) tutors.subList(middle + 1, tutors.size() - 1));
             return priceMerge(left, right);
         }
     }
 
-    private ArrayList<Tutor> priceMerge(<ArrayList<Tutor> left, ArrayList<Tutor> right) {
+    private ArrayList<Tutor> priceMerge(ArrayList<Tutor> left, ArrayList<Tutor> right) {
         int leftCount = 0;
         int rightCount = 0;
         ArrayList<Tutor> out = new ArrayList<Tutor>();
 
-        while(leftCount < left.size() && rightCount < right.size()) {
-            if(right[rightCount].getPricePerHour() < left[leftScore].getPricePerHour()) {
-                out.add(right[rightCount]);
+        while (leftCount < left.size() && rightCount < right.size()) {
+            if (right.get(rightCount).getPricePerHour() < left.get(leftCount).getPricePerHour()) {
+                out.add(right.get(rightCount));
                 rightCount++;
-            }
-            else {
-                out.add(left[leftCount]);
+            } else {
+                out.add(left.get(leftCount));
                 leftCount++;
             }
         }
-        while(leftCount < left.size()) {
-            out.add(left[leftCount]);
+        while (leftCount < left.size()) {
+            out.add(left.get(leftCount));
             leftCount++;
         }
-        while(rightCount < right.size()) {
-            out.add(right[rightCount]);
-                rightCount++;
+        while (rightCount < right.size()) {
+            out.add(left.get(leftCount));
+            rightCount++;
         }
 
         return out;
@@ -110,13 +108,13 @@ public class SearchSort {
 
     public ArrayList<Tutor> tutorsByAvail(ArrayList<Tutor> tutors, boolean[][] avail) {
         ArrayList<Tutor> out = new ArrayList<Tutor>();
-        ArrayList<Tutor> copy = tutors.clone(); 
-        for(int i=0; i<avail.length; i++) {
-            for(int j=0; j<avail[i].length; i++) {
-                if(avail[i][j] && copy.size() > 0) {
-                    for(int x=copy.size()-1; x>=0; x--) {
-                        if(copy[x].getAvailability()[i][j]) {
-                            out.add(copy[x]);
+        ArrayList<Tutor> copy = (ArrayList<Tutor>) tutors.clone();
+        for (int i = 0; i < avail.length; i++) {
+            for (int j = 0; j < avail[i].length; i++) {
+                if (avail[i][j] && copy.size() > 0) {
+                    for (int x = copy.size() - 1; x >= 0; x--) {
+                        if (copy.get(x).getAvailability()[i][j]) {
+                            out.add(copy.get(x));
                             copy.remove(x);
                         }
                     }
@@ -126,4 +124,4 @@ public class SearchSort {
 
         return out;
     }
- }
+}

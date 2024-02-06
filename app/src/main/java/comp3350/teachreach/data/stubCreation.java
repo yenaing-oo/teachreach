@@ -1,6 +1,12 @@
-import comp3350.teachreach.objects;
+package comp3350.teachreach.data;
+
 import java.util.ArrayList;
 import java.util.Random;
+
+import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.Session;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class stubCreation {
     ArrayList<Tutor> tutors;
@@ -22,16 +28,17 @@ public class stubCreation {
 
         Random rand = new Random(7881702);
 
-        for(int i=0; i<5; i++) {
-            for(int j=0; j<7; j++) {
-                for(int k=0; k<24; k++) {
-                    this.tutors[i].setAvailability(j, k, rand.nextInt(2)==1);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                for (int k = 0; k < 24; k++) {
+                    this.tutors.get(i).setAvailability(j, k,
+                            rand.nextInt(2) == 1);
                 }
             }
-            this.tutors[i].setCourses(courses);
+            this.tutors.get(i).setCourses(courses);
 
             Student student = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "password");
-            Session session = new Session(student, tutors[3], 26, 5, 11, "Library");
+            Session session = new Session(student, tutors.get(3), 26, 5, 11, 12, "Library");
         }
 
     }
