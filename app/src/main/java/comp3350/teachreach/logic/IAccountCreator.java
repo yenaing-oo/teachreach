@@ -4,6 +4,7 @@ import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public interface IAccountCreator {
+
     Student createStudentAccount(String name,
                                         String pronouns,
                                         String major,

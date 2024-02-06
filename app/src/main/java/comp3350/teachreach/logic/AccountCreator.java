@@ -4,9 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import comp3350.teachreach.objects.*;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class AccountCreator implements IAccountCreator {
+
+    public AccountCreator() {}
+
+    private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9" + ".-]+\\" + ".[A-Za-z0-9.-]+$";
 
 //    public Account createAccount(AccountType type, String name, String pronouns, String major, String email, String password) throws Exception {
 //        Account newAccount = null;
@@ -31,14 +36,23 @@ public class AccountCreator implements IAccountCreator {
 //        return newAccount;
 //    }
 
+    private static String processPassword(String plainPassword) {
+        String processedPassword = BCrypt.withDefaults().hashToString(12, plainPassword.toCharArray());
+        BCrypt.Result result = BCrypt.verifyer().verify(plainPassword.toCharArray(), processedPassword);
+        assert (result.verified);
+        return processedPassword;
+    }
+
+    private static boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     @Override
-    public Student createStudentAccount(String name, String pronouns,
-                                        String major, String email,
-                                        String password) {
+    public Student createStudentAccount(String name, String pronouns, String major, String email, String password) {
         String processedPassword = processPassword(password);
-        Student newStudent = new Student(name, pronouns, major, email,
-                processedPassword);
+        Student newStudent = new Student(name, pronouns, major, email, processedPassword);
 
         if (!isValidEmail(email)) {
             newStudent = null;
@@ -48,12 +62,9 @@ public class AccountCreator implements IAccountCreator {
     }
 
     @Override
-    public Tutor createTutorAccount(String name, String pronouns,
-                                        String major, String email,
-                                        String password) {
+    public Tutor createTutorAccount(String name, String pronouns, String major, String email, String password) {
         String processedPassword = processPassword(password);
-        Tutor newTutor = new Tutor(name, pronouns, major, email,
-                processedPassword);
+        Tutor newTutor = new Tutor(name, pronouns, major, email, processedPassword);
         boolean validEmail = isValidEmail(email);
 
         if (!validEmail) {
@@ -61,16 +72,6 @@ public class AccountCreator implements IAccountCreator {
             // throw new Exception("Not an email!");
         }
         return newTutor;
-    }
-
-    private static String processPassword(String plainPassword) {
-        BCrypt.Hasher hasher = BCrypt.withDefaults();
-        String processedPassword = hasher.hashToString(12,
-                plainPassword.toCharArray());
-        BCrypt.Result result = BCrypt.verifyer().verify(plainPassword.toCharArray(),
-                processedPassword);
-        assert(result.verified);
-        return processedPassword;
     }
 
 //    private static boolean isValidInput(String in) {
@@ -82,11 +83,5 @@ public class AccountCreator implements IAccountCreator {
 //    private static String removeSpace(String line) {
 //        return line.replaceAll("\\s+", " ").trim();
 //    }
-
-    private static boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 
 }

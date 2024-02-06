@@ -1,6 +1,7 @@
 package comp3350.teachreach.tests.logic;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 // import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -25,8 +26,6 @@ public class AccountCreatorTest {
         Account newStudent = accountCreator.createStudentAccount("Alice", "he" +
                 "/him", "CS", "alice@example.com", "qwerasdfaadd");
         assertNotNull(newStudent);
-        // assertTrue("New account should be a student",
-        //        newStudent instanceof Student);
         System.out.println("Finished testCreateStudent");
     }
 
@@ -35,8 +34,14 @@ public class AccountCreatorTest {
         Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
                 "CS", "bob@example.com", "qawsedrfccss");
         assertNotNull(newTutor);
-        // assertTrue("New account should be a Tutor", newTutor instanceof
-        // Tutor);
         System.out.println("Finished testCreateTutor");
+    }
+
+    @Test
+    public void testCreateTutorBadEmail() {
+        Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
+                "CS", "bob@@example.com", "qawsedrfccss");
+        assertNull(newTutor);
+        System.out.println("Finished testCreateTutorBad");
     }
 }
