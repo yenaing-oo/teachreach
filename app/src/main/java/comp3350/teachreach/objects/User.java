@@ -1,5 +1,3 @@
-package comp3350.teachreach.objects;
-
 public class User extends Account {
     private String name;
     private String pronouns;

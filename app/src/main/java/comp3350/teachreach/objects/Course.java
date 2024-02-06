@@ -1,5 +1,3 @@
-package comp3350.teachreach.objects;
-
 public class Course {
     private String courseCode;
     private String courseName;
@@ -26,7 +24,7 @@ public class Course {
     }
 
     public boolean equals(Course otherCourse) {
-        boolean flag;
+        boolean flag = false;
         flag = this.courseCode.equalsIgnoreCase(otherCourse.courseCode);
         flag &= this.courseName.equalsIgnoreCase(otherCourse.courseName);
         return flag;
