@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.LoginHandler;
+import comp3350.teachreach.objects.AccountType;
 
 
 public class StudentLoginActivity extends AppCompatActivity {
@@ -65,7 +67,11 @@ public class StudentLoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Student ID and Password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        LoginHandler validator = new LoginHandler();
+        return validator.validateCredential(AccountType.Student, studentId,
+                password);
         // Additional validation logic can be added here
-        return true;
+        // return true;
     }
 }
