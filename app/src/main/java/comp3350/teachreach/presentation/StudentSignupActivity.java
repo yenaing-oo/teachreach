@@ -2,13 +2,12 @@
 package comp3350.teachreach.presentation;
 
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 /*import comp3350.teachreach.logic.AccountCreator;
