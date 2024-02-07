@@ -27,6 +27,10 @@ public class Session {
         return this.student;
     }
 
+    public void setStudent(Student newstudent) {
+        this.student = newstudent;
+    }
+
     public Tutor getTutor() {
         return this.tutor;
     }
