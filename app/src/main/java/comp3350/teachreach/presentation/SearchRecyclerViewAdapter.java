@@ -16,12 +16,15 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.models.TutorModel;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
+
+    private final RecyclerViewInterface recyclerViewInterface;
     Context context;
     ArrayList<TutorModel> tutorModels;
 
-    public SearchRecyclerViewAdapter(Context context, ArrayList<TutorModel> tutorModels) {
+    public SearchRecyclerViewAdapter(Context context, ArrayList<TutorModel> tutorModels, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.tutorModels = tutorModels;
+        this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
@@ -30,7 +33,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.search_result_recycler_view_row, parent, false);
 
-        return new SearchRecyclerViewAdapter.MyViewHolder(view);
+        return new SearchRecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
     }
 
     @Override
@@ -46,18 +49,31 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         return tutorModels.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    static class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imageView;
         TextView tvUserName, tvRating, tvHourlyRate;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.tutorImage);
             tvUserName = itemView.findViewById(R.id.tutorName);
             tvRating = itemView.findViewById(R.id.tutorRating);
             tvHourlyRate = itemView.findViewById(R.id.tutorHourlyRate);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (recyclerViewInterface != null) {
+                        int pos = getAdapterPosition();
+
+                        if (pos != RecyclerView.NO_POSITION) {
+                            recyclerViewInterface.onTutorItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }
