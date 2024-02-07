@@ -64,10 +64,6 @@ public class Session {
         this.year = newYear;
     }
 
-    public int getHour() {
-        return this.hour;
-    }
-
     public void setHour(int newHour) {
         this.hour = newHour;
     }

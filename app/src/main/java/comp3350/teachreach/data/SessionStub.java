@@ -13,8 +13,8 @@ public class SessionStub {
     ArrayList<Tutor> tutors;
     public SessionStub(){
 
-        students = accounts.getStubStudents();
-        tutors = accounts.getStubTutors();
+        students = accounts.getStudents();
+        tutors = accounts.getTutors();
 
         Session session1 = new Session(students.get(1), tutors.get(3), 26, 5, 11, 3,"Library");
 

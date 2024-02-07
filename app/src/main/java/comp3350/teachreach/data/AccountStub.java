@@ -1,9 +1,13 @@
 package comp3350.teachreach.data;
-import comp3350.teachreach.objects.*;
+
 import java.util.ArrayList;
 import java.util.Random;
 
-public class AccountStub {
+import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
+
+public class AccountStub implements IAccountPersistence {
     ArrayList<Tutor> tutors;
     ArrayList<Student> students;
 
@@ -16,45 +20,70 @@ public class AccountStub {
 
         Random rand = new Random(7881702);
 
-        for(int i=0; i<5; i++) {
-            for(int j=0; j<7; j++) {
-                for(int k=0; k<24; k++) {
-                    this.tutors.get(i).setAvailability(j, k, rand.nextInt(2)==1);
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 7; j++) {
+                for (int k = 0; k < 24; k++) {
+                    this.tutors.get(i).setAvailability(j, k, rand.nextInt(2) == 1);
                 }
             }
             //retrieve course object, then input it
-            this.tutors.get(i).setCourses(courses);
+            // this.tutors.get(i).setCourses(courses);
 
             Student student1 = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "password");
             this.students.add(student1);
         }
-
     }
     //add your funciton here. eg add, edit, delete, search
 
-
-    public void setCourses(Course course){
-        //write the code;
-    }
-    public ArrayList<Tutor> getStubTutors() {
-        return this.tutors;
+    public Student storeStudent(Student newStudent) {
+        this.students.add(newStudent);
+        return newStudent;
     }
 
-    public ArrayList<Student> getStubStudents() {
+    public Student updateStudent(Student newStudent) {
+        return null;
+    }
+
+    public Student getStudentByEmail(String email) {
+        return null;
+    }
+
+    public ArrayList<Student> getStudents() {
         return this.students;
     }
 
-    //search tutor
-    public Tutor searchTutorbyName(Tutor tutor) {
-        Tutor Searched = null;
-        for (int i = 0; i < tutors.size(); i++)
-        {
-            if(tutors.get(i).getName().equals(tutor.getName()))
-            {
-                Searched = tutors.get(i);
-            }
-        }
-        return Searched;
+    public Tutor storeTutor(Tutor newTutor) {
+        return null;
     }
+
+    public Tutor updateTutor(Tutor newTutor) {
+        return null;
+    }
+
+    public Tutor getTutorByEmail(String email) {
+        return null;
+    }
+
+    public ArrayList<Tutor> getTutors() {
+        return this.tutors;
+    }
+
+    public ArrayList<Tutor> getTutorsByName(String name) {
+        ArrayList<Tutor> result = new ArrayList<Tutor>();
+
+        // TODO
+
+        return result;
+    }
+    //search tutor
+//    public Tutor searchTutorbyName(Tutor tutor) {
+//        Tutor Searched = null;
+//        for (int i = 0; i < tutors.size(); i++) {
+//            if (tutors.get(i).getName().equals(tutor.getName())) {
+//                Searched = tutors.get(i);
+//            }
+//        }
+//        return Searched;
+//    }
     //search students
 }
