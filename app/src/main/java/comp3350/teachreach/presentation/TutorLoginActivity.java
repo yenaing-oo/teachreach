@@ -33,7 +33,7 @@ public class TutorLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //login logic for tutor
-               // login();
+                // login();
             }
         });
 
@@ -41,7 +41,7 @@ public class TutorLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Tutor Sign Up Activity
-                Intent intent = new Intent(TutorLoginActivity.this, TutorSignupActivity.class);
+                Intent intent = new Intent(TutorLoginActivity.this, TutorSignUpActivity.class);
                 startActivity(intent);
             }
         });

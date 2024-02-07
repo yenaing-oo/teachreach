@@ -34,7 +34,7 @@ public class TutorProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to Upcoming Sessions UI
-               // Intent intent = new Intent(TutorProfileActivity.this, UpcomingSessionsActivity.class);
+                // Intent intent = new Intent(TutorProfileActivity.this, UpcomingSessionsActivity.class);
                 //startActivity(intent);
             }
         });

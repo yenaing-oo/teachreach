@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import comp3350.teachreach.R;
 
+
 public class StudentLoginActivity extends AppCompatActivity {
 
     private EditText etStudentId, etStudentPassword;
@@ -50,8 +51,12 @@ public class StudentLoginActivity extends AppCompatActivity {
         String password = etStudentPassword.getText().toString().trim();
 
         if (validateInputs(studentId, password)) {
-            // Implement  login logic here
-            // On success, navigate to the next activity
+            // TODO: Implement actual login logic here
+            // This is where you would authenticate the user
+
+            // If login is successful, navigate to SearchActivity
+            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+            startActivity(intent);
         }
     }
 

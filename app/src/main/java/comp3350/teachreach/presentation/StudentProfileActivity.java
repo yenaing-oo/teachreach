@@ -41,8 +41,8 @@ public class StudentProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the SEARCH page
-             //   Intent intent = new Intent(StudentProfileActivity.this, MainPageActivity.class);
-              //  startActivity(intent);
+                //   Intent intent = new Intent(StudentProfileActivity.this, MainPageActivity.class);
+                //  startActivity(intent);
             }
         });
     }
