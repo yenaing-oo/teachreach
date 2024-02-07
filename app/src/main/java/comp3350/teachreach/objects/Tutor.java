@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class Tutor extends User {
     private ArrayList<Course> tutoredCourses;
-    private float pricePerHour;
+    private double pricePerHour;
     private int reviewSum;
     private int reviewCount;
     private ArrayList<String> preferredLocations;
-    private boolean[][] availability;
+    private final boolean[][] availability;
 
     public Tutor(String name, String pronouns, String major, String email, String password) {
         super(name, pronouns, major, email, password);
@@ -21,7 +21,8 @@ public class Tutor extends User {
 
     }
 
-    public Tutor(String name, String pronouns, String major, String email, String password, float pricePerHour) {
+    public Tutor(String name, String pronouns, String major, String email,
+                 String password, double pricePerHour) {
         super(name, pronouns, major, email, password);
         tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
@@ -52,7 +53,7 @@ public class Tutor extends User {
         tutoredCourses.clear();
     }
 
-    public float getPricePerHour() {
+    public double getPricePerHour() {
         return this.pricePerHour;
     }
 
@@ -65,8 +66,8 @@ public class Tutor extends User {
         this.reviewCount++;
     }
 
-    public float getAverageScore() {
-        return (float)this.reviewSum/(float)this.reviewCount;
+    public float getRating() {
+        return (float) this.reviewSum / (float) this.reviewCount;
     }
 
     public void clearReviews() {
