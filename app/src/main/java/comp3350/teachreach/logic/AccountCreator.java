@@ -3,9 +3,28 @@ package comp3350.teachreach.logic;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import comp3350.teachreach.objects.*;
+import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.AccountType;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class AccountCreator {
+
+    private static boolean isValidInput(String in) {
+        boolean isValid = false;
+
+        return isValid;
+    }
+
+    private static String removeSpace(String line) {
+        return line.replaceAll("\\s+", " ").trim();
+    }
+
+    private static boolean isValidEmail(String email) {
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     public Account createAccount(AccountType type, String name, String pronouns, String major, String email, String password) throws Exception {
         Account newAccount = null;
@@ -28,22 +47,6 @@ public class AccountCreator {
             throw new Exception("Not an email");
         }
         return newAccount;
-    }
-
-    private static boolean isValidInput(String in) {
-        boolean isValid = false;
-
-        return isValid;
-    }
-
-    private static String removeSpace(String line) {
-        return line.replaceAll("\\s+", " ").trim();
-    }
-
-    private static boolean isValidEmail(String email) {
-        Pattern pattern = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 
 }
