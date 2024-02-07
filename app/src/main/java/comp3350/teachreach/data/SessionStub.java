@@ -44,8 +44,8 @@ public class SessionStub {
         return this.sessions;
     }
 
-    public Tutor searchTutorbyName(Tutor tutor) {
-        return accounts.searchTutorbyName(tutor);
+    public ArrayList<Tutor> searchTutorbyName(Tutor tutor) {
+        return accounts.getTutorsByName(tutor.getName());
     }
 
     public ArrayList<Session> searchSessionbyTutorwithStage(Tutor tutor, boolean stage){

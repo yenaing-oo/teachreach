@@ -1,6 +1,7 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 import comp3350.teachreach.objects.Course;
@@ -33,7 +34,6 @@ public class AccountStub implements IAccountPersistence {
             this.students.add(student1);
         }
     }
-    //add your funciton here. eg add, edit, delete, search
 
     public Student storeStudent(Student newStudent) {
         this.students.add(newStudent);
@@ -41,11 +41,25 @@ public class AccountStub implements IAccountPersistence {
     }
 
     public Student updateStudent(Student newStudent) {
-        return null;
+        Student theStudent = getStudentByEmail(newStudent.getEmail());
+
+        if (theStudent != null) {
+            theStudent = newStudent;
+        }
+
+        return theStudent;
     }
 
     public Student getStudentByEmail(String email) {
-        return null;
+        Iterator<Student> iterator = students.iterator();
+        Student currentStudent = null;
+        boolean found = false;
+
+        while (!found && iterator.hasNext()) {
+            currentStudent = iterator.next();
+            found = currentStudent.getEmail().equals(email);
+        }
+        return currentStudent;
     }
 
     public ArrayList<Student> getStudents() {
@@ -53,15 +67,31 @@ public class AccountStub implements IAccountPersistence {
     }
 
     public Tutor storeTutor(Tutor newTutor) {
-        return null;
+        tutors.add(newTutor);
+        return newTutor;
     }
 
     public Tutor updateTutor(Tutor newTutor) {
-        return null;
+        Tutor theTutor = getTutorByEmail(newTutor.getEmail());
+
+        if (theTutor != null) {
+            theTutor = newTutor;
+        }
+
+        return theTutor;
     }
 
     public Tutor getTutorByEmail(String email) {
-        return null;
+        Iterator<Tutor> iterator = tutors.iterator();
+        Tutor currentTutor = null;
+        boolean found = false;
+
+        while (!found && iterator.hasNext()) {
+            currentTutor = iterator.next();
+            found = currentTutor.getEmail().equals(email);
+        }
+
+        return currentTutor;
     }
 
     public ArrayList<Tutor> getTutors() {
@@ -71,7 +101,11 @@ public class AccountStub implements IAccountPersistence {
     public ArrayList<Tutor> getTutorsByName(String name) {
         ArrayList<Tutor> result = new ArrayList<Tutor>();
 
-        // TODO
+        tutors.forEach((tutor) -> {
+            if (tutor.getName().contains(name)) {
+                result.add(tutor);
+            }
+        });
 
         return result;
     }

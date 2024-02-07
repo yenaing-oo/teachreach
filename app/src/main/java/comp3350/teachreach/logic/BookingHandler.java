@@ -9,7 +9,7 @@ import comp3350.teachreach.objects.*;
 public class BookingHandler {
 
     private SessionStub dataAccessBooking;
-    private AccountStub dataAccessTutor;
+    private IAccountPersistence dataAccessTutor;
 
 
     public BookingHandler() {
@@ -19,7 +19,7 @@ public class BookingHandler {
     }
 
     public ArrayList<Tutor> getListofTutor() {
-        return dataAccessTutor.getStubTutors();
+        return dataAccessTutor.getTutors();
     }
 
     public ArrayList<Session> getListofSession() {
@@ -33,7 +33,7 @@ public class BookingHandler {
         //1. access data
         //ArrayList<tutor> ListofTutor = dataAccessTutor.getstubTutor();
         Tutor Searched = null;
-        Searched = dataAccessBooking.searchTutorbyName(tutor);
+        Searched = dataAccessTutor.getTutorByEmail(tutor.getEmail());
         //2. retrieve data ( time, dates )
         boolean[][] TutorAvailability = null;
         if (Searched != null) {
