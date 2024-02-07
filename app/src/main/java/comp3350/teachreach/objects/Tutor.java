@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tutor extends User {
     private ArrayList<Course> tutoredCourses;
-    private double pricePerHour;
+    private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
     private ArrayList<String> preferredLocations;
@@ -15,21 +15,21 @@ public class Tutor extends User {
         this.tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
         this.availability = new boolean[7][24];
-        this.pricePerHour = 10; //Arbitrary default
+        this.hourlyRate = 10; //Arbitrary default
         this.reviewSum = 0;
         this.reviewCount = 0;
 
     }
 
     public Tutor(String name, String pronouns, String major, String email,
-                 String password, double pricePerHour) {
+                 String password, double hourlyRate) {
         super(name, pronouns, major, email, password);
         tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
         this.availability = new boolean[7][24];
         this.reviewSum = 0;
         this.reviewCount = 0;
-        this.pricePerHour = pricePerHour;
+        this.hourlyRate = hourlyRate;
 
     }
 
@@ -53,12 +53,12 @@ public class Tutor extends User {
         tutoredCourses.clear();
     }
 
-    public double getPricePerHour() {
-        return this.pricePerHour;
+    public double getHourlyRate() {
+        return this.hourlyRate;
     }
 
-    public void setPricePerHour(float pricePerHour) {
-        this.pricePerHour = pricePerHour;
+    public void setHourlyRate(float hourlyRate) {
+        this.hourlyRate = hourlyRate;
     }
 
     public void addReview(int score) {
@@ -67,7 +67,7 @@ public class Tutor extends User {
     }
 
     public float getRating() {
-        return (float) this.reviewSum / (float) this.reviewCount;
+        return this.reviewCount > 0 ? ((float) this.reviewSum / (float) this.reviewCount) : 0;
     }
 
     public void clearReviews() {
@@ -81,5 +81,9 @@ public class Tutor extends User {
 
     public void setAvailability(int day, int hour, boolean avail) {
         this.availability[day][hour] = avail;
+    }
+
+    public int getReviewCount() {
+        return this.reviewCount;
     }
 }

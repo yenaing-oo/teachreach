@@ -1,22 +1,30 @@
 package comp3350.teachreach.data;
-import comp3350.teachreach.objects.*;
+
 import java.util.ArrayList;
-import java.util.Random;
+
+import comp3350.teachreach.objects.Session;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class SessionStub {
 
-    ArrayList<Session> sessions = new ArrayList<>();
-
-    AccountStub accounts;
+    ArrayList<Session> sessions;
     ArrayList<Student> students;
+    AccountStub accounts;
+
 
     ArrayList<Tutor> tutors;
-    public SessionStub(){
+
+    public SessionStub() {
+        sessions = new ArrayList<>();
+        students = new ArrayList<>();
+        accounts = new AccountStub();
+
 
         students = accounts.getStudents();
         tutors = accounts.getTutors();
 
-        Session session1 = new Session(students.get(1), tutors.get(3), 26, 5, 11, 3,"Library");
+        Session session1 = new Session(students.get(1), tutors.get(3), 26, 5, 11, 3, "Library");
 
         sessions.add(session1);
     }

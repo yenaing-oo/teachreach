@@ -86,7 +86,7 @@ public class SearchSort {
         ArrayList<Tutor> out = new ArrayList<Tutor>();
 
         while (leftCount < left.size() && rightCount < right.size()) {
-            if (right.get(rightCount).getPricePerHour() < left.get(leftCount).getPricePerHour()) {
+            if (right.get(rightCount).getHourlyRate() < left.get(leftCount).getHourlyRate()) {
                 out.add(right.get(rightCount));
                 rightCount++;
             } else {
