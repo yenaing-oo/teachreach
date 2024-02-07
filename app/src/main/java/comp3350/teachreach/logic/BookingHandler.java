@@ -2,9 +2,11 @@ package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
 
+import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.SessionStub;
 import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.data.*;
-import comp3350.teachreach.objects.*;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class BookingHandler {
 
@@ -18,7 +20,7 @@ public class BookingHandler {
         dataAccessTutor = Server.getAccounts();
     }
 
-    public ArrayList<Tutor> getListofTutor() {
+    public ArrayList<Tutor> getListofTutors() {
         return dataAccessTutor.getTutors();
     }
 
