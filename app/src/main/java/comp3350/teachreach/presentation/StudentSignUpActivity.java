@@ -14,7 +14,7 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.AccountType;*/
 
-public class StudentSignupActivity extends AppCompatActivity {
+public class StudentSignUpActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword, etEmail, etMajor, etPronoun;
     private Button btnCreateProfile;
@@ -22,7 +22,7 @@ public class StudentSignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_signup);
+        setContentView(R.layout.activity_student_sign_up);
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);

@@ -28,6 +28,9 @@
             android:name=".presentation.StudentLoginActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.StudentSignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.SearchActivity"
             android:exported="false" />
         <activity
