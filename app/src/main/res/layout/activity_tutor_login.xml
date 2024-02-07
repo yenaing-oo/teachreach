@@ -6,17 +6,26 @@
     android:padding="16dp"
     android:gravity="center">
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:text="Tutor Login"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/etTutorEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/etTutorPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Password"
         android:inputType="textPassword" />
 
@@ -24,15 +33,18 @@
         android:id="@+id/btnTutorLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login" />
+        android:layout_marginTop="20dp"
+        android:text="Login"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/tvTutorSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:paddingTop="16dp"
         android:text="Not a tutor? Sign up"
         android:textColor="#0000FF"
-        android:paddingTop="16dp"
-        android:gravity="center_horizontal" />
+        android:textSize="14sp" />
 
 </LinearLayout>

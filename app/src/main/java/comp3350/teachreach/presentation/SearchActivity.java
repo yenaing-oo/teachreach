@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.BookingHandler;
+import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.presentation.models.TutorModel;
 
 public class SearchActivity extends AppCompatActivity {
 
     ArrayList<TutorModel> tutorModelList;
+    BookingHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class SearchActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.searchResultRecyclerView);
 
         tutorModelList = new ArrayList<>();
+        handler = new BookingHandler();
         setUpTutorModels();
 
         SearchRecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(this, tutorModelList);
@@ -30,12 +34,14 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void setUpTutorModels() {
-        String[] tutorNames = getResources().getStringArray(R.array.user_names);
-        String[] ratings = getResources().getStringArray(R.array.user_ratings);
-        String[] hourlyRates = getResources().getStringArray(R.array.user_hourly_rates);
+//        String[] tutorNames = getResources().getStringArray(R.array.user_names);
+//        String[] ratings = getResources().getStringArray(R.array.user_ratings);
+//        String[] hourlyRates = getResources().getStringArray(R.array.user_hourly_rates);
 
-        for (int i = 0; i < tutorNames.length; i++) {
-            tutorModelList.add(new TutorModel(tutorNames[i], ratings[i], hourlyRates[i]));
+        ArrayList<Tutor> tutors = handler.getListofTutor();
+
+        for (int i = 0; i < tutors.size(); i++) {
+            tutorModelList.add(new TutorModel(tutors.get(i)));
         }
 
     }

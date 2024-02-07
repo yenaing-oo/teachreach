@@ -45,7 +45,7 @@ public class SearchSort {
         ArrayList<Tutor> out = new ArrayList<Tutor>();
 
         while (leftCount < left.size() && rightCount < right.size()) {
-            if (right.get(rightCount).getAverageScore() > left.get(leftCount).getAverageScore()) {
+            if (right.get(rightCount).getRating() > left.get(leftCount).getRating()) {
                 out.add(right.get(rightCount));
                 rightCount++;
             } else {
