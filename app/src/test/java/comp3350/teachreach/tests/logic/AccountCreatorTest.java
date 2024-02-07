@@ -30,6 +30,15 @@ public class AccountCreatorTest {
     }
 
     @Test
+    public void testCreateStudentBadEmail() {
+        Account newStudent = accountCreator.createStudentAccount("Bob", "he" +
+                        "/him",
+                "CS", "alice@bob", "qawsedrfccss");
+        assertNull(newStudent);
+        System.out.println("Finished testCreateStudentBadEmail");
+    }
+
+    @Test
     public void testCreateTutor() {
         Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
                 "CS", "bob@example.com", "qawsedrfccss");
@@ -42,6 +51,6 @@ public class AccountCreatorTest {
         Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
                 "CS", "bob@@example.com", "qawsedrfccss");
         assertNull(newTutor);
-        System.out.println("Finished testCreateTutorBad");
+        System.out.println("Finished testCreateTutorBadEmail");
     }
 }

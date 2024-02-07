@@ -4,14 +4,54 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import comp3350.teachreach.data.AccountStub;
+import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public class AccountCreator implements IAccountCreator {
 
-    public AccountCreator() {}
-
     private static final String EMAIL_PATTERN = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9" + ".-]+\\" + ".[A-Za-z0-9.-]+$";
+
+    private IAccountPersistence accounts;
+
+    public AccountCreator() {
+        accounts = new AccountStub();
+    }
+
+    public AccountCreator(IAccountPersistence accounts) {
+        this.accounts = accounts;
+    }
+
+    @Override
+    public Student createStudentAccount(String name, String pronouns, String major, String email, String password) {
+        String processedPassword = processPassword(password);
+        Student newStudent = new Student(name, pronouns, major, email, processedPassword);
+
+        if (!isValidEmail(email)) {
+            newStudent = null;
+            // throw new Exception("Not an email!");
+        } else {
+            accounts.storeStudent(newStudent);
+        }
+        return newStudent;
+    }
+
+    @Override
+    public Tutor createTutorAccount(String name, String pronouns, String major, String email, String password) {
+        String processedPassword = processPassword(password);
+        Tutor newTutor = new Tutor(name, pronouns, major, email, processedPassword);
+        boolean validEmail = isValidEmail(email);
+
+        if (!validEmail) {
+            newTutor = null;
+            // throw new Exception("Not an email!");
+        } else {
+            accounts.storeTutor(newTutor);
+        }
+
+        return newTutor;
+    }
 
 //    public Account createAccount(AccountType type, String name, String pronouns, String major, String email, String password) throws Exception {
 //        Account newAccount = null;
@@ -37,41 +77,14 @@ public class AccountCreator implements IAccountCreator {
 //    }
 
     private static String processPassword(String plainPassword) {
-        String processedPassword = BCrypt.withDefaults().hashToString(12, plainPassword.toCharArray());
-        BCrypt.Result result = BCrypt.verifyer().verify(plainPassword.toCharArray(), processedPassword);
-        assert (result.verified);
-        return processedPassword;
+        return BCrypt.withDefaults().hashToString(12,
+                plainPassword.toCharArray());
     }
 
     private static boolean isValidEmail(String email) {
         Pattern pattern = Pattern.compile(EMAIL_PATTERN);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
-    }
-
-    @Override
-    public Student createStudentAccount(String name, String pronouns, String major, String email, String password) {
-        String processedPassword = processPassword(password);
-        Student newStudent = new Student(name, pronouns, major, email, processedPassword);
-
-        if (!isValidEmail(email)) {
-            newStudent = null;
-            // throw new Exception("Not an email!");
-        }
-        return newStudent;
-    }
-
-    @Override
-    public Tutor createTutorAccount(String name, String pronouns, String major, String email, String password) {
-        String processedPassword = processPassword(password);
-        Tutor newTutor = new Tutor(name, pronouns, major, email, processedPassword);
-        boolean validEmail = isValidEmail(email);
-
-        if (!validEmail) {
-            newTutor = null;
-            // throw new Exception("Not an email!");
-        }
-        return newTutor;
     }
 
 //    private static boolean isValidInput(String in) {
