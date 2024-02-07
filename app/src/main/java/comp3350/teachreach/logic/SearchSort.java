@@ -9,7 +9,7 @@ public class SearchSort {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
         boolean flag = false;
         for(int i=0; i<tutors.size(); i++) {
-            ArrayList<Course> tutored = tutors[i].getCourses
+            ArrayList<Course> tutored = tutors.get(i).getCourses;
             flag = false;
             for(int j=0; j<tutored.size(); j++) {
                 flag |= tutored[j].equals(course);
