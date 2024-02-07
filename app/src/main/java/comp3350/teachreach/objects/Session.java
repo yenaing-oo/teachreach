@@ -22,7 +22,7 @@ public class Session {
     public void acceptSession() {
         this.accepted = true;
     }
-    
+
     public Student getStudent() {
         return this.student;
     }
@@ -49,5 +49,7 @@ public class Session {
         this.location = location;
     }
 
-    public int getHour(){ return this.hour; }
+    public int getHour() {
+        return this.hour;
+    }
 }
