@@ -1,5 +1,5 @@
 ## TeachReach
-A platformn that makes easily fine a tutor!
+A platformn that makes student easily fine a tutor!
 
 
 ## Iteration Document (for Markers)
