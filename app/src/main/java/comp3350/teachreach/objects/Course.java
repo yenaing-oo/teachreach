@@ -1,5 +1,7 @@
 package comp3350.teachreach.objects;
 
+import androidx.annotation.NonNull;
+
 public class Course {
     private String courseCode;
     private String courseName;
@@ -30,5 +32,11 @@ public class Course {
         flag = this.courseCode.equalsIgnoreCase(otherCourse.courseCode);
         flag &= this.courseName.equalsIgnoreCase(otherCourse.courseName);
         return flag;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.courseCode + ": " + this.courseName;
     }
 }
