@@ -29,5 +29,15 @@ public class CourseStub {
 
     }
 
+    public Course searchCourseByCode(String CourseCode){
+            Course course = null;
+            for (int i = 0; i< this.courses.size(); i++){
+                if (this.courses.get(i).equals(CourseCode)){
+                    course = this.courses.get(i);
+                }
+            }
+     return course;
+    }
+
     //eg. add, search, delete
 }
