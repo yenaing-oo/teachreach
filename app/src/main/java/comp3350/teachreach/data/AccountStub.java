@@ -9,6 +9,7 @@ import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public class AccountStub implements IAccountPersistence {
+
     ArrayList<Tutor> tutors;
     ArrayList<Student> students;
 
@@ -16,9 +17,11 @@ public class AccountStub implements IAccountPersistence {
 
     ArrayList<Course> courses;
 
+
     public AccountStub() {
         tutors = new ArrayList<>();
         students = new ArrayList<>();
+        accessCourseStub = new CourseStub();
         courses = accessCourseStub.getCourses();
 
         this.tutors.add(new Tutor("Jackson Pankratz", "He/Him", "Computer Science", "pankratz25@myumanitoba.ca", "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI.RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
