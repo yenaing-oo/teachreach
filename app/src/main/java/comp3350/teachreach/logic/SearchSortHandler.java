@@ -1,6 +1,5 @@
 package comp3350.teachreach.logic;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import comp3350.teachreach.data.CourseStub;
@@ -8,23 +7,22 @@ import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
 
-public class SearchSort {
-    private IAccountPersistence dataAccessTutor;
-    private CourseStub dataAccessCourse;
-    public SearchSort(){
+public class SearchSortHandler {
+    private final IAccountPersistence dataAccessTutor;
+    private final CourseStub dataAccessCourse;
+
+    public SearchSortHandler() {
         dataAccessTutor = Server.getAccounts();
         dataAccessCourse = Server.getCourses();
     }
 
-    public ArrayList<Tutor> getListofTutors() {
+    public ArrayList<Tutor> getListOfTutors() {
         return dataAccessTutor.getTutors();
     }
 
-    public ArrayList<Course> getListofCourses() {
+    public ArrayList<Course> getListOfCourses() {
         return dataAccessCourse.getCourses();
     }
-
-
 
     public ArrayList<Tutor> searchTutorClass(Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
@@ -144,17 +142,21 @@ public class SearchSort {
         return out;
     }
 
-    public ArrayList<Tutor> SearchTutorByCourse(String courseCode){
+    public ArrayList<Tutor> searchTutorByCourse(String courseCode) {
         //take arraylist
         ArrayList<Tutor> selectedTutor = new ArrayList<>();
         ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
-        for( int i = 0; i < tutors.size(); i++) {
+        for (int i = 0; i < tutors.size(); i++) {
             ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
-            if(tutorCourses != null) {
-                for( int j = 0; j<tutorCourses.size(); j++){
-                    if(tutorCourses.get(i).getCourseCode().equals((courseCode))){
+            if (tutorCourses != null) {
+                int j = 0;
+                boolean found = false;
+                while (!found && j < tutorCourses.size()) {
+                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
                         selectedTutor.add(tutors.get(i));
+                        found = true;
                     }
+                    j++;
                 }
             }
         }

@@ -20,10 +20,6 @@ public class BookingHandler {
         dataAccessTutor = Server.getAccounts();
     }
 
-    public ArrayList<Tutor> getListofTutors() {
-        return dataAccessTutor.getTutors();
-    }
-
     public ArrayList<Session> getListofSession() {
         return dataAccessBooking.getStubSessions();
     }
