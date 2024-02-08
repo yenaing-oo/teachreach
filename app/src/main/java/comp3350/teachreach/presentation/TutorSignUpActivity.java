@@ -1,7 +1,5 @@
 package comp3350.teachreach.presentation;
 
-//package comp3350.teachreach.application;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -15,6 +13,9 @@ import android.net.Uri;
 import android.widget.Toast;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.AccountCreator;
+import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.objects.Tutor;
 
 public class TutorSignUpActivity extends AppCompatActivity {
 
@@ -25,6 +26,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
     private Button btnUploadTranscript, btnTutorSubmit;
     private TextView tvVerificationOutput;
     private Uri transcriptUri; // Uri of the selected transcript file
+    private IAccountCreator accountCreator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,8 @@ public class TutorSignUpActivity extends AppCompatActivity {
         btnTutorSubmit = findViewById(R.id.btnTutorSubmit);
         tvVerificationOutput = findViewById(R.id.tvVerificationOutput);
 
+        accountCreator = new AccountCreator();
+
         btnUploadTranscript.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,24 +54,30 @@ public class TutorSignUpActivity extends AppCompatActivity {
         btnTutorSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Validate input and handle form submission
-                // Implement your logic for handling the signup process here
-                boolean isSignupSuccessful = true; // This should be set based on the actual signup success
-
-                if (isSignupSuccessful) {
-                    // Navigate to Tutor Profile Activity
-                    Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
-                    startActivity(intent);
-                    finish(); //to prevent returning to the signup screen
-                } else {
-                    // Handle the case where signup is not successful
-                }
+                createTutorProfile();
             }
         });
 
-        // Add logic to populate and handle spinnerCourses
     }
 
+    private void createTutorProfile() {
+        String username = etTutorUsername.getText().toString().trim();
+        String password = etTutorPassword.getText().toString().trim();
+        String email = etTutorEmail.getText().toString().trim();
+        String major = etTutorMajor.getText().toString().trim();
+        String pronouns = spinnerCourses.getSelectedItem().toString();
+
+        Tutor newTutor = accountCreator.createTutorAccount(username, pronouns, major, email, password);
+
+        if (newTutor != null) {
+            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
+            startActivity(intent);
+            finish(); // To prevent returning to the signup screen
+        } else {
+            Toast.makeText(TutorSignUpActivity.this, "Signup failed. Please check your inputs and try again.", Toast.LENGTH_LONG).show();
+        }
+    }
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*"); // Allow any file type.
@@ -75,7 +85,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
         try {
             startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), REQUEST_CODE_PICK_FILE);
         } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
@@ -86,7 +95,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
             if (data != null) {
                 transcriptUri = data.getData();
-                // Handle the transcript file. You might want to upload it to your server or store its path
+                // Handle the transcript file.
             }
         }
     }
