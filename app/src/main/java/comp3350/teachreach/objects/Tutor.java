@@ -10,6 +10,7 @@ public class Tutor extends User {
     private ArrayList<String> preferredLocations;
     private final boolean[][] availability;
 
+
     public Tutor(String name, String pronouns, String major, String email, String password) {
         super(name, pronouns, major, email, password);
         this.tutoredCourses = new ArrayList<Course>();
@@ -39,7 +40,7 @@ public class Tutor extends User {
 
 
 
-    public void setCourses(Course course) {
+    public void addCourse(Course course) {
         this.tutoredCourses.add(course);
     }
 
