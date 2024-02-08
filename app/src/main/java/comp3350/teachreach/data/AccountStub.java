@@ -13,11 +13,7 @@ public class AccountStub implements IAccountPersistence {
     ArrayList<Tutor> tutors;
     ArrayList<Student> students;
     ArrayList<Course> courses;
-
-
     CourseStub accessCourseStub;
-
-
 
     public AccountStub() {
         tutors = new ArrayList<>();
@@ -39,9 +35,6 @@ public class AccountStub implements IAccountPersistence {
         this.storeStudent(new Student("Rob Guderian", "He/Him", "Computer Science",
                 "guder4@myumanitoba.ca", "$2a$12$i" +
                 "/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe"));
-
-
-
     }
 
     @Override

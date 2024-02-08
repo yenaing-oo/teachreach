@@ -20,11 +20,16 @@ public class BookingHandler {
         dataAccessTutor = Server.getAccounts();
     }
 
+    public BookingHandler(IAccountPersistence dataAccessTutor, SessionStub sessionDataAccess) {
+        dataAccessBooking = sessionDataAccess;
+        this.dataAccessTutor = dataAccessTutor;
+    }
+
     public ArrayList<Session> getListOfSession() {
         return dataAccessBooking.getStubSessions();
     }
 
-    public Student getStudentByEmail(String email){
+    public Student getStudentByEmail(String email) {
         return dataAccessBooking.getStudentByEmail(email);
     }
 
@@ -46,7 +51,6 @@ public class BookingHandler {
         //3. return object(booking) (list of objects?) (confirm and pending)
         return TutorAvailability;
     }
-
 
 
     public Session createStudentRequests(Student student, Tutor tutor, int day, int month, int year, int hour, String location)
@@ -114,7 +118,7 @@ public class BookingHandler {
             dataAccessBooking.removeSession(session);
             //Reject, then available.
             tutor.setAvailability(date, hour, true);
-        } else  {
+        } else {
             session.setStage(true);
         }
     }
