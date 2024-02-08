@@ -29,7 +29,7 @@ public class BookingHandler {
     }
 
     // get tutor_> update-> retrieve availability
-    public boolean[][] tutorAvailability(Tutor tutor)
+    public boolean[][] tutorAvailability(Tutor tutor) //later not pass tutor?
     //scenario: student click on tutor profile->check availability on tutor
     {
         // Check dates and time from tutor->profile->booking object->findout the tine and date

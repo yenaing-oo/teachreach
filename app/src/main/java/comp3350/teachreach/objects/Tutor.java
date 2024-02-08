@@ -8,7 +8,7 @@ public class Tutor extends User {
     private int reviewSum;
     private int reviewCount;
     private ArrayList<String> preferredLocations;
-    private final boolean[][] availability;
+    private boolean[][] availability;
 
     public Tutor(String name, String pronouns, String major, String email, String password) {
         super(name, pronouns, major, email, password);
