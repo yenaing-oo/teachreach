@@ -1,9 +1,15 @@
 package comp3350.teachreach.presentation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +25,7 @@ import comp3350.teachreach.presentation.models.TutorModel;
 
 public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface {
 
-    SearchSortHandler handler;
+    private SearchSortHandler handler;
     private ArrayList<TutorModel> tutorModelList;
     private ArrayList<Course> courseList;
     private RecyclerView recyclerView;
@@ -33,12 +39,16 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         setContentView(R.layout.activity_search);
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
-        autoCompleteTextView.findViewById(R.id.autoCompleteTextView);
+        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
 
-//        arrayAdapter = new ArrayAdapter<>(this, );
+        handler = new SearchSortHandler();
+
+        courseList = handler.getListOfCourses();
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseList);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+        autoCompleteTextView.setThreshold(2);
 
         tutorModelList = new ArrayList<>();
-        handler = new SearchSortHandler();
         setUpTutorModels();
 
         SearchRecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(this, tutorModelList, this);
@@ -52,7 +62,6 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         for (int i = 0; i < tutors.size(); i++) {
             tutorModelList.add(new TutorModel(tutors.get(i)));
         }
-
     }
 
     @Override
@@ -61,4 +70,20 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         startActivity(intent);
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
 }
