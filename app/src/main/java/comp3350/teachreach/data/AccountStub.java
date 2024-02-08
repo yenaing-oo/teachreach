@@ -30,7 +30,7 @@ public class AccountStub implements IAccountPersistence {
         //Random rand = new Random(7881702);
 
         for (int i = 0; i < 5; i++) {
-            this.tutors.get(i).setCourses(courses.get(i));
+            this.tutors.get(i).addCourse(courses.get(i));
             for (int j = 0; j < 7; j++) {
                 for (int k = 0; k < 24; k++) {
                     this.tutors.get(i).setAvailability(j, k, true);
