@@ -1,9 +1,9 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
+import comp3350.teachreach.logic.Server;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
@@ -12,56 +12,35 @@ public class AccountStub implements IAccountPersistence {
 
     ArrayList<Tutor> tutors;
     ArrayList<Student> students;
+    ArrayList<Course> courses;
+
 
     CourseStub accessCourseStub;
 
-    ArrayList<Course> courses;
 
 
     public AccountStub() {
         tutors = new ArrayList<>();
         students = new ArrayList<>();
-        accessCourseStub = new CourseStub();
+        accessCourseStub = Server.getCourses();
         courses = accessCourseStub.getCourses();
 
-        this.tutors.add(new Tutor("Jackson Pankratz", "He/Him", "Computer Science", "pankratz25@myumanitoba.ca", "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI.RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
-        this.tutors.add(new Tutor("Camryn Mcmillan", "She/Her", "Computer Science", "mcmill5@myumanitoba.ca", "$2a$12$LMXSy2E2SRxXOyUzT2hwuOV..lVkQHj5sVFgrTQF4QpJWVbo9CBie", 20));
-        this.tutors.add(new Tutor("Justin Huang", "He/Him", "Computer Science", "huang15@myumanitoba.ca", "$2a$12$r9yuopZw8rOLVK.L9FU6k.kaZu3GtrcTvc/PBNleKVcWx/YE6Hc4G", 17.5));
-        this.tutors.add(new Tutor("Ashna Sharma", "She/Her", "Computer Science", "sharma7@myumanitoba.ca", "$2a$12$bnFp/uerz96t0CZwkRhNyuOFQTg54d9K0Pzkhdh/.8p2/ec1SFxjm", 11));
-        this.tutors.add(new Tutor("Theo Brown", "They/Them", "Computer Science", "brown102@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe", 40.5));
-        this.tutors.get(0).setCourses(courses.get(0));
-        this.tutors.get(0).setCourses(courses.get(1));
-        this.tutors.get(1).setCourses(courses.get(2));
-        this.tutors.get(1).setCourses(courses.get(3));
-        this.tutors.get(2).setCourses(courses.get(4));
-        this.tutors.get(2).setCourses(courses.get(1));
-        this.tutors.get(3).setCourses(courses.get(0));
+        this.storeTutor(new Tutor("Jackson Pankratz", "He/Him",
+                "Computer Science", "pankratz25@myumanitoba.ca", "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI.RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
+        this.storeTutor(new Tutor("Camryn Mcmillan", "She/Her", "Computer Science",
+                "mcmill5@myumanitoba.ca", "$2a$12$LMXSy2E2SRxXOyUzT2hwuOV..lVkQHj5sVFgrTQF4QpJWVbo9CBie", 20));
+        this.storeTutor(new Tutor("Justin Huang", "He/Him", "Computer Science",
+                "huang15@myumanitoba.ca", "$2a$12$r9yuopZw8rOLVK.L9FU6k.kaZu3GtrcTvc/PBNleKVcWx/YE6Hc4G", 17.5));
+        this.storeTutor(new Tutor("Ashna Sharma", "She/Her", "Computer Science",
+                "sharma7@myumanitoba.ca", "$2a$12$bnFp/uerz96t0CZwkRhNyuOFQTg54d9K0Pzkhdh/.8p2/ec1SFxjm", 11));
+        this.storeTutor(new Tutor("Theo Brown", "They/Them", "Computer Science",
+                "brown102@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe", 40.5));
+
+        this.storeStudent(new Student("Rob Guderian", "He/Him", "Computer Science",
+                "guder4@myumanitoba.ca", "$2a$12$i" +
+                "/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe"));
 
 
-        //Random rand = new Random(7881702);
-
-        for (int i = 0; i < 5; i++) {
-            this.tutors.get(i).setCourses(courses.get(i));
-            for (int j = 0; j < 7; j++) {
-                for (int k = 0; k < 24; k++) {
-                    this.tutors.get(i).setAvailability(j, k, true);
-                }
-            }
-        }
-
-
-
-        this.tutors.get(1).setAvailability(1,1,false);
-
-        this.tutors.get(1).setAvailability(1,2,false);
-        this.tutors.get(1).setAvailability(1,3,false);
-        this.tutors.get(1).setAvailability(1,4,false);
-        this.tutors.get(1).setAvailability(1,5,false);
-        System.out.println(Arrays.deepToString(this.tutors.get(1).getAvailability()));
-        //this.tutors.get(1).setAvailability(1,6,true);
-
-        Student student1 = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");
-        this.students.add(student1);
 
     }
 

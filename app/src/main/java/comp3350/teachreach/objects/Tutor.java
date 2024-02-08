@@ -39,8 +39,9 @@ public class Tutor extends User {
 
 
 
-    public void setCourses(Course course) {
+    public Tutor addCourse(Course course) {
         this.tutoredCourses.add(course);
+        return this;
     }
 
 
