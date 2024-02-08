@@ -125,9 +125,9 @@ public class SearchSort {
         return out;
     }
 
-    public ArrayList<Tutor> tutorsByAvail(ArrayList<Tutor> tutors, boolean[][] avail) {
+    public ArrayList<Tutor> tutorsByAvail(boolean[][] avail) {
         ArrayList<Tutor> out = new ArrayList<Tutor>();
-        ArrayList<Tutor> copy = (ArrayList<Tutor>) tutors.clone();
+        ArrayList<Tutor> copy = dataAccessTutor.getTutors();
         for (int i = 0; i < avail.length; i++) {
             for (int j = 0; j < avail[i].length; i++) {
                 if (avail[i][j] && copy.size() > 0) {
