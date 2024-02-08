@@ -1,23 +1,24 @@
-//package comp3350.teachreach.application;
 package comp3350.teachreach.presentation;
-
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-/*import comp3350.teachreach.logic.AccountCreator;
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.AccountType;*/
+import comp3350.teachreach.logic.AccountCreator;
+import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.objects.Student;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword, etEmail, etMajor, etPronoun;
     private Button btnCreateProfile;
+    private IAccountCreator accountCreator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,8 @@ public class StudentSignUpActivity extends AppCompatActivity {
         etMajor = findViewById(R.id.etMajor);
         etPronoun = findViewById(R.id.etPronoun);
         btnCreateProfile = findViewById(R.id.btnCreateProfile);
+
+        accountCreator = new AccountCreator();
 
         btnCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,18 +49,15 @@ public class StudentSignUpActivity extends AppCompatActivity {
         String major = etMajor.getText().toString().trim();
         String pronoun = etPronoun.getText().toString().trim();
 
-       /* AccountCreator accountCreator = new AccountCreator();
-        try {
-            Account newAccount = accountCreator.createAccount(AccountType.Student, username, pronoun, major, email, password);
-            // Assuming successful account creation
-            Toast.makeText(StudentSignupActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(StudentSignupActivity.this, StudentProfileActivity.class);
-            //  pass account details to the profile activity if needed
+        Student newStudent = accountCreator.createStudentAccount(username, pronoun, major, email, password);
+
+        if (newStudent != null) {
+            Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(StudentSignUpActivity.this, StudentProfileActivity.class);
             startActivity(intent);
-            finish(); // Close the signup activity
-        } catch (Exception e) {
-            // Handle any exceptions, like invalid email
-            Toast.makeText(StudentSignupActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }*/
+            finish();
+        } else {
+            Toast.makeText(StudentSignUpActivity.this, "Error: Invalid input", Toast.LENGTH_LONG).show();
+        }
     }
 }
