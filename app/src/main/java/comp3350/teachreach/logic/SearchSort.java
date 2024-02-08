@@ -26,25 +26,25 @@ public class SearchSort {
 
 
 
-    public ArrayList<Tutor> searchTutorClass(ArrayList<Tutor> tutors, Course course) {
+    public ArrayList<Tutor> searchTutorClass(Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
         boolean flag = false;
-        for (int i = 0; i < tutors.size(); i++) {
-            ArrayList<Course> tutored = tutors.get(i).getCourses();
+        for (int i = 0; i < dataAccessTutor.getTutors().size(); i++) {
+            ArrayList<Course> tutored = dataAccessTutor.getTutors().get(i).getCourses();
             flag = false;
             for (int j = 0; j < tutored.size(); j++) {
                 flag |= tutored.get(j).equals(course);
             }
             if (flag) {
-                output.add(tutors.get(i));
+                output.add(dataAccessTutor.getTutors().get(i));
             }
         }
 
         return output;
     }
 
-    public ArrayList<Tutor> sortByRating(ArrayList<Tutor> tutors) {
-        return ratingMergeSort(tutors);
+    public ArrayList<Tutor> sortByRating() {
+        return ratingMergeSort(dataAccessTutor.getTutors());
     }
 
     private ArrayList<Tutor> ratingMergeSort(ArrayList<Tutor> tutors) {
@@ -84,17 +84,17 @@ public class SearchSort {
         return out;
     }
 
-    public ArrayList<Tutor> sortByPrice(ArrayList<Tutor> tutors) {
-        return priceMergeSort(tutors);
+    public ArrayList<Tutor> sortByPrice() {
+        return priceMergeSort(dataAccessTutor.getTutors());
     }
 
     private ArrayList<Tutor> priceMergeSort(ArrayList<Tutor> tutors) {
-        if (tutors.size() <= 1) {
-            return tutors;
+        if (dataAccessTutor.getTutors().size() <= 1) {
+            return dataAccessTutor.getTutors();
         } else {
-            int middle = (tutors.size() - 1) / 2;
-            ArrayList<Tutor> left = priceMergeSort((ArrayList<Tutor>) tutors.subList(0, middle));
-            ArrayList<Tutor> right = priceMergeSort((ArrayList<Tutor>) tutors.subList(middle + 1, tutors.size() - 1));
+            int middle = (dataAccessTutor.getTutors().size() - 1) / 2;
+            ArrayList<Tutor> left = priceMergeSort((ArrayList<Tutor>) dataAccessTutor.getTutors().subList(0, middle));
+            ArrayList<Tutor> right = priceMergeSort((ArrayList<Tutor>) dataAccessTutor.getTutors().subList(middle + 1, tutors.size() - 1));
             return priceMerge(left, right);
         }
     }
@@ -125,9 +125,9 @@ public class SearchSort {
         return out;
     }
 
-    public ArrayList<Tutor> tutorsByAvail(ArrayList<Tutor> tutors, boolean[][] avail) {
+    public ArrayList<Tutor> tutorsByAvail(boolean[][] avail) {
         ArrayList<Tutor> out = new ArrayList<Tutor>();
-        ArrayList<Tutor> copy = (ArrayList<Tutor>) tutors.clone();
+        ArrayList<Tutor> copy = dataAccessTutor.getTutors();
         for (int i = 0; i < avail.length; i++) {
             for (int j = 0; j < avail[i].length; i++) {
                 if (avail[i][j] && copy.size() > 0) {
