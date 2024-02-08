@@ -28,6 +28,8 @@ public class BookingHandler {
         return dataAccessBooking.getStubSessions();
     }
 
+
+    /*
     public boolean[][] tutorAvailability(Tutor tutor)
     //scenario: student click on tutor profile->check availability on tutor
     {
@@ -45,6 +47,8 @@ public class BookingHandler {
         //3. return object(booking) (list of objects?) (confirm and pending)
         return TutorAvailability;
     }
+    */
+
 
     public void storeStudentRequests(Student student, Tutor tutor, int day, int month, int year, int hour, String location)
     //scenario: student click on request ( with dates, time, location), then send to the booking object to
@@ -117,7 +121,7 @@ public class BookingHandler {
 
     //lower function
     //all get set
-    public void addSessionInfo(Student student, Tutor tutor, int day, int month, int year, int hour, String location){
+    public void addSessionInfo(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
         dataAccessBooking.addSessionInfo(student ,tutor, day, month, year, hour,location);
     }
 

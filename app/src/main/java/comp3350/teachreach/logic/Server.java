@@ -13,7 +13,7 @@ public class Server {
 
         return accounts;
     }
-    public static synchronized CourseStub getAourses(){
+    public static synchronized CourseStub getCourses(){
         if ( courses == null){
             courses = new CourseStub();
         }

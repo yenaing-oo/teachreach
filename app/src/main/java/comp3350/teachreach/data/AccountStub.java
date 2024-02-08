@@ -23,15 +23,20 @@ public class AccountStub implements IAccountPersistence {
         this.tutors.add(new Tutor("Ashna Sharma", "She/Her", "Computer Science", "sharma7@myumanitoba.ca", "$2a$12$bnFp/uerz96t0CZwkRhNyuOFQTg54d9K0Pzkhdh/.8p2/ec1SFxjm", 11));
         this.tutors.add(new Tutor("Theo Brown", "They/Them", "Computer Science", "brown102@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe", 40.5));
 
-        Random rand = new Random(7881702);
+        //Random rand = new Random(7881702);
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 7; j++) {
                 for (int k = 0; k < 24; k++) {
-                    this.tutors.get(i).setAvailability(j, k, rand.nextInt(2) == 1);
+                    this.tutors.get(i).setAvailability(j, k, true);
                 }
             }
             //retrieve course object, then input it
+        for( int i = 0 ; i<)
+
+
+
+
             // this.tutors.get(i).setCourses(courses);
 
             Student student1 = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");

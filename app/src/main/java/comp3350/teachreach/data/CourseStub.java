@@ -17,5 +17,17 @@ public class CourseStub {
             this.courses.add(new Course("COMP 3380", "Databases Concepts and Usage"));
     }
     //add your function
+
+
+
+    public ArrayList<Course> getCourses(){
+            return this.courses;
+        }
+
+    public void addCourse(String courseCode, String courseName){
+          this.courses.add(new Course(courseCode, courseName));
+
+    }
+
     //eg. add, search, delete
 }

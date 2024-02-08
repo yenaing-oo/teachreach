@@ -1,11 +1,30 @@
 package comp3350.teachreach.logic;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import comp3350.teachreach.data.CourseStub;
+import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
 
 public class SearchSort {
+    private IAccountPersistence dataAccessTutor;
+    private CourseStub dataAccessCourse;
+    public SearchSort(){
+        dataAccessTutor = Server.getAccounts();
+        dataAccessCourse = Server.getCourses();
+    }
+
+    public ArrayList<Tutor> getListofTutors() {
+        return dataAccessTutor.getTutors();
+    }
+
+    public ArrayList<Course> getListofCourses() {
+        return dataAccessCourse.getCourses();
+    }
+
+
 
     public ArrayList<Tutor> searchTutorClass(ArrayList<Tutor> tutors, Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
@@ -123,5 +142,22 @@ public class SearchSort {
         }
 
         return out;
+    }
+
+    public ArrayList<Tutor> SearchTutorByCourse(String courseCode){
+        //take arraylist
+        ArrayList<Tutor> selectedTutor = new ArrayList<>();
+        ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
+        for( int i = 0; i < tutors.size(); i++) {
+            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
+            if(tutorCourses != null) {
+                for( int j = 0; j<tutorCourses.size(); j++){
+                    if(tutorCourses.get(i).getCourseCode().equals((courseCode))){
+                        selectedTutor.add(tutors.get(i));
+                    }
+                }
+            }
+        }
+        return selectedTutor;
     }
 }
