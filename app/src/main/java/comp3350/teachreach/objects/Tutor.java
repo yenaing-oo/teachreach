@@ -37,16 +37,18 @@ public class Tutor extends User {
         return tutoredCourses;
     }
 
-    public void setCourses(ArrayList<Course> tutoredCourses) {
-        this.tutoredCourses = tutoredCourses;
+
+    public void setCourses(Course course) {
+        this.tutoredCourses.add(course);
     }
+
 
     public ArrayList<String> getLocations() {
         return this.preferredLocations;
     }
 
-    public void setLocations(ArrayList<String> preferredLocations) {
-        this.preferredLocations = preferredLocations;
+    public void setLocations(String preferredLocations) {
+        this.preferredLocations.add(preferredLocations);
     }
 
     public void clearTutoredCourses() {
