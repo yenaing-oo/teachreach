@@ -2,10 +2,8 @@ package comp3350.teachreach.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
+// import java.util.Random;
 
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
@@ -14,8 +12,8 @@ public class AccountStub implements IAccountPersistence {
     ArrayList<Student> students;
 
     public AccountStub() {
-        tutors = new ArrayList<Tutor>();
-        students = new ArrayList<Student>();
+        tutors = new ArrayList<>();
+        students = new ArrayList<>();
 
         this.tutors.add(new Tutor("Jackson Pankratz", "He/Him", "Computer Science", "pankratz25@myumanitoba.ca", "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI.RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
         this.tutors.add(new Tutor("Camryn Mcmillan", "She/Her", "Computer Science", "mcmill5@myumanitoba.ca", "$2a$12$LMXSy2E2SRxXOyUzT2hwuOV..lVkQHj5sVFgrTQF4QpJWVbo9CBie", 20));
@@ -32,7 +30,6 @@ public class AccountStub implements IAccountPersistence {
                 }
             }
             //retrieve course object, then input it
-        for( int i = 0 ; i<)
 
 
 
@@ -46,8 +43,11 @@ public class AccountStub implements IAccountPersistence {
 
     @Override
     public Student storeStudent(Student newStudent) {
-        this.students.add(newStudent);
-        return newStudent;
+        boolean alreadyExist = getStudentByEmail(newStudent.getEmail()) != null;
+        if (!alreadyExist) {
+            this.students.add(newStudent);
+        }
+        return alreadyExist ? null : newStudent;
     }
 
     @Override
@@ -55,7 +55,10 @@ public class AccountStub implements IAccountPersistence {
         Student theStudent = getStudentByEmail(newStudent.getEmail());
 
         if (theStudent != null) {
-            theStudent = newStudent;
+            theStudent.setEmail(newStudent.getEmail());
+            theStudent.setMajor(newStudent.getMajor());
+            theStudent.setName(newStudent.getName());
+            theStudent.setPronouns(newStudent.getPronouns());
         }
 
         return theStudent;
@@ -80,8 +83,11 @@ public class AccountStub implements IAccountPersistence {
     }
 
     public Tutor storeTutor(Tutor newTutor) {
-        tutors.add(newTutor);
-        return newTutor;
+        boolean alreadyExist = getStudentByEmail(newTutor.getEmail()) != null;
+        if (!alreadyExist) {
+            this.tutors.add(newTutor);
+        }
+        return alreadyExist ? null : newTutor;
     }
 
     @Override
@@ -116,7 +122,7 @@ public class AccountStub implements IAccountPersistence {
 
     @Override
     public ArrayList<Tutor> getTutorsByName(String name) {
-        ArrayList<Tutor> result = new ArrayList<Tutor>();
+        ArrayList<Tutor> result = new ArrayList<>();
 
         tutors.forEach((tutor) -> {
             if (tutor.getName().contains(name)) {
