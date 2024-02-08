@@ -2,16 +2,16 @@ package comp3350.teachreach.logic;
 import comp3350.teachreach.data.*;
 
 public class Server {
-    private static AccountStub accounts;
+    private static IAccountPersistence accountsDataAccess;
     private static CourseStub courses;
     private static SessionStub sessions;
 
-    public static synchronized AccountStub getAccounts(){
-        if (accounts == null){
-            accounts = new AccountStub();
+    public static synchronized IAccountPersistence getAccounts(){
+        if (accountsDataAccess == null){
+            accountsDataAccess = new AccountStub();
         }
 
-        return accounts;
+        return accountsDataAccess;
     }
     public static synchronized CourseStub getCourses(){
         if ( courses == null){
@@ -29,8 +29,4 @@ public class Server {
 
         return sessions;
     }
-
-
-
-
 }
