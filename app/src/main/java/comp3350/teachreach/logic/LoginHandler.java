@@ -1,7 +1,6 @@
 package comp3350.teachreach.logic;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import comp3350.teachreach.data.AccountStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.AccountType;
@@ -11,16 +10,11 @@ public class LoginHandler {
     private IAccountPersistence accounts;
 
     public LoginHandler() {
-        this.accounts = new AccountStub();
+        this.accounts = Server.getAccounts();
     }
-
-    public LoginHandler(IAccountPersistence accounts) {
-        this.accounts = accounts;
-    }
-
 
     public boolean validateCredential(AccountType type, String email, String password) {
-        Account theAccount = null;
+        Account theAccount;
         boolean result = false;
 
         if (type == AccountType.Student) {
