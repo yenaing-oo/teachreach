@@ -2,10 +2,16 @@ package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
 
+import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
 
-public class SearchSort {
+public class SearchSortHandler {
+    private IAccountPersistence dataAccessTutor;
+
+    public ArrayList<Tutor> getListOfTutors() {
+        return dataAccessTutor.getTutors();
+    }
 
     public ArrayList<Tutor> searchTutorClass(ArrayList<Tutor> tutors, Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
