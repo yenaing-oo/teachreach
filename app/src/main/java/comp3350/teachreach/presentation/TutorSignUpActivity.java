@@ -1,16 +1,16 @@
 package comp3350.teachreach.presentation;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.net.Uri;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.AccountCreator;
@@ -21,8 +21,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PICK_FILE = 1;
 
-    private EditText etTutorUsername, etTutorPassword, etTutorEmail, etTutorMajor;
-    private Spinner spinnerCourses;
+    private EditText etTutorUsername, etTutorPassword, etTutorEmail, etTutorMajor, etPronouns;
     private Button btnUploadTranscript, btnTutorSubmit;
     private TextView tvVerificationOutput;
     private Uri transcriptUri; // Uri of the selected transcript file
@@ -37,7 +36,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
         etTutorPassword = findViewById(R.id.etTutorPassword);
         etTutorEmail = findViewById(R.id.etTutorEmail);
         etTutorMajor = findViewById(R.id.etTutorMajor);
-        spinnerCourses = findViewById(R.id.spinnerCourses);
+        etPronouns = findViewById(R.id.etPronouns);
         btnUploadTranscript = findViewById(R.id.btnUploadTranscript);
         btnTutorSubmit = findViewById(R.id.btnTutorSubmit);
         tvVerificationOutput = findViewById(R.id.tvVerificationOutput);
@@ -65,7 +64,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
         String password = etTutorPassword.getText().toString().trim();
         String email = etTutorEmail.getText().toString().trim();
         String major = etTutorMajor.getText().toString().trim();
-        String pronouns = spinnerCourses.getSelectedItem().toString();
+        String pronouns = etPronouns.getText().toString();
 
         Tutor newTutor = accountCreator.createTutorAccount(username, pronouns, major, email, password);
 
