@@ -1,38 +1,33 @@
 package comp3350.teachreach.logic;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import comp3350.teachreach.data.AccountStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.AccountType;
 
 public class LoginHandler {
 
-    private IAccountPersistence accounts;
+  private final IAccountPersistence accounts;
 
-    public LoginHandler() {
-        this.accounts = new AccountStub();
+  public LoginHandler() {
+    this.accounts = Server.getAccounts();
+  }
+
+  public boolean validateCredential(AccountType type, String email, String password) {
+    Account theAccount;
+    boolean result = false;
+
+    if (type == AccountType.Student) {
+      theAccount = accounts.getStudentByEmail(email);
+    } else {
+      theAccount = accounts.getTutorByEmail(email);
     }
 
-    public LoginHandler(IAccountPersistence accounts) {
-        this.accounts = accounts;
+    if (theAccount != null) {
+      BCrypt.Result bResult =
+          BCrypt.verifyer().verify(password.toCharArray(), theAccount.getPassword());
+      result = bResult.verified;
     }
-
-
-    public boolean validateCredential(AccountType type, String email, String password) {
-        Account theAccount = null;
-        boolean result = false;
-
-        if (type == AccountType.Student) {
-            theAccount = accounts.getStudentByEmail(email);
-        } else {
-            theAccount = accounts.getTutorByEmail(email);
-        }
-
-        if (theAccount != null) {
-            BCrypt.Result bResult = BCrypt.verifyer().verify(password.toCharArray(), theAccount.getPassword());
-            result = bResult.verified;
-        }
-        return result;
-    }
+    return result;
+  }
 }

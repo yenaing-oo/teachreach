@@ -5,15 +5,9 @@ import comp3350.teachreach.objects.Tutor;
 
 public interface IAccountCreator {
 
-    Student createStudentAccount(String name,
-                                        String pronouns,
-                                        String major,
-                                        String email,
-                                        String password);
+  Student createStudentAccount(
+      String name, String pronouns, String major, String email, String password);
 
-    Tutor createTutorAccount(String name,
-                                    String pronouns,
-                                    String major,
-                                    String email,
-                                    String password);
+  Tutor createTutorAccount(
+      String name, String pronouns, String major, String email, String password);
 }

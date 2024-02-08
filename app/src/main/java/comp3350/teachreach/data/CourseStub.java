@@ -1,21 +1,43 @@
 package comp3350.teachreach.data;
 
-import comp3350.teachreach.objects.*;
+import comp3350.teachreach.objects.Course;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.Iterator;
+
 public class CourseStub {
 
-    ArrayList<Course> courses;
+  ArrayList<Course> courses;
 
-        public CourseStub() {
+  public CourseStub() {
 
+    courses = new ArrayList<>();
+    this.courses.add(new Course("COMP 2080", "Analysis of Algorithms"));
+    this.courses.add(new Course("COMP 1010", "Introduction to Computer Science"));
+    this.courses.add(new Course("COMP 1012", "Introduction to Computer Science for Engineers"));
+    this.courses.add(new Course("COMP 2150", "Object Orientation"));
+    this.courses.add(new Course("COMP 3380", "Databases Concepts and Usage"));
+  }
 
-            this.courses.add(new Course("COMP 2080", "Analysis of Algorithms"));
-            this.courses.add(new Course("COMP 1010", "Introduction to Computer Science"));
-            this.courses.add(new Course("COMP 1012", "Introduction to Computer Science for Engineers"));
-            this.courses.add(new Course("COMP 2150", "Object Orientation"));
-            this.courses.add(new Course("COMP 3380", "Databases Concepts and Usage"));
+  // add your function
+
+  public ArrayList<Course> getCourses() {
+    return this.courses;
+  }
+
+  public void addCourse(String courseCode, String courseName) {
+    this.courses.add(new Course(courseCode, courseName));
+  }
+
+  public Course getCourseByCourseCode(String courseCode) {
+    Course course = null;
+    boolean found = false;
+    Iterator<Course> courseIterator = courses.iterator();
+    while (courseIterator.hasNext() && !found) {
+      course = courseIterator.next();
+      found = course.getCourseCode().equals(courseCode);
     }
-    //add your function
-    //eg. add, search, delete
+    return course;
+  }
+
+  // eg. add, search, delete
 }

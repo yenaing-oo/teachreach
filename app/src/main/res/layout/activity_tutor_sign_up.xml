@@ -38,7 +38,7 @@
             android:id="@+id/etTutorEmail"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:hint="Email (University Email)"
+            android:hint="University Email"
             android:inputType="textEmailAddress" />
 
         <EditText
@@ -48,10 +48,13 @@
             android:hint="Major"
             android:inputType="text" />
 
-        <Spinner
-            android:id="@+id/spinnerCourses"
+        <EditText
+            android:id="@+id/etPronouns"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="48dp"
+            android:ems="10"
+            android:hint="Pronouns (optional)"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/btnUploadTranscript"
