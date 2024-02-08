@@ -14,19 +14,24 @@
 
 ### **Presentation Layer**
 **AccounCreatetUI**
-[](url)
+[link-StudentSignup](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/StudentSignUpActivity.java?ref_type=heads)
+[link-TutorSignup](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/TutorSignUpActivity.java?ref_type=heads)
 - User Interface for Creating Account
 
 **LoginUI**
-[](url)
+[link-StudentLogin](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/StudentLoginActivity.java?ref_type=heads)
+[link-TutorLogin](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/TutorLoginActivity.java?ref_type=heads)
 - User Interface for Login
 
 **SearchUI**
-[](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/presentation/SearchRecyclerViewAdapter.java?ref_type=heads)
+[link-Activity](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/SearchActivity.java?ref_type=heads)
+[link-ViewInterface](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/presentation/SearchRecyclerViewAdapter.java?ref_type=heads)
+[link-ViewAdapter](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/SearchRecyclerViewAdapter.java?ref_type=heads)
 - User Interface for Searching Tutor in Student Perspective
 
 **ProfileUI**
-[link](url)
+[link-StudentProfile](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/StudentProfileActivity.java?ref_type=heads)
+[link-TutorProfile](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/presentation/TutorProfileActivity.java?ref_type=heads)
 - User Interface for user's own profile
 
 ### **Logic Layer**
