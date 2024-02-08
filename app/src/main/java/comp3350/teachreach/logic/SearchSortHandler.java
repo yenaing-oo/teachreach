@@ -147,12 +147,17 @@ public class SearchSortHandler {
         ArrayList<Tutor> selectedTutor = new ArrayList<>();
         ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
         for (int i = 0; i < tutors.size(); i++) {
-            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
+            Tutor tutor = tutors.get(i);
+            ArrayList<Course> tutorCourses = tutor.getCourses();
             if (tutorCourses != null) {
-                for (int j = 0; j < tutorCourses.size(); j++) {
-                    if (tutorCourses.get(i).getCourseCode().equals((courseCode))) {
-                        selectedTutor.add(tutors.get(i));
+                int j = 0;
+                boolean found = false;
+                while (j < tutorCourses.size() && !found) {
+                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
+                        selectedTutor.add(tutor);
+                        found = true;
                     }
+                    j++;
                 }
             }
         }
