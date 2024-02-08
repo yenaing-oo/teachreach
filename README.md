@@ -26,20 +26,21 @@
 - User Interface for Searching Tutor in Student Perspective
 
 **ProfileUI**
-[](url)
+[link](url)
 - User Interface for user's own profile
 
 ### **Logic Layer**
 **AccountCreator**
-[](url)
-- Handle Information for Account Creation
+[link-Inferface](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/logic/IAccountCreator.java?ref_type=heads)
+[link-Implementation](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/logic/AccountCreator.java?ref_type=heads)
+- Handle Information for Account Creation, function implementation
 
 **LoginHandler**
-[](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/logic/LoginHandler.java?ref_type=heads)
 - Handle Information for User Login
 
 **SearchSortHandler**
-[](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/logic/SearchSortHandler.java?ref_type=heads)
 - Handle Information for Searching Tutor in SearchUI
 
 ### **Data Layer**
