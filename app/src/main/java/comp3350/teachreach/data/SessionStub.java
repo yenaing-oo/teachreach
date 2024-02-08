@@ -18,6 +18,7 @@ public class SessionStub {
     public SessionStub() {
         sessions = new ArrayList<>();
         students = new ArrayList<>();
+
         accounts = new AccountStub();
 
 
@@ -53,11 +54,15 @@ public class SessionStub {
         return this.sessions;
     }
 
-    public ArrayList<Tutor> searchTutorbyName(Tutor tutor) {
+    public ArrayList<Tutor> getTutorByName(Tutor tutor) {
         return accounts.getTutorsByName(tutor.getName());
     }
 
-    public ArrayList<Session> searchSessionbyTutorwithStage(Tutor tutor, boolean stage){
+    public Student getStudentByEmail(String email){
+        return accounts.getStudentByEmail(email);
+    }
+
+    public ArrayList<Session> searchSessionByTutorWithStage(Tutor tutor, boolean stage){
         ArrayList<Session> Searched = new ArrayList<>();
         for (int i = 0; i < sessions.size(); i++) {
             if(sessions.get(i).getTutor().equals(tutor)) {
@@ -69,7 +74,7 @@ public class SessionStub {
         return Searched;
     }
 
-    public ArrayList<Session> searchSessionbyTutor(Tutor tutor){
+    public ArrayList<Session> searchSessionByTutor(Tutor tutor){
         ArrayList<Session> Searched = new ArrayList<>();
         for (int i = 0; i < sessions.size(); i++) {
             if(sessions.get(i).getTutor().equals(tutor)) {

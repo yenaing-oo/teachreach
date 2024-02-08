@@ -35,7 +35,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     }
 
     private void setUpTutorModels() {
-        ArrayList<Tutor> tutors = handler.getListofTutors();
+        ArrayList<Tutor> tutors = handler.getListOfTutors();
 
         for (int i = 0; i < tutors.size(); i++) {
             tutorModelList.add(new TutorModel(tutors.get(i)));

@@ -11,21 +11,39 @@ import comp3350.teachreach.objects.Tutor;
 public class SearchSort {
     private IAccountPersistence dataAccessTutor;
     private CourseStub dataAccessCourse;
-    public SearchSort(){
+
+    public SearchSort() {
         dataAccessTutor = Server.getAccounts();
         dataAccessCourse = Server.getCourses();
     }
 
-    public ArrayList<Tutor> getListofTutors() {
+    public ArrayList<Tutor> getListOfTutors() {
         return dataAccessTutor.getTutors();
     }
 
-    public ArrayList<Course> getListofCourses() {
+    public ArrayList<Course> getListOfCourses() {
         return dataAccessCourse.getCourses();
     }
 
 
+    public ArrayList<Tutor> searchTutorByCourse(String courseCode) {
+        //take arraylist
+        ArrayList<Tutor> selectedTutor = new ArrayList<>();
+        ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
+        for (int i = 0; i < tutors.size(); i++) {
+            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
+            if (tutorCourses != null) {
+                for (int j = 0; j < tutorCourses.size(); j++) {
+                    if (tutorCourses.get(i).getCourseCode().equals((courseCode))) {
+                        selectedTutor.add(tutors.get(i));
+                    }
+                }
+            }
+        }
+        return selectedTutor;
+    }
 
+    /*
     public ArrayList<Tutor> searchTutorClass(Course course) {
         ArrayList<Tutor> output = new ArrayList<Tutor>();
         boolean flag = false;
@@ -42,6 +60,7 @@ public class SearchSort {
 
         return output;
     }
+    */
 
     public ArrayList<Tutor> sortByRating() {
         return ratingMergeSort(dataAccessTutor.getTutors());
@@ -144,20 +163,5 @@ public class SearchSort {
         return out;
     }
 
-    public ArrayList<Tutor> SearchTutorByCourse(String courseCode){
-        //take arraylist
-        ArrayList<Tutor> selectedTutor = new ArrayList<>();
-        ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
-        for( int i = 0; i < tutors.size(); i++) {
-            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
-            if(tutorCourses != null) {
-                for( int j = 0; j<tutorCourses.size(); j++){
-                    if(tutorCourses.get(i).getCourseCode().equals((courseCode))){
-                        selectedTutor.add(tutors.get(i));
-                    }
-                }
-            }
-        }
-        return selectedTutor;
-    }
+
 }

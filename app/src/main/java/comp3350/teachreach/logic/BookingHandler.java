@@ -20,16 +20,19 @@ public class BookingHandler {
         dataAccessTutor = Server.getAccounts();
     }
 
-    public ArrayList<Tutor> getListofTutors() {
+    public ArrayList<Tutor> getListOfTutors() {
         return dataAccessTutor.getTutors();
     }
 
-    public ArrayList<Session> getListofSession() {
+    public ArrayList<Session> getListOfSession() {
         return dataAccessBooking.getStubSessions();
     }
 
+    public Student getStudentByEmail(String email){
+        return dataAccessBooking.getStudentByEmail(email);
+    }
 
-    /*
+    // get tutor_> update-> retrieve availability
     public boolean[][] tutorAvailability(Tutor tutor)
     //scenario: student click on tutor profile->check availability on tutor
     {
@@ -47,17 +50,20 @@ public class BookingHandler {
         //3. return object(booking) (list of objects?) (confirm and pending)
         return TutorAvailability;
     }
-    */
 
 
-    public void storeStudentRequests(Student student, Tutor tutor, int day, int month, int year, int hour, String location)
+
+    public Session createStudentRequests(Student student, Tutor tutor, int day, int month, int year, int hour, String location)
     //scenario: student click on request ( with dates, time, location), then send to the booking object to
     {
         //1. receive student request from UI
         //2. send condition:pending request to tutor (database)
+        //if (available)
         Session newSession = new Session(student, tutor, day, month, year, hour, location);
+        dataAccessBooking.addSession(newSession);
         //3. set unavailability on tutor
         tutor.setAvailability(day, hour, false);
+        return newSession;
     }
 
 
@@ -66,7 +72,7 @@ public class BookingHandler {
     {
         //1. retrieve data from dataset
         //2. return all pending booking
-        return dataAccessBooking.searchSessionbyTutorwithStage(tutor, stage);
+        return dataAccessBooking.searchSessionByTutorWithStage(tutor, stage);
     }
 
     /*
@@ -96,7 +102,7 @@ public class BookingHandler {
         //1. retrieve data from dataset
         //ArrayList<Session>ListofSession = dataAccessBooking.getstubSession();
         //2. return all pending booking
-        return dataAccessBooking.searchSessionbyTutor(tutor);
+        return dataAccessBooking.searchSessionByTutor(tutor);
 
     }
 
@@ -121,13 +127,14 @@ public class BookingHandler {
 
     //lower function
     //all get set
+    /*
     public void addSessionInfo(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
         dataAccessBooking.addSessionInfo(student ,tutor, day, month, year, hour,location);
     }
 
     public void addSession(Session session) {
         dataAccessBooking.addSession(session);
-    }
+    }*/
 }
 //make a handler
 //with KT: he make the location showing on profile
