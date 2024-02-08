@@ -2,7 +2,6 @@ package comp3350.teachreach.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-// import java.util.Random;
 
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Student;
@@ -29,6 +28,14 @@ public class AccountStub implements IAccountPersistence {
         this.tutors.add(new Tutor("Justin Huang", "He/Him", "Computer Science", "huang15@myumanitoba.ca", "$2a$12$r9yuopZw8rOLVK.L9FU6k.kaZu3GtrcTvc/PBNleKVcWx/YE6Hc4G", 17.5));
         this.tutors.add(new Tutor("Ashna Sharma", "She/Her", "Computer Science", "sharma7@myumanitoba.ca", "$2a$12$bnFp/uerz96t0CZwkRhNyuOFQTg54d9K0Pzkhdh/.8p2/ec1SFxjm", 11));
         this.tutors.add(new Tutor("Theo Brown", "They/Them", "Computer Science", "brown102@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe", 40.5));
+        this.tutors.get(0).setCourses(courses.get(0));
+        this.tutors.get(0).setCourses(courses.get(1));
+        this.tutors.get(1).setCourses(courses.get(2));
+        this.tutors.get(1).setCourses(courses.get(3));
+        this.tutors.get(2).setCourses(courses.get(4));
+        this.tutors.get(2).setCourses(courses.get(1));
+        this.tutors.get(3).setCourses(courses.get(0));
+
 
         //Random rand = new Random(7881702);
 
