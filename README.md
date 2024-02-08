@@ -7,8 +7,8 @@
 
 ### **Iteration One Architecture**
 
-![iter1Archit](/uploads/c2778bca86a17e1f3004e7f40a5b69dc/iter1Archit.jpg)
 
+![iter1At](/uploads/6433922d23cc5828ad32d8f54d9fdba6/iter1At.jpg)
 
 
 
