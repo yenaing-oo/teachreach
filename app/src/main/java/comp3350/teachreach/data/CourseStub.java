@@ -9,7 +9,7 @@ public class CourseStub {
 
         public CourseStub() {
 
-
+            courses = new ArrayList<>();
             this.courses.add(new Course("COMP 2080", "Analysis of Algorithms"));
             this.courses.add(new Course("COMP 1010", "Introduction to Computer Science"));
             this.courses.add(new Course("COMP 1012", "Introduction to Computer Science for Engineers"));
