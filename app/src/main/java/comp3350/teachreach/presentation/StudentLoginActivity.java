@@ -32,7 +32,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnStudentLogin);
         tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        loginHandler = new LoginHandler(); // Here the LoginHandler is instantiated
+        loginHandler = new LoginHandler();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +61,6 @@ public class StudentLoginActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish(); // Close the current activity
             } else {
-                // If the credentials are incorrect, show a toast message
                 Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -72,7 +71,6 @@ public class StudentLoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-        // No need to call validateCredential here again since it's already being called in login()
         return true;
     }
 }
