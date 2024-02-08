@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -27,11 +28,11 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
     private SearchSortHandler handler;
     private ArrayList<TutorModel> tutorModelList;
-    private ArrayList<Course> courseList;
+    private ArrayList<String> courseList;
     private RecyclerView recyclerView;
-    private SearchRecyclerViewAdapter adapter;
+    private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
-    private ArrayAdapter<Course> arrayAdapter;
+    private ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +43,38 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
 
         handler = new SearchSortHandler();
+        tutorModelList = new ArrayList<>();
+        courseList = new ArrayList<>();
 
-        courseList = handler.getListOfCourses();
+        setUpCourseList();
         arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseList);
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
-        tutorModelList = new ArrayList<>();
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                autoCompleteTextView.clearFocus();
+                String selectedCourse = (String) parent.getItemAtPosition(position);
+
+                updateTutorModelList(selectedCourse);
+            }
+        });
+
+
         setUpTutorModels();
 
-        SearchRecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(this, tutorModelList, this);
-        recyclerView.setAdapter(adapter);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorModelList, this);
+        recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setUpCourseList() {
+        ArrayList<Course> courses = handler.getListOfCourses();
+        for (int i = 0; i < courses.size(); i++) {
+            courseList.add(courses.get(i).getCourseCode());
+        }
+
     }
 
     private void setUpTutorModels() {
@@ -62,6 +83,16 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         for (int i = 0; i < tutors.size(); i++) {
             tutorModelList.add(new TutorModel(tutors.get(i)));
         }
+    }
+
+    private void updateTutorModelList(String selectedCourse) {
+        tutorModelList.clear();
+        ArrayList<Tutor> newTutorList = handler.searchTutorByCourse(selectedCourse);
+        for (int i = 0; i < newTutorList.size(); i++) {
+            tutorModelList.add(new TutorModel(newTutorList.get(i)));
+        }
+        // needs to use DIffUtil to improve efficiency
+        searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
