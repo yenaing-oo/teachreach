@@ -1,7 +1,5 @@
 package comp3350.teachreach.presentation;
 
-//package comp3350.teachreach.application;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.LoginHandler;
 import comp3350.teachreach.objects.AccountType;
-
 
 public class StudentLoginActivity extends AppCompatActivity {
 
@@ -35,7 +32,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnStudentLogin);
         tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        loginHandler = new LoginHandler();
+        loginHandler = new LoginHandler(); // Here the LoginHandler is instantiated
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +44,6 @@ public class StudentLoginActivity extends AppCompatActivity {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to SignUp Activity
                 Intent intent = new Intent(StudentLoginActivity.this, StudentSignUpActivity.class);
                 startActivity(intent);
             }
@@ -59,10 +55,15 @@ public class StudentLoginActivity extends AppCompatActivity {
         String password = etStudentPassword.getText().toString().trim();
 
         if (validateInputs(studentEmail, password)) {
-            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
-            startActivity(intent);
-        } else {
-            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+            if (loginHandler.validateCredential(AccountType.Student, studentEmail, password)) {
+                // If the credentials are correct, navigate to the SearchActivity
+                Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish(); // Close the current activity
+            } else {
+                // If the credentials are incorrect, show a toast message
+                Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -71,8 +72,7 @@ public class StudentLoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
-
-        return loginHandler.validateCredential(AccountType.Student, studentEmail,
-                password);
+        // No need to call validateCredential here again since it's already being called in login()
+        return true;
     }
 }
