@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 // import java.util.Random;
 
+import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
@@ -11,9 +12,14 @@ public class AccountStub implements IAccountPersistence {
     ArrayList<Tutor> tutors;
     ArrayList<Student> students;
 
+    CourseStub accessCourseStub;
+
+    ArrayList<Course> courses;
+
     public AccountStub() {
         tutors = new ArrayList<>();
         students = new ArrayList<>();
+        courses = accessCourseStub.getCourses();
 
         this.tutors.add(new Tutor("Jackson Pankratz", "He/Him", "Computer Science", "pankratz25@myumanitoba.ca", "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI.RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
         this.tutors.add(new Tutor("Camryn Mcmillan", "She/Her", "Computer Science", "mcmill5@myumanitoba.ca", "$2a$12$LMXSy2E2SRxXOyUzT2hwuOV..lVkQHj5sVFgrTQF4QpJWVbo9CBie", 20));
@@ -24,17 +30,12 @@ public class AccountStub implements IAccountPersistence {
         //Random rand = new Random(7881702);
 
         for (int i = 0; i < 5; i++) {
+            this.tutors.get(i).setCourses(courses.get(i));
             for (int j = 0; j < 7; j++) {
                 for (int k = 0; k < 24; k++) {
                     this.tutors.get(i).setAvailability(j, k, true);
                 }
             }
-            //retrieve course object, then input it
-
-
-
-
-            // this.tutors.get(i).setCourses(courses);
 
             Student student1 = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");
             this.students.add(student1);
