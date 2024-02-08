@@ -56,23 +56,31 @@
 - Database for Account, contain  contain functions implementation for send and retrieve data about Account
 
 **SessionStub**
-[https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/data/SessionStub.java?ref_type=heads](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/data/SessionStub.java?ref_type=heads)
 - Database for Session, contain function for send and retrieve data about Session
 
 ### **Domain Specific Object**
+**Account**
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/Account.java?ref_type=heads)
+- Contain Information for Account Data and User Objectss
+
 **Course**
-[](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/Course.java?ref_type=heads)
 - Contain Information about a Course
 
+**User**
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/User.java?ref_type=heads)
+- Contain Abstract or General Information about a User
+
 **Tutor**
-[](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/Tutor.java?ref_type=heads)
 - Contain Information about a Tutor
 
 **Student**
-[](url)
+[link](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/Student.java?ref_type=heads)
 - Contain Information about a Student
 
 **Session**
-[](url)
+[lnik](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/app/src/main/java/comp3350/teachreach/objects/Session.java?ref_type=heads)
 - Contain Information about a Session
 
