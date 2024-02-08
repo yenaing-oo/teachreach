@@ -2,7 +2,7 @@
 A platformn that makes easily fine a tutor!
 
 
-## Iteration Document(for Markers)
+## Iteration Document (for Markers)
 - [WorkAnalysisIterationOne](~/docs/Iteration1Progress.md)
 
 ## Vision Statement
