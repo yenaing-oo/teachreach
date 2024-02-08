@@ -54,6 +54,10 @@ public class StudentSignUpActivity extends AppCompatActivity {
         if (newStudent != null) {
             Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(StudentSignUpActivity.this, StudentProfileActivity.class);
+            intent.putExtra("STUDENT_NAME", newStudent.getName());
+            intent.putExtra("STUDENT_PRONOUN", pronoun);
+            intent.putExtra("STUDENT_MAJOR", major);
+
             startActivity(intent);
             finish();
         } else {

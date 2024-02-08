@@ -1,15 +1,12 @@
 package comp3350.teachreach.presentation;
 
-//package comp3350.teachreach.application;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
 
 import comp3350.teachreach.R;
 
@@ -26,23 +23,28 @@ public class StudentProfileActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvPronoun = findViewById(R.id.tvPronoun);
         tvMajor = findViewById(R.id.tvMajor);
-        //etSearch = findViewById(R.id.etSearch);
         btnGoToSearch = findViewById(R.id.btnGoToSearch); // Initialize the button
 
+        // Retrieve the data from the intent
+        Intent intent = getIntent();
+        if(intent != null) {
+            String name = intent.getStringExtra("STUDENT_NAME");
+            String pronoun = intent.getStringExtra("STUDENT_PRONOUN");
+            String major = intent.getStringExtra("STUDENT_MAJOR");
 
-        // Fetch and display student's profile data
-        // For example:
-        // tvName.setText("John Doe");
-        // tvPronoun.setText("He/Him");
-        // tvMajor.setText("Computer Science");
+            // Update the TextViews with the retrieved data
+            tvName.setText(name != null ? name : "Name not provided");
+            tvPronoun.setText(pronoun != null ? pronoun : "Pronoun not provided");
+            tvMajor.setText(major != null ? major : "Major not provided");
+        }
 
         // Handle search logic
         btnGoToSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to the SEARCH page
-                //   Intent intent = new Intent(StudentProfileActivity.this, MainPageActivity.class);
-                //  startActivity(intent);
+                 Intent searchIntent = new Intent(StudentProfileActivity.this, SearchActivity.class);
+                 startActivity(searchIntent);
             }
         });
     }
