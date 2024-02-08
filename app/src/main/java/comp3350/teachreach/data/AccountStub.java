@@ -2,10 +2,7 @@ package comp3350.teachreach.data;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
@@ -31,8 +28,6 @@ public class AccountStub implements IAccountPersistence {
                     this.tutors.get(i).setAvailability(j, k, true);
                 }
             }
-            //retrieve course object, then input it
-            // this.tutors.get(i).setCourses(courses);
 
             Student student1 = new Student("Rob Guderian", "He/Him", "Computer Science", "guder4@myumanitoba.ca", "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");
             this.students.add(student1);
