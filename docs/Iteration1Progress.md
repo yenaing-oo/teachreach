@@ -27,6 +27,15 @@ We would move the follwoing User Story into the Iteration Two:
 
 Work Process Analysis
 
+Why we only finished two features:
+1. not sophisicated deisgn for user story, we make a single user story that that actually contain many task.
+   For example, the login features need to make view for student, make view for tutor, make account for student, make account for tutor, verify account. It takes a long time in one single feature than expected.
+
+Why many User Stories are incomplete:
+1. some user story has more work than expected, making it hard to catch on time.
+2. there need to have many set up before the user story could start.
+3. some user story, for say booking, need some work done in account creation first, so to start the work. The work and testing takes time and make it could not connect on time.
+
 
 
 
