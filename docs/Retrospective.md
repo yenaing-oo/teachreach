@@ -7,42 +7,52 @@ Base on the expectation, the work distribution, work-flow, group communication, 
 
 
 **For Expectation**
+
 Bad:
  - We focus on individual expectation
 
 **For Work distribution:**
+
 Good:
  - We have a clear work distribution.
  - We know which people are responsible for whch part of the project.
 
 **For Work-flow:**
+
 Bad:
  - We started late 
  - should set up time line
  - some works delated
 
 **For Group communication:**
+
 Good:
  - group could response
+
 Bad:
  - Need more communication
 
 **For Branching strategy:**
+
 Bad:
  - The branch/merge is messy and confused
  - Not familiar with git control (when to commit, pull, push)
 
 **For User story planning:**
+
 Bad:
  - the user story is too large to complete
 
 **For Code quality:**
+
 Bad:
  - Some program is not applicable to other program due to DSO.
 
 **Overall**
+
 Good:
  - We did our best and contributed:D
+ 
 Bad;
  - We need better work planning, communiation.
 
@@ -58,7 +68,7 @@ Here is what we could do on next iteration to make group functions in a more eff
 ### **Retrospective Per Member**
 Question: what did you do well
           good code with link
-          
+
 **Aidan Labossiere (laboss42@myumanitoba.ca)**
 
 
