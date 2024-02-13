@@ -1,6 +1,6 @@
 ### Branching
 
-We are adopting a Git-flow-like branching strategy.
+We are adopting a Git-flow branching strategy.
 
 There are 2 main branches in out project, main and dev. All development of tasks
 should be done in their own feature branches that are branched from dev.
