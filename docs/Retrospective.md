@@ -19,41 +19,36 @@ Good:
 
 **For Work-flow:**
 
-Bad:
+ Bad:
  - We started late 
  - should set up time line
  - some works delated
 
 **For Group communication:**
-
-Good:
+ Good:
  - group could response
-
-Bad:
+ Bad:
  - Need more communication
 
 **For Branching strategy:**
-
-Bad:
+ Bad:
  - The branch/merge is messy and confused
  - Not familiar with git control (when to commit, pull, push)
 
 **For User story planning:**
-
-Bad:
+ Bad:
  - the user story is too large to complete
 
 **For Code quality:**
-
-Bad:
+ Bad:
  - Some program is not applicable to other program due to DSO.
 
 **Overall**
 
-Good:
+ Good:
  - We did our best and contributed:D
- 
-Bad;
+
+ Bad
  - We need better work planning, communiation.
 
 
