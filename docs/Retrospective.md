@@ -61,7 +61,8 @@ Question: what did you do well
 <br>      1 bad code with link 
 
 **Aidan Labossiere (laboss42@myumanitoba.ca)**
-<br>**Good Code:**<br>
+
+**Good Code:**<br>
 <br>**Bad Code:**<br>
 
 
@@ -69,28 +70,28 @@ Question: what did you do well
 - foster communication :D
 - organise work details
 - make documents
-<br>**Good Code:**<br>
 
+**Good Code:**<br>
 [create data stub(Accountstub, CourseStub, SessionStub(not released)) and add a server](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf)
-
 [server code](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/logic/Server.java?ref_type=heads)
-
-<br>combining each could make the program more coherient and reduce coupling as it there are a server to create stub and all logic layers could work on the database.
+<br>NOTE: By combining each could make the program more coherient and reduce coupling as it there are a server to create stub and all logic layers could work on the database.
 <br>**Bad Code:**<br>
-
 [commit multiple changes at the same time](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/compare/29f664f2d94d44ffd6c3bb36801c9ebee3319323...d558c18dce100dae4eaa8fc6c7d297fd73a8a3bd)
 
 
 **Kelvin Oo (ooyn@myumanitoba.ca)**
-<br>**Good Code:**<br>
+
+**Good Code:**<br>
 <br>**Bad Code:**<br>
 
 
 **Kin Tat Ho (hokt@myumanitoba.ca)**
-<br>**Good Code:**<br>
+
+**Good Code:**<br>
 <br>**Bad Code:**<br>
 
 
 **Rafia Islam (islamrr@myumanitoba.ca)**
-<br>**Good Code:**<br>
+
+**Good Code:**<br>
 <br>**Bad Code:**<br>
