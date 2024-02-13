@@ -57,26 +57,40 @@ Here is what we could do on next iteration to make group functions in a more eff
 
 ### **Retrospective Per Member**
 Question: what did you do well
-<br>      good code with link
+<br>      1 good code with link 
+<br>      1 bad code with link 
 
 **Aidan Labossiere (laboss42@myumanitoba.ca)**
-**Code:**
+<br> **Good Code:**<br>
+<br> **Bad Code:**<br>
 
 
 **Chin Wei Mak (makc1@myumanitoba.ca)**
 - foster communication :D
 - organise work details
 - make documents
-**Code:**
-[modify data stub and add a server](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf) 
-[rewrite search to make it more applicable](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/d41f5895c7160eab55410e11df6167e42d1fb061)
-<br> I manage the Booking Handler but it is not released in iteration one.
+<br> **Good Code:**<br>
+
+[create data stub(Accountstub, CourseStub, SessionStub(not released)) and add a server](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf)
+<br>
+
+[server code](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/logic/Server.java?ref_type=heads)
+combining each could make the program more coherient and reduce coupling as it there are a server to create stub and all logic layers could work on the database.
+<br> **Bad Code:**<br>
+ 
+[commit multiple changes at the same time](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/compare/29f664f2d94d44ffd6c3bb36801c9ebee3319323...d558c18dce100dae4eaa8fc6c7d297fd73a8a3bd)
+<br> Notes: I manage the Booking Handler but it is not released in iteration one.
 
 **Kelvin Oo (ooyn@myumanitoba.ca)**
-**Code:**
+<br> **Good Code:**<br>
+<br> **Bad Code:**<br>
+
 
 **Kin Tat Ho (hokt@myumanitoba.ca)**
-**Code:**
+<br> **Good Code:**<br>
+<br> **Bad Code:**<br>
+
 
 **Rafia Islam (islamrr@myumanitoba.ca)**
-**Code:**
+<br> **Good Code:**<br>
+<br> **Bad Code:**<br>
