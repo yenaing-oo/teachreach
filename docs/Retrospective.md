@@ -57,18 +57,26 @@ Here is what we could do on next iteration to make group functions in a more eff
 
 ### **Retrospective Per Member**
 Question: what did you do well
-          good code with link
+<br>      good code with link
 
 **Aidan Labossiere (laboss42@myumanitoba.ca)**
+**Code:**
 
 
 **Chin Wei Mak (makc1@myumanitoba.ca)**
-
+- foster communication :D
+- organise work details
+- make documents
+**Code:**
+[modify data stub and add a server](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf) 
+[rewrite search to make it more applicable](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/d41f5895c7160eab55410e11df6167e42d1fb061)
+<br> I manage the Booking Handler but it is not released in iteration one.
 
 **Kelvin Oo (ooyn@myumanitoba.ca)**
-
+**Code:**
 
 **Kin Tat Ho (hokt@myumanitoba.ca)**
-
+**Code:**
 
 **Rafia Islam (islamrr@myumanitoba.ca)**
+**Code:**
