@@ -7,8 +7,7 @@ Base on the expectation, the work distribution, work-flow, group communication, 
 
 
 **For Expectation**
-
-Bad:
+<br>Bad:
  - We focus on individual expectation
 
 **For Work distribution:**
