@@ -105,6 +105,8 @@ Questions:
 #### Rafia Islam
 
 **Did well:**
+- Communicated with team when a change is needed and learned how to work Android studio for presentation layer 
 
 **Good Code:**
+- Created [`UI Login Pages`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/app/src/main/java/comp3350/teachreach/presentation/StudentLoginActivity.java) And [`UI Account Creation Pages`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/6e50b5152d55248325c22e0aed1589a2702c2ae7/app/src/main/java/comp3350/teachreach/presentation/StudentSignUpActivity.java) and related layouts. 
 
