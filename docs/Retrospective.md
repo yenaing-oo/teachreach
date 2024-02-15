@@ -31,7 +31,7 @@ Our project had a slow start due to initial unfamiliarity with Android Studio, A
 
 #### Commit/Branching Strategy:
 
-- branch naming is inconsistent and lacks proper format
+- Branch naming is inconsistent and lacks proper format
 - Confusion in branch/merge process, lack of familiarity with git controls
 - Overlapping work causing merge conflicts
 - Commits perform multiple unrelated tasks, touching multiple files
@@ -84,21 +84,21 @@ Questions:
 **Good Code:**
 - [created data stubs `Accountstub`, `CourseStub`, `SessionStub` (not released yet)](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf) and [added a `Server`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/logic/Server.java?ref_type=heads)
 
-#### Kelvin Oo (ooyn@myumanitoba.ca)**
+#### Kelvin Oo
 
 **Did well:**
 
 **Good Code:**
 
 
-#### Kin Tat Ho (hokt@myumanitoba.ca)**
+#### Kin Tat Ho
 
 **Did well:**
 
 **Good Code:**
 
 
-#### Rafia Islam (islamrr@myumanitoba.ca)**
+#### Rafia Islam
 
 **Did well:**
 
