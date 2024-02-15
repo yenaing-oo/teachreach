@@ -70,9 +70,10 @@ Questions:
 #### Aidan Labossiere
 
 **Did well:**
+- Worked and communicated to accomodate for absence during the iteration. 
 
 **Good code:**
-
+- [Created the DSO Classes, later revised for formatting by other group members](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/tree/Iteration1/app/src/main/java/comp3350/teachreach/objects?ref_type=tags)
 
 #### Chin Wei Mak
 
