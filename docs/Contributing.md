@@ -1,6 +1,6 @@
 ### Branching
 
-We are adopting a Git-flow branching strategy.
+We are adopting the Git-flow branching strategy.
 
 There are 2 main branches in out project, main and dev. All development of tasks
 should be done in their own feature branches that are branched from dev.
@@ -13,5 +13,3 @@ if you think your feature is completed.
 
 A merge to main should only be done for an iteration release.
 
-
-### Merge Request
