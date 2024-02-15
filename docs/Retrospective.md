@@ -1,97 +1,106 @@
-### **Retrospective**
+# Retrospective: Iteration 1
 
-Group Git Gud
-In iteration One:
+Group 2 - Git Gud
 
-Base on the expectation, the work distribution, work-flow, group communication, branching strategy, user story planning, code quality, and performace, we sums up few points on objective reflection.
+## Discussion
 
-
-**For Expectation**
-<br>Bad:
- - We focus on individual expectation
-
-**For Work distribution:**
-<br>Good:
- - We have a clear work distribution.
- - We know which people are responsible for whch part of the project.
-
-**For Work-flow:**
-<br>Bad:
- - We started late 
- - should set up time line
- - some works delated
-
-**For Group communication:**
-<br>Good:
- - group could response
-<br>Bad:
- - Need more communication
-
-**For Branching strategy:**
-<br>Bad:
- - The branch/merge is messy and confused
- - Not familiar with git control (when to commit, pull, push)
-
-**For User story planning:**
-<br>Bad:
- - the user story is too large to complete
-
-**For Code quality:**
-<br>Bad:
- - Some program is not applicable to other program due to DSO.
-
-**Overall**
-<br>Good:
- - We did our best and contributed:D
-<br>Bad
- - We need better work planning, communiation.
+Our project had a slow start due to initial unfamiliarity with Android Studio, Android libraries, and git collaboration. However, as iteration 1 progressed, we found our rhythm, divided tasks, and improved collaboration over git. Reflecting on our progress, we've identified both what went well and areas for improvement:
 
 
-Here is what we could do on next iteration to make group functions in a more effective way.
+### What went well:
 
-1. Set up time line for work-flow, eg: make schedule, objective, expectation, reasons for dealine.
-2. more initiative communication on your work, eg: make dev task eariler on and make detailed planning
-3. Better branching strategy, eg: one man control git main/dev and others end request for merge, another one would be making protocol to name the branch
-4. break up the user story expectation, eg: modify the user story from (make a whole program/system) to (view/ edit small stuff)
+#### Work Distribution:
+
+- Roles and responsibilities were clearly defined
+
+#### Group Communication:
+
+- Responses within the group were prompt
+
+### Areas for Improvement:
+
+#### Work-flow:
+
+- Late start due to lack of understanding of tools and language
+- Lack of defined timeline
+- Tasks were delayed
+
+#### Group Communication:
+
+- Need for more proactive communication to inform each other of code expectations (e.g. need to discuss what data and its format a team member needs to work on their task with team member working on associated class)
+
+#### Commit/Branching Strategy:
+
+- branch naming is inconsistent and lacks proper format
+- Confusion in branch/merge process, lack of familiarity with git controls
+- Overlapping work causing merge conflicts
+- Commits perform multiple unrelated tasks, touching multiple files
+
+#### User Story Planning:
+
+- Some user stories were too general and need to be broken down
+
+### Next Steps:
+
+#### Work-flow Management:
+
+- Establish clear timelines, objectives, expectations
+
+#### Communication Improvement:
+
+- Discuss needs of each team member to complete their tasks
+- Provide detailed task planning
+
+#### Branching Strategy Enhancement:
+
+- Designate one person to control main/dev branches by using merge requests
+- Implement a protocol for branch naming
+
+#### User Story Refinement:
+
+- Break down complex user stories into more refined and clearer tasks.
 
 
-### **Retrospective Per Member**
-Question: what did you do well
-<br>      1 good code with link 
-<br>      1 bad code with link 
+### Retrospective Per Member
 
-**Aidan Labossiere (laboss42@myumanitoba.ca)**
+Questions: 
+- What did you do well?
+- What is you best code? (include link)
 
-**Good Code:**<br>
-<br>**Bad Code:**<br>
+#### Aidan Labossiere
+
+**Did well:**
+
+**Good code:**
 
 
-**Chin Wei Mak (makc1@myumanitoba.ca)**
-- foster communication :D
+#### Chin Wei Mak
+
+**Did well:**
+- foster communication
 - organise work details
 - make documents
 
-**Good Code:**<br>
-[-create data stub(Accountstub, CourseStub, SessionStub(not released)) and add a server](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf)
-<br>[-server code](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/logic/Server.java?ref_type=heads)
-<br>Note: By combining each could make the program more coherient and reduce coupling as it there are a server to create stub and all logic layers could work on the database.
-<br>**Bad Code:**<br>
-[commit multiple changes at the same time](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/compare/29f664f2d94d44ffd6c3bb36801c9ebee3319323...d558c18dce100dae4eaa8fc6c7d297fd73a8a3bd)
+**Good Code:**
+- [created data stubs `Accountstub`, `CourseStub`, `SessionStub` (not released yet)](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/commit/8f2dd5646f7682c042ef3b4f945363a68bcfd0cf) and [added a `Server`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/app/src/main/java/comp3350/teachreach/logic/Server.java?ref_type=heads)
+
+#### Kelvin Oo (ooyn@myumanitoba.ca)**
+
+**Did well:**
+
+**Good Code:**
 
 
-**Kelvin Oo (ooyn@myumanitoba.ca)**
+#### Kin Tat Ho (hokt@myumanitoba.ca)**
 
-**Good Code:**<br>
-<br>**Bad Code:**<br>
+**Did well:**
 
-
-**Kin Tat Ho (hokt@myumanitoba.ca)**
-
-**Good Code:**<br>
-<br>**Bad Code:**<br>
+**Good Code:**
 
 
-**Rafia Islam (islamrr@myumanitoba.ca)**
+#### Rafia Islam (islamrr@myumanitoba.ca)**
 
-**Good Code:**<br>
-<br>**Bad Code:**<br>
+**Did well:**
+
+**Good Code:**
+
