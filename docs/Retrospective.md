@@ -96,8 +96,10 @@ Questions:
 #### Kin Tat Ho
 
 **Did well:**
+- Found a way to not store password as plain text.
 
-**Good Code:**
+**"Good" Code:**
+- Made [`AccountCreator`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/app/src/main/java/comp3350/teachreach/logic/AccountCreator.java) and its associated interface.
 
 
 #### Rafia Islam
