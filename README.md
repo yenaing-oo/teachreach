@@ -19,3 +19,6 @@ A platform to connect a student easily with a tutor!
 
 ## Coding Style
 - [Coding Style](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/CodingStyle.md)
+
+## Work Flow
+- [Our work flow](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/docs/Contributing.md)
