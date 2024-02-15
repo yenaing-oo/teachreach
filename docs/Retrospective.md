@@ -9,54 +9,54 @@ Our project had a slow start due to initial unfamiliarity with Android Studio, A
 
 ### What went well:
 
-#### Work Distribution:
+#### Work Distribution
 
 - Roles and responsibilities were clearly defined
 
-#### Group Communication:
+#### Group Communication
 
 - Responses within the group were prompt
 
 ### Areas for Improvement:
 
-#### Work-flow:
+#### Work-flow
 
 - Late start due to lack of understanding of tools and language
 - Lack of defined timeline
 - Tasks were delayed
 
-#### Group Communication:
+#### Group Communication
 
 - Need for more proactive communication to inform each other of code expectations (e.g. need to discuss what data and its format a team member needs to work on their task with team member working on associated class)
 
-#### Commit/Branching Strategy:
+#### Commit/Branching Strategy
 
 - Branch naming is inconsistent and lacks proper format
 - Confusion in branch/merge process, lack of familiarity with git controls
 - Overlapping work causing merge conflicts
 - Commits perform multiple unrelated tasks, touching multiple files
 
-#### User Story Planning:
+#### User Story Planning
 
 - Some user stories were too general and need to be broken down
 
 ### Next Steps:
 
-#### Work-flow Management:
+#### Work-flow Management
 
 - Establish clear timelines, objectives, expectations
 
-#### Communication Improvement:
+#### Communication Improvement
 
 - Discuss needs of each team member to complete their tasks
 - Provide detailed task planning
 
-#### Branching Strategy Enhancement:
+#### Branching Strategy Enhancement
 
 - Designate one person to control main/dev branches by using merge requests
 - Implement a protocol for branch naming
 
-#### User Story Refinement:
+#### User Story Refinement
 
 - Break down complex user stories into more refined and clearer tasks.
 
