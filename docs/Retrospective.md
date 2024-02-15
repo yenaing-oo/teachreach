@@ -87,8 +87,10 @@ Questions:
 #### Kelvin Oo
 
 **Did well:**
+- learnt to use Android components in short amount of time for presentation layer
 
 **Good Code:**
+- [made the `Activity`](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/6e50b5152d55248325c22e0aed1589a2702c2ae7/app/src/main/java/comp3350/teachreach/presentation/SearchActivity.java) and its related layout for the 'Search and Sort' page
 
 
 #### Kin Tat Ho
