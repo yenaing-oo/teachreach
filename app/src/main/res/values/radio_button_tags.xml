@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tag_highest_rating">HIGHEST_RATING</string>
+    <string name="tag_hourly_rate_ascending">HOURLY_RATE_DESCENDING</string>
+    <string name="tag_hourly_rate_descending">HOURLY_RATE_DESCENDING</string>
+</resources>

@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +22,11 @@ import java.util.ArrayList;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.presentation.models.TutorModel;
 
-public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface {
+public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface, SortDialogFragment.SortDialogListener {
 
     private SearchSortHandler handler;
     private ArrayList<TutorModel> tutorModelList;
@@ -33,6 +35,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
     private ArrayAdapter<String> arrayAdapter;
+    private Button sortButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
         recyclerView = findViewById(R.id.searchResultRecyclerView);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        sortButton = findViewById(R.id.sortButton);
 
         handler = new SearchSortHandler();
         tutorModelList = new ArrayList<>();
@@ -58,6 +62,13 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
                 String selectedCourse = (String) parent.getItemAtPosition(position);
 
                 updateTutorModelList(selectedCourse);
+            }
+        });
+
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialog();
             }
         });
 
@@ -96,10 +107,34 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
+    private void sortTutors(SortCriteria sortCriteria) throws Exception {
+        switch (sortCriteria) {
+            case SortCriteria.HIGHEST_RATING:
+                tutorList = handler.getTutorsByHighestRating();
+                break;
+            case SortCriteria.HOURLY_RATE_ASCENDING:
+                tutorList = handler.getTutorsByHourlyRateAsc();
+                break;
+            case SortCriteria.HOURLY_RATE_DESCENDING:
+                tutorList = handler.getTutorsByHourlyRateDesc();
+                break;
+            default:
+                throw new Exception("Unable to handle sort critera: " + sortCriteria);
+        }
+
+        for (int i = 0; i < newTutorList.size(); i++) {
+            tutorModelList.add(new TutorModel(newTutorList.get(i)));
+        }
+
+        // needs to use DIffUtil to improve efficiency
+        searchRecyclerViewAdapter.notifyDataSetChanged();
+
+    }
+
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorModelList.get(position).getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
         startActivity(intent);
     }
 
@@ -118,5 +153,15 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    public void openDialog() {
+        SortDialogFragment sortDialogFragment = new SortDialogFragment();
+        sortDialogFragment.show(getSupportFragmentManager(), "Sort Dialog");
+    }
+
+    @Override
+    public void applySort(SortCriteria sortCriteria) {
+
     }
 }
