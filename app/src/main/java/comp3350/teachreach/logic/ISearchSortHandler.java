@@ -10,15 +10,13 @@ public interface ISearchSortHandler {
 
     List<Tutor> getTutorsByCourse(Course course);
 
-    List<Tutor> getTutorsByRating();
+    List<Tutor> getTutorsByHighestRating();
 
-    // default ascending
-    List<Tutor> getTutorsByHourlyRate();
+    List<Tutor> getTutorsByHourlyRateAsc();
 
-    // overloaded method
-    List<Tutor> getTutorsByHourlyRate(boolean reverseOrder);
+    List<Tutor> getTutorsByHourlyRateDesc();
 
-    // excluded as still figuring out how to best represent availability
+    // excluded for now as still figuring out how to best represent availability
 //    List<Tutor> getTutorsByAvailability();
 
 }
