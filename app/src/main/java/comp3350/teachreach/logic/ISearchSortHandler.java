@@ -6,19 +6,19 @@ import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
 
 public interface ISearchSortHandler {
-    public List<Tutor> getTutors();
+    List<Tutor> getTutors();
 
-    public List<Tutor> getTutorsByCourse(Course course);
+    List<Tutor> getTutorsByCourse(Course course);
 
-    public List<Tutor> getTutorsByRating();
+    List<Tutor> getTutorsByRating();
 
     // default ascending
-    public List<Tutor> getTutorsByHourlyRate();
+    List<Tutor> getTutorsByHourlyRate();
 
     // overloaded method
-    public List<Tutor> getTutorsByHourlyRate(boolean reverseOrder);
+    List<Tutor> getTutorsByHourlyRate(boolean reverseOrder);
 
     // excluded as still figuring out how to best represent availability
-//    public List<Tutor> getTutorsByAvailability();
+//    List<Tutor> getTutorsByAvailability();
 
 }
