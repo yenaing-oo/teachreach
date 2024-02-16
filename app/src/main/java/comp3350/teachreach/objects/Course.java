@@ -11,6 +11,11 @@ public class Course {
         this.courseName = courseName;
     }
 
+    public Course(String courseCode) {
+        this.courseCode = courseCode;
+        this.courseName = "N/A";
+    }
+
     public String getCourseCode() {
         return this.courseCode;
     }
