@@ -75,7 +75,7 @@ public class AccountStub implements IAccountPersistence {
 
     @Override
     public ArrayList<Student> getStudents() {
-        return this.students;
+        return new ArrayList<>(this.students);
     }
 
     public Tutor storeTutor(Tutor newTutor) {
@@ -113,7 +113,7 @@ public class AccountStub implements IAccountPersistence {
 
     @Override
     public ArrayList<Tutor> getTutors() {
-        return this.tutors;
+        return new ArrayList<>(this.tutors);
     }
 
     @Override

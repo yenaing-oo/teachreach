@@ -148,7 +148,7 @@ public class SearchSortHandler {
 //        return out;
 //    }
 
-    public ArrayList<Tutor> searchTutorByCourse(String courseCode) {
+    public ArrayList<Tutor> searchTutorByCourse(Course course) {
         //take arraylist
         ArrayList<Tutor> selectedTutor = new ArrayList<>();
         ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
@@ -159,7 +159,7 @@ public class SearchSortHandler {
                 int j = 0;
                 boolean found = false;
                 while (!found && j < tutorCourses.size()) {
-                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
+                    if (tutorCourses.get(j).getCourseCode().equals((course.getCourseCode()))) {
                         selectedTutor.add(tutors.get(i));
                         found = true;
                     }

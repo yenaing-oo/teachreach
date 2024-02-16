@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.home;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,17 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.presentation.models.TutorModel;
+import comp3350.teachreach.objects.Tutor;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
 
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
-    ArrayList<TutorModel> tutorModels;
+    ArrayList<Tutor> tutorList;
+    private TutorFormatter tutorFormatter;
 
-    public SearchRecyclerViewAdapter(Context context, ArrayList<TutorModel> tutorModels, RecyclerViewInterface recyclerViewInterface) {
+    public SearchRecyclerViewAdapter(Context context, ArrayList<Tutor> tutorList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.tutorModels = tutorModels;
+        this.tutorList = tutorList;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
@@ -38,15 +39,16 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     @Override
     public void onBindViewHolder(@NonNull SearchRecyclerViewAdapter.MyViewHolder holder, int position) {
+        tutorFormatter = new TutorFormatter(tutorList.get(position));
         holder.imageView.setImageResource(R.drawable.user_icon);
-        holder.tvUserName.setText(tutorModels.get(position).getName());
-        holder.tvRating.setText(tutorModels.get(position).getRating());
-        holder.tvHourlyRate.setText(tutorModels.get(position).getHourlyRate());
+        holder.tvUserName.setText(tutorFormatter.getName());
+        holder.tvRating.setText(tutorFormatter.getRating());
+        holder.tvHourlyRate.setText(tutorFormatter.getHourlyRate());
     }
 
     @Override
     public int getItemCount() {
-        return tutorModels.size();
+        return tutorList.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

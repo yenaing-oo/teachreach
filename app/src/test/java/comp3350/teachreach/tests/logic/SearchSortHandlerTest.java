@@ -58,7 +58,7 @@ public class SearchSortHandlerTest {
         System.out.println("\nStarting testSearchTutorByCourse");
         tutorStub.updateTutor(tutorStub.getTutors().get(0).addCourse(new Course("2080", "COMP " + "2080")));
 
-        ArrayList<Tutor> tutorList = searchSortHandler.searchTutorByCourse("2080");
+        ArrayList<Tutor> tutorList = searchSortHandler.searchTutorByCourse(new Course("2080", "COMP " + "2080"));
         assertNotNull(tutorList);
         assertEquals(1, tutorList.size());
         assertEquals(tutorList.get(0), tutorStub.getTutors().get(0));
@@ -70,7 +70,7 @@ public class SearchSortHandlerTest {
     public void testSearchTutorByCourseNull() {
         System.out.println("\nStarting testSearchTutorByCourseNull");
 
-        ArrayList<Tutor> tutorList = searchSortHandler.searchTutorByCourse("12345");
+        ArrayList<Tutor> tutorList = searchSortHandler.searchTutorByCourse(new Course("12345"));
 
         assertEquals(0, tutorList.size());
 

@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,23 +13,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.LoginHandler;
 import comp3350.teachreach.objects.AccountType;
+import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
-public class TutorLoginActivity extends AppCompatActivity {
+public class StudentLoginActivity extends AppCompatActivity {
 
-    private EditText etTutorEmail, etTutorPassword;
+    private EditText etStudentEmail, etStudentPassword;
     private Button btnLogin;
     private TextView tvSignUp;
+
     private LoginHandler loginHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_login);
+        setContentView(R.layout.activity_student_login);
 
-        etTutorEmail = findViewById(R.id.etTutorEmail);
-        etTutorPassword = findViewById(R.id.etTutorPassword);
-        btnLogin = findViewById(R.id.btnTutorLogin);
-        tvSignUp = findViewById(R.id.tvTutorSignUp);
+        etStudentEmail = findViewById(R.id.etStudentEmail);
+        etStudentPassword = findViewById(R.id.etStudentPassword);
+        btnLogin = findViewById(R.id.btnStudentLogin);
+        tvSignUp = findViewById(R.id.tvStudentSignUp);
 
         loginHandler = new LoginHandler();
 
@@ -43,20 +46,20 @@ public class TutorLoginActivity extends AppCompatActivity {
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TutorLoginActivity.this, TutorSignUpActivity.class);
+                Intent intent = new Intent(StudentLoginActivity.this, StudentSignUpActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     private void login() {
-        String email = etTutorEmail.getText().toString().trim();
-        String password = etTutorPassword.getText().toString().trim();
+        String studentEmail = etStudentEmail.getText().toString().trim();
+        String password = etStudentPassword.getText().toString().trim();
 
-        if (validateInputs(email, password)) {
-            if (loginHandler.validateCredential(AccountType.Tutor, email, password)) {
-
-                Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
+        if (validateInputs(studentEmail, password)) {
+            if (loginHandler.validateCredential(AccountType.Student, studentEmail, password)) {
+                // If the credentials are correct, navigate to the SearchActivity
+                Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
                 startActivity(intent);
                 finish(); // Close the current activity
             } else {
@@ -65,8 +68,8 @@ public class TutorLoginActivity extends AppCompatActivity {
         }
     }
 
-    private boolean validateInputs(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) {
+    private boolean validateInputs(String studentEmail, String password) {
+        if (studentEmail.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
             return false;
         }
