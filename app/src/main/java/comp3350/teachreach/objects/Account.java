@@ -3,6 +3,8 @@ package comp3350.teachreach.objects;
 public class Account {
     private String email;
     private String password;
+    private Tutor tutorProfile;
+    private Student studentProfile;
 
     public Account(String email, String password) {
         this.email = email;
