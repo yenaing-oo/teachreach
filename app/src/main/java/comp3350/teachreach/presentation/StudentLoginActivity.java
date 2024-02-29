@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.LoginHandler;
+import comp3350.teachreach.logic.account.LoginHandler;
 import comp3350.teachreach.objects.AccountType;
 
 public class StudentLoginActivity extends AppCompatActivity {

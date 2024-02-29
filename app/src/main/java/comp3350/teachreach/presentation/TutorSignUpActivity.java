@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.AccountCreator;
+import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.IAccountCreator;
 import comp3350.teachreach.objects.Tutor;
 

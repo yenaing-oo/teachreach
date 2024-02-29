@@ -1,12 +1,14 @@
 package comp3350.teachreach.objects;
 
+import java.util.Optional;
+
 public class Account {
     private String email;
     private String password;
-    private Tutor tutorProfile;
-    private Student studentProfile;
+    private Tutor tutorProfile = new NullTutor();
+    private Student studentProfile = null;
 
-    public Account(String email, String password) {
+    private Account(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -25,5 +27,44 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private void setStudentProfile(Student profile) {
+        this.studentProfile = profile;
+    }
+
+    private void setTutorProfile(Tutor profile) {
+        this.tutorProfile = profile;
+    }
+
+    public Optional<Student> getStudentProfile() {
+        return Optional.ofNullable(this.studentProfile);
+    }
+
+    public Tutor getTutorProfile() {
+        return this.tutorProfile;
+    }
+
+    public static class Builder {
+        private Account account;
+
+        public Builder(String email, String password) {
+            account = new Account(email, password);
+        }
+
+        public Builder studentProfile(Student studentProfile) {
+            account.setStudentProfile(studentProfile);
+            return this;
+        }
+
+        public Builder tutorProfile(Tutor tutorProfile) {
+            account.setTutorProfile(tutorProfile);
+            return this;
+        }
+
+        public Optional<Account> build() {
+            return this.account.getStudentProfile().isPresent() ?
+                    Optional.of(this.account) : Optional.empty();
+        }
     }
 }

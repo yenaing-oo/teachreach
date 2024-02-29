@@ -6,8 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import comp3350.teachreach.data.AccountStub;
-import comp3350.teachreach.logic.LoginHandler;
+import comp3350.teachreach.logic.account.LoginHandler;
 import comp3350.teachreach.objects.AccountType;
 
 public class LoginHandlerTest {
