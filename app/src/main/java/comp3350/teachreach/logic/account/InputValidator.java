@@ -13,6 +13,6 @@ public class InputValidator {
     }
 
     public static boolean isNotEmpty(String input) {
-        return input != null && input.matches(".*\\w.*");
+        return input != null && input.matches(".*\\S.*");
     }
 }
