@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Student;
 
 public class StudentSignUpActivity extends AppCompatActivity {
@@ -49,19 +51,46 @@ public class StudentSignUpActivity extends AppCompatActivity {
         String major = etMajor.getText().toString().trim();
         String pronoun = etPronoun.getText().toString().trim();
 
-        Student newStudent = accountCreator.createStudentAccount(username, pronoun, major, email, password);
+        try {
+            Account newStudent = accountCreator.createAccount(
+                    username,
+                    pronoun,
+                    major,
+                    email,
+                    password);
 
-        if (newStudent != null) {
-            Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(StudentSignUpActivity.this, SearchActivity.class);
-            intent.putExtra("STUDENT_NAME", newStudent.getName());
-            intent.putExtra("STUDENT_PRONOUN", pronoun);
-            intent.putExtra("STUDENT_MAJOR", major);
+            Student theStudent = newStudent.getStudentProfile().orElseThrow(
+                () -> new RuntimeException("Missing Student profile")
+            );
+
+            Intent intent = new Intent(
+                StudentSignUpActivity.this, SearchActivity.class);
+            intent.putExtra("STUDENT_NAME", theStudent.getName());
+            intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
+            intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());
 
             startActivity(intent);
             finish();
-        } else {
-            Toast.makeText(StudentSignUpActivity.this, "Error: Invalid input", Toast.LENGTH_LONG).show();
+        } catch (AccountCreatorException e) {
+            Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        } catch (RuntimeException e) {
+            Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
+                    Toast.LENGTH_LONG).show();
         }
+
+//        if (newStudent != null) {
+//            Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(StudentSignUpActivity.this, SearchActivity.class);
+//            Student theStudent = newStudent.getStudentProfile().get();
+//            intent.putExtra("STUDENT_NAME", theStudent.getName());
+//            intent.putExtra("STUDENT_PRONOUN", pronoun);
+//            intent.putExtra("STUDENT_MAJOR", major);
+//
+//            startActivity(intent);
+//            finish();
+//        } else {
+//            Toast.makeText(StudentSignUpActivity.this, "Error: Invalid input", Toast.LENGTH_LONG).show();
+//        }
     }
 }

@@ -1,6 +1,7 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Student;
@@ -10,5 +11,5 @@ public interface IAccountPersistence {
 
     Account storeAccount(Account newAccount);
 
-    Account getAccountByEmail(String email);
+    Optional<Account> getAccountByEmail(String email);
 }

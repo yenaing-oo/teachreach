@@ -52,6 +52,10 @@ public class Account {
             account = new Account(email, password);
         }
 
+        public Builder(Account ac) {
+            this.account = ac;
+        }
+
         public Builder studentProfile(Student studentProfile) {
             account.setStudentProfile(studentProfile);
             return this;

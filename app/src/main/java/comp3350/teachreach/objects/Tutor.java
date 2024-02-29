@@ -9,7 +9,7 @@ public class Tutor extends User {
     private int reviewCount;
     private ArrayList<String> preferredLocations;
     private boolean[][] availability;
-    private boolean[][] preferredAvability;
+    private boolean[][] preferredAvailability;
 
     public Tutor(String name, String pronouns, String major) {
         super(name, pronouns, major);

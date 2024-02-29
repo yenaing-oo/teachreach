@@ -37,20 +37,20 @@ public class AccountCreator implements IAccountCreator {
                                  String email,
                                  String password) throws AccountCreatorException {
 
-        boolean emptyName = !CredentialValidator.isNotEmpty(name);
-        boolean emptyEmail = !CredentialValidator.isNotEmpty(email);
-        boolean emptyPassword = !CredentialValidator.isNotEmpty(password);
-        boolean invalidEmail = !CredentialValidator.isValidEmail(email);
+        boolean emptyName = !InputValidator.isNotEmpty(name);
+        boolean emptyEmail = !InputValidator.isNotEmpty(email);
+        boolean emptyPassword = !InputValidator.isNotEmpty(password);
+        boolean invalidEmail = !InputValidator.isValidEmail(email);
 
-        boolean isValidInput = !(emptyName || emptyEmail || emptyPassword || invalidEmail);
+        boolean inputIsValid = !(emptyName || emptyEmail || emptyPassword || invalidEmail);
 
         Optional<Account> newAccount = Optional.empty();
 
-        if (isValidInput) {
+        if (inputIsValid) {
             Account.Builder newAc =
                     new Account.Builder(
                             email,
-                            CredentialValidator.processPassword(password));
+                            CredentialHandler.processPassword(password));
             newAc.studentProfile(new Student(name, pronouns, major));
             newAccount = newAc.build();
         }

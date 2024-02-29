@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Tutor;
 
 public class TutorSignUpActivity extends AppCompatActivity {
@@ -66,7 +68,21 @@ public class TutorSignUpActivity extends AppCompatActivity {
         String major = etTutorMajor.getText().toString().trim();
         String pronouns = etPronouns.getText().toString();
 
-        Tutor newTutor = accountCreator.createTutorAccount(username, pronouns, major, email, password);
+        try {
+            Account newAccount = accountCreator.createAccount(
+                    username,
+                    pronouns,
+                    major,
+                    email,
+                    password);
+
+        } catch (AccountCreatorException e) {
+            Toast.makeText(TutorSignUpActivity.this, e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        } catch (RuntimeException e) {
+            Toast.makeText(TutorSignUpActivity.this, e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+        }
 
         if (newTutor != null) {
             Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
