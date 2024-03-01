@@ -1,6 +1,6 @@
 package comp3350.teachreach.objects;
 
-public class Session {
+public class Session implements ISession {
     private Student student;
     private Tutor tutor;
     private int day;
@@ -41,13 +41,14 @@ public class Session {
         this.tutor = newtutor;
     }
 
-
     public int getDay() {
         return this.day;
     }
+
     public int getMonth() {
         return this.month;
     }
+
     public int getYear() {
         return this.year;
     }
