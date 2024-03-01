@@ -9,9 +9,10 @@ public class Tutor extends User {
     private int reviewCount;
     private ArrayList<String> preferredLocations;
     private boolean[][] availability;
+    private boolean[][] preferredAvailability;
 
-    public Tutor(String name, String pronouns, String major, String email, String password) {
-        super(name, pronouns, major, email, password);
+    public Tutor(String name, String pronouns, String major) {
+        super(name, pronouns, major);
         this.tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
         this.availability = new boolean[7][24];
@@ -23,7 +24,7 @@ public class Tutor extends User {
 
     public Tutor(String name, String pronouns, String major, String email,
                  String password, double hourlyRate) {
-        super(name, pronouns, major, email, password);
+        super(name, pronouns, major);
         tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
         this.availability = new boolean[7][24];

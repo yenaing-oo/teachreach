@@ -1,8 +1,8 @@
 package comp3350.teachreach.objects;
 
-public class Student extends User {
+public class Student extends User implements IStudent {
 
-    public Student(String name, String pronouns, String major, String email, String password) {
-        super(name, pronouns, major, email, password);
+    public Student(String name, String pronouns, String major) {
+        super(name, pronouns, major);
     }
 }

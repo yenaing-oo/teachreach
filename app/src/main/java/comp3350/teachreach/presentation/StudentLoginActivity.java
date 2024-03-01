@@ -11,8 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.LoginHandler;
-import comp3350.teachreach.objects.AccountType;
+import comp3350.teachreach.logic.account.CredentialHandler;
 
 public class StudentLoginActivity extends AppCompatActivity {
 
@@ -20,7 +19,7 @@ public class StudentLoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView tvSignUp;
 
-    private LoginHandler loginHandler;
+    private CredentialHandler credentialHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnStudentLogin);
         tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        loginHandler = new LoginHandler();
+        credentialHandler = new CredentialHandler();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,23 +53,23 @@ public class StudentLoginActivity extends AppCompatActivity {
         String studentEmail = etStudentEmail.getText().toString().trim();
         String password = etStudentPassword.getText().toString().trim();
 
-        if (validateInputs(studentEmail, password)) {
-            if (loginHandler.validateCredential(AccountType.Student, studentEmail, password)) {
-                // If the credentials are correct, navigate to the SearchActivity
-                Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity
-            } else {
-                Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+//        if (validateInputs(studentEmail, password)) {
+        if (credentialHandler.validateCredential(studentEmail, password)) {
+            // If the credentials are correct, navigate to the SearchActivity
+            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+            startActivity(intent);
+            finish(); // Close the current activity
+        } else {
+            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+//    }
 
-    private boolean validateInputs(String studentEmail, String password) {
-        if (studentEmail.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
+//    private boolean validateInputs(String studentEmail, String password) {
+//        if (studentEmail.isEmpty() || password.isEmpty()) {
+//            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        return true;
+//    }
 }

@@ -17,7 +17,7 @@ public class BookingHandler {
     public BookingHandler() {
         //assume we have service handler
         dataAccessBooking = Server.getSessions();
-        dataAccessTutor = Server.getAccounts();
+        dataAccessTutor = Server.getAccountDataAccess();
     }
 
     public BookingHandler(IAccountPersistence dataAccessTutor, SessionStub sessionDataAccess) {

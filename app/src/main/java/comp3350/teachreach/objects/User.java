@@ -1,12 +1,11 @@
 package comp3350.teachreach.objects;
 
-public class User extends Account {
+public class User {
     private String name;
     private String pronouns;
     private String major;
 
-    public User(String name, String pronouns, String major, String email, String password) {
-        super(email, password);
+    public User(String name, String pronouns, String major) {
         this.name = name;
         this.pronouns = pronouns;
         this.major = major;

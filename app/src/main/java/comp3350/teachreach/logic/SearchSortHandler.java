@@ -4,19 +4,20 @@ import java.util.ArrayList;
 
 import comp3350.teachreach.data.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
 
 public class SearchSortHandler {
-    private final IAccountPersistence dataAccessTutor;
+    private final ITutorPersistence dataAccessTutor;
     private final CourseStub dataAccessCourse;
 
     public SearchSortHandler() {
-        dataAccessTutor = Server.getAccounts();
+        dataAccessTutor = Server.getTutorDataAccess();
         dataAccessCourse = Server.getCourses();
     }
 
-    public SearchSortHandler(IAccountPersistence tutorDataAccess,
+    public SearchSortHandler(ITutorPersistence tutorDataAccess,
                              CourseStub courseDataAccess) {
         dataAccessTutor = tutorDataAccess;
         dataAccessCourse = courseDataAccess;

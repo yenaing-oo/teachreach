@@ -11,15 +11,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.LoginHandler;
-import comp3350.teachreach.objects.AccountType;
+import comp3350.teachreach.logic.account.CredentialHandler;
 
 public class TutorLoginActivity extends AppCompatActivity {
 
     private EditText etTutorEmail, etTutorPassword;
     private Button btnLogin;
     private TextView tvSignUp;
-    private LoginHandler loginHandler;
+    private CredentialHandler credentialHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class TutorLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnTutorLogin);
         tvSignUp = findViewById(R.id.tvTutorSignUp);
 
-        loginHandler = new LoginHandler();
+        credentialHandler = new CredentialHandler();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,23 +52,23 @@ public class TutorLoginActivity extends AppCompatActivity {
         String email = etTutorEmail.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
 
-        if (validateInputs(email, password)) {
-            if (loginHandler.validateCredential(AccountType.Tutor, email, password)) {
+//        if (validateInputs(email, password)) {
+        if (credentialHandler.validateCredential(email, password)) {
 
-                Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity
-            } else {
-                Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+            Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
+            startActivity(intent);
+            finish(); // Close the current activity
+        } else {
+            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
         }
     }
+//    }
 
-    private boolean validateInputs(String email, String password) {
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
+//    private boolean validateInputs(String email, String password) {
+//        if (email.isEmpty() || password.isEmpty()) {
+//            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        return true;
+//    }
 }
