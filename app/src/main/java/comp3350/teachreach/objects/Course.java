@@ -2,7 +2,7 @@ package comp3350.teachreach.objects;
 
 import androidx.annotation.NonNull;
 
-public class Course {
+public class Course implements ICourse {
     private String courseCode;
     private String courseName;
 
