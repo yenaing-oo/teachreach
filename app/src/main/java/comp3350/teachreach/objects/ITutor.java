@@ -2,43 +2,45 @@ package comp3350.teachreach.objects;
 
 import java.util.ArrayList;
 
-public interface ITutor extends IUser {
+ public interface ITutor extends IUser {
 
-    public ArrayList<Course> getCourses();
+     ArrayList<Course> getCourses();
 
-    public ITutor addCourse(Course course);
+     ITutor addCourse(Course course);
 
-    public ArrayList<String> getPreferredLocations();
+     ArrayList<String> getPreferredLocations();
 
-    public ITutor setPreferredLocations(String preferredLocations);
+     ITutor setPreferredLocations(String preferredLocations);
 
-    public ITutor clearTutoredCourses();
+     ITutor clearTutoredCourses();
 
-    public double getHourlyRate();
+     double getHourlyRate();
 
-    public ITutor setHourlyRate(double hourlyRate);
+     ITutor setHourlyRate(double hourlyRate);
 
-    public ITutor addReview(int score);
+     ITutor addReview(int score);
 
-    public ITutor setReviewCount(int count);
+     ITutor setReviewCount(int count);
 
-    public ITutor setReviewTotal(int score);
+     ITutor setReviewTotal(int score);
 
-    public int getReviewTotal();
+     int getReviewTotal();
 
-    public float getRating();
+     float getRating();
 
-    public ITutor clearReviews();
+     ITutor clearReviews();
 
-    public boolean[][] getAvailability();
+     boolean[][] getAvailability();
 
-    public ITutor setAvailability(int day, int hour, boolean avail);
+     ITutor setAvailability(int day, int hour, boolean avail);
+     ITutor setPreferredAvailability(int day, int hour, boolean avail);
 
-    public ITutor renewAvailability(boolean[][] newAvailability);
+     ITutor renewAvailability(boolean[][] newAvailability);
 
-    public boolean[][] getPreferredAvailability();
+     boolean[][] getPreferredAvailability();
 
-    public ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability);
+     ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability);
 
-    public int getReviewCount();
+     int getReviewCount();
+     ITutor addPreferredLocation(String preferredLocation);
 }

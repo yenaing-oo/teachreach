@@ -57,7 +57,7 @@ public class TutorStub implements ITutorPersistence {
     public Optional<ITutor> getTutorByEmail(String email) {
         return accountsDataAccess
                 .getAccountByEmail(email)
-                .map(Account::getTutorProfile);
+                .map(Account::getTutorProfile); //might throw, future me problem
     }
 
     @Override
