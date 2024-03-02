@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.signup;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.IAccountCreator;
-import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
 public class TutorSignUpActivity extends AppCompatActivity {
 
