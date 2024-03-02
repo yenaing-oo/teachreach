@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.home;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,36 +22,33 @@ import java.util.ArrayList;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.objects.ITutor;
-import comp3350.teachreach.presentation.models.TutorModel;
+import comp3350.teachreach.presentation.enums.SortCriteria;
+import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
 public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface, SortDialogFragment.SortDialogListener {
 
     private SearchSortHandler handler;
-    private ArrayList<TutorModel> tutorModelList;
-    private ArrayList<String> courseList;
-    private RecyclerView recyclerView;
+    private ArrayList<ITutor> tutorList;
+    private ArrayList<String> courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
-    private ArrayAdapter<String> arrayAdapter;
-    private Button sortButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        recyclerView = findViewById(R.id.searchResultRecyclerView);
+        RecyclerView recyclerView = findViewById(R.id.searchResultRecyclerView);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-        sortButton = findViewById(R.id.sortButton);
+        Button sortButton = findViewById(R.id.sortButton);
 
         handler = new SearchSortHandler();
-        tutorModelList = new ArrayList<>();
-        courseList = new ArrayList<>();
+        tutorList = new ArrayList<>();
+        courseStringList = new ArrayList<>();
 
         setUpCourseList();
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseStringList);
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
@@ -61,7 +58,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
                 autoCompleteTextView.clearFocus();
                 String selectedCourse = (String) parent.getItemAtPosition(position);
 
-                updateTutorModelList(selectedCourse);
+                updateTutorList(selectedCourse);
             }
         });
 
@@ -72,10 +69,9 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
             }
         });
 
+        populateTutors();
 
-        setUpTutorModels();
-
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorModelList, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -83,47 +79,35 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     private void setUpCourseList() {
         ArrayList<Course> courses = handler.getListOfCourses();
         for (int i = 0; i < courses.size(); i++) {
-            courseList.add(courses.get(i).getCourseCode());
+            courseStringList.add(courses.get(i).getCourseCode());
         }
 
     }
 
-    private void setUpTutorModels() {
-        ArrayList<ITutor> tutors = handler.getListOfTutors();
-
-        for (int i = 0; i < tutors.size(); i++) {
-            tutorModelList.add(new TutorModel(tutors.get(i)));
-        }
+    private void populateTutors() {
+        tutorList = handler.getListOfTutors();
     }
 
-    private void updateTutorModelList(String selectedCourse) {
-        tutorModelList.clear();
-        ArrayList<ITutor> newTutorList =
-                handler.searchTutorByCourse(selectedCourse);
-        for (int i = 0; i < newTutorList.size(); i++) {
-            tutorModelList.add(new TutorModel(newTutorList.get(i)));
-        }
+    private void updateTutorList(String selectedCourse) {
+        tutorList = handler.searchTutorByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void sortTutors(SortCriteria sortCriteria) throws Exception {
+
         switch (sortCriteria) {
-            case SortCriteria.HIGHEST_RATING:
-                tutorList = handler.getTutorsByHighestRating();
+            case HIGHEST_RATING:
+//                tutorList = handler.getTutorsByHighestRating();
                 break;
-            case SortCriteria.HOURLY_RATE_ASCENDING:
-                tutorList = handler.getTutorsByHourlyRateAsc();
+            case HOURLY_RATE_ASCENDING:
+//                tutorList = handler.getTutorsByHourlyRateAsc();
                 break;
-            case SortCriteria.HOURLY_RATE_DESCENDING:
-                tutorList = handler.getTutorsByHourlyRateDesc();
+            case HOURLY_RATE_DESCENDING:
+//                tutorList = handler.getTutorsByHourlyRateDesc();
                 break;
             default:
                 throw new Exception("Unable to handle sort critera: " + sortCriteria);
-        }
-
-        for (int i = 0; i < newTutorList.size(); i++) {
-            tutorModelList.add(new TutorModel(newTutorList.get(i)));
         }
 
         // needs to use DIffUtil to improve efficiency
@@ -134,7 +118,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getOwner().getEmail());
         startActivity(intent);
     }
 

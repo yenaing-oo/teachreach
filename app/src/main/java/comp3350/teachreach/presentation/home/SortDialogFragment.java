@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.home;
 
 import android.app.Dialog;
 import android.content.Context;
