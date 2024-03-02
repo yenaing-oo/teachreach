@@ -70,10 +70,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
 
             startActivity(intent);
             finish();
-        } catch (AccountCreatorException e) {
-            Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
                     Toast.LENGTH_LONG).show();
         }

@@ -88,10 +88,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
 
             startActivity(intent);
             finish();
-        } catch (AccountCreatorException e) {
-            Toast.makeText(TutorSignUpActivity.this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
-        } catch (RuntimeException e) {
+        } catch (Exception e) {
             Toast.makeText(TutorSignUpActivity.this, e.getMessage(),
                     Toast.LENGTH_LONG).show();
         }
