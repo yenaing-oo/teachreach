@@ -18,7 +18,7 @@ public class Server {
     }
     public static synchronized IStudentPersistence getStudentDataAccess(){
         if (studentsDataAccess == null){
-            studentsDataAccess = null;
+            studentsDataAccess = new StudentStub(getAccountDataAccess());
         }
 
         return studentsDataAccess;
@@ -26,7 +26,7 @@ public class Server {
 
     public static synchronized ITutorPersistence getTutorDataAccess(){
         if (tutorsDataAccess == null){
-            tutorsDataAccess = null;
+            tutorsDataAccess = new TutorStub(getAccountDataAccess());
         }
 
         return tutorsDataAccess;
@@ -41,7 +41,7 @@ public class Server {
     }
 
 
-    public static synchronized SessionStub getSessions(){
+    public static synchronized SessionStub getSessionDataAccess(){
         if (sessions == null){
             sessions = new SessionStub();
         }

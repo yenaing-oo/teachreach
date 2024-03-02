@@ -12,8 +12,10 @@ import comp3350.teachreach.data.AccountStub;
 import comp3350.teachreach.data.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.TutorStub;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
 public class SearchSortHandlerTest {
@@ -26,7 +28,7 @@ public class SearchSortHandlerTest {
     @Before
     public void setUp() {
         System.out.println("Starting test for SearchSortHandler");
-        tutorStub = new AccountStub();
+        tutorStub = new TutorStub();
         courseStub = new CourseStub();
         searchSortHandler = new SearchSortHandler(tutorStub, courseStub);
     }
@@ -34,7 +36,7 @@ public class SearchSortHandlerTest {
     @Test
     public void testListOfTutor() {
         System.out.println("\nStarting testGetListOfTutor");
-        ArrayList<Tutor> tutorList = searchSortHandler.getListOfTutors();
+        ArrayList<ITutor> tutorList = searchSortHandler.getListOfTutors();
 
         assertNotNull(tutorList);
         assertEquals(5, tutorList.size());

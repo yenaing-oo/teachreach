@@ -1,36 +1,36 @@
 package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.SessionStub;
+import comp3350.teachreach.data.ISessionPersistance;
+import comp3350.teachreach.data.IStudentPersistence;
+import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public class BookingHandler {
 
-    private SessionStub dataAccessBooking;
-    private IAccountPersistence dataAccessTutor;
+    private ISessionPersistance sessionsDataAccess;
+    private ITutorPersistence tutorsDataAccess;
 
 
     public BookingHandler() {
-        //assume we have service handler
-        dataAccessBooking = Server.getSessions();
-        dataAccessTutor = Server.getAccountDataAccess();
+        sessionsDataAccess = Server.getSessionDataAccess();
+        tutorsDataAccess = Server.getTutorDataAccess();
     }
 
-    public BookingHandler(IAccountPersistence dataAccessTutor, SessionStub sessionDataAccess) {
-        dataAccessBooking = sessionDataAccess;
-        this.dataAccessTutor = dataAccessTutor;
+    public BookingHandler(ITutorPersistence tutors,
+                          IStudentPersistence students,
+                          ISessionPersistance sessions) {
+        sessionsDataAccess = sessions;
+        tutorsDataAccess = tutorsDataAccess;
     }
 
     public ArrayList<Session> getListOfSession() {
-        return dataAccessBooking.getStubSessions();
-    }
-
-    public Student getStudentByEmail(String email) {
-        return dataAccessBooking.getStudentByEmail(email);
+        return sessionsDataAccess.getSessions();
     }
 
     // get tutor_> update-> retrieve availability
@@ -40,16 +40,16 @@ public class BookingHandler {
         // Check dates and time from tutor->profile->booking object->findout the tine and date
         //1. access data
         //ArrayList<tutor> ListofTutor = dataAccessTutor.getstubTutor();
-        Tutor Searched = null;
-        Searched = dataAccessTutor.getTutorByEmail(tutor.getEmail());
+        Optional<ITutor> maybeTutor =
+                tutorsDataAccess.getTutorByEmail(tutor.getOwner().getEmail());
         //2. retrieve data ( time, dates )
-        boolean[][] TutorAvailability = null;
-        if (Searched != null) {
-            TutorAvailability = Searched.getAvailability();
+        boolean[][] tutorAvailability = null;
+        if (maybeTutor.isPresent()) {
+            tutorAvailability = maybeTutor.get().getAvailability();
         }
 
         //3. return object(booking) (list of objects?) (confirm and pending)
-        return TutorAvailability;
+        return tutorAvailability;
     }
 
 
@@ -60,7 +60,7 @@ public class BookingHandler {
         //2. send condition:pending request to tutor (database)
         //if (available)
         Session newSession = new Session(student, tutor, day, month, year, hour, location);
-        dataAccessBooking.addSession(newSession);
+        sessionsDataAccess.addSession(newSession);
         //3. set unavailability on tutor
         tutor.setAvailability(day, hour, false);
         return newSession;
@@ -72,7 +72,7 @@ public class BookingHandler {
     {
         //1. retrieve data from dataset
         //2. return all pending booking
-        return dataAccessBooking.searchSessionByTutorWithStage(tutor, stage);
+        return sessionsDataAccess.searchSessionByTutorWithStage(tutor, stage);
     }
 
     /*
@@ -102,7 +102,7 @@ public class BookingHandler {
         //1. retrieve data from dataset
         //ArrayList<Session>ListofSession = dataAccessBooking.getstubSession();
         //2. return all pending booking
-        return dataAccessBooking.searchSessionByTutor(tutor);
+        return sessionsDataAccess.searchSessionByTutor(tutor);
 
     }
 
@@ -115,7 +115,7 @@ public class BookingHandler {
             int date = session.getDay();
             int hour = session.getHour();
 
-            dataAccessBooking.removeSession(session);
+            sessionsDataAccess.removeSession(session);
             //Reject, then available.
             tutor.setAvailability(date, hour, true);
         } else {

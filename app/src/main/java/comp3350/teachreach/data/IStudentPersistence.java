@@ -1,13 +1,18 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
+import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.Student;
 
 public interface IStudentPersistence {
-    Student storeStudent(Student newStudent);
+    IStudent storeStudent(IStudent newStudent) throws RuntimeException;
 
-    Student updateStudent(Student newStudent);
+    IStudent updateStudent(IStudent newStudent) throws RuntimeException;
 
-    ArrayList<Student> getStudents();
+    Optional<IStudent> getStudentByEmail(String email);
+
+    ArrayList<IStudent> getStudents();
 }

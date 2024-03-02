@@ -2,13 +2,13 @@ package comp3350.teachreach.objects;
 
 import java.util.Optional;
 
-public class Account {
+public class Account implements IAccount {
     private String email;
     private String password;
-    private Tutor tutorProfile = new NullTutor();
-    private Student studentProfile = null;
+    private ITutor tutorProfile = new NullTutor();
+    private IStudent studentProfile = null;
 
-    private Account(String email, String password) {
+    public Account(String email, String password) {
         this.email = email;
         this.password = password;
     }
@@ -29,46 +29,22 @@ public class Account {
         this.password = password;
     }
 
-    private void setStudentProfile(Student profile) {
+    public Account setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
+        return this;
     }
 
-    private void setTutorProfile(Tutor profile) {
+    public Account setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
+        return this;
     }
 
-    public Optional<Student> getStudentProfile() {
-        return Optional.ofNullable(this.studentProfile);
+    public IStudent getStudentProfile() {
+        return this.studentProfile;
     }
 
-    public Tutor getTutorProfile() {
+    public ITutor getTutorProfile() {
         return this.tutorProfile;
     }
 
-    public static class Builder {
-        private Account account;
-
-        public Builder(String email, String password) {
-            account = new Account(email, password);
-        }
-
-        public Builder(Account ac) {
-            this.account = ac;
-        }
-
-        public Builder studentProfile(Student studentProfile) {
-            account.setStudentProfile(studentProfile);
-            return this;
-        }
-
-        public Builder tutorProfile(Tutor tutorProfile) {
-            account.setTutorProfile(tutorProfile);
-            return this;
-        }
-
-        public Optional<Account> build() {
-            return this.account.getStudentProfile().isPresent() ?
-                    Optional.of(this.account) : Optional.empty();
-        }
-    }
 }

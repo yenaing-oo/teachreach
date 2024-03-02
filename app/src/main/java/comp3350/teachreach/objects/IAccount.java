@@ -10,4 +10,12 @@ public interface IAccount {
 
     public void setPassword(String password);
 
+    public Account setStudentProfile(IStudent profile);
+
+    public Account setTutorProfile(ITutor profile);
+
+    public IStudent getStudentProfile();
+
+    public ITutor getTutorProfile();
+
 }
