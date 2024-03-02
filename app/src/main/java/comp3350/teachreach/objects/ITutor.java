@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
      ITutor setReviewTotal(int score);
 
-     int getReviewTotal();
+     int getReviewTotalSum();
 
      float getRating();
 

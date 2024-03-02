@@ -65,9 +65,9 @@ public class TutorProfileTest {
 
     @Test
     public void testHourlyRate() {
-        theTutorProfile.setHourlyRate(420.69).updateTutor();
+        theTutorProfile.setHourlyRate(420.69).updateUserProfile();
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
         assertEquals(
                 420.69,
@@ -81,15 +81,15 @@ public class TutorProfileTest {
                 .addReview(5)
                 .addReview(4)
                 .addReview(5)
-                .updateTutor();
+                .updateUserProfile();
 
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
         assertEquals(
                 (double) (5 + 4 + 5) / 3,
-                (double) updatedTutor.getReviewTotal() / (double) updatedTutor.getReviewCount(),
+                (double) updatedTutor.getReviewTotalSum() / (double) updatedTutor.getReviewCount(),
                 0.1);
     }
 
@@ -99,10 +99,10 @@ public class TutorProfileTest {
                 .addCourse("COMP 1010", "Introduction")
                 .addCourse("COMP 1010", "CS 1")
                 .addCourse("ASTR 1830", "Life in Universe")
-                .updateTutor();
+                .updateUserProfile();
 
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
         ArrayList<Course> updatedCourseList = updatedTutor.getCourses();
@@ -125,15 +125,15 @@ public class TutorProfileTest {
                 .addCourse("COMP 1010", "Introduction")
                 .addCourse("COMP 1010", "CS 1")
                 .addCourse("ASTR 1830", "Life in Universe")
-                .updateTutor();
+                .updateUserProfile();
 
         theTutorProfile
                 .removeCourse("COMP 1010")
                 .removeCourse("COMP 1010")
-                .updateTutor();
+                .updateUserProfile();
 
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
         ArrayList<Course> updatedCourseList = updatedTutor.getCourses();
@@ -155,10 +155,10 @@ public class TutorProfileTest {
                 .addPreferredLocation("420 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
-                .updateTutor();
+                .updateUserProfile();
 
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
         ArrayList<String> preferredLocations =
@@ -181,7 +181,7 @@ public class TutorProfileTest {
                 .addPreferredLocation("420 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
-                .updateTutor();
+                .updateUserProfile();
 
         ArrayList<String> preferredLocations = new ArrayList<>();
         preferredLocations.add("420 Feltcher Argue");
@@ -190,10 +190,10 @@ public class TutorProfileTest {
 
         theTutorProfile
                 .addPreferredLocations(preferredLocations)
-                .updateTutor();
+                .updateUserProfile();
 
         ITutor updatedTutor = tutorsDataAccess
-                .getTutorByEmail(theTutorProfile.getTutorEmail())
+                .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
         assertEquals(4, updatedTutor.getPreferredLocations().size());
