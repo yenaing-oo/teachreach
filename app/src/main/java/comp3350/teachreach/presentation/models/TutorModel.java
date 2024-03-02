@@ -2,6 +2,7 @@ package comp3350.teachreach.presentation.models;
 
 import java.util.Locale;
 
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
 public class TutorModel {
@@ -16,7 +17,7 @@ public class TutorModel {
         this.hourlyRate = hourlyRate;
     }
 
-    public TutorModel(Tutor tutor) {
+    public TutorModel(ITutor tutor) {
         this.name = tutor.getName();
         this.rating = String.format(Locale.US, "%.1f", tutor.getRating());
         this.hourlyRate = String.format(Locale.US, "%.2f", tutor.getHourlyRate());

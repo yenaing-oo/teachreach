@@ -1,15 +1,19 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
 public interface ITutorPersistence {
-    Tutor storeTutor(Tutor newTutor);
+    ITutor storeTutor(ITutor newTutor) throws RuntimeException;
 
-    Tutor updateTutor(Tutor newTutor);
+    ITutor updateTutor(ITutor newTutor) throws RuntimeException;
 
-    ArrayList<Tutor> getTutors();
+    Optional<ITutor> getTutorByEmail(String email);
 
-    ArrayList<Tutor> getTutorsByName(String name);
+    ArrayList<ITutor> getTutors();
+
+    ArrayList<ITutor> getTutorsByName(String name);
 }

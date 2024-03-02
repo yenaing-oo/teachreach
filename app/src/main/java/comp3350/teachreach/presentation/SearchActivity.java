@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.presentation.models.TutorModel;
 
@@ -78,7 +79,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     }
 
     private void setUpTutorModels() {
-        ArrayList<Tutor> tutors = handler.getListOfTutors();
+        ArrayList<ITutor> tutors = handler.getListOfTutors();
 
         for (int i = 0; i < tutors.size(); i++) {
             tutorModelList.add(new TutorModel(tutors.get(i)));
@@ -87,7 +88,8 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
     private void updateTutorModelList(String selectedCourse) {
         tutorModelList.clear();
-        ArrayList<Tutor> newTutorList = handler.searchTutorByCourse(selectedCourse);
+        ArrayList<ITutor> newTutorList =
+                handler.searchTutorByCourse(selectedCourse);
         for (int i = 0; i < newTutorList.size(); i++) {
             tutorModelList.add(new TutorModel(newTutorList.get(i)));
         }

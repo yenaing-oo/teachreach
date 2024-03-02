@@ -1,19 +1,21 @@
 package comp3350.teachreach.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.Student;
 
 public class StudentSignUpActivity extends AppCompatActivity {
@@ -52,19 +54,18 @@ public class StudentSignUpActivity extends AppCompatActivity {
         String pronoun = etPronoun.getText().toString().trim();
 
         try {
-            Account newStudent = accountCreator.createAccount(
-                    username,
-                    pronoun,
-                    major,
+            accountCreator = accountCreator.createAccount(
                     email,
                     password);
 
-            Student theStudent = newStudent.getStudentProfile().orElseThrow(
-                () -> new RuntimeException("Missing Student profile")
-            );
+            IStudent theStudent = accountCreator.setStudentProfile(
+                    username,
+                    major,
+                    pronoun
+            ).getStudentProfile();
 
             Intent intent = new Intent(
-                StudentSignUpActivity.this, SearchActivity.class);
+                    StudentSignUpActivity.this, SearchActivity.class);
             intent.putExtra("STUDENT_NAME", theStudent.getName());
             intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
             intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());

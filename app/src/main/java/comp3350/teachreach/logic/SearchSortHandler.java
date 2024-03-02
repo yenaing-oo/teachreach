@@ -6,6 +6,7 @@ import comp3350.teachreach.data.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
 public class SearchSortHandler {
@@ -23,7 +24,7 @@ public class SearchSortHandler {
         dataAccessCourse = courseDataAccess;
     }
 
-    public ArrayList<Tutor> getListOfTutors() {
+    public ArrayList<ITutor> getListOfTutors() {
         return dataAccessTutor.getTutors();
     }
 
@@ -149,10 +150,10 @@ public class SearchSortHandler {
 //        return out;
 //    }
 
-    public ArrayList<Tutor> searchTutorByCourse(String courseCode) {
+    public ArrayList<ITutor> searchTutorByCourse(String courseCode) {
         //take arraylist
-        ArrayList<Tutor> selectedTutor = new ArrayList<>();
-        ArrayList<Tutor> tutors = dataAccessTutor.getTutors();
+        ArrayList<ITutor> selectedTutor = new ArrayList<>();
+        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
 
         for (int i = 0; i < tutors.size(); i++) {
             ArrayList<Course> tutorCourses = tutors.get(i).getCourses();

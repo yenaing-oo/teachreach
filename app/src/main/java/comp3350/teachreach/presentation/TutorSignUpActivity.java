@@ -17,6 +17,7 @@ import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.IAccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.Tutor;
 
 public class TutorSignUpActivity extends AppCompatActivity {
@@ -66,16 +67,30 @@ public class TutorSignUpActivity extends AppCompatActivity {
         String password = etTutorPassword.getText().toString().trim();
         String email = etTutorEmail.getText().toString().trim();
         String major = etTutorMajor.getText().toString().trim();
-        String pronouns = etPronouns.getText().toString();
+        String pronoun = etPronouns.getText().toString();
 
         try {
-            Account newAccount = accountCreator.createAccount(
-                    username,
-                    pronouns,
-                    major,
+            accountCreator = accountCreator.createAccount(
                     email,
                     password);
 
+            accountCreator.setStudentProfile(
+                    username,
+                    major,
+                    pronoun
+            );
+
+            accountCreator.setTutorProfile(
+                    username,
+                    major,
+                    pronoun
+            );
+
+            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
+
+            startActivity(intent);
+            finish();
         } catch (AccountCreatorException e) {
             Toast.makeText(TutorSignUpActivity.this, e.getMessage(),
                     Toast.LENGTH_LONG).show();
@@ -84,14 +99,14 @@ public class TutorSignUpActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
-        if (newTutor != null) {
-            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
-            startActivity(intent);
-            finish(); // To prevent returning to the signup screen
-        } else {
-            Toast.makeText(TutorSignUpActivity.this, "Signup failed. Please check your inputs and try again.", Toast.LENGTH_LONG).show();
-        }
+//        if (newTutor != null) {
+//            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
+//            startActivity(intent);
+//            finish(); // To prevent returning to the signup screen
+//        } else {
+//            Toast.makeText(TutorSignUpActivity.this, "Signup failed. Please check your inputs and try again.", Toast.LENGTH_LONG).show();
+//        }
     }
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

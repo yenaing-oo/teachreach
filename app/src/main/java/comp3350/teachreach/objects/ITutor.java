@@ -1,30 +1,44 @@
 package comp3350.teachreach.objects;
 
-public interface ITutor {
+import java.util.ArrayList;
+
+public interface ITutor extends IUser {
 
     public ArrayList<Course> getCourses();
 
-    public Tutor addCourse(Course course);
+    public ITutor addCourse(Course course);
 
-    public ArrayList<String> getLocations();
+    public ArrayList<String> getPreferredLocations();
 
-    public void setLocations(String preferredLocations);
+    public ITutor setPreferredLocations(String preferredLocations);
 
-    public void clearTutoredCourses();
+    public ITutor clearTutoredCourses();
 
     public double getHourlyRate();
 
-    public void setHourlyRate(float hourlyRate);
+    public ITutor setHourlyRate(double hourlyRate);
 
-    public void addReview(int score);
+    public ITutor addReview(int score);
+
+    public ITutor setReviewCount(int count);
+
+    public ITutor setReviewTotal(int score);
+
+    public int getReviewTotal();
 
     public float getRating();
 
-    public void clearReviews();
+    public ITutor clearReviews();
 
     public boolean[][] getAvailability();
 
-    public void setAvailability(int day, int hour, boolean avail);
+    public ITutor setAvailability(int day, int hour, boolean avail);
+
+    public ITutor renewAvailability(boolean[][] newAvailability);
+
+    public boolean[][] getPreferredAvailability();
+
+    public ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability);
 
     public int getReviewCount();
 }

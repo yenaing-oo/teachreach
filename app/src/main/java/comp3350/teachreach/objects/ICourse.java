@@ -12,7 +12,6 @@ public interface ICourse {
 
     public boolean equals(Course otherCourse);
 
-    @NonNull
     @Override
     public String toString();
 }
