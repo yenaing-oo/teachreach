@@ -19,6 +19,7 @@ public class Tutor extends User implements ITutor {
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
         this.availability = new boolean[7][24];
+        this.preferredAvailability = new boolean[7][24];
         this.reviewSum = 0;
         this.reviewCount = 0;
     }
@@ -32,6 +33,7 @@ public class Tutor extends User implements ITutor {
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
         this.availability = new boolean[7][24];
+        this.preferredAvailability = new boolean[7][24];
         this.reviewSum = 0;
         this.reviewCount = 0;
         this.hourlyRate = hourlyRate;
@@ -113,7 +115,7 @@ public class Tutor extends User implements ITutor {
 
     @Override
     public ITutor renewAvailability(boolean[][] newAvailability) {
-        return null;
+        return this;
     }
 
     public boolean[][] getPreferredAvailability() {
@@ -122,15 +124,21 @@ public class Tutor extends User implements ITutor {
 
     @Override
     public ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability) {
-        return null;
+        return this;
     }
 
-    public Tutor setPreferredAvailability(int day, int hour, boolean avail) {
+    public ITutor setPreferredAvailability(int day, int hour, boolean avail) {
         this.preferredAvailability[day][hour] = avail;
         return this;
     }
 
     public int getReviewCount() {
         return this.reviewCount;
+    }
+
+    @Override
+    public ITutor addPreferredLocation(String preferredLocation) {
+        this.preferredLocations.add(preferredLocation);
+        return this;
     }
 }
