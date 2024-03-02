@@ -5,10 +5,11 @@ import java.util.List;
 
 import comp3350.teachreach.objects.Course;
 
-public interface ITutorProfile {
-    String getTutorEmail();
+public interface ITutorProfile extends IUserProfile {
     double getHourlyRate();
     double getAvgReview();
+    int getReviewCount();
+    int getReviewSum();
     ArrayList<Course> getCourses();
     ArrayList<String> getPreferredLocations();
     boolean[][] getPreferredAvailability();
@@ -21,5 +22,5 @@ public interface ITutorProfile {
     ITutorProfile addPreferredLocations(List<String> preferredLocations);
     ITutorProfile setPreferredAvailability(boolean[][] newPreference);
     ITutorProfile setAvailability(boolean[][] newAvailability);
-    void updateTutor(); // NEED TO BE CALLED AFTER CHANGE OF PROFILE
+    void updateUserProfile(); // NEED TO BE CALLED AFTER CHANGE OF PROFILE
 }

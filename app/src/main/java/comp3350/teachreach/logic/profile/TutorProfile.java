@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.ITutor;
 
 public class TutorProfile implements ITutorProfile {
@@ -33,8 +34,46 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public String getTutorEmail() {
+    public String getUserEmail() {
         return this.theTutor.getOwner().getEmail();
+    }
+
+    @Override
+    public String getUserName() {
+        return this.theTutor.getName();
+    }
+
+    @Override
+    public String getUserPronouns() {
+        return this.theTutor.getPronouns();
+    }
+
+    @Override
+    public String getUserMajor() {
+        return this.theTutor.getMajor();
+    }
+
+    @Override
+    public IAccount getUserAccount() {
+        return this.theTutor.getOwner();
+    }
+
+    @Override
+    public IUserProfile setUserName(String name) {
+        this.theTutor.setName(name);
+        return this;
+    }
+
+    @Override
+    public IUserProfile setUserPronouns(String pronouns) {
+        this.theTutor.setPronouns(pronouns);
+        return this;
+    }
+
+    @Override
+    public IUserProfile setUserMajor(String major) {
+        this.theTutor.setMajor(major);
+        return this;
     }
 
     @Override
@@ -45,7 +84,17 @@ public class TutorProfile implements ITutorProfile {
     @Override
     public double getAvgReview() {
         return theTutor.getReviewCount() > 0 ?
-                ((double) theTutor.getReviewTotal() / (double) theTutor.getReviewCount()) : 0;
+                ((double) theTutor.getReviewTotalSum() / (double) theTutor.getReviewCount()) : 0;
+    }
+
+    @Override
+    public int getReviewCount() {
+        return this.theTutor.getReviewCount();
+    }
+
+    @Override
+    public int getReviewSum() {
+        return this.theTutor.getReviewTotalSum();
     }
 
     @Override
@@ -137,7 +186,7 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public void updateTutor() {
+    public void updateUserProfile() {
         tutorsDataAccess.updateTutor(theTutor);
     }
 }

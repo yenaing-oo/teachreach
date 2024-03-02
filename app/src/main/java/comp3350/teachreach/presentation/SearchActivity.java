@@ -22,7 +22,6 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.ITutor;
-import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.presentation.models.TutorModel;
 
 public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface {
@@ -100,6 +99,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorModelList.get(position).getEmail());
         startActivity(intent);
     }
 

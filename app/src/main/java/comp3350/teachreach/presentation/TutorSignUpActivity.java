@@ -85,6 +85,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
 
             Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
+            intent.putExtra("TUTOR_EMAIL_KEY", email);
 
             startActivity(intent);
             finish();

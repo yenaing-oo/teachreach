@@ -90,7 +90,7 @@ public class Tutor extends User implements ITutor {
     }
 
     @Override
-    public int getReviewTotal() {
+    public int getReviewTotalSum() {
         return this.reviewSum;
     }
 

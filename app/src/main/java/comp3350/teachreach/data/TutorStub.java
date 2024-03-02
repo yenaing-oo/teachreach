@@ -41,7 +41,7 @@ public class TutorStub implements ITutorPersistence {
                     .renewAvailability(newTutor.getAvailability())
                     .renewPreferredAvailability(newTutor.getPreferredAvailability())
                     .setReviewCount(newTutor.getReviewCount())
-                    .setReviewTotal(newTutor.getReviewTotal());
+                    .setReviewTotal(newTutor.getReviewTotalSum());
 
             tutor.setName(newTutor.getName());
             tutor.setMajor(newTutor.getMajor());

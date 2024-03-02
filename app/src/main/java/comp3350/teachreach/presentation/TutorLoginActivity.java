@@ -56,6 +56,7 @@ public class TutorLoginActivity extends AppCompatActivity {
         if (credentialHandler.validateCredential(email, password)) {
 
             Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
+            intent.putExtra("TUTOR_EMAIL_KEY", email);
             startActivity(intent);
             finish(); // Close the current activity
         } else {
