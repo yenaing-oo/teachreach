@@ -7,7 +7,6 @@ import java.util.Optional;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.logic.IAccountCreator;
 import comp3350.teachreach.logic.Server;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
@@ -19,6 +18,7 @@ public class AccountCreator implements IAccountCreator {
     private final IAccountPersistence accountsDataAccess;
     private final IStudentPersistence studentsDataAccess;
     private final ITutorPersistence tutorsDataAccess;
+    private final ICredentialHandler credentialHandler;
 
     private Optional<Account> newAccount = Optional.empty();
 
@@ -26,14 +26,17 @@ public class AccountCreator implements IAccountCreator {
         accountsDataAccess = Server.getAccountDataAccess();
         studentsDataAccess = Server.getStudentDataAccess();
         tutorsDataAccess = Server.getTutorDataAccess();
+        credentialHandler = new CredentialHandler(accountsDataAccess);
     }
 
     public AccountCreator(IAccountPersistence accounts,
                           IStudentPersistence students,
-                          ITutorPersistence tutors) {
+                          ITutorPersistence tutors,
+                          ICredentialHandler credentialHandler) {
         this.accountsDataAccess = accounts;
         this.studentsDataAccess = students;
         this.tutorsDataAccess = tutors;
+        this.credentialHandler = credentialHandler;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class AccountCreator implements IAccountCreator {
             newAccount = Optional.of(
                     new Account(
                             email,
-                            CredentialHandler.processPassword(password)));
+                            credentialHandler.processPassword(password)));
             this.accountsDataAccess.storeAccount(newAccount.get());
         } else {
             throw getException(
@@ -64,7 +67,7 @@ public class AccountCreator implements IAccountCreator {
     }
 
     @Override
-    public IAccount setStudentProfile(
+    public IAccountCreator setStudentProfile(
             String username,
             String major,
             String pronoun) throws RuntimeException {
@@ -77,13 +80,14 @@ public class AccountCreator implements IAccountCreator {
             account.setStudentProfile(newStudent);
             studentsDataAccess.storeStudent(newStudent);
         });
-        return this.newAccount.orElseThrow(() ->
+        this.newAccount = Optional.ofNullable(newAccount.orElseThrow(() ->
                 new RuntimeException("Failed to set Student profile:-"
-                        + "(Account not found)"));
+                        + "(Account not initialized)")));
+        return this;
     }
 
     @Override
-    public IAccount setTutorProfile(
+    public IAccountCreator setTutorProfile(
             String username,
             String major,
             String pronoun) throws RuntimeException {
@@ -96,9 +100,19 @@ public class AccountCreator implements IAccountCreator {
             account.setTutorProfile(newTutor);
             tutorsDataAccess.storeTutor(newTutor);
         });
-        return this.newAccount.orElseThrow(() ->
-                new RuntimeException("Failed to set Tutor profile:-"
-                        + "(Account not found)"));
+        this.newAccount = Optional.ofNullable(newAccount.orElseThrow(
+                () -> new RuntimeException(
+                        "Failed to set Tutor profile:-"
+                                + "(Account not initialized)")
+        ));
+        return this;
+    }
+
+    @Override
+    public IAccount buildAccount() {
+        return this.newAccount.orElseThrow(
+                () -> new RuntimeException("Account not initialized")
+        );
     }
 }
 

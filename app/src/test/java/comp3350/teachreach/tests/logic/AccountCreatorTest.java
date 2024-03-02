@@ -1,56 +1,78 @@
-//package comp3350.teachreach.tests.logic;
-//
-//import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertNull;
-//// import static org.junit.Assert.assertTrue;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import comp3350.teachreach.logic.account.AccountCreator;
-//import comp3350.teachreach.objects.Account;
-////import comp3350.teachreach.objects.Student;
-////import comp3350.teachreach.objects.Tutor;
-//
-//public class AccountCreatorTest {
-//    private AccountCreator accountCreator;
-//
-//    @Before
-//    public void setUp() {
-//        System.out.println("Starting test for AccountCreator");
-//        accountCreator = new AccountCreator();
-//    }
-//
-//    @Test
-//    public void testCreateStudent() {
-//        Account newStudent = accountCreator.createStudentAccount("Alice", "he" +
-//                "/him", "CS", "alice@example.com", "qwerasdfaadd");
-//        assertNotNull(newStudent);
-//        System.out.println("Finished testCreateStudent");
-//    }
-//
-//    @Test
-//    public void testCreateStudentBadEmail() {
-//        Account newStudent = accountCreator.createStudentAccount("Bob", "he" +
-//                        "/him",
-//                "CS", "alice@bob", "qawsedrfccss");
-//        assertNull(newStudent);
-//        System.out.println("Finished testCreateStudentBadEmail");
-//    }
-//
-//    @Test
-//    public void testCreateTutor() {
-//        Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
-//                "CS", "bob@example.com", "qawsedrfccss");
-//        assertNotNull(newTutor);
-//        System.out.println("Finished testCreateTutor");
-//    }
-//
-//    @Test
-//    public void testCreateTutorBadEmail() {
-//        Account newTutor = accountCreator.createTutorAccount("Bob", "he/him",
-//                "CS", "bob@@example.com", "qawsedrfccss");
-//        assertNull(newTutor);
-//        System.out.println("Finished testCreateTutorBadEmail");
-//    }
-//}
+package comp3350.teachreach.tests.logic;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import comp3350.teachreach.data.AccountStub;
+import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.IStudentPersistence;
+import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.StudentStub;
+import comp3350.teachreach.data.TutorStub;
+import comp3350.teachreach.logic.account.AccountCreator;
+import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.logic.account.CredentialHandler;
+import comp3350.teachreach.logic.account.ICredentialHandler;
+import comp3350.teachreach.objects.IAccount;
+
+public class AccountCreatorTest {
+    private AccountCreator accountCreator;
+    private IAccountPersistence accountsDataAccess;
+
+    private ITutorPersistence tutorsDataAccess;
+    private IStudentPersistence studentsDataAccess;
+    private ICredentialHandler credentialHandler;
+
+    @Before
+    public void setUp() {
+        System.out.println("Starting a new test for AccountCreator");
+        accountsDataAccess = new AccountStub();
+        studentsDataAccess = new StudentStub(accountsDataAccess);
+        tutorsDataAccess = new TutorStub(accountsDataAccess);
+        credentialHandler = new CredentialHandler(accountsDataAccess);
+
+
+        accountCreator = new AccountCreator(
+                accountsDataAccess,
+                studentsDataAccess,
+                tutorsDataAccess,
+                credentialHandler);
+    }
+
+    @Test
+    public void testCreateAccountBad() {
+        assertThrows(AccountCreatorException.class, () ->
+                accountCreator.createAccount(
+                        "rms.gnu.org",
+                        "defenestrate"));
+        assertThrows(AccountCreatorException.class, () ->
+                accountCreator.createAccount(
+                        "rms@gnu.org",
+                        ""));
+        assertThrows(AccountCreatorException.class, () ->
+                accountCreator.createAccount(
+                        "",
+                        "defenestrate"));
+    }
+
+    @Test
+    public void testCreateAccountGood() throws AccountCreatorException {
+        IAccount testAccount = accountCreator.createAccount(
+                        "r@google.com",
+                        "herpolhode")
+                .setStudentProfile(
+                        "Rob", "CS", "he")
+                .setTutorProfile(
+                        "Rob", "CS", "he")
+                .buildAccount();
+
+        assertNotNull(testAccount);
+        assertNotNull(testAccount.getStudentProfile());
+        assertNotNull(testAccount.getTutorProfile());
+        assertEquals("r@google.com", testAccount.getEmail());
+    }
+}

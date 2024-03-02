@@ -7,18 +7,23 @@ import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.logic.Server;
 import comp3350.teachreach.objects.Account;
 
-public class CredentialHandler {
+public class CredentialHandler implements ICredentialHandler {
 
-    private IAccountPersistence accounts;
+    private final IAccountPersistence accounts;
 
     public CredentialHandler() {
         this.accounts = Server.getAccountDataAccess();
     }
 
-    public static String processPassword(String plainPassword) {
+    public CredentialHandler(IAccountPersistence accounts) {
+        this.accounts = accounts;
+    }
+
+    public String processPassword(String plainPassword) {
         return BCrypt.withDefaults().hashToString(12, plainPassword.toCharArray());
     }
 
+    @Override
     public boolean validateCredential(String email, String password) {
         Optional<Account> maybeAccount = accounts.getAccountByEmail(email);
         boolean result = false;

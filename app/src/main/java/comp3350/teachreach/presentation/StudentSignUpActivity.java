@@ -10,13 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.logic.account.IAccountCreator;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.Student;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
@@ -54,15 +51,16 @@ public class StudentSignUpActivity extends AppCompatActivity {
         String pronoun = etPronoun.getText().toString().trim();
 
         try {
-            accountCreator = accountCreator.createAccount(
-                    email,
-                    password);
-
-            IStudent theStudent = accountCreator.setStudentProfile(
-                    username,
-                    major,
-                    pronoun
-            ).getStudentProfile();
+            IStudent theStudent = accountCreator
+                    .createAccount(
+                            email,
+                            password)
+                    .setStudentProfile(
+                            username,
+                            major,
+                            pronoun)
+                    .buildAccount()
+                    .getStudentProfile();
 
             Intent intent = new Intent(
                     StudentSignUpActivity.this, SearchActivity.class);

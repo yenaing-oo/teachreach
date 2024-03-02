@@ -14,11 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
-import comp3350.teachreach.logic.IAccountCreator;
+import comp3350.teachreach.logic.account.IAccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.Tutor;
 
 public class TutorSignUpActivity extends AppCompatActivity {
 
