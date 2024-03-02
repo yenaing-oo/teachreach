@@ -3,7 +3,7 @@ package comp3350.teachreach.data;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.Student;
 
@@ -38,7 +38,7 @@ public class StudentStub implements IStudentPersistence {
     public Optional<IStudent> getStudentByEmail(String email) throws NullPointerException {
         return accountsDataAccess
                 .getAccountByEmail(email)
-                .flatMap(Account::getStudentProfile);
+                .flatMap(IAccount::getStudentProfile);
     }
 
     @Override

@@ -59,7 +59,7 @@ public class TutorProfileTest {
                 .buildAccount();
 
         theTutorProfile = new TutorProfile(
-                newAccount.getTutorProfile(),
+                newAccount.getTutorProfile().get(),
                 tutorsDataAccess);
     }
 

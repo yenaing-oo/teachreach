@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.ITutor;
 
 public class TutorStub implements ITutorPersistence {
@@ -57,7 +57,7 @@ public class TutorStub implements ITutorPersistence {
     public Optional<ITutor> getTutorByEmail(String email) throws NullPointerException {
         return accountsDataAccess
                 .getAccountByEmail(email)
-                .flatMap(Account::getTutorProfile);
+                .flatMap(IAccount::getTutorProfile);
     }
 
     @Override
