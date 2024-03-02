@@ -22,7 +22,7 @@ public class CredentialHandlerTest {
 
     @Before
     public void setUp() throws AccountCreatorException {
-        System.out.println("Starting a new test for LoginHandler");
+        System.out.println("Starting a new test for CredentialHandler");
         IAccountPersistence accountsDataAccess = new AccountStub();
         IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
         ITutorPersistence tutorsDataAccess = new TutorStub(accountsDataAccess);

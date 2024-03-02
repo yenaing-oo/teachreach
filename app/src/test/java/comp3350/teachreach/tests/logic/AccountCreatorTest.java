@@ -16,24 +16,20 @@ import comp3350.teachreach.data.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
+import comp3350.teachreach.logic.account.IAccountCreator;
 import comp3350.teachreach.logic.account.ICredentialHandler;
 import comp3350.teachreach.objects.IAccount;
 
 public class AccountCreatorTest {
-    private AccountCreator accountCreator;
-    private IAccountPersistence accountsDataAccess;
-
-    private ITutorPersistence tutorsDataAccess;
-    private IStudentPersistence studentsDataAccess;
-    private ICredentialHandler credentialHandler;
+    private IAccountCreator accountCreator;
 
     @Before
     public void setUp() {
         System.out.println("Starting a new test for AccountCreator");
-        accountsDataAccess = new AccountStub();
-        studentsDataAccess = new StudentStub(accountsDataAccess);
-        tutorsDataAccess = new TutorStub(accountsDataAccess);
-        credentialHandler = new CredentialHandler(accountsDataAccess);
+        IAccountPersistence accountsDataAccess = new AccountStub();
+        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
+        ITutorPersistence tutorsDataAccess = new TutorStub(accountsDataAccess);
+        ICredentialHandler credentialHandler = new CredentialHandler(accountsDataAccess);
 
 
         accountCreator = new AccountCreator(
