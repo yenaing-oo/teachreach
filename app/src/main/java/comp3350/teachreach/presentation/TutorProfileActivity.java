@@ -2,14 +2,17 @@ package comp3350.teachreach.presentation;
 
 //package comp3350.teachreach.application;
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.Server;
+import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.profile.TutorProfile;
 
 public class TutorProfileActivity extends AppCompatActivity {
 
@@ -29,6 +32,15 @@ public class TutorProfileActivity extends AppCompatActivity {
         btnUpcomingSessions = findViewById(R.id.btnUpcomingSessions);
 
         // Populate these views with real data from your database or passed from the previous activity
+
+        ITutorProfile tutorProfile =
+                new TutorProfile(
+                        getIntent().getStringExtra("TUTOR_EMAIL_KEY"),
+                        Server.getTutorDataAccess());
+
+        tvCourses.setText(tutorProfile.getCourses().toString());
+        tvPrice.setText(String.valueOf(tutorProfile.getHourlyRate()));
+        tvRating.setText(String.valueOf(tutorProfile.getAvgReview()));
 
         btnUpcomingSessions.setOnClickListener(new View.OnClickListener() {
             @Override
