@@ -35,10 +35,10 @@ public class StudentStub implements IStudentPersistence {
     }
 
     @Override
-    public Optional<IStudent> getStudentByEmail(String email) {
+    public Optional<IStudent> getStudentByEmail(String email) throws NullPointerException {
         return accountsDataAccess
                 .getAccountByEmail(email)
-                .map(Account::getStudentProfile);
+                .flatMap(Account::getStudentProfile);
     }
 
     @Override

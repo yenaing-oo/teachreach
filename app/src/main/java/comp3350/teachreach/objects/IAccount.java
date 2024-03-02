@@ -1,21 +1,23 @@
 package comp3350.teachreach.objects;
 
+import java.util.Optional;
+
 public interface IAccount {
 
-    public String getEmail();
+    String getEmail();
 
-    public void setEmail(String email);
+    void setEmail(String email);
 
-    public String getPassword();
+    String getPassword();
 
-    public void setPassword(String password);
+    void setPassword(String password);
 
-    public Account setStudentProfile(IStudent profile);
+    Account setStudentProfile(IStudent profile);
 
-    public Account setTutorProfile(ITutor profile);
+    Account setTutorProfile(ITutor profile);
 
-    public IStudent getStudentProfile();
+    Optional<IStudent> getStudentProfile();
 
-    public ITutor getTutorProfile();
+    Optional<ITutor> getTutorProfile();
 
 }

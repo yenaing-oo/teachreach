@@ -54,10 +54,10 @@ public class TutorStub implements ITutorPersistence {
     }
 
     @Override
-    public Optional<ITutor> getTutorByEmail(String email) {
+    public Optional<ITutor> getTutorByEmail(String email) throws NullPointerException {
         return accountsDataAccess
                 .getAccountByEmail(email)
-                .map(Account::getTutorProfile); //might throw, future me problem
+                .flatMap(Account::getTutorProfile);
     }
 
     @Override

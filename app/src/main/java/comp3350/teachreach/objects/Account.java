@@ -39,12 +39,12 @@ public class Account implements IAccount {
         return this;
     }
 
-    public IStudent getStudentProfile() {
-        return this.studentProfile;
+    public Optional<IStudent> getStudentProfile() {
+        return Optional.ofNullable(this.studentProfile);
     }
 
-    public ITutor getTutorProfile() {
-        return this.tutorProfile;
+    public Optional<ITutor> getTutorProfile() {
+        return Optional.ofNullable(this.tutorProfile);
     }
 
 }

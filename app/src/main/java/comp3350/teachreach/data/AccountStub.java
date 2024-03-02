@@ -5,12 +5,13 @@ import java.util.Iterator;
 import java.util.Optional;
 
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public class AccountStub implements IAccountPersistence {
 
-    ArrayList<Account> accounts;
+    ArrayList<IAccount> accounts;
 
     public AccountStub() {
         accounts = new ArrayList<>();
@@ -32,7 +33,7 @@ public class AccountStub implements IAccountPersistence {
     }
 
     @Override
-    public Account storeAccount(Account newAccount) {
+    public IAccount storeAccount(IAccount newAccount) {
         return getAccountByEmail(newAccount.getEmail())
                 .orElseGet(() -> {
                     accounts.add(newAccount);
@@ -41,7 +42,15 @@ public class AccountStub implements IAccountPersistence {
     }
 
     @Override
-    public Optional<Account> getAccountByEmail(String email) {
+    public void updateAccount(IAccount existingAccount) {
+        getAccountByEmail(existingAccount.getEmail()).ifPresent(account -> {
+            account.setPassword(existingAccount.getPassword());
+            account.setEmail(existingAccount.getEmail());
+        });
+    }
+
+    @Override
+    public Optional<IAccount> getAccountByEmail(String email) {
         return accounts
                 .stream()
                 .filter(account -> account.getEmail().equals(email))

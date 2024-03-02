@@ -6,6 +6,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.logic.Server;
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.IAccount;
 
 public class CredentialHandler implements ICredentialHandler {
 
@@ -25,7 +26,7 @@ public class CredentialHandler implements ICredentialHandler {
 
     @Override
     public boolean validateCredential(String email, String password) {
-        Optional<Account> maybeAccount = accounts.getAccountByEmail(email);
+        Optional<IAccount> maybeAccount = accounts.getAccountByEmail(email);
         boolean result = false;
 
         if (maybeAccount.isPresent()) {
