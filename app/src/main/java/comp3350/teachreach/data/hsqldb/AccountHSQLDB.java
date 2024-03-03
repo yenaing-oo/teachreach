@@ -45,9 +45,9 @@ public class AccountHSQLDB implements IAccountPersistence {
                 resultAccount));
 
         if (rs.getString("tutor.email") != null) {
-            final String tutorName = rs.getString("student.name");
-            final String tutorMajor = rs.getString("student.major");
-            final String tutorPronouns = rs.getString("student.pronouns");
+            final String tutorName = rs.getString("tutor.name");
+            final String tutorMajor = rs.getString("tutor.major");
+            final String tutorPronouns = rs.getString("tutor.pronouns");
             resultAccount.setTutorProfile(new Tutor(
                     tutorName,
                     tutorMajor,
