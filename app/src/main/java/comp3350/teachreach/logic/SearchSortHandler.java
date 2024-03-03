@@ -3,9 +3,10 @@ package comp3350.teachreach.logic;
 import java.util.ArrayList;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 
 public class SearchSortHandler {
@@ -155,7 +156,7 @@ public class SearchSortHandler {
         ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
 
         for (int i = 0; i < tutors.size(); i++) {
-            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
+            ArrayList<ICourse> tutorCourses = tutors.get(i).getCourses();
             if (tutorCourses != null) {
                 int j = 0;
                 boolean found = false;
