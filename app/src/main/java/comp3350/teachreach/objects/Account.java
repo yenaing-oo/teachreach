@@ -34,22 +34,22 @@ public class Account implements IAccount {
         return !(this.tutorProfile instanceof NullTutor);
     }
 
+    public Optional<IStudent> getStudentProfile() {
+        return Optional.ofNullable(this.studentProfile);
+    }
+
     public Account setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
         return this;
     }
 
+    public Optional<ITutor> getTutorProfile() {
+        return Optional.ofNullable(this.tutorProfile);
+    }
+
     public Account setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
         return this;
-    }
-
-    public Optional<IStudent> getStudentProfile() {
-        return Optional.ofNullable(this.studentProfile);
-    }
-
-    public Optional<ITutor> getTutorProfile() {
-        return Optional.ofNullable(this.tutorProfile);
     }
 
 }

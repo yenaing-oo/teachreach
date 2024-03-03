@@ -1,14 +1,11 @@
 package comp3350.teachreach.data.stubs;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
 
 public class AccountStub implements IAccountPersistence {
 
@@ -56,5 +53,10 @@ public class AccountStub implements IAccountPersistence {
                 .stream()
                 .filter(account -> account.getEmail().equals(email))
                 .findFirst();
+    }
+
+    @Override
+    public List<IAccount> getAccounts() {
+        return this.accounts;
     }
 }

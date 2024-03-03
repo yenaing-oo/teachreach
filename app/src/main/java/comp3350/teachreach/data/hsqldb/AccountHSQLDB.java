@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.data.IAccountPersistence;
@@ -100,6 +103,27 @@ public class AccountHSQLDB implements IAccountPersistence {
                 account = fromResultSet(rs);
             }
             return Optional.ofNullable(account);
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public List<IAccount> getAccounts() {
+        final List<IAccount> accounts = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final Statement st = c.createStatement();
+            final ResultSet rs = st.executeQuery(
+                    "SELECT * FROM account " +
+                            "JOIN student ON student.email = account.email " +
+                            "JOIN tutor ON tutor.email = account.email");
+            while (rs.next()) {
+                final IAccount account = fromResultSet(rs);
+                accounts.add(account);
+            }
+            rs.close();
+            st.close();
+            return accounts;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
