@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import comp3350.teachreach.objects.Course;
 
-public class CourseStub {
+public class CourseStub implements comp3350.teachreach.data.ICoursePersistence {
 
     ArrayList<Course> courses;
 
@@ -21,14 +21,17 @@ public class CourseStub {
     //add your function
 
 
+    @Override
     public ArrayList<Course> getCourses() {
         return this.courses;
     }
 
+    @Override
     public void addCourse(String courseCode, String courseName) {
         this.courses.add(new Course(courseCode, courseName));
     }
 
+    @Override
     public Course getCourseByCourseCode(String courseCode) {
         Course course = null;
         boolean found = false;

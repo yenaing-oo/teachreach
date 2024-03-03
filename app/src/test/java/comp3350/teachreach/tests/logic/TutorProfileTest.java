@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
@@ -105,7 +106,7 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        ArrayList<ICourse> updatedCourseList = updatedTutor.getCourses();
+        List<ICourse> updatedCourseList = updatedTutor.getCourses();
 
         assertNotNull(updatedCourseList);
 
@@ -136,7 +137,7 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        ArrayList<ICourse> updatedCourseList = updatedTutor.getCourses();
+        List<ICourse> updatedCourseList = updatedTutor.getCourses();
 
         assertNotNull(updatedCourseList);
 
@@ -161,7 +162,7 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        ArrayList<String> preferredLocations =
+        List<String> preferredLocations =
                 updatedTutor.getPreferredLocations();
 
         assertNotNull(preferredLocations);

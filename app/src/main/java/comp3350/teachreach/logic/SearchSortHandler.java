@@ -1,17 +1,18 @@
 package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.data.ICoursePersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 
 public class SearchSortHandler {
     private final ITutorPersistence dataAccessTutor;
-    private final CourseStub dataAccessCourse;
+    private final ICoursePersistence dataAccessCourse;
 
     public SearchSortHandler() {
         dataAccessTutor = Server.getTutorDataAccess();
@@ -19,7 +20,7 @@ public class SearchSortHandler {
     }
 
     public SearchSortHandler(ITutorPersistence tutorDataAccess,
-                             CourseStub courseDataAccess) {
+                             ICoursePersistence courseDataAccess) {
         dataAccessTutor = tutorDataAccess;
         dataAccessCourse = courseDataAccess;
     }
@@ -150,25 +151,26 @@ public class SearchSortHandler {
 //        return out;
 //    }
 
-    public ArrayList<ITutor> searchTutorByCourse(String courseCode) {
-        //take arraylist
-        ArrayList<ITutor> selectedTutor = new ArrayList<>();
-        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
-
-        for (int i = 0; i < tutors.size(); i++) {
-            ArrayList<ICourse> tutorCourses = tutors.get(i).getCourses();
-            if (tutorCourses != null) {
-                int j = 0;
-                boolean found = false;
-                while (!found && j < tutorCourses.size()) {
-                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
-                        selectedTutor.add(tutors.get(i));
-                        found = true;
-                    }
-                    j++;
-                }
-            }
-        }
-        return selectedTutor;
+    public List<ITutor> searchTutorByCourse(String courseCode) {
+        return dataAccessTutor.getTutors().stream().filter(tutor ->
+                tutor.getCourses().contains(courseCode)).collect(Collectors.toList());
+//        ArrayList<ITutor> selectedTutor = new ArrayList<>();
+//        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
+//
+//        for (int i = 0; i < tutors.size(); i++) {
+//            List<ICourse> tutorCourses = tutors.get(i).getCourses();
+//            if (tutorCourses != null) {
+//                int j = 0;
+//                boolean found = false;
+//                while (!found && j < tutorCourses.size()) {
+//                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
+//                        selectedTutor.add(tutors.get(i));
+//                        found = true;
+//                    }
+//                    j++;
+//                }
+//            }
+//        }
+//        return selectedTutor;
     }
 }

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.objects.ITutor;
@@ -19,9 +20,9 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
-    ArrayList<ITutor> tutorList;
+    List<ITutor> tutorList;
 
-    public SearchRecyclerViewAdapter(Context context, ArrayList<ITutor> tutorList, RecyclerViewInterface recyclerViewInterface) {
+    public SearchRecyclerViewAdapter(Context context, List<ITutor> tutorList, RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
         this.tutorList = tutorList;
         this.recyclerViewInterface = recyclerViewInterface;

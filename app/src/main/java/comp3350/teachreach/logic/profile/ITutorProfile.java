@@ -1,9 +1,10 @@
 package comp3350.teachreach.logic.profile;
 
-import java.util.ArrayList;
+import java.time.DayOfWeek;
 import java.util.List;
 
 import comp3350.teachreach.objects.ICourse;
+import comp3350.teachreach.objects.TimeSlice;
 
 public interface ITutorProfile extends IUserProfile {
     double getHourlyRate();
@@ -16,17 +17,17 @@ public interface ITutorProfile extends IUserProfile {
 
     int getReviewSum();
 
-    ArrayList<ICourse> getCourses();
+    List<ICourse> getCourses();
 
-    ArrayList<String> getPreferredLocations();
+    List<String> getPreferredLocations();
 
-    boolean[][] getPreferredAvailability();
+    List<List<TimeSlice>> getPreferredAvailability();
 
-    ITutorProfile setPreferredAvailability(boolean[][] newPreference);
-
-    boolean[][] getAvailability();
-
-    ITutorProfile setAvailability(boolean[][] newAvailability);
+    List<TimeSlice> getAvailableTimeSlotOfRange(
+            int startYear, int startMonth, int startDay,
+            int startHour, int startMinute,
+            int endYear, int endMonth, int endDay,
+            int endHour, int endMinute);
 
     ITutorProfile addReview(int score);
 
@@ -37,6 +38,15 @@ public interface ITutorProfile extends IUserProfile {
     ITutorProfile addPreferredLocation(String preferredLocation);
 
     ITutorProfile addPreferredLocations(List<String> preferredLocations);
+
+    ITutorProfile resetPreferredAvailability();
+
+    ITutorProfile setPreferredAvailability(
+            int startYear, int startMonth, int startDay,
+            int startHour, int startMinute,
+            int endYear, int endMonth, int endDay,
+            int endHour, int endMinute,
+            List<DayOfWeek> daysOfWeek);
 
     void updateUserProfile(); // NEED TO BE CALLED AFTER CHANGE OF PROFILE
 }

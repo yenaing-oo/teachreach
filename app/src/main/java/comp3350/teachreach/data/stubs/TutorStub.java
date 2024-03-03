@@ -40,8 +40,7 @@ public class TutorStub implements ITutorPersistence {
         maybeTutor.ifPresent(tutor -> {
             tutor
                     .setHourlyRate(newTutor.getHourlyRate())
-                    .renewAvailability(newTutor.getAvailability())
-                    .renewPreferredAvailability(newTutor.getPreferredAvailability())
+                    .setPreferredAvailability(newTutor.getPreferredAvailability())
                     .setReviewCount(newTutor.getReviewCount())
                     .setReviewTotal(newTutor.getReviewTotalSum());
 

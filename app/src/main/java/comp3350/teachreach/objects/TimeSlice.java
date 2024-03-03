@@ -17,10 +17,6 @@ public class TimeSlice {
         this.duration = duration;
     }
 
-    public boolean conflictsWith(TimeSlice that) {
-        return !(this.startTime.isAfter(that.endTime) || this.endTime.isBefore(that.startTime));
-    }
-
     public static TimeSlice of(
             int year,
             int month,
@@ -68,5 +64,23 @@ public class TimeSlice {
         Duration duration = Duration.between(start, end);
 
         return new TimeSlice(start, end, duration);
+    }
+
+    public boolean conflictsWith(TimeSlice that) {
+        return !(this.startTime.isAfter(that.endTime) || this.endTime.isBefore(that.startTime));
+    }
+
+    public boolean canContain(TimeSlice that) {
+        return this.startTime.isBefore(that.startTime) && this.endTime.isAfter(that.endTime);
+    }
+
+    public void mergeWith(TimeSlice that) {
+        if (this.startTime.isAfter(that.startTime)) {
+            this.startTime = that.startTime;
+        }
+        if (this.endTime.isBefore(that.endTime)) {
+            this.endTime = that.endTime;
+        }
+        this.duration = Duration.between(this.startTime, this.endTime);
     }
 }

@@ -1,48 +1,26 @@
 package comp3350.teachreach.objects;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface ITutor extends IUser {
 
-    ArrayList<ICourse> getCourses();
+     List<ICourse> getCourses();
+     List<String> getPreferredLocations();
+     int getReviewTotalSum();
+     int getReviewCount();
+     double getHourlyRate();
+     boolean equals(ITutor other);
 
-    ITutor addCourse(ICourse course);
-
-    ArrayList<String> getPreferredLocations();
-
-    ITutor setPreferredLocations(String preferredLocations);
-
-    ITutor clearTutoredCourses();
-
-    double getHourlyRate();
-
-    ITutor setHourlyRate(double hourlyRate);
-
-    ITutor addReview(int score);
-
-    ITutor setReviewTotal(int score);
-
-    int getReviewTotalSum();
-
-    float getRating();
-
-    ITutor clearReviews();
-
-    boolean[][] getAvailability();
-
-    ITutor setAvailability(int day, int hour, boolean avail);
-
-    ITutor setPreferredAvailability(int day, int hour, boolean avail);
-
-    ITutor renewAvailability(boolean[][] newAvailability);
-
-    boolean[][] getPreferredAvailability();
-
-    ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability);
-
-    int getReviewCount();
-
-    ITutor setReviewCount(int count);
-
-    ITutor addPreferredLocation(String preferredLocation);
+     ITutor addCourse(ICourse course);
+     ITutor clearTutoredCourses();
+     ITutor setHourlyRate(double hourlyRate);
+     ITutor addReview(int score);
+     ITutor setReviewCount(int count);
+     ITutor setReviewTotal(int score);
+     ITutor clearReviews();
+     ITutor setPreferredAvailability(final List<List<TimeSlice>> weeklyAvailability);
+     ITutor addPreferredLocation(String preferredLocation);
+     ITutor setPreferredLocations(List<String> preferredLocations);
+     List<List<TimeSlice>> getPreferredAvailability();
+     List<ISession> getFutureSessions();
 }
