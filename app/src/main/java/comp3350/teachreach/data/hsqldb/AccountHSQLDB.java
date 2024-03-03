@@ -10,6 +10,8 @@ import java.util.Optional;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 
 public class AccountHSQLDB implements IAccountPersistence {
     private final String dbPath;
@@ -25,9 +27,32 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     private IAccount fromResultSet(final ResultSet rs) throws SQLException {
-        final String email = rs.getString("email");
-        final String password = rs.getString("password");
-        return new Account(email, password);
+        final String email = rs.getString("account.email");
+        final String password = rs.getString("account.password");
+
+        final String studentName = rs.getString("student.name");
+        final String studentMajor = rs.getString("student.major");
+        final String studentPronouns = rs.getString("student.pronouns");
+
+        Account resultAccount = new Account(email, password);
+        resultAccount.setStudentProfile(new Student(
+                studentName,
+                studentMajor,
+                studentPronouns,
+                resultAccount));
+
+        if (rs.getString("tutor.email") != null) {
+            final String tutorName = rs.getString("student.name");
+            final String tutorMajor = rs.getString("student.major");
+            final String tutorPronouns = rs.getString("student.pronouns");
+            resultAccount.setTutorProfile(new Tutor(
+                    tutorName,
+                    tutorMajor,
+                    tutorPronouns,
+                    resultAccount));
+        }
+
+        return resultAccount;
     }
 
     @Override
@@ -64,7 +89,10 @@ public class AccountHSQLDB implements IAccountPersistence {
     public Optional<IAccount> getAccountByEmail(String email) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM account WHERE email = ?");
+                    "SELECT * FROM account " +
+                            "JOIN student ON student.email = account.email " +
+                            "JOIN tutor ON tutor.email = account.email " +
+                            "WHERE account.email = ?");
             pst.setString(1, email);
             final ResultSet rs = pst.executeQuery();
             IAccount account = null;

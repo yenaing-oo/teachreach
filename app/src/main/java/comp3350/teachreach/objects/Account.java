@@ -29,6 +29,11 @@ public class Account implements IAccount {
         this.password = password;
     }
 
+    @Override
+    public boolean isTutor() {
+        return !(this.tutorProfile instanceof NullTutor);
+    }
+
     public Account setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
         return this;
