@@ -8,11 +8,11 @@
 //
 //import java.util.ArrayList;
 //
-//import comp3350.teachreach.data.AccountStub;
-//import comp3350.teachreach.data.CourseStub;
+//import comp3350.teachreach.data.stubs.AccountStub;
+//import comp3350.teachreach.data.stubs.CourseStub;
 //import comp3350.teachreach.data.IAccountPersistence;
 //import comp3350.teachreach.data.ITutorPersistence;
-//import comp3350.teachreach.data.TutorStub;
+//import comp3350.teachreach.data.stubs.TutorStub;
 //import comp3350.teachreach.logic.SearchSortHandler;
 //import comp3350.teachreach.objects.Course;
 //import comp3350.teachreach.objects.ITutor;

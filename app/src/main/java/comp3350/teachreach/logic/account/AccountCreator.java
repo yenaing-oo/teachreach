@@ -7,7 +7,7 @@ import java.util.Optional;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.logic.Server;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.Student;

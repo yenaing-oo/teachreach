@@ -4,8 +4,7 @@ import java.util.Optional;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.logic.Server;
-import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.objects.IAccount;
 
 public class CredentialHandler implements ICredentialHandler {

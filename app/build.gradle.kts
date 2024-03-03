@@ -38,6 +38,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation(files("libs/bcrypt-0.10.2.jar"))
     implementation(files("libs/bytes-1.6.1.jar"))
+    // https://mvnrepository.com/artifact/org.hsqldb/hsqldb
+    implementation("org.hsqldb:hsqldb:2.4.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

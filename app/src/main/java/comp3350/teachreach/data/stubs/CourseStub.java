@@ -1,4 +1,4 @@
-package comp3350.teachreach.data;
+package comp3350.teachreach.data.stubs;
 
 import java.util.ArrayList;
 import java.util.Iterator;

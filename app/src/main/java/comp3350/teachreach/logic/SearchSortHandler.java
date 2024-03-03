@@ -2,12 +2,11 @@ package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
 
-import comp3350.teachreach.data.CourseStub;
-import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.ITutor;
-import comp3350.teachreach.objects.Tutor;
 
 public class SearchSortHandler {
     private final ITutorPersistence dataAccessTutor;

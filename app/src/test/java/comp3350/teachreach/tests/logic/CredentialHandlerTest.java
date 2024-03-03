@@ -6,12 +6,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import comp3350.teachreach.data.AccountStub;
+import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.data.StudentStub;
-import comp3350.teachreach.data.TutorStub;
+import comp3350.teachreach.data.stubs.StudentStub;
+import comp3350.teachreach.data.stubs.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
