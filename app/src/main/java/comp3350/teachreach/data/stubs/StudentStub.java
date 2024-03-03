@@ -7,7 +7,6 @@ import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.Student;
 
 public class StudentStub implements IStudentPersistence {
     IAccountPersistence accountsDataAccess;
@@ -37,7 +36,7 @@ public class StudentStub implements IStudentPersistence {
     }
 
     @Override
-    public Optional<IStudent> getStudentByEmail(String email) throws NullPointerException {
+    public Optional<IStudent> getStudentByEmail(String email) {
         return accountsDataAccess
                 .getAccountByEmail(email)
                 .flatMap(IAccount::getStudentProfile);
@@ -45,6 +44,6 @@ public class StudentStub implements IStudentPersistence {
 
     @Override
     public ArrayList<IStudent> getStudents() {
-        return null;
+        return this.students;
     }
 }

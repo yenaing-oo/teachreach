@@ -1,13 +1,16 @@
 package comp3350.teachreach.data.stubs;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 
 public class CourseStub implements comp3350.teachreach.data.ICoursePersistence {
 
-    ArrayList<Course> courses;
+    List<ICourse> courses;
 
     public CourseStub() {
 
@@ -18,30 +21,28 @@ public class CourseStub implements comp3350.teachreach.data.ICoursePersistence {
         this.courses.add(new Course("COMP 2150", "Object Orientation"));
         this.courses.add(new Course("COMP 3380", "Databases Concepts and Usage"));
     }
-    //add your function
-
 
     @Override
-    public ArrayList<Course> getCourses() {
+    public List<ICourse> getCourses() {
         return this.courses;
     }
 
     @Override
-    public void addCourse(String courseCode, String courseName) {
-        this.courses.add(new Course(courseCode, courseName));
+    public boolean addCourse(String courseCode, String courseName) {
+        return this.courses.add(new Course(courseCode, courseName));
     }
 
     @Override
-    public Course getCourseByCourseCode(String courseCode) {
-        Course course = null;
-        boolean found = false;
-        Iterator<Course> courseIterator = courses.iterator();
-        while (courseIterator.hasNext() && !found) {
-            course = courseIterator.next();
-            found = course.getCourseCode().equals(courseCode);
-        }
-        return course;
+    public Optional<ICourse> getCourseByCourseCode(String courseCode) {
+        return courses.stream()
+                .filter(course -> course.getCourseCode().equals(courseCode))
+                .findFirst();
     }
 
-    //eg. add, search, delete
+    @Override
+    public List<ICourse> getCoursesByName(String courseName) {
+        return courses.stream()
+                .filter(course -> course.getCourseName().contains(courseName))
+                .collect(Collectors.toList());
+    }
 }

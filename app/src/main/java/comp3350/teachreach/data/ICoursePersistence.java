@@ -1,13 +1,16 @@
 package comp3350.teachreach.data;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 
 public interface ICoursePersistence {
-    ArrayList<Course> getCourses();
+    List<ICourse> getCourses();
 
-    void addCourse(String courseCode, String courseName);
+    boolean addCourse(String courseCode, String courseName);
 
-    Course getCourseByCourseCode(String courseCode);
+    Optional<ICourse> getCourseByCourseCode(String courseCode);
+
+    List<ICourse> getCoursesByName(String courseName);
 }
