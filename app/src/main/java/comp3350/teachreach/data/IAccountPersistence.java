@@ -9,7 +9,7 @@ public interface IAccountPersistence {
 
     IAccount storeAccount(IAccount newAccount);
 
-    void updateAccount(IAccount existingAccount);
+    boolean updateAccount(IAccount existingAccount);
 
     Optional<IAccount> getAccountByEmail(String email);
 

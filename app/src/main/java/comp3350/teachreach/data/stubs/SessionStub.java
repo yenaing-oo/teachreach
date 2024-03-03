@@ -42,15 +42,15 @@ public class SessionStub implements ISessionPersistence {
     }
 
     @Override
-    public ISessionPersistence deleteSession(ISession session) {
-        sessions.removeIf(otherSession ->
+    public boolean deleteSession(ISession session) {
+        return sessions.removeIf(otherSession ->
                 session.getSessionID() == otherSession.getSessionID());
-        return this;
     }
 
     @Override
-    public ISession updateSession(ISession session) {
+    public boolean updateSession(ISession session) {
         ISession updatedSession = null;
+        boolean result = false;
         for (ISession s : sessions) {
             if (s.getSessionID() == session.getSessionID()) {
                 s.setLocation(session.getLocation());
@@ -58,13 +58,14 @@ public class SessionStub implements ISessionPersistence {
                 s.setTutor(session.getTutor());
                 s.setStage(session.getStage());
                 updatedSession = s;
+                result = true;
                 break;
             }
         }
         if (updatedSession == null) {
             throw new NoSuchElementException();
         }
-        return updatedSession;
+        return result;
     }
 
     @Override

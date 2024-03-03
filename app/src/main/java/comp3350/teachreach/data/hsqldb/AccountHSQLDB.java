@@ -39,20 +39,14 @@ public class AccountHSQLDB implements IAccountPersistence {
 
         Account resultAccount = new Account(email, password);
         resultAccount.setStudentProfile(new Student(
-                studentName,
-                studentMajor,
-                studentPronouns,
-                resultAccount));
+                studentName, studentMajor, studentPronouns, resultAccount));
 
         if (rs.getString("tutor.email") != null) {
             final String tutorName = rs.getString("tutor.name");
             final String tutorMajor = rs.getString("tutor.major");
             final String tutorPronouns = rs.getString("tutor.pronouns");
             resultAccount.setTutorProfile(new Tutor(
-                    tutorName,
-                    tutorMajor,
-                    tutorPronouns,
-                    resultAccount));
+                    tutorName, tutorMajor, tutorPronouns, resultAccount));
         }
 
         return resultAccount;
@@ -66,6 +60,7 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(1, newAccount.getEmail());
             pst.setString(2, newAccount.getPassword());
             pst.executeUpdate();
+            pst.close();
             return newAccount;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -73,7 +68,7 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     @Override
-    public void updateAccount(IAccount existingAccount) {
+    public boolean updateAccount(IAccount existingAccount) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "UPDATE account " +
@@ -82,7 +77,9 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(1, existingAccount.getEmail());
             pst.setString(2, existingAccount.getPassword());
             pst.setString(3, existingAccount.getEmail());
-            pst.executeUpdate();
+            boolean success = pst.executeUpdate() == 1;
+            pst.close();
+            return success;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
@@ -102,6 +99,8 @@ public class AccountHSQLDB implements IAccountPersistence {
             if (rs.next()) {
                 account = fromResultSet(rs);
             }
+            pst.close();
+            rs.close();
             return Optional.ofNullable(account);
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -118,8 +117,7 @@ public class AccountHSQLDB implements IAccountPersistence {
                             "JOIN student ON student.email = account.email " +
                             "JOIN tutor ON tutor.email = account.email");
             while (rs.next()) {
-                final IAccount account = fromResultSet(rs);
-                accounts.add(account);
+                accounts.add(fromResultSet(rs));
             }
             rs.close();
             st.close();

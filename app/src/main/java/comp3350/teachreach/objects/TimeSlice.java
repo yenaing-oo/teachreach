@@ -17,6 +17,18 @@ public class TimeSlice {
         this.duration = duration;
     }
 
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
     public static TimeSlice of(
             int year,
             int month,

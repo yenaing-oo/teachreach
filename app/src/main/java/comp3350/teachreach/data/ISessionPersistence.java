@@ -14,8 +14,8 @@ import comp3350.teachreach.objects.Tutor;
 public interface ISessionPersistence {
     ISession storeSession(IStudent theStudent, ITutor theTutor,
                           TimeSlice sessionTime, String location);
-    ISessionPersistence deleteSession(ISession session);
-    ISession updateSession(ISession session);
+    boolean deleteSession(ISession session);
+    boolean updateSession(ISession session);
 
     List<ISession> getSessionsByRangeForStudent(
             String userEmail, TimeSlice range);

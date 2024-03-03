@@ -3,6 +3,7 @@ package comp3350.teachreach.data.stubs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.IAccount;
@@ -40,11 +41,14 @@ public class AccountStub implements IAccountPersistence {
     }
 
     @Override
-    public void updateAccount(IAccount existingAccount) {
+    public boolean updateAccount(IAccount existingAccount) {
+        AtomicBoolean result = new AtomicBoolean(false);
         getAccountByEmail(existingAccount.getEmail()).ifPresent(account -> {
             account.setPassword(existingAccount.getPassword());
             account.setEmail(existingAccount.getEmail());
+            result.set(true);
         });
+        return result.get();
     }
 
     @Override
