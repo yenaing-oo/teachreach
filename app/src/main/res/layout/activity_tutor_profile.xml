@@ -34,13 +34,6 @@
         <!-- Placeholder for feedback section -->
 
         <TextView
-            android:id="@+id/tvAvailability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Availability"
-            android:textSize="16sp" />
-
-        <TextView
             android:id="@+id/tvPreferredCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +44,7 @@
             android:id="@+id/btnUpcomingSessions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View Upcoming Sessions"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:text="Book a session" />
     </LinearLayout>
 </ScrollView>
