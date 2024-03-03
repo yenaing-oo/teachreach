@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 
 public class TutorProfile implements ITutorProfile {
@@ -98,7 +99,7 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public ArrayList<Course> getCourses() {
+    public ArrayList<ICourse> getCourses() {
         return theTutor.getCourses();
     }
 

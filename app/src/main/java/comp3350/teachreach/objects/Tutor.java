@@ -3,7 +3,7 @@ package comp3350.teachreach.objects;
 import java.util.ArrayList;
 
 public class Tutor extends User implements ITutor {
-    private ArrayList<Course> tutoredCourses;
+    private ArrayList<ICourse> tutoredCourses;
     private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
@@ -39,11 +39,11 @@ public class Tutor extends User implements ITutor {
         this.hourlyRate = hourlyRate;
     }
 
-    public ArrayList<Course> getCourses() {
+    public ArrayList<ICourse> getCourses() {
         return tutoredCourses;
     }
 
-    public Tutor addCourse(Course course) {
+    public Tutor addCourse(ICourse course) {
         this.tutoredCourses.add(course);
         return this;
     }

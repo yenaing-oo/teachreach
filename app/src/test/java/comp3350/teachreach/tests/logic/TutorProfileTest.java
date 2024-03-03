@@ -10,10 +10,10 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.stubs.StudentStub;
 import comp3350.teachreach.data.stubs.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
@@ -22,8 +22,8 @@ import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.logic.account.ICredentialHandler;
 import comp3350.teachreach.logic.profile.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 
 public class TutorProfileTest {
@@ -105,7 +105,7 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        ArrayList<Course> updatedCourseList = updatedTutor.getCourses();
+        ArrayList<ICourse> updatedCourseList = updatedTutor.getCourses();
 
         assertNotNull(updatedCourseList);
 
@@ -136,7 +136,7 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        ArrayList<Course> updatedCourseList = updatedTutor.getCourses();
+        ArrayList<ICourse> updatedCourseList = updatedTutor.getCourses();
 
         assertNotNull(updatedCourseList);
 
