@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.SearchSortHandler;
@@ -29,7 +30,7 @@ import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface, SortDialogFragment.SortDialogListener {
 
     private SearchSortHandler handler;
-    private ArrayList<ITutor> tutorList;
+    private List<ITutor> tutorList;
     private ArrayList<String> courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;

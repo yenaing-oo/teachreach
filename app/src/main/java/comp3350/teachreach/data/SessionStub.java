@@ -1,21 +1,27 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
+import comp3350.teachreach.objects.ISession;
+import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
+import comp3350.teachreach.objects.TimeSlice;
 
-public class SessionStub implements ISessionPersistance {
+public class SessionStub implements ISessionPersistence {
 
-    ArrayList<Session> sessions;
+    List<ISession> sessions;
+    int sessionIDCounter;
     AccountStub accountsDataAccess;
     StudentStub studentsDataAccess;
     TutorStub tutorsDataAccess;
 
     public SessionStub() {
         sessions = new ArrayList<>();
+        sessionIDCounter = 0;
 
         accountsDataAccess = new AccountStub();
         studentsDataAccess = new StudentStub(accountsDataAccess);
@@ -23,59 +29,78 @@ public class SessionStub implements ISessionPersistance {
     }
 
     @Override
-    public void addSession(Session session) {
-        this.sessions.add(session);
+    public ISession storeSession(
+            IStudent theStudent, ITutor theTutor,
+            TimeSlice sessionTime, String location) {
+        ISession newSession = new Session(
+                theStudent, theTutor, sessionTime, location);
+        return newSession.setSessionID(sessionIDCounter++);
     }
 
     @Override
-    public Session addSessionInfo(Student student,
-                                  Tutor tutor,
-                                  int day, int month, int year, int hour,
-                                  String location) {
-        Session newSession = new Session(
-                student,
-                tutor,
-                day, month, year, hour,
-                location);
-        this.sessions.add(newSession);
-        return newSession;
+    public ISessionPersistence deleteSession(ISession session) {
+        sessions.removeIf(otherSession ->
+                session.getSessionID() == otherSession.getSessionID());
+        return this;
     }
 
     @Override
-    public void removeSession(Session session) {
-        for (int i = 0; i < sessions.size(); i++) {
-            if (sessions.get(i).equals(session)) {
-                sessions.remove(session);
+    public ISession updateSession(ISession session) {
+        ISession updatedSession = null;
+        for (ISession s : sessions) {
+            if (s.getSessionID() == session.getSessionID()) {
+                s.setLocation(session.getLocation());
+                s.setStudent(session.getStudent());
+                s.setTutor(session.getTutor());
+                s.setStage(session.getStage());
+                updatedSession = s;
+                break;
             }
         }
-    }
-
-    @Override
-    public ArrayList<Session> getSessions() {
-        return this.sessions;
-    }
-
-    @Override
-    public ArrayList<Session> searchSessionByTutorWithStage(Tutor tutor, boolean stage) {
-        ArrayList<Session> Searched = new ArrayList<>();
-        for (int i = 0; i < sessions.size(); i++) {
-            if (sessions.get(i).getTutor().equals(tutor)) {
-                if (sessions.get(i).getStage() == stage) {
-                    Searched.add(sessions.get(i));
-                }
-            }
+        if (updatedSession == null) {
+            throw new NoSuchElementException();
         }
-        return Searched;
+        return updatedSession;
     }
 
     @Override
-    public ArrayList<Session> searchSessionByTutor(Tutor tutor) {
-        ArrayList<Session> Searched = new ArrayList<>();
-        for (int i = 0; i < sessions.size(); i++) {
-            if (sessions.get(i).getTutor().equals(tutor)) {
-                Searched.add(sessions.get(i));
-            }
-        }
-        return Searched;
+    public List<ISession> getSessionsByRangeForStudent(
+            String studentEmail, TimeSlice range) {
+        return sessions
+                .stream()
+                .filter(session ->
+                        range.canContain(session.getTime()) &&
+                                session.getStudent()
+                                        .getOwner()
+                                        .getEmail()
+                                        .equals(studentEmail))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ISession> getSessionsByRangeForTutor(
+            String studentEmail, TimeSlice range) {
+        return sessions
+                .stream()
+                .filter(session ->
+                        range.canContain(session.getTime()) &&
+                                session.getTutor()
+                                        .getOwner()
+                                        .getEmail()
+                                        .equals(studentEmail))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ISession> getPendingSessionRequests(String tutorEmail) {
+        return sessions
+                .stream()
+                .filter(session ->
+                        session.getTutor()
+                                .getOwner()
+                                .getEmail()
+                                .equals(tutorEmail) &&
+                                session.getStage())
+                .collect(Collectors.toList());
     }
 }

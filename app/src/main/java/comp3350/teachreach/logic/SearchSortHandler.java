@@ -1,11 +1,14 @@
 package comp3350.teachreach.logic;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.data.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
@@ -150,25 +153,26 @@ public class SearchSortHandler {
 //        return out;
 //    }
 
-    public ArrayList<ITutor> searchTutorByCourse(String courseCode) {
-        //take arraylist
-        ArrayList<ITutor> selectedTutor = new ArrayList<>();
-        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
-
-        for (int i = 0; i < tutors.size(); i++) {
-            ArrayList<Course> tutorCourses = tutors.get(i).getCourses();
-            if (tutorCourses != null) {
-                int j = 0;
-                boolean found = false;
-                while (!found && j < tutorCourses.size()) {
-                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
-                        selectedTutor.add(tutors.get(i));
-                        found = true;
-                    }
-                    j++;
-                }
-            }
-        }
-        return selectedTutor;
+    public List<ITutor> searchTutorByCourse(String courseCode) {
+        return dataAccessTutor.getTutors().stream().filter(tutor ->
+            tutor.getCourses().contains(courseCode)).collect(Collectors.toList());
+//        ArrayList<ITutor> selectedTutor = new ArrayList<>();
+//        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
+//
+//        for (int i = 0; i < tutors.size(); i++) {
+//            List<ICourse> tutorCourses = tutors.get(i).getCourses();
+//            if (tutorCourses != null) {
+//                int j = 0;
+//                boolean found = false;
+//                while (!found && j < tutorCourses.size()) {
+//                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
+//                        selectedTutor.add(tutors.get(i));
+//                        found = true;
+//                    }
+//                    j++;
+//                }
+//            }
+//        }
+//        return selectedTutor;
     }
 }

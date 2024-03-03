@@ -1,15 +1,18 @@
 package comp3350.teachreach.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Tutor extends User implements ITutor {
-    private ArrayList<Course> tutoredCourses;
+    private List<ICourse> tutoredCourses;
     private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
-    private ArrayList<String> preferredLocations;
-    private boolean[][] availability;
-    private boolean[][] preferredAvailability;
+    private List<String> preferredLocations;
+    private List<ISession> pendingSessions;
+    private List<ISession> expiredSessions;
+    private List<ISession> approvedFutureSessions;
+    private List<List<TimeSlice>> preferredAvailability;
 
     public Tutor(String name,
                  String pronouns,
@@ -18,10 +21,13 @@ public class Tutor extends User implements ITutor {
         super(name, pronouns, major, parentAccount);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
-        this.availability = new boolean[7][24];
-        this.preferredAvailability = new boolean[7][24];
+        this.preferredAvailability = new ArrayList<>(7);
+        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
         this.reviewSum = 0;
         this.reviewCount = 0;
+        this.pendingSessions = new ArrayList<>();
+        this.expiredSessions = new ArrayList<>();
+        this.approvedFutureSessions = new ArrayList<>();
     }
 
     public Tutor(String name,
@@ -32,29 +38,30 @@ public class Tutor extends User implements ITutor {
         super(name, pronouns, major, parentAccount);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
-        this.availability = new boolean[7][24];
-        this.preferredAvailability = new boolean[7][24];
+        this.preferredAvailability = new ArrayList<>(7);
+        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
         this.reviewSum = 0;
         this.reviewCount = 0;
         this.hourlyRate = hourlyRate;
+        this.pendingSessions = new ArrayList<>();
+        this.expiredSessions = new ArrayList<>();
+        this.approvedFutureSessions = new ArrayList<>();
     }
 
-    public ArrayList<Course> getCourses() {
+    @Override
+    public List<ICourse> getCourses() {
         return tutoredCourses;
     }
 
-    public Tutor addCourse(Course course) {
+    @Override
+    public Tutor addCourse(ICourse course) {
         this.tutoredCourses.add(course);
         return this;
     }
 
-    public ArrayList<String> getPreferredLocations() {
+    @Override
+    public List<String> getPreferredLocations() {
         return this.preferredLocations;
-    }
-
-    public Tutor setPreferredLocations(String preferredLocations) {
-        this.preferredLocations.add(preferredLocations);
-        return this;
     }
 
     public Tutor clearTutoredCourses() {
@@ -64,6 +71,11 @@ public class Tutor extends User implements ITutor {
 
     public double getHourlyRate() {
         return this.hourlyRate;
+    }
+
+    @Override
+    public boolean equals(ITutor other) {
+        return this.getOwner().getEmail().equals(other.getOwner().getEmail());
     }
 
     public Tutor setHourlyRate(double hourlyRate) {
@@ -94,42 +106,25 @@ public class Tutor extends User implements ITutor {
         return this.reviewSum;
     }
 
-    public float getRating() {
-        return this.reviewCount > 0 ? ((float) this.reviewSum / (float) this.reviewCount) : 0;
-    }
-
     public Tutor clearReviews() {
         this.reviewSum = 0;
         this.reviewCount = 0;
         return this;
     }
 
-    public boolean[][] getAvailability() {
-        return this.availability;
+    public List<ISession> getFutureSessions() {
+        return this.approvedFutureSessions;
     }
 
-    public Tutor setAvailability(int day, int hour, boolean avail) {
-        this.availability[day][hour] = avail;
+    @Override
+    public Tutor setPreferredAvailability(List<List<TimeSlice>> weeklyAvailability) {
+        this.preferredAvailability = weeklyAvailability;
         return this;
     }
 
     @Override
-    public ITutor renewAvailability(boolean[][] newAvailability) {
-        return this;
-    }
-
-    public boolean[][] getPreferredAvailability() {
+    public List<List<TimeSlice>> getPreferredAvailability() {
         return this.preferredAvailability;
-    }
-
-    @Override
-    public ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability) {
-        return this;
-    }
-
-    public ITutor setPreferredAvailability(int day, int hour, boolean avail) {
-        this.preferredAvailability[day][hour] = avail;
-        return this;
     }
 
     public int getReviewCount() {
