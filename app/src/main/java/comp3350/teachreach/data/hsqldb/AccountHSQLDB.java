@@ -33,11 +33,11 @@ public class AccountHSQLDB implements IAccountPersistence {
     @Override
     public IAccount storeAccount(IAccount newAccount) {
         try (final Connection c = connection()) {
-            final PreparedStatement st = c.prepareStatement(
+            final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO account VALUES(?, ?)");
-            st.setString(1, newAccount.getEmail());
-            st.setString(2, newAccount.getPassword());
-            st.executeUpdate();
+            pst.setString(1, newAccount.getEmail());
+            pst.setString(2, newAccount.getPassword());
+            pst.executeUpdate();
             return newAccount;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -47,14 +47,14 @@ public class AccountHSQLDB implements IAccountPersistence {
     @Override
     public void updateAccount(IAccount existingAccount) {
         try (final Connection c = connection()) {
-            final PreparedStatement st = c.prepareStatement(
+            final PreparedStatement pst = c.prepareStatement(
                     "UPDATE account " +
                             "SET email = ?, password = ? " +
                             "WHERE email = ?");
-            st.setString(1, existingAccount.getEmail());
-            st.setString(2, existingAccount.getPassword());
-            st.setString(3, existingAccount.getEmail());
-            st.executeUpdate();
+            pst.setString(1, existingAccount.getEmail());
+            pst.setString(2, existingAccount.getPassword());
+            pst.setString(3, existingAccount.getEmail());
+            pst.executeUpdate();
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
@@ -63,9 +63,9 @@ public class AccountHSQLDB implements IAccountPersistence {
     @Override
     public Optional<IAccount> getAccountByEmail(String email) {
         try (final Connection c = connection()) {
-            final String sql = "SELECT * FROM account WHERE email = ?";
-            final PreparedStatement pst = c.prepareStatement(sql);
-            pst.setString(1, email); // Set the email parameter
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * FROM account WHERE email = ?");
+            pst.setString(1, email);
             final ResultSet rs = pst.executeQuery();
             IAccount account = null;
             if (rs.next()) {

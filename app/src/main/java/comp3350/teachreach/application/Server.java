@@ -1,6 +1,7 @@
 package comp3350.teachreach.application;
 
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
@@ -28,7 +29,8 @@ public class Server {
     }
     public static synchronized IStudentPersistence getStudentDataAccess(){
         if (studentsDataAccess == null){
-            studentsDataAccess = new StudentStub(getAccountDataAccess());
+            // studentsDataAccess = new StudentStub(getAccountDataAccess());
+            studentsDataAccess = new StudentHSQLDB(TRData.getDBPathName());
         }
 
         return studentsDataAccess;
