@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.IAccountCreator;
 import comp3350.teachreach.objects.IStudent;
+import comp3350.teachreach.presentation.home.SearchActivity;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
@@ -61,9 +62,9 @@ public class StudentSignUpActivity extends AppCompatActivity {
                             pronoun)
                     .buildAccount()
                     .getStudentProfile()
-                    .orElseThrow(() -> new AccountCreatorException(
-                            "Account not created")
-                    );
+                    .orElseThrow(
+                            () -> new AccountCreatorException(
+                                    "Failed while creating a new Account"));
 
             Intent intent = new Intent(
                     StudentSignUpActivity.this, SearchActivity.class);

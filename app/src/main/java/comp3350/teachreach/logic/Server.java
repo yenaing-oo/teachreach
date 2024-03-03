@@ -1,5 +1,13 @@
 package comp3350.teachreach.logic;
-import comp3350.teachreach.data.*;
+
+import comp3350.teachreach.data.AccountStub;
+import comp3350.teachreach.data.CourseStub;
+import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.IStudentPersistence;
+import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.SessionStub;
+import comp3350.teachreach.data.StudentStub;
+import comp3350.teachreach.data.TutorStub;
 
 public class Server {
     private static IAccountPersistence accountsDataAccess;
@@ -9,7 +17,7 @@ public class Server {
     private static CourseStub courses;
     private static SessionStub sessions;
 
-    public static synchronized IAccountPersistence getAccountDataAccess(){
+    public static synchronized IAccountPersistence getAccountDataAccess() {
         if (accountsDataAccess == null){
             accountsDataAccess = new AccountStub();
         }

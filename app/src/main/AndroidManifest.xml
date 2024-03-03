@@ -13,25 +13,25 @@
         android:theme="@style/Theme.TeachReach"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.StudentProfileActivity"
+            android:name=".presentation.profile.StudentProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.TutorSignUpActivity"
+            android:name=".presentation.signup.TutorSignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.TutorProfileActivity"
+            android:name=".presentation.profile.TutorProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.TutorLoginActivity"
+            android:name=".presentation.login.TutorLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.StudentLoginActivity"
+            android:name=".presentation.login.StudentLoginActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.StudentSignUpActivity"
+            android:name=".presentation.signup.StudentSignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.SearchActivity"
+            android:name=".presentation.home.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <RadioButton
+            android:id="@+id/radio_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/tag_highest_rating"
+            android:text="Sort by Highest Rating" />
+
+        <RadioButton
+            android:id="@+id/radio_hourly_rate_asc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/tag_hourly_rate_ascending"
+            android:text="Sort by Hourly Rate (ascending)" />
+
+        <RadioButton
+            android:id="@+id/radio_hourly_rate_dsc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="@string/tag_hourly_rate_descending"
+            android:text="Sort by Hourly Rate (descending)" />
+
+    </RadioGroup>
+
+</RelativeLayout>

@@ -1,14 +1,15 @@
-package comp3350.teachreach.presentation;
-
-import androidx.appcompat.app.AppCompatActivity;
+package comp3350.teachreach.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.presentation.home.SearchActivity;
 
 public class StudentProfileActivity extends AppCompatActivity {
 
