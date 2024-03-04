@@ -4,36 +4,29 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
+import comp3350.teachreach.logic.dataAccessObject.AccessStudent;
 import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.ITutor;
 
 public class StudentProfile implements IUserProfile{
     private IStudent theStudent;
-    private IStudentPersistence studentsDataAccess;
+    private AccessStudent accessStudent;
+    private AccessAccount accessAccount;
+
 
     public StudentProfile(
-            IStudent theStudent,
-            IStudentPersistence students) {
+            IStudent theStudent) {
 
         this.theStudent = theStudent;
-        this.studentsDataAccess = students;
-    }
-
-    public StudentProfile(
-            String studentEmail,
-            IStudentPersistence students) throws NoSuchElementException {
-
-        this.studentsDataAccess = students;
-        this.theStudent =
-                studentsDataAccess
-                        .getStudentByEmail(studentEmail)
-                        .orElseThrow(NoSuchElementException::new);
+        this.accessStudent = new AccessStudent();
+        this.accessAccount = new AccessAccount();
     }
 
     @Override
     public String getUserEmail() {
-        return this.theStudent.getOwner().getEmail();
+        return this.theStudent.getEmail();
     }
 
     @Override
@@ -53,7 +46,11 @@ public class StudentProfile implements IUserProfile{
 
     @Override
     public IAccount getUserAccount() {
-        return this.theStudent.getOwner();
+        return this.accessAccount
+                .getAccounts()
+                .stream()
+                .filter(a -> a.getEmail().equals(theStudent.getEmail()))
+                .findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -76,6 +73,6 @@ public class StudentProfile implements IUserProfile{
 
     @Override
     public void updateUserProfile() {
-        this.studentsDataAccess.updateStudent(theStudent);
+        this.accessStudent.updateStudent(theStudent);
     }
 }

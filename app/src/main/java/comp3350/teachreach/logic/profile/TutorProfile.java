@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.ICourse;
@@ -14,7 +15,7 @@ import comp3350.teachreach.objects.TimeSlice;
 public class TutorProfile implements ITutorProfile {
 
     private final ITutor theTutor;
-    private final ITutorPersistence tutorsDataAccess;
+    private AccessAccount accessAccount;
     private final AvailabilityManager availabilityManager;
 
     public TutorProfile(

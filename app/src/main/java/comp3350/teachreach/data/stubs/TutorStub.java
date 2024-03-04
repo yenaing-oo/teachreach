@@ -23,7 +23,7 @@ public class TutorStub implements ITutorPersistence {
     @Override
     public ITutor storeTutor(ITutor newTutor) throws RuntimeException {
         if (accountsDataAccess.getAccountByEmail(
-                newTutor.getOwner().getEmail()).isPresent()) {
+                newTutor.getEmail()).isPresent()) {
             tutors.add(newTutor);
             return newTutor;
         } else {
@@ -36,7 +36,7 @@ public class TutorStub implements ITutorPersistence {
     @Override
     public ITutor updateTutor(ITutor newTutor) {
         Optional<ITutor> maybeTutor =
-                getTutorByEmail(newTutor.getOwner().getEmail());
+                getTutorByEmail(newTutor.getEmail());
 
         maybeTutor.ifPresent(tutor -> {
             tutor
