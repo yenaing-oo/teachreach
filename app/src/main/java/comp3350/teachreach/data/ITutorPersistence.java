@@ -1,6 +1,7 @@
 package comp3350.teachreach.data;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.objects.ITutor;
@@ -13,7 +14,7 @@ public interface ITutorPersistence {
 
     Optional<ITutor> getTutorByEmail(String email);
 
-    ArrayList<ITutor> getTutors();
+    List<ITutor> getTutors();
 
-    ArrayList<ITutor> getTutorsByName(String name);
+    List<ITutor> getTutorsByName(String name);
 }

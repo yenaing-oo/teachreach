@@ -14,11 +14,11 @@ public class Tutor extends User implements ITutor {
     private List<ISession> approvedFutureSessions;
     private List<List<TimeSlice>> preferredAvailability;
 
-    public Tutor(String name,
+    public Tutor(String email,
+                 String name,
                  String pronouns,
-                 String major,
-                 IAccount parentAccount) {
-        super(name, pronouns, major, parentAccount);
+                 String major) {
+        super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
         this.preferredAvailability = new ArrayList<>(7);
@@ -30,12 +30,12 @@ public class Tutor extends User implements ITutor {
         this.approvedFutureSessions = new ArrayList<>();
     }
 
-    public Tutor(String name,
+    public Tutor(String email,
+                 String name,
                  String pronouns,
                  String major,
-                 IAccount parentAccount,
                  double hourlyRate) {
-        super(name, pronouns, major, parentAccount);
+        super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
         this.preferredAvailability = new ArrayList<>(7);
@@ -80,7 +80,7 @@ public class Tutor extends User implements ITutor {
 
     @Override
     public boolean equals(ITutor other) {
-        return this.getOwner().getEmail().equals(other.getOwner().getEmail());
+        return this.getEmail().equals(other.getEmail());
     }
 
     public Tutor addReview(int score) {

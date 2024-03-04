@@ -7,10 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Optional;
+import java.util.List;
 
 import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.objects.Student;
 
@@ -33,11 +32,8 @@ public class StudentHSQLDB implements IStudentPersistence {
         final String major = rs.getString("major");
         final String pronouns = rs.getString("pronouns");
         final String email = rs.getString("email");
-        final String password = rs.getString("password");
 
-        Account account = new Account(email, password);
-        Student student = new Student(name, major, pronouns, account);
-        account.setStudentProfile(student);
+        Student student = new Student(email, name, major, pronouns);
         return student;
     }
 
@@ -46,11 +42,12 @@ public class StudentHSQLDB implements IStudentPersistence {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO student VALUES(?, ?, ?, ?)");
-            pst.setString(1, newStudent.getOwner().getEmail());
+            pst.setString(1, newStudent.getEmail());
             pst.setString(2, newStudent.getName());
             pst.setString(3, newStudent.getMajor());
             pst.setString(4, newStudent.getPronouns());
             pst.executeUpdate();
+            pst.close();
             return newStudent;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -67,8 +64,9 @@ public class StudentHSQLDB implements IStudentPersistence {
             pst.setString(1, newStudent.getName());
             pst.setString(2, newStudent.getMajor());
             pst.setString(3, newStudent.getPronouns());
-            pst.setString(4, newStudent.getOwner().getEmail());
+            pst.setString(4, newStudent.getEmail());
             pst.executeUpdate();
+            pst.close();
             return newStudent;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -76,31 +74,11 @@ public class StudentHSQLDB implements IStudentPersistence {
     }
 
     @Override
-    public Optional<IStudent> getStudentByEmail(String email) {
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM account " +
-                            "JOIN student ON account.email = student.email " +
-                            "WHERE account.email = ?");
-            pst.setString(1, email);
-            final ResultSet rs = pst.executeQuery();
-            IStudent student = null;
-            if (rs.next()) {
-                student = fromResultSet(rs);
-            }
-            return Optional.ofNullable(student);
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public ArrayList<IStudent> getStudents() {
-        final ArrayList<IStudent> students = new ArrayList<>();
+    public List<IStudent> getStudents() {
+        final List<IStudent> students = new ArrayList<>();
         try (final Connection c = connection()) {
             final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery("SELECT * FROM student" +
-                    "JOIN account ON account.email = student.email");
+            final ResultSet rs = st.executeQuery("SELECT * FROM student");
             while (rs.next()) {
                 final IStudent student = fromResultSet(rs);
                 students.add(student);

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
@@ -33,27 +34,11 @@ public class AccountHSQLDB implements IAccountPersistence {
         final String email = rs.getString("account.email");
         final String password = rs.getString("account.password");
 
-        final String studentName = rs.getString("student.name");
-        final String studentMajor = rs.getString("student.major");
-        final String studentPronouns = rs.getString("student.pronouns");
-
-        Account resultAccount = new Account(email, password);
-        resultAccount.setStudentProfile(new Student(
-                studentName, studentMajor, studentPronouns, resultAccount));
-
-        if (rs.getString("tutor.email") != null) {
-            final String tutorName = rs.getString("tutor.name");
-            final String tutorMajor = rs.getString("tutor.major");
-            final String tutorPronouns = rs.getString("tutor.pronouns");
-            resultAccount.setTutorProfile(new Tutor(
-                    tutorName, tutorMajor, tutorPronouns, resultAccount));
-        }
-
-        return resultAccount;
+        return new Account(email, password);
     }
 
     @Override
-    public IAccount storeAccount(IAccount newAccount) {
+    public synchronized IAccount storeAccount(IAccount newAccount) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO account VALUES(?, ?)");
@@ -68,7 +53,7 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     @Override
-    public boolean updateAccount(IAccount existingAccount) {
+    public synchronized boolean updateAccount(IAccount existingAccount) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "UPDATE account " +
@@ -86,36 +71,12 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     @Override
-    public Optional<IAccount> getAccountByEmail(String email) {
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM account " +
-                            "JOIN student ON student.email = account.email " +
-                            "JOIN tutor ON tutor.email = account.email " +
-                            "WHERE account.email = ?");
-            pst.setString(1, email);
-            final ResultSet rs = pst.executeQuery();
-            IAccount account = null;
-            if (rs.next()) {
-                account = fromResultSet(rs);
-            }
-            pst.close();
-            rs.close();
-            return Optional.ofNullable(account);
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public List<IAccount> getAccounts() {
+    public synchronized List<IAccount> getAccounts() {
         final List<IAccount> accounts = new ArrayList<>();
         try (final Connection c = connection()) {
             final Statement st = c.createStatement();
             final ResultSet rs = st.executeQuery(
-                    "SELECT * FROM account " +
-                            "JOIN student ON student.email = account.email " +
-                            "JOIN tutor ON tutor.email = account.email");
+                    "SELECT * FROM account");
             while (rs.next()) {
                 accounts.add(fromResultSet(rs));
             }

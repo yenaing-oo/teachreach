@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.objects.ITutor;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
@@ -22,9 +23,10 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     Context context;
     List<ITutor> tutorList;
 
-    public SearchRecyclerViewAdapter(Context context, List<ITutor> tutorList, RecyclerViewInterface recyclerViewInterface) {
+    public SearchRecyclerViewAdapter(Context context,
+                                     RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.tutorList = tutorList;
+        this.tutorList = Server.getTutorDataAccess().getTutors();
         this.recyclerViewInterface = recyclerViewInterface;
     }
 

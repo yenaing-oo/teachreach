@@ -1,11 +1,48 @@
 package comp3350.teachreach.objects;
 
-public class Student extends User implements IStudent {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 
-    public Student(String name,
+public class Student extends User implements IStudent {
+    private List<ISession> sessionsPendingForApproval;
+    private List<ISession> scheduledSessions;
+
+    public Student(String email,
+                   String name,
                    String pronouns,
-                   String major,
-                   IAccount parentAccount) {
-        super(name, pronouns, major, parentAccount);
+                   String major) {
+        super(email, name, pronouns, major);
+        sessionsPendingForApproval = new ArrayList<>();
+        scheduledSessions = new ArrayList<>();
+    }
+
+    public List<ISession> getScheduledSessions() {
+        return scheduledSessions;
+    }
+
+    public List<ISession> getSessionsPendingForApproval() {
+        return sessionsPendingForApproval;
+    }
+
+    // This moves specified  approved Session to the approved List
+    //  if it's found in the pending List.
+    public boolean pendingSessionApproved(ISession approvedSession) {
+        assert (approvedSession.getStage());
+        final Predicate<ISession> sessionIDMatch = session ->
+                session.getSessionID() == approvedSession.getSessionID();
+        return sessionsPendingForApproval.removeIf(sessionIDMatch) &&
+                scheduledSessions.add(
+                        sessionsPendingForApproval
+                                .stream()
+                                .filter(sessionIDMatch)
+                                .findFirst()
+                                .orElseThrow(NoSuchElementException::new));
+    }
+
+    public Student addPendingSession(ISession newSession) {
+        sessionsPendingForApproval.add(newSession);
+        return this;
     }
 }

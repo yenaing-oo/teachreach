@@ -64,17 +64,17 @@ public class SessionHSQLDB implements ISessionPersistence {
 
     private Optional<ISession> fromResultSetWithinRange(
             final ResultSet rs, final TimeSlice range) throws SQLException {
-        ISession resultSession = null;
+        ISession resultSession;
         final Instant startTime = ((OffsetDateTime) rs
                 .getObject("start_date_time"))
                 .toInstant();
         final Instant endTime = ((OffsetDateTime) rs
                 .getObject("end_date_time"))
                 .toInstant();
-        if (range.canContain(new TimeSlice(
-                startTime, endTime, Duration.between(startTime, endTime)))) {
-            resultSession = fromResultSet(rs);
-        }
+        final TimeSlice sessionTime =new TimeSlice(
+                startTime, endTime,
+                Duration.between(startTime, endTime));
+        resultSession = range.canContain(sessionTime) ? fromResultSet(rs) : null;
         return Optional.ofNullable(resultSession);
     }
 
@@ -164,11 +164,11 @@ public class SessionHSQLDB implements ISessionPersistence {
         final List<ISession> sessions = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM session WHERE student_email = ?");
+                    "SELECT * FROM session " +
+                            "WHERE student_email = ?");
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                fromResultSetWithinRange(rs, range).ifPresent(
-                        session -> sessions.add(session));
+                fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
             }
             pst.close();
             rs.close();
@@ -187,8 +187,7 @@ public class SessionHSQLDB implements ISessionPersistence {
                     "SELECT * FROM session WHERE tutor_email = ?");
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                fromResultSetWithinRange(rs, range).ifPresent(
-                        session -> sessions.add(session));
+                fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
             }
             pst.close();
             rs.close();

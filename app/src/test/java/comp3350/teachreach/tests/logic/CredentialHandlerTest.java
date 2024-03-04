@@ -1,15 +1,23 @@
 package comp3350.teachreach.tests.logic;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import comp3350.teachreach.data.stubs.AccountStub;
+import java.util.NoSuchElementException;
+
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
+import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
+import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.stubs.StudentStub;
 import comp3350.teachreach.data.stubs.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
@@ -23,9 +31,13 @@ public class CredentialHandlerTest {
     @Before
     public void setUp() throws AccountCreatorException {
         System.out.println("Starting a new test for CredentialHandler");
-        IAccountPersistence accountsDataAccess = new AccountStub();
-        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
-        ITutorPersistence tutorsDataAccess = new TutorStub(accountsDataAccess);
+//        IAccountPersistence accountsDataAccess = new AccountStub();
+//        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
+//        ITutorPersistence tutorsDataAccess = new TutorStub(accountsDataAccess);
+//        credentialHandler = new CredentialHandler(accountsDataAccess);
+        IAccountPersistence accountsDataAccess = Server.getAccountDataAccess();
+        IStudentPersistence studentsDataAccess = Server.getStudentDataAccess();
+        ITutorPersistence tutorsDataAccess = Server.getTutorDataAccess();
         credentialHandler = new CredentialHandler(accountsDataAccess);
 
         AccountCreator accountCreator = new AccountCreator(
@@ -60,18 +72,21 @@ public class CredentialHandlerTest {
         assertFalse(credentialHandler.validateCredential(
                 "fulopv@myumanitoba.ca",
                 "Nagyon Jo"));
-        assertFalse(credentialHandler.validateCredential(
-                "philipv@myumanitoba.ca",
-                "Nagyon jo"));
+        assertThrows(NoSuchElementException.class,
+                () -> credentialHandler.validateCredential(
+                        "philipv@myumanitoba.ca",
+                        "Nagyon jo"));
     }
 
     @Test
     public void testValidateEmptyCredential() {
-        assertFalse(credentialHandler.validateCredential(
-                "fulopv@myumanitoba.ca",
-                ""));
-        assertFalse(credentialHandler.validateCredential(
-                "",
-                "Nagyon jo"));
+        assertThrows(IllegalArgumentException.class,
+                () -> credentialHandler.validateCredential(
+                        "fulopv@myumanitoba.ca",
+                        ""));
+        assertThrows(IllegalArgumentException.class,
+                () -> credentialHandler.validateCredential(
+                        "",
+                        "Nagyon jo"));
     }
 }

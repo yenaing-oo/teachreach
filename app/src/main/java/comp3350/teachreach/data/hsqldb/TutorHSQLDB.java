@@ -11,11 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
-import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 
 public class TutorHSQLDB implements ITutorPersistence {
@@ -32,33 +30,16 @@ public class TutorHSQLDB implements ITutorPersistence {
     }
 
     private ITutor fromResultSet(final ResultSet rs) throws SQLException {
-        final String email = rs.getString("account.email");
-        final String password = rs.getString("account.password");
-
-        final String studentName = rs.getString("student.name");
-        final String studentMajor = rs.getString("student.major");
-        final String studentPronouns = rs.getString("student.pronouns");
-
-        Account resultAccount = new Account(email, password);
-        resultAccount.setStudentProfile(new Student(
-                studentName,
-                studentMajor,
-                studentPronouns,
-                resultAccount));
-
+        final String email = rs.getString("tutor.email");
         final String tutorName = rs.getString("tutor.name");
         final String tutorMajor = rs.getString("tutor.major");
         final String tutorPronouns = rs.getString("tutor.pronouns");
 
         Tutor resultTutor = new Tutor(
+                email,
                 tutorName,
                 tutorMajor,
-                tutorPronouns,
-                resultAccount);
-        resultAccount.setTutorProfile(resultTutor);
-        getTutoredCourses(email).forEach(resultTutor::addCourse);
-        // TO-DO:
-        //      set up rest of the profile
+                tutorPronouns);
 
         return resultTutor;
     }
@@ -69,22 +50,24 @@ public class TutorHSQLDB implements ITutorPersistence {
                 rs.getString("course.course_name"));
     }
 
-    private List<ICourse> getTutoredCourses(String email) {
+    private List<ICourse> getTutoredCourses(String tutorEmail) {
         final List<ICourse> resultCourses = new ArrayList<>();
         try (final Connection c = connection()) {
-            final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery(
+            final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM tutor_course " +
-                            "JOIN tutor ON tutor.email = tutor_course.email " +
-                            "JOIN course ON tutor_course.tutored_course_code " +
-                            "= course.course_code " +
+                            "JOIN tutor " +
+                            "ON tutor.email = tutor_course.tutor_email " +
+                            "JOIN course " +
+                            "ON tutored_course_code = course_code " +
                             "WHERE tutor.email = ?");
+            pst.setString(1, tutorEmail);
+            final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final ICourse course = fromResultSetCourse(rs);
                 resultCourses.add(course);
             }
+            pst.close();
             rs.close();
-            st.close();
             return resultCourses;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -92,12 +75,23 @@ public class TutorHSQLDB implements ITutorPersistence {
     }
 
     @Override
-    public ITutor storeTutor(ITutor newTutor) throws RuntimeException {
-        return null;
+    public ITutor storeTutor(ITutor newTutor) throws PersistenceException {
+        try (final Connection c = this.connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "INSERT INTO tutor VALUES(?, ?, ?, ?)");
+            pst.setString(1, newTutor.getEmail());
+            pst.setString(2, newTutor.getName());
+            pst.setString(3, newTutor.getMajor());
+            pst.setString(4, newTutor.getPronouns());
+            pst.executeUpdate();
+            return newTutor;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public ITutor updateTutor(ITutor newTutor) throws RuntimeException {
+    public ITutor updateTutor(ITutor newTutor) throws PersistenceException {
         return null;
     }
 
@@ -121,12 +115,23 @@ public class TutorHSQLDB implements ITutorPersistence {
     }
 
     @Override
-    public ArrayList<ITutor> getTutors() {
-        return null;
+    public List<ITutor> getTutors() {
+        final List<ITutor> tutors = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final Statement st = c.createStatement();
+            final ResultSet rs = st.executeQuery(
+                    "SELECT * FROM tutor");
+            while (rs.next()) {
+                tutors.add(fromResultSet(rs));
+            }
+            return tutors;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
-    public ArrayList<ITutor> getTutorsByName(String name) {
+    public List<ITutor> getTutorsByName(String name) {
         return null;
     }
 }

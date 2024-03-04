@@ -3,15 +3,17 @@ package comp3350.teachreach.objects;
 public interface IUser {
     String getName();
 
-    void setName(String name);
+    IUser setName(String name);
 
     String getPronouns();
 
-    void setPronouns(String pronouns);
+    IUser setPronouns(String pronouns);
 
     String getMajor();
 
-    void setMajor(String major);
+    IUser setMajor(String major);
 
-    IAccount getOwner();
+    String getEmail();
+
+    IUser setEmail(String email);
 }

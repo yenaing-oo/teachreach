@@ -51,8 +51,7 @@ public class AccountStub implements IAccountPersistence {
         return result.get();
     }
 
-    @Override
-    public Optional<IAccount> getAccountByEmail(String email) {
+    private Optional<IAccount> getAccountByEmail(String email) {
         return accounts
                 .stream()
                 .filter(account -> account.getEmail().equals(email))

@@ -1,13 +1,12 @@
 package comp3350.teachreach.logic;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.ICoursePersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 
 public class SearchSortHandler {
@@ -16,7 +15,7 @@ public class SearchSortHandler {
 
     public SearchSortHandler() {
         dataAccessTutor = Server.getTutorDataAccess();
-        dataAccessCourse = Server.getCourses();
+        dataAccessCourse = Server.getCourseDataAccess();
     }
 
     public SearchSortHandler(ITutorPersistence tutorDataAccess,
@@ -25,11 +24,11 @@ public class SearchSortHandler {
         dataAccessCourse = courseDataAccess;
     }
 
-    public ArrayList<ITutor> getListOfTutors() {
+    public List<ITutor> getListOfTutors() {
         return dataAccessTutor.getTutors();
     }
 
-    public ArrayList<Course> getListOfCourses() {
+    public List<ICourse> getListOfCourses() {
         return dataAccessCourse.getCourses();
     }
 

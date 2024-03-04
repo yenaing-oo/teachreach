@@ -1,63 +1,59 @@
 package comp3350.teachreach.application;
 
-import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
-import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
-import comp3350.teachreach.data.stubs.AccountStub;
-import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.ICoursePersistence;
+import comp3350.teachreach.data.ISessionPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
+import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
+import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
+import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
 import comp3350.teachreach.data.stubs.SessionStub;
-import comp3350.teachreach.data.stubs.StudentStub;
 import comp3350.teachreach.data.stubs.TutorStub;
 
 public class Server {
-    private static IAccountPersistence accountsDataAccess;
+    private static IAccountPersistence accountDataAccess;
 
-    private static IStudentPersistence studentsDataAccess;
-    private static ITutorPersistence tutorsDataAccess;
-    private static CourseStub courses;
-    private static SessionStub sessions;
+    private static IStudentPersistence studentDataAccess;
+    private static ITutorPersistence tutorDataAccess;
+    private static ICoursePersistence courseDataAccess;
+    private static ISessionPersistence sessionDataAccess;
 
     public static synchronized IAccountPersistence getAccountDataAccess() {
-        if (accountsDataAccess == null){
-            // accountsDataAccess = new AccountStub();
-            accountsDataAccess = new AccountHSQLDB(TRData.getDBPathName());
+        if (accountDataAccess == null) {
+            accountDataAccess = new AccountHSQLDB(TRData.getDBPathName());
         }
-
-        return accountsDataAccess;
-    }
-    public static synchronized IStudentPersistence getStudentDataAccess(){
-        if (studentsDataAccess == null){
-            // studentsDataAccess = new StudentStub(getAccountDataAccess());
-            studentsDataAccess = new StudentHSQLDB(TRData.getDBPathName());
-        }
-
-        return studentsDataAccess;
+        return accountDataAccess;
     }
 
-    public static synchronized ITutorPersistence getTutorDataAccess(){
-        if (tutorsDataAccess == null){
-            tutorsDataAccess = new TutorStub(getAccountDataAccess());
+    public static synchronized IStudentPersistence getStudentDataAccess() {
+        if (studentDataAccess == null) {
+            studentDataAccess = new StudentHSQLDB(TRData.getDBPathName());
         }
-
-        return tutorsDataAccess;
+        return studentDataAccess;
     }
 
-    public static synchronized CourseStub getCourses(){
-        if ( courses == null){
-            courses = new CourseStub();
+    public static synchronized ITutorPersistence getTutorDataAccess() {
+        if (tutorDataAccess == null) {
+            tutorDataAccess = new TutorHSQLDB(TRData.getDBPathName());
         }
+        return tutorDataAccess;
+    }
 
-        return  courses;
+    public static synchronized ICoursePersistence getCourseDataAccess() {
+        if (courseDataAccess == null) {
+            courseDataAccess = new CourseHSQLDB(TRData.getDBPathName());
+        }
+        return courseDataAccess;
     }
 
 
-    public static synchronized SessionStub getSessionDataAccess(){
-        if (sessions == null){
-            sessions = new SessionStub();
+    public static synchronized ISessionPersistence getSessionDataAccess() {
+        if (sessionDataAccess == null) {
+            sessionDataAccess = new SessionHSQLDB(TRData.getDBPathName());
         }
-
-        return sessions;
+        return sessionDataAccess;
     }
 }

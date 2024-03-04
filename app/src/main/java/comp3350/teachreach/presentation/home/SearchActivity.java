@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.ICourse;
 import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
@@ -45,7 +47,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         Button sortButton = findViewById(R.id.sortButton);
 
         handler = new SearchSortHandler();
-        tutorList = new ArrayList<>();
+        tutorList = Server.getTutorDataAccess().getTutors();
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
@@ -72,17 +74,16 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
         populateTutors();
 
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setUpCourseList() {
-        ArrayList<Course> courses = handler.getListOfCourses();
+        List<ICourse> courses = handler.getListOfCourses();
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
-
     }
 
     private void populateTutors() {

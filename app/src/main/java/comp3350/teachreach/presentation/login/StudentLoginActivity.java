@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.presentation.home.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
@@ -33,7 +34,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnStudentLogin);
         tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        credentialHandler = new CredentialHandler();
+        credentialHandler = new CredentialHandler(Server.getAccountDataAccess());
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,13 +57,20 @@ public class StudentLoginActivity extends AppCompatActivity {
         String password = etStudentPassword.getText().toString().trim();
 
 //        if (validateInputs(studentEmail, password)) {
-        if (credentialHandler.validateCredential(studentEmail, password)) {
-            // If the credentials are correct, navigate to the SearchActivity
-            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
-            startActivity(intent);
-            finish(); // Close the current activity
-        } else {
-            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+        try {
+            final boolean correctCredential =
+                    credentialHandler.validateCredential(studentEmail, password);
+            if (correctCredential) {
+                // If the credentials are correct, navigate to the SearchActivity
+                Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish(); // Close the current activity
+            } else {
+                Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Account does not exist",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 //    }

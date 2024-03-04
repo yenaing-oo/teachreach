@@ -39,7 +39,7 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public String getUserEmail() {
-        return this.theTutor.getOwner().getEmail();
+        return this.theTutor.getEmail();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public IAccount getUserAccount() {
-        return this.theTutor.getOwner();
+        return this.theTutor.getEmail();
     }
 
     @Override

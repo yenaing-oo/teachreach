@@ -17,5 +17,5 @@ public interface IAccountCreator {
             String major,
             String pronoun) throws RuntimeException;
 
-    IAccount buildAccount();
+    IAccount buildAccount() throws AccountCreatorException;
 }

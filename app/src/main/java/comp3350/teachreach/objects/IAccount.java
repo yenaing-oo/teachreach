@@ -13,9 +13,9 @@ public interface IAccount {
     void setPassword(String password);
     boolean isTutor();
 
-    Account setStudentProfile(IStudent profile);
+    IAccount setStudentProfile(IStudent profile);
 
-    Account setTutorProfile(ITutor profile);
+    IAccount setTutorProfile(ITutor profile);
 
     Optional<IStudent> getStudentProfile();
 

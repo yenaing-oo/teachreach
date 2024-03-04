@@ -1,6 +1,7 @@
 package comp3350.teachreach.data.stubs;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -12,7 +13,7 @@ import comp3350.teachreach.objects.ITutor;
 public class TutorStub implements ITutorPersistence {
 
     IAccountPersistence accountsDataAccess;
-    ArrayList<ITutor> tutors;
+    List<ITutor> tutors;
 
     public TutorStub(IAccountPersistence accounts) {
         accountsDataAccess = accounts;
@@ -62,12 +63,12 @@ public class TutorStub implements ITutorPersistence {
     }
 
     @Override
-    public ArrayList<ITutor> getTutors() {
+    public List<ITutor> getTutors() {
         return this.tutors;
     }
 
     @Override
-    public ArrayList<ITutor> getTutorsByName(String name) {
+    public List<ITutor> getTutorsByName(String name) {
         return tutors
                 .stream()
                 .filter(tutor -> tutor.getName().contains(name))

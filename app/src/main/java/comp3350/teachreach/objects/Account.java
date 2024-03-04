@@ -38,18 +38,18 @@ public class Account implements IAccount {
         return Optional.ofNullable(this.studentProfile);
     }
 
-    public Account setStudentProfile(IStudent profile) {
+    public IAccount setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
-        return this;
+        return studentProfile.setOwner(this);
     }
 
     public Optional<ITutor> getTutorProfile() {
         return Optional.ofNullable(this.tutorProfile);
     }
 
-    public Account setTutorProfile(ITutor profile) {
+    public IAccount setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
-        return this;
+        return tutorProfile.setOwner(this);
     }
 
 }
