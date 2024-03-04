@@ -8,7 +8,6 @@ import android.widget.CalendarView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import comp3350.teachreach.R;
 
@@ -28,7 +27,7 @@ public class DateSelectionFragment extends Fragment {
     private String mParam2;
 
     private View fragmentView;
-    private FragmentManager fragmentManager;
+    private OnDateChangeListener dateChangeListener;
 
     public DateSelectionFragment() {
         // Required empty public constructor
@@ -54,8 +53,6 @@ public class DateSelectionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        fragmentManager = requireActivity().getSupportFragmentManager();
-
         if (getArguments() != null) {
             mParam1 = getArguments().getString(EMAIL);
             // fetch available dates for tutor associated with email
@@ -73,22 +70,20 @@ public class DateSelectionFragment extends Fragment {
         return fragmentView;
     }
 
-    private void addTimeSlotSelectionFragment() {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.fragmentView, TimeSlotSelectionFragment.newInstance(), "fragment")
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void setupCalendar() {
         CalendarView calendarView = fragmentView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                addTimeSlotSelectionFragment();
+                if (dateChangeListener != null) {
+                    dateChangeListener.onDateChanged(year, month, dayOfMonth);
+                }
             }
         });
+    }
+
+    public void setOnDateChangeListener(OnDateChangeListener listener) {
+        this.dateChangeListener = listener;
     }
 
 }

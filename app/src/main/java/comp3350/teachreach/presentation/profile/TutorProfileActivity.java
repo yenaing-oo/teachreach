@@ -16,7 +16,7 @@ import comp3350.teachreach.presentation.booking.BookingActivity;
 public class TutorProfileActivity extends AppCompatActivity {
 
     private TextView tvCourses, tvPrice, tvRating, tvAvailability, tvPreferredCourse;
-    private Button btnUpcomingSessions;
+    private Button btnBookSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class TutorProfileActivity extends AppCompatActivity {
         tvPrice = findViewById(R.id.tvPrice);
         tvRating = findViewById(R.id.tvRating);
         tvPreferredCourse = findViewById(R.id.tvPreferredCourse);
-        btnUpcomingSessions = findViewById(R.id.btnUpcomingSessions);
+        btnBookSession = findViewById(R.id.btnBookSession);
 
 //        // Populate these views with real data from your database or passed from the previous activity
 //
@@ -40,10 +40,9 @@ public class TutorProfileActivity extends AppCompatActivity {
 //        tvPrice.setText(String.valueOf(tutorProfile.getHourlyRate()));
 //        tvRating.setText(String.valueOf(tutorProfile.getAvgReview()));
 
-        btnUpcomingSessions.setOnClickListener(new View.OnClickListener() {
+        btnBookSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to BookingUI
                 Intent intent = new Intent(TutorProfileActivity.this, BookingActivity.class);
                 startActivity(intent);
             }
