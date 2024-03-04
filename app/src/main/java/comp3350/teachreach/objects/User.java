@@ -1,6 +1,6 @@
 package comp3350.teachreach.objects;
 
-public class User {
+public abstract class User {
     private String name;
     private String pronouns;
     private String major;

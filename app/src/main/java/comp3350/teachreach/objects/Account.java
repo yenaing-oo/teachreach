@@ -3,14 +3,22 @@ package comp3350.teachreach.objects;
 import java.util.Optional;
 
 public class Account {
+    private int accountID;
     private String email;
     private String password;
     private Tutor tutorProfile = new NullTutor();
     private Student studentProfile = null;
 
-    private Account(String email, String password) {
+    public Account(String email, String password) {
         this.email = email;
         this.password = password;
+        this.accountID = -1;
+    }
+
+    public Account(String email, String password, int accountID) {
+        this.email = email;
+        this.password = password;
+        this.accountID = accountID;
     }
 
     public String getEmail() {
@@ -67,8 +75,7 @@ public class Account {
         }
 
         public Optional<Account> build() {
-            return this.account.getStudentProfile().isPresent() ?
-                    Optional.of(this.account) : Optional.empty();
+            return this.account.getStudentProfile().isPresent() ? Optional.of(this.account) : Optional.empty();
         }
     }
 }

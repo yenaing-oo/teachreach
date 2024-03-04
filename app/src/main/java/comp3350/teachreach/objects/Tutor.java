@@ -3,6 +3,7 @@ package comp3350.teachreach.objects;
 import java.util.ArrayList;
 
 public class Tutor extends User {
+    private int tutorID;
     private ArrayList<Course> tutoredCourses;
     private double hourlyRate;
     private int reviewSum;
@@ -16,14 +17,24 @@ public class Tutor extends User {
         this.tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
         this.availability = new boolean[7][24];
-        this.hourlyRate = 10; //Arbitrary default
+        this.hourlyRate = 10; // Arbitrary default
         this.reviewSum = 0;
         this.reviewCount = 0;
-
+        this.tutorID = -1;
     }
 
-    public Tutor(String name, String pronouns, String major, String email,
-                 String password, double hourlyRate) {
+    public Tutor(String name, String pronouns, String major, int tutorID) {
+        super(name, pronouns, major);
+        this.tutoredCourses = new ArrayList<Course>();
+        this.preferredLocations = new ArrayList<String>();
+        this.availability = new boolean[7][24];
+        this.hourlyRate = 10; // Arbitrary default
+        this.reviewSum = 0;
+        this.reviewCount = 0;
+        this.tutorID = tutorID;
+    }
+
+    public Tutor(String name, String pronouns, String major, double hourlyRate) {
         super(name, pronouns, major);
         tutoredCourses = new ArrayList<Course>();
         this.preferredLocations = new ArrayList<String>();
@@ -31,20 +42,28 @@ public class Tutor extends User {
         this.reviewSum = 0;
         this.reviewCount = 0;
         this.hourlyRate = hourlyRate;
+        this.tutorID = -1;
+    }
 
+    public Tutor(String name, String pronouns, String major, double hourlyRate, int tutorID) {
+        super(name, pronouns, major);
+        tutoredCourses = new ArrayList<Course>();
+        this.preferredLocations = new ArrayList<String>();
+        this.availability = new boolean[7][24];
+        this.reviewSum = 0;
+        this.reviewCount = 0;
+        this.hourlyRate = hourlyRate;
+        this.tutorID = tutorID;
     }
 
     public ArrayList<Course> getCourses() {
         return tutoredCourses;
     }
 
-
-
     public Tutor addCourse(Course course) {
         this.tutoredCourses.add(course);
         return this;
     }
-
 
     public ArrayList<String> getLocations() {
         return this.preferredLocations;
@@ -71,6 +90,14 @@ public class Tutor extends User {
         this.reviewCount++;
     }
 
+    public void setReviewSum(int reviewSum) {
+        this.reviewSum = reviewSum;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
     public float getRating() {
         return this.reviewCount > 0 ? ((float) this.reviewSum / (float) this.reviewCount) : 0;
     }
@@ -86,6 +113,14 @@ public class Tutor extends User {
 
     public void setAvailability(int day, int hour, boolean avail) {
         this.availability[day][hour] = avail;
+    }
+
+    public void setFullAvailability(boolean[][] availability) {
+        this.availability = availability;
+    }
+
+    public void setFullPrefAvailability(boolean[][] availability) {
+        this.preferredAvailability = availability;
     }
 
     public int getReviewCount() {
