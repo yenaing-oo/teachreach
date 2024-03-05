@@ -8,16 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.NullTutor;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AccountHSQLDB implements IAccountPersistence {
     private final String dbPath;
@@ -95,7 +93,7 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     @Override
-    public synchronized IAccount storeAccount(IAccount newAccount) {
+    public IAccount storeAccount(IAccount newAccount) {
         try (final Connection c = connection()) {
             int tutorID = -1;
             if(newAccount.getTutorProfile().isPresent()) {
@@ -131,7 +129,7 @@ public class AccountHSQLDB implements IAccountPersistence {
     }
 
     @Override
-    public synchronized boolean updateAccount(IAccount existingAccount) {
+    public boolean updateAccount(IAccount existingAccount) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "UPDATE ACCOUNTS " +
