@@ -57,8 +57,7 @@ public class TutorLoginActivity extends AppCompatActivity {
         Server.getTutorDataAccess()
                 .getTutorByEmail(email)
                 .ifPresentOrElse(tutor -> {
-                    if (credentialHandler.validateCredential(email, password)
-                            && tutor.getOwner().isTutor()) {
+                    if (credentialHandler.validateCredential(email, password)) {
                         Intent intent = new Intent(
                                 TutorLoginActivity.this,
                                 TutorProfileActivity.class);

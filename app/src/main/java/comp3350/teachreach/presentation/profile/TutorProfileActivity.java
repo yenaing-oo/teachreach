@@ -35,8 +35,7 @@ public class TutorProfileActivity extends AppCompatActivity {
 
         ITutorProfile tutorProfile =
                 new TutorProfile(
-                        getIntent().getStringExtra("TUTOR_EMAIL_KEY"),
-                        Server.getTutorDataAccess());
+                        getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
 
         tvCourses.setText(tutorProfile.getCourses().toString());
         tvPrice.setText(String.valueOf(tutorProfile.getHourlyRate()));

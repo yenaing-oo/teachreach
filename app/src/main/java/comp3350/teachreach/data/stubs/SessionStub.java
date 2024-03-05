@@ -28,7 +28,7 @@ public class SessionStub implements ISessionPersistence {
         sessionIDCounter = 0;
 
         accountsDataAccess = new AccountStub();
-        studentsDataAccess = new StudentStub(accountsDataAccess);
+        studentsDataAccess = new StudentStub();
         tutorsDataAccess = new TutorStub(accountsDataAccess);
     }
 
@@ -76,7 +76,6 @@ public class SessionStub implements ISessionPersistence {
                 .filter(session ->
                         range.canContain(session.getTime()) &&
                                 session.getStudent()
-                                        .getOwner()
                                         .getEmail()
                                         .equals(studentEmail))
                 .collect(Collectors.toList());
@@ -90,7 +89,6 @@ public class SessionStub implements ISessionPersistence {
                 .filter(session ->
                         range.canContain(session.getTime()) &&
                                 session.getTutor()
-                                        .getOwner()
                                         .getEmail()
                                         .equals(studentEmail))
                 .collect(Collectors.toList());
@@ -102,7 +100,6 @@ public class SessionStub implements ISessionPersistence {
                 .stream()
                 .filter(session ->
                         session.getTutor()
-                                .getOwner()
                                 .getEmail()
                                 .equals(tutorEmail) &&
                                 session.getStage())

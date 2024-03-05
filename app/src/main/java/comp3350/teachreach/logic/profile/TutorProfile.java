@@ -4,7 +4,6 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
 import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
 import comp3350.teachreach.objects.Course;
@@ -66,8 +65,10 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public IAccount getUserAccount() {
-        return accessAccount.getAccountByEmail(theTutor.getEmail());
+    public IAccount getUserAccount() throws NoSuchElementException {
+        return accessAccount
+                .getAccountByEmail(theTutor.getEmail())
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override

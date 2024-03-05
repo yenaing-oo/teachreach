@@ -11,7 +11,7 @@ public class TutorParser {
     private final ITutorProfile tutorProfile;
 
     public TutorParser(ITutor tutor) {
-        this.tutorProfile = new TutorProfile(tutor, Server.getTutorDataAccess());
+        this.tutorProfile = new TutorProfile(tutor);
     }
 
     public String getName() {

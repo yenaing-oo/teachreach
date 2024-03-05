@@ -2,6 +2,7 @@ package comp3350.teachreach.logic.dataAccessObject;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.IAccountPersistence;
@@ -28,7 +29,7 @@ public class AccessAccount {
         return Collections.unmodifiableList(accounts);
     }
 
-    public IAccount getAccountByEmail(String email) {
+    public Optional<IAccount> getAccountByEmail(String email) {
         if (accounts == null) {
             accounts = accountPersistence.getAccounts();
         }
@@ -39,7 +40,7 @@ public class AccessAccount {
                     account = null;
                     accounts = null;
                 });
-        return account;
+        return Optional.ofNullable(account);
     }
 
     public IAccount insertAccount(IAccount newAccount) {
