@@ -35,13 +35,11 @@ public class TutorHSQLDB implements ITutorPersistence {
         final String tutorMajor = rs.getString("tutor.major");
         final String tutorPronouns = rs.getString("tutor.pronouns");
 
-        Tutor resultTutor = new Tutor(
+        return new Tutor(
                 email,
                 tutorName,
                 tutorMajor,
                 tutorPronouns);
-
-        return resultTutor;
     }
 
     private ICourse fromResultSetCourse(final ResultSet rs) throws SQLException {
@@ -124,6 +122,8 @@ public class TutorHSQLDB implements ITutorPersistence {
             while (rs.next()) {
                 tutors.add(fromResultSet(rs));
             }
+            st.close();
+            rs.close();
             return tutors;
         } catch (final SQLException e) {
             throw new PersistenceException(e);

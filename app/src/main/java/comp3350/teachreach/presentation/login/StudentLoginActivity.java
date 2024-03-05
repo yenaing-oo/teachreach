@@ -34,7 +34,7 @@ public class StudentLoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnStudentLogin);
         tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        credentialHandler = new CredentialHandler(Server.getAccountDataAccess());
+        credentialHandler = new CredentialHandler();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

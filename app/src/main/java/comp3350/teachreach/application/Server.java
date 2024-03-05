@@ -10,8 +10,6 @@ import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
-import comp3350.teachreach.data.stubs.SessionStub;
-import comp3350.teachreach.data.stubs.TutorStub;
 
 public class Server {
     private static IAccountPersistence accountDataAccess;

@@ -18,29 +18,31 @@ public class TutorProfile implements ITutorProfile {
     private AvailabilityManager availabilityManager;
     private AccessAccount accessAccount;
     private AccessTutor accessTutor;
+    private List<ITutor> tutors;
 
     private TutorProfile() {
         theTutor = null;
         availabilityManager = null;
         this.accessTutor = new AccessTutor();
         this.accessAccount = new AccessAccount();
+        tutors = accessTutor.getTutors();
     }
 
     public TutorProfile(
             ITutor theTutor) {
-        super();
+        this();
         this.theTutor = theTutor;
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public TutorProfile(
             String tutorEmail) throws NoSuchElementException {
-        super();
-        try {
-            this.theTutor = accessTutor.getTutorByEmail(tutorEmail);
-        } catch (NullPointerException e) {
-            throw new NoSuchElementException();
-        }
+        this();
+        this.theTutor = tutors
+                .stream()
+                .filter(t -> t.getEmail().equals(tutorEmail))
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 

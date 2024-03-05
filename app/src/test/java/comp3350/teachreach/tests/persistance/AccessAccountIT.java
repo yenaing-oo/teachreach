@@ -51,7 +51,7 @@ public class AccessAccountIT {
     @Test
     public void testGetAccountByEmailBad() {
         final Optional<IAccount> account = accessAccount
-                .getAccountByEmail("pankratz@myumanitoba.ca");
+                .getAccountByEmail("a@myumanitoba.ca");
         assertFalse(account.isPresent());
     }
 
