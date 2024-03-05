@@ -145,7 +145,7 @@ public class SessionHSQLDB implements ISessionPersistence {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM session " +
                             "WHERE STUDENTID = ?");
-            pst.setInt(1, studentID)
+            pst.setInt(1, studentID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 fromResultSetWithinRange(rs, range).ifPresent(sessions::add);

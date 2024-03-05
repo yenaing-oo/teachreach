@@ -17,7 +17,7 @@ public class StudentStub implements IStudentPersistence {
 
     @Override
     public IStudent storeStudent(IStudent newStudent) {
-        return getStudentByEmail(newStudent.getEmail())
+        return getStudentByEmail(newStudent.getAccountID())
                 .orElseGet(() -> {
                     students.add(newStudent);
                     return newStudent;

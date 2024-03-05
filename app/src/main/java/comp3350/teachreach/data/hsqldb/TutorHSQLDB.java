@@ -30,13 +30,11 @@ public class TutorHSQLDB implements ITutorPersistence {
     }
 
     private ITutor fromResultSet(final ResultSet rs) throws SQLException {
-        final String email = rs.getString("tutor.email");
         final String tutorName = rs.getString("tutor.name");
         final String tutorMajor = rs.getString("tutor.major");
         final String tutorPronouns = rs.getString("tutor.pronouns");
 
         return new Tutor(
-                email,
                 tutorName,
                 tutorMajor,
                 tutorPronouns);
@@ -77,11 +75,17 @@ public class TutorHSQLDB implements ITutorPersistence {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutor VALUES(?, ?, ?, ?)");
-            pst.setString(1, newTutor.getEmail());
+
             pst.setString(2, newTutor.getName());
             pst.setString(3, newTutor.getMajor());
             pst.setString(4, newTutor.getPronouns());
             pst.executeUpdate();
+            final ResultSet rs = pst.getGeneratedKeys();
+            if (rs.next()) {
+                newTutor.setTutorID(rs.getInt(1));
+            } else {
+                throw new SQLException();
+            }
             return newTutor;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
