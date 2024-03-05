@@ -14,44 +14,58 @@
             android:id="@+id/tvCourses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Courses"
-            android:textSize="16sp" />
+            android:text="Courses:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingBottom="8dp"/>
+
+        <!-- Placeholder for dynamically populated courses -->
 
         <TextView
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Price"
-            android:textSize="16sp" />
+            android:text="Price:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingBottom="8dp"/>
+
+        <!-- Placeholder for dynamically populated price -->
 
         <TextView
             android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rating: 4.5/5"
-            android:textSize="16sp" />
+            android:text="Rating:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingBottom="8dp"/>
 
-        <!-- Placeholder for feedback section -->
+        <!-- Placeholder for dynamically populated rating -->
 
         <TextView
             android:id="@+id/tvAvailability"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Availability"
-            android:textSize="16sp" />
+            android:text="Availability:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingBottom="8dp"/>
+
+        <!-- Placeholder for dynamically populated availability -->
 
         <TextView
             android:id="@+id/tvPreferredCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Preferred Course"
-            android:textSize="16sp" />
+            android:text="Preferred Course:"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:paddingBottom="8dp"/>
+
+        <!-- Placeholder for dynamically populated preferred courses -->
 
         <Button
-            android:id="@+id/btnUpcomingSessions"
+            android:id="@+id/btnEditProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="View Upcoming Sessions"
-            android:layout_marginTop="16dp" />
+            android:text="Edit Profile"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
 </ScrollView>
