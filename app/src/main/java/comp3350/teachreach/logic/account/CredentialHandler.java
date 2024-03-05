@@ -12,16 +12,16 @@ import comp3350.teachreach.objects.IAccount;
 public class CredentialHandler implements ICredentialHandler {
 
     private final AccessAccount accessAccount;
-    private List<IAccount> accounts;
+    private static List<IAccount> accounts;
 
     public CredentialHandler() {
         this.accessAccount = new AccessAccount();
-        this.accounts = accessAccount.getAccounts();
+        CredentialHandler.accounts = accessAccount.getAccounts();
     }
 
     public CredentialHandler(IAccountPersistence accounts) {
         this();
-        this.accounts = accounts.getAccounts();
+        CredentialHandler.accounts = accounts.getAccounts();
     }
 
     public String processPassword(String plainPassword) {

@@ -1,8 +1,10 @@
 package comp3350.teachreach.tests.persistance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,6 +13,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
@@ -40,16 +43,16 @@ public class AccessAccountIT {
 
     @Test
     public void testGetAccountByEmail() {
-        final IAccount account = accessAccount
+        final Optional<IAccount> account = accessAccount
                 .getAccountByEmail("pankratz25@myumanitoba.ca");
-        assertNotNull(account);
+        assertTrue(account.isPresent());
     }
 
     @Test
     public void testGetAccountByEmailBad() {
-        final IAccount account = accessAccount
+        final Optional<IAccount> account = accessAccount
                 .getAccountByEmail("pankratz@myumanitoba.ca");
-        assertNull(account);
+        assertFalse(account.isPresent());
     }
 
     @Test
@@ -61,14 +64,14 @@ public class AccessAccountIT {
 
     @Test
     public void testUpdateAccount() {
-        final IAccount a = accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca");
-        final IAccount u = new Account(a.getEmail(),
+        final Optional<IAccount> a = accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca");
+        final IAccount u = new Account(a.get().getEmail(),
                 "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");
         accessAccount.updateAccount(u);
         assertEquals(1, accessAccount.getAccounts().size());
         assertEquals(
                 "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe",
-                accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca").getPassword());
+                accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca").get().getPassword());
     }
 
     @After
