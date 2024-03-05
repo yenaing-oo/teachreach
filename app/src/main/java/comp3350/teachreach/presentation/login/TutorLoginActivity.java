@@ -54,8 +54,7 @@ public class TutorLoginActivity extends AppCompatActivity {
         String email = etTutorEmail.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
 
-//        if (validateInputs(email, password)) {
-        if (credentialHandler.validateCredential(email, password)) {
+        if (credentialHandler.validateCredential(email, password)) {//credential
 
             Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
             intent.putExtra("TUTOR_EMAIL_KEY", email);
@@ -72,6 +71,6 @@ public class TutorLoginActivity extends AppCompatActivity {
 //            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
 //            return false;
 //        }
-//        return true;
-//    }
+//        return true;}
+
 }
