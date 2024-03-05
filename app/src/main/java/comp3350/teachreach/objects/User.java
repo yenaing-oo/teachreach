@@ -7,6 +7,8 @@ public class User implements IUser {
     private String pronouns;
     private String major;
 
+    private int accountID
+
     public User(String name, String pronouns, String major) {
         this.name = name;
         this.pronouns = pronouns;
@@ -45,5 +47,14 @@ public class User implements IUser {
         this.major = major;
         return this;
     }
+@Override
+    public IUser setAccountID(int accountID) {
+        this.accountID = accountID;
+        return this;
+    }
 
+    @Override
+    public int getAccountID() {
+        return this.accountID;
+    }
 }

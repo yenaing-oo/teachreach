@@ -121,6 +121,12 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(2, newAccount.getStudentProfile().get().getPronouns());
             pst.setString(2, newAccount.getStudentProfile().get().getMajor());
             pst.executeUpdate();
+            ResultSet accountIDRS = pst.getGeneratedKeys();
+            int accountID = accountIDRS.getInt(1);
+            newAccount.getStudentProfile().get().setAccountID(accountID);
+            if(newAccount.getTutorProfile().isPresent()) {
+                newAccount.getTutorProfile().get().setAccountID(accountID);
+            }
             pst.close();
             return newAccount;
         } catch (final SQLException e) {

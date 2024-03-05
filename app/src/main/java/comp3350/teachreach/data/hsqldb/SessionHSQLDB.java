@@ -24,8 +24,11 @@ import comp3350.teachreach.objects.TimeSlice;
 public class SessionHSQLDB implements ISessionPersistence {
     private final String dbPath;
 
+    private List<ISession> sessions;
+
     public SessionHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
+        this.sessions = null;
     }
 
     private Connection connection() throws SQLException {

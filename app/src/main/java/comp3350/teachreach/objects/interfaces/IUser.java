@@ -13,4 +13,8 @@ public interface IUser {
 
     IUser setMajor(String major);
 
+    IUser setAccountID(int accountID);
+
+    int getAccountID();
+
 }
