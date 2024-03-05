@@ -1,5 +1,7 @@
 package comp3350.teachreach.presentation.profile;
 
+//package comp3350.teachreach.application;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -10,14 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.presentation.booking.BookingActivity;
 
 public class TutorProfileActivity extends AppCompatActivity {
 
     private TextView tvCourses, tvPrice, tvRating, tvAvailability, tvPreferredCourse;
-    private Button btnEditProfile;
+    private Button btnBookSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +27,26 @@ public class TutorProfileActivity extends AppCompatActivity {
         tvCourses = findViewById(R.id.tvCourses);
         tvPrice = findViewById(R.id.tvPrice);
         tvRating = findViewById(R.id.tvRating);
-        tvAvailability = findViewById(R.id.tvAvailability);
         tvPreferredCourse = findViewById(R.id.tvPreferredCourse);
-        btnEditProfile = findViewById(R.id.btnEditProfile);
+        btnBookSession = findViewById(R.id.btnBookSession);
 
-        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfile tutorProfile = new TutorProfile(tutorEmail);
+//        // Populate these views with real data from your database or passed from the previous activity
+//
+//        ITutorProfile tutorProfile =
+//                new TutorProfile(
+//                        getIntent().getStringExtra("TUTOR_EMAIL_KEY"),
+//                        Server.getTutorDataAccess());
+//
+//        tvCourses.setText(tutorProfile.getCourses().toString());
+//        tvPrice.setText(String.valueOf(tutorProfile.getHourlyRate()));
+//        tvRating.setText(String.valueOf(tutorProfile.getAvgReview()));
 
-        // Populate the UI with the tutor's profile data
-        populateTutorProfile(tutorProfile);
-
-        btnEditProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(TutorProfileActivity.this, EditTutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", tutorEmail);
-            startActivity(intent);
+        btnBookSession.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TutorProfileActivity.this, BookingActivity.class);
+                startActivity(intent);
+            }
         });
     }
 

@@ -13,19 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.objects.ITutor;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
 
-    private final RecyclerViewInterface recyclerViewInterface;
+    private final ITutorRecyclerView recyclerViewInterface;
     Context context;
     List<ITutor> tutorList;
 
     public SearchRecyclerViewAdapter(Context context,
-                                     RecyclerViewInterface recyclerViewInterface) {
+                                     List<ITutor> tutorList,
+                                     ITutorRecyclerView recyclerViewInterface
+    ) {
         this.context = context;
-        this.tutorList = Server.getTutorDataAccess().getTutors();
+        this.tutorList = tutorList;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
@@ -40,7 +41,7 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
     @Override
     public void onBindViewHolder(@NonNull SearchRecyclerViewAdapter.MyViewHolder holder, int position) {
-        TutorParser tutorParser = new TutorParser(tutorList.get(position));
+        TutorFormatter tutorParser = new TutorFormatter(tutorList.get(position));
         holder.imageView.setImageResource(R.drawable.user_icon);
         holder.tvUserName.setText(tutorParser.getName());
         holder.tvRating.setText(tutorParser.getRating());
@@ -57,11 +58,11 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         ImageView imageView;
         TextView tvUserName, tvRating, tvHourlyRate;
 
-        public MyViewHolder(@NonNull View itemView, RecyclerViewInterface recyclerViewInterface) {
+        public MyViewHolder(@NonNull View itemView, ITutorRecyclerView recyclerViewInterface) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.tutorImage);
-            tvUserName = itemView.findViewById(R.id.tutorName);
+            tvUserName = itemView.findViewById(R.id.timeSlot);
             tvRating = itemView.findViewById(R.id.tutorRating);
             tvHourlyRate = itemView.findViewById(R.id.tutorHourlyRate);
 

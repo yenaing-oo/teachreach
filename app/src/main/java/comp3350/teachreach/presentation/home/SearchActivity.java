@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -23,12 +22,12 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
-import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.objects.ICourse;
+import comp3350.teachreach.objects.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
-public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface, SortDialogFragment.SortDialogListener {
+public class SearchActivity extends AppCompatActivity implements ITutorRecyclerView, SortDialogFragment.SortDialogListener {
 
     private SearchSortHandler handler;
     private List<ITutor> tutorList;
@@ -54,26 +53,18 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                autoCompleteTextView.clearFocus();
-                String selectedCourse = (String) parent.getItemAtPosition(position);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            autoCompleteTextView.clearFocus();
+            String selectedCourse = (String) parent.getItemAtPosition(position);
 
-                updateTutorList(selectedCourse);
-            }
+            updateTutorList(selectedCourse);
         });
 
-        sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
+        sortButton.setOnClickListener(v -> openDialog());
 
         populateTutors();
 
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -147,6 +138,5 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
     @Override
     public void applySort(SortCriteria sortCriteria) {
-
     }
 }
