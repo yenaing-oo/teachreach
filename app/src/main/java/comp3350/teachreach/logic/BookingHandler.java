@@ -94,7 +94,7 @@ public class BookingHandler {
     //return newSession;
     //}
 
-    public Optional<ISession> requestNewSession(
+    public ISession requestNewSession(
             IStudent theStudent,
             int day, int month, int year,
             int hour, int minute,
@@ -105,8 +105,11 @@ public class BookingHandler {
         if (availabilityManager.isAvailableAt(sessionTime)) {
             resultSession = sessionsDataAccess.storeSession(
                     theStudent, theTutor, sessionTime, location);
+        } else {
+            throw new RuntimeException("Failed to request new session");
         }
-        return Optional.ofNullable(resultSession);
+        assert(resultSession != null);
+        return resultSession;
     }
 
     public List<ISession> getPendingSessionRequests() {
