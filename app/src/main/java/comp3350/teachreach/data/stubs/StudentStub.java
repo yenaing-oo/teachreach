@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.objects.IStudent;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.objects.interfaces.IStudent;
 
 public class StudentStub implements IStudentPersistence {
     List<IStudent> students;

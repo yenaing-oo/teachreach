@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.ICoursePersistence;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.data.interfaces.ICoursePersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchSortHandler {
     private final ITutorPersistence dataAccessTutor;

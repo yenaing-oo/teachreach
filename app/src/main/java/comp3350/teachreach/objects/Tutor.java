@@ -3,6 +3,10 @@ package comp3350.teachreach.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Tutor extends User implements ITutor {
     private List<ICourse> tutoredCourses;
     private double hourlyRate;
@@ -15,9 +19,7 @@ public class Tutor extends User implements ITutor {
     private List<List<TimeSlice>> preferredAvailability;
 
     public Tutor(String email,
-                 String name,
-                 String pronouns,
-                 String major) {
+                 String name, String pronouns, String major) {
         super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
@@ -31,10 +33,7 @@ public class Tutor extends User implements ITutor {
     }
 
     public Tutor(String email,
-                 String name,
-                 String pronouns,
-                 String major,
-                 double hourlyRate) {
+                 String name, String pronouns, String major, double hourlyRate) {
         super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();

@@ -2,16 +2,15 @@ package comp3350.teachreach.logic;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.ISessionPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.profile.AvailabilityManager;
-import comp3350.teachreach.objects.ISession;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
 public class BookingHandler {
@@ -94,7 +93,7 @@ public class BookingHandler {
     //return newSession;
     //}
 
-    public Optional<ISession> requestNewSession(
+    public ISession requestNewSession(
             IStudent theStudent,
             int day, int month, int year,
             int hour, int minute,
@@ -105,12 +104,15 @@ public class BookingHandler {
         if (availabilityManager.isAvailableAt(sessionTime)) {
             resultSession = sessionsDataAccess.storeSession(
                     theStudent, theTutor, sessionTime, location);
+        } else {
+            throw new RuntimeException("Failed to request new session");
         }
-        return Optional.ofNullable(resultSession);
+        assert (resultSession != null);
+        return resultSession;
     }
 
     public List<ISession> getPendingSessionRequests() {
-        return sessionsDataAccess.getPendingSessionRequests(theTutor.getOwner().getEmail());
+        return sessionsDataAccess.getPendingSessionRequests(theTutor.getEmail());
     }
 
     /*

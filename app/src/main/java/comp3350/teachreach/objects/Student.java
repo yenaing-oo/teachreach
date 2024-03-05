@@ -5,14 +5,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+
 public class Student extends User implements IStudent {
     private List<ISession> sessionsPendingForApproval;
     private List<ISession> scheduledSessions;
 
     public Student(String email,
-                   String name,
-                   String pronouns,
-                   String major) {
+                   String name, String pronouns, String major) {
         super(email, name, pronouns, major);
         sessionsPendingForApproval = new ArrayList<>();
         scheduledSessions = new ArrayList<>();

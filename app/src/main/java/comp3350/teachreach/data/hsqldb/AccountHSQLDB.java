@@ -8,16 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccountHSQLDB implements IAccountPersistence {
+    private static List<IAccount> accounts = null;
     private final String dbPath;
 
     public AccountHSQLDB(final String dbPath) {
@@ -46,6 +43,7 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(2, newAccount.getPassword());
             pst.executeUpdate();
             pst.close();
+            accounts.add(newAccount);
             return newAccount;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -64,6 +62,12 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(3, existingAccount.getEmail());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
+            for (IAccount a : accounts) {
+                if (a.getEmail().equals(existingAccount.getEmail())) {
+                    a.setPassword(existingAccount.getPassword());
+                    break;
+                }
+            }
             return success;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
@@ -72,7 +76,10 @@ public class AccountHSQLDB implements IAccountPersistence {
 
     @Override
     public synchronized List<IAccount> getAccounts() {
-        final List<IAccount> accounts = new ArrayList<>();
+        if (accounts != null) {
+            return accounts;
+        }
+        accounts = new ArrayList<>();
         try (final Connection c = connection()) {
             final Statement st = c.createStatement();
             final ResultSet rs = st.executeQuery(

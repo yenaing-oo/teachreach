@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.data.ICoursePersistence;
+import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.ICourse;
+import comp3350.teachreach.objects.interfaces.ICourse;
 
 public class CourseHSQLDB implements ICoursePersistence {
     private final String dbPath;

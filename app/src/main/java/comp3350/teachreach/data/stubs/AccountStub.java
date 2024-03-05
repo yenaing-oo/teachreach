@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccountStub implements IAccountPersistence {
 

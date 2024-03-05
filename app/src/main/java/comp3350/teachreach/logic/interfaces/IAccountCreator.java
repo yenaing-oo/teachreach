@@ -1,6 +1,7 @@
-package comp3350.teachreach.logic.account;
+package comp3350.teachreach.logic.interfaces;
 
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public interface IAccountCreator {
     IAccountCreator createAccount(

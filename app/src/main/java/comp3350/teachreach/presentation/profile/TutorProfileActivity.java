@@ -4,11 +4,12 @@ package comp3350.teachreach.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.booking.BookingActivity;
@@ -47,5 +48,20 @@ public class TutorProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private void populateTutorProfile(ITutorProfile tutorProfile) {
+        tvCourses.setText(formatCourses(tutorProfile.getCourses()));
+        tvPrice.setText(String.format("$%.2f/hr", tutorProfile.getHourlyRate()));
+        tvRating.setText(String.format("%.1f Stars", tutorProfile.getAvgReview()));
+        // Further populate availability and preferred courses similarly
+    }
+
+    private String formatCourses(List<ICourse> courses) {
+        StringBuilder coursesStr = new StringBuilder();
+        for (ICourse course : courses) {
+            coursesStr.append(course.toString()).append("\n");
+        }
+        return coursesStr.toString();
     }
 }

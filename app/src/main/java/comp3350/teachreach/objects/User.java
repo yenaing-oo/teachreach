@@ -1,5 +1,7 @@
 package comp3350.teachreach.objects;
 
+import comp3350.teachreach.objects.interfaces.IUser;
+
 public class User implements IUser {
     private String email;
     private String name;
@@ -7,9 +9,7 @@ public class User implements IUser {
     private String major;
 
     public User(String email,
-                String name,
-                String pronouns,
-                String major) {
+                String name, String pronouns, String major) {
         this.email = email;
         this.name = name;
         this.pronouns = pronouns;

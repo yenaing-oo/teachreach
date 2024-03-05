@@ -2,6 +2,10 @@ package comp3350.teachreach.objects;
 
 import java.util.Optional;
 
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Account implements IAccount {
     private String email;
     private String password;
@@ -40,7 +44,7 @@ public class Account implements IAccount {
 
     public IAccount setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
-        return studentProfile.setOwner(this);
+        return this;
     }
 
     public Optional<ITutor> getTutorProfile() {
@@ -49,7 +53,7 @@ public class Account implements IAccount {
 
     public IAccount setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
-        return tutorProfile.setOwner(this);
+        return this;
     }
 
 }
