@@ -14,6 +14,7 @@ import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.IAccountCreator;
 import comp3350.teachreach.objects.IStudent;
 import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.profile.StudentProfileActivity;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
@@ -63,7 +64,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
                     .getStudentProfile();
 
             Intent intent = new Intent(
-                    StudentSignUpActivity.this, SearchActivity.class);
+                    StudentSignUpActivity.this, StudentProfileActivity.class);
             intent.putExtra("STUDENT_NAME", theStudent.getName());
             intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
             intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());
