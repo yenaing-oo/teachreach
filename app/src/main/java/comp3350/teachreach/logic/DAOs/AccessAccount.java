@@ -31,6 +31,7 @@ public class AccessAccount {
         return Collections.unmodifiableList(accounts);
     }
 
+    //CHANGE FROM EMAIL TO ID LATER
     public Optional<IAccount> getAccountByEmail(String email) {
         if (accounts == null) {
             AccessAccount.accounts = accountPersistence.getAccounts();

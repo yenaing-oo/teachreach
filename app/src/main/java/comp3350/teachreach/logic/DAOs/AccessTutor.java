@@ -28,12 +28,12 @@ public class AccessTutor {
         return Collections.unmodifiableList(tutors);
     }
 
-    public ITutor getTutorByEmail(String email) throws NullPointerException {
+    public ITutor getTutorByAID(int AID) throws NullPointerException {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
         }
         tutors.stream()
-                .filter(t -> t.getEmail().equals(email))
+                .filter(t -> t.getAccountID()==AID)
                 .findFirst()
                 .ifPresentOrElse(t -> tutor = t, () -> {
                     tutor = null;

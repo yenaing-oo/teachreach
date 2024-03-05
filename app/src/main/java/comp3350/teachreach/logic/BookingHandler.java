@@ -53,6 +53,30 @@ public class BookingHandler {
         availabilityManager = new AvailabilityManager(theTutor);
     }
 
+    public ISession requestNewSession(
+            IStudent theStudent,
+            int day, int month, int year,
+            int hour, int minute,
+            int durationInMinutes, String location) {
+        TimeSlice sessionTime = TimeSlice.of(
+                year, month, day, hour, minute, durationInMinutes);
+        ISession resultSession = null;
+        if (availabilityManager.isAvailableAt(sessionTime)) {
+            resultSession = sessionsDataAccess.storeSession(
+                    theStudent, theTutor, sessionTime, location);
+        } else {
+            throw new RuntimeException("Failed to request new session");
+        }
+        assert (resultSession != null);
+        return resultSession;
+    }
+
+    public List<ISession> getPendingSessionRequests() {
+        return sessionsDataAccess.getPendingSessionRequests(theTutor.getAccountID());
+    }
+
+
+    //
 //    public ArrayList<Session> getListOfSession() {
 //        return sessionsDataAccess.getSessions();
 //    }
@@ -93,27 +117,9 @@ public class BookingHandler {
     //return newSession;
     //}
 
-    public ISession requestNewSession(
-            IStudent theStudent,
-            int day, int month, int year,
-            int hour, int minute,
-            int durationInMinutes, String location) {
-        TimeSlice sessionTime = TimeSlice.of(
-                year, month, day, hour, minute, durationInMinutes);
-        ISession resultSession = null;
-        if (availabilityManager.isAvailableAt(sessionTime)) {
-            resultSession = sessionsDataAccess.storeSession(
-                    theStudent, theTutor, sessionTime, location);
-        } else {
-            throw new RuntimeException("Failed to request new session");
-        }
-        assert (resultSession != null);
-        return resultSession;
-    }
 
-    public List<ISession> getPendingSessionRequests() {
-        return sessionsDataAccess.getPendingSessionRequests(theTutor.getEmail());
-    }
+
+
 
     /*
         public void retrieveAcceptedStudentRequests(Tutor tutor)

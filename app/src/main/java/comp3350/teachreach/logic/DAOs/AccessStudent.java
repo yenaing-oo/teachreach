@@ -28,12 +28,12 @@ public class AccessStudent {
         return Collections.unmodifiableList(students);
     }
 
-    public IStudent getStudentByEmail(String email) {
+    public IStudent getStudentByAID(int AID) {
         if (students == null) {
             students = studentPersistence.getStudents();
         }
         students.stream()
-                .filter(s -> s.getEmail().equals(email))
+                .filter(s -> s.getAccountID()==AID)
                 .findFirst()
                 .ifPresentOrElse(s -> student = s, () -> {
                     student = null;

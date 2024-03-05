@@ -115,8 +115,8 @@ public class AccountCreator implements IAccountCreator {
         }
 
         Tutor newTutor = new Tutor(
-                account.getEmail(),
-                username, major, pronoun);
+                username, major, pronoun,
+                account.getAccountID());
         accessTutor.insertTutor(newTutor);
 
         this.account.setTutorProfile(newTutor);

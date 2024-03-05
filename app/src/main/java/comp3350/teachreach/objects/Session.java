@@ -48,8 +48,8 @@ public class Session implements ISession {
     }
 
     @Override
-    public ISession setStudent(IStudent newstudent) {
-        this.student = newstudent;
+    public ISession setStudent(IStudent newStudent) {
+        this.student = newStudent;
         return this;
     }
 
