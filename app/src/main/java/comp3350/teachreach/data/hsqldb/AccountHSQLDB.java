@@ -9,9 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccountHSQLDB implements IAccountPersistence {
     private static List<IAccount> accounts = null;

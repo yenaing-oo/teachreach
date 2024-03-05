@@ -1,10 +1,10 @@
-package comp3350.teachreach.data;
+package comp3350.teachreach.data.interfaces;
 
 import java.util.List;
 
-import comp3350.teachreach.objects.ISession;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
 public interface ISessionPersistence {

@@ -2,10 +2,11 @@ package comp3350.teachreach.logic.profile;
 
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
-import comp3350.teachreach.logic.dataAccessObject.AccessStudent;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.IStudent;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessStudent;
+import comp3350.teachreach.logic.interfaces.IUserProfile;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
 
 public class StudentProfile implements IUserProfile {
     private IStudent theStudent;

@@ -1,9 +1,9 @@
-package comp3350.teachreach.logic;
+package comp3350.teachreach.logic.interfaces;
 
 import java.util.List;
 
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ISearchSortHandler {
     List<ITutor> getTutors();

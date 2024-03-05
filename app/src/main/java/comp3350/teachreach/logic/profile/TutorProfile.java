@@ -4,12 +4,14 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
-import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
 public class TutorProfile implements ITutorProfile {
@@ -153,8 +155,10 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public ITutorProfile addCourse(String courseCode, String courseName) {
-        if (this.theTutor.getCourses().stream().noneMatch(
-                course -> course.getCourseCode().equals(courseCode))) {
+        if (this.theTutor.getCourses()
+                .stream()
+                .noneMatch(course ->
+                        course.getCourseCode().equals(courseCode))) {
             this.theTutor.addCourse(new Course(courseCode, courseName));
         }
         return this;
@@ -162,15 +166,17 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public ITutorProfile removeCourse(String courseCode) {
-        this.theTutor.getCourses().removeIf(
-                course -> course.getCourseCode().equals(courseCode));
+        this.theTutor
+                .getCourses()
+                .removeIf(course -> course.getCourseCode().equals(courseCode));
         return this;
     }
 
     @Override
     public ITutorProfile addPreferredLocation(String preferredLocation) {
-        if (this.theTutor.getPreferredLocations().stream().noneMatch(
-                location -> location.equals(preferredLocation))) {
+        if (this.theTutor.getPreferredLocations()
+                .stream()
+                .noneMatch(location -> location.equals(preferredLocation))) {
             this.theTutor.addPreferredLocation(preferredLocation);
         }
         return this;
@@ -189,17 +195,12 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public ITutorProfile setPreferredAvailability(int startYear,
-                                                  int startMonth,
-                                                  int startDay,
-                                                  int startHour,
-                                                  int startMinute,
-                                                  int endYear,
-                                                  int endMonth,
-                                                  int endDay,
-                                                  int endHour,
-                                                  int endMinute,
-                                                  List<DayOfWeek> daysOfWeek) {
+    public ITutorProfile setPreferredAvailability(
+            int startYear, int startMonth, int startDay,
+            int startHour, int startMinute,
+            int endYear, int endMonth, int endDay,
+            int endHour, int endMinute,
+            List<DayOfWeek> daysOfWeek) {
         this.availabilityManager.addWeeklyAvailability(
                 startYear, startMonth, startDay, startHour, startMinute,
                 endYear, endMonth, endDay, endHour, endMinute, daysOfWeek);

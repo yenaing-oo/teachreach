@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.data.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public class AccessAccountIT {

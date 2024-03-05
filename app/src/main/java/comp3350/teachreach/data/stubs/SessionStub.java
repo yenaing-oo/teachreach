@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.ISessionPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.ISession;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.TimeSlice;
 

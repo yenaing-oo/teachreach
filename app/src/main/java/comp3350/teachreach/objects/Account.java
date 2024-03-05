@@ -2,6 +2,10 @@ package comp3350.teachreach.objects;
 
 import java.util.Optional;
 
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Account implements IAccount {
     private String email;
     private String password;

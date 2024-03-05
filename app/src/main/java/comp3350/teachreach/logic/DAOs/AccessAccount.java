@@ -1,12 +1,12 @@
-package comp3350.teachreach.logic.dataAccessObject;
+package comp3350.teachreach.logic.DAOs;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccessAccount {
     private static IAccountPersistence accountPersistence;

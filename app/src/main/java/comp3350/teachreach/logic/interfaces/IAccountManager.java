@@ -1,4 +1,4 @@
-package comp3350.teachreach.logic;
+package comp3350.teachreach.logic.interfaces;
 
 public interface IAccountManager {
     IAccountManager updateAccountUsername(String newName);

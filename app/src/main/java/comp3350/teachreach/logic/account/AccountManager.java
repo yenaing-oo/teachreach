@@ -1,10 +1,11 @@
 package comp3350.teachreach.logic.account;
 
-import comp3350.teachreach.logic.IAccountManager;
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
-import comp3350.teachreach.logic.dataAccessObject.AccessStudent;
-import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.logic.interfaces.IAccountManager;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessStudent;
+import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccountManager implements IAccountManager {
     private final AccessAccount accessAccount;

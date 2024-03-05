@@ -6,7 +6,7 @@
 //import org.junit.Test;
 //
 //import comp3350.teachreach.data.stubs.AccountStub;
-//import comp3350.teachreach.data.IAccountPersistence;
+//import comp3350.teachreach.data.interfaces.IAccountPersistence;
 //import comp3350.teachreach.data.stubs.SessionStub;
 //import comp3350.teachreach.logic.BookingHandler;
 //import comp3350.teachreach.objects.Student;

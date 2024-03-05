@@ -10,13 +10,13 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.logic.account.ICredentialHandler;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 
 public class CredentialHandlerTest {
     private ICredentialHandler credentialHandler;

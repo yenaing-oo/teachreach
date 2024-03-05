@@ -5,9 +5,10 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class CredentialHandler implements ICredentialHandler {
 

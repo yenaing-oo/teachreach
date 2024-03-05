@@ -9,8 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.objects.IStudent;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.Student;
 
 public class StudentHSQLDB implements IStudentPersistence {

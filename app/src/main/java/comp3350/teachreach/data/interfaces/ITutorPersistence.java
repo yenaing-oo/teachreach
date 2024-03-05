@@ -1,11 +1,9 @@
-package comp3350.teachreach.data;
+package comp3350.teachreach.data.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.objects.ITutor;
-import comp3350.teachreach.objects.Tutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ITutorPersistence {
     ITutor storeTutor(ITutor newTutor) throws RuntimeException;

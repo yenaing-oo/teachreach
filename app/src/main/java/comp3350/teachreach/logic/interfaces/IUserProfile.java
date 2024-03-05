@@ -1,6 +1,6 @@
-package comp3350.teachreach.logic.profile;
+package comp3350.teachreach.logic.interfaces;
 
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public interface IUserProfile {
     String getUserEmail();

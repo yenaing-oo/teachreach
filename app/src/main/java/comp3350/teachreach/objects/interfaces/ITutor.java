@@ -1,6 +1,8 @@
-package comp3350.teachreach.objects;
+package comp3350.teachreach.objects.interfaces;
 
 import java.util.List;
+
+import comp3350.teachreach.objects.TimeSlice;
 
 public interface ITutor extends IUser {
 

@@ -1,5 +1,7 @@
 package comp3350.teachreach.objects;
 
+import comp3350.teachreach.objects.interfaces.IUser;
+
 public class User implements IUser {
     private String email;
     private String name;

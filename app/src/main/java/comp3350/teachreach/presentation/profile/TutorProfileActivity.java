@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
 
 public class TutorProfileActivity extends AppCompatActivity {

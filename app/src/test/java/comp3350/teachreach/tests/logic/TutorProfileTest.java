@@ -12,21 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.stubs.StudentStub;
 import comp3350.teachreach.data.stubs.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.logic.account.ICredentialHandler;
-import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TutorProfileTest {
 

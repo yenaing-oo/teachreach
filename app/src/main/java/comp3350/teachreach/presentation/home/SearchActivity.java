@@ -23,8 +23,8 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 

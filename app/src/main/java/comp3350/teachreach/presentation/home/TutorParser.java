@@ -2,9 +2,9 @@ package comp3350.teachreach.presentation.home;
 
 import java.util.Locale;
 
-import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TutorParser {
     private final ITutorProfile tutorProfile;

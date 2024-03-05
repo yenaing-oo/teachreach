@@ -1,11 +1,11 @@
-package comp3350.teachreach.logic.dataAccessObject;
+package comp3350.teachreach.logic.DAOs;
 
 import java.util.Collections;
 import java.util.List;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AccessTutor {
     private ITutorPersistence tutorPersistence;
