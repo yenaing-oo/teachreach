@@ -41,4 +41,8 @@ public interface ITutor extends IUser {
     ITutor setPreferredAvailability(final List<List<TimeSlice>> weeklyAvailability);
 
     List<ISession> getFutureSessions();
+
+    int getTutorID();
+
+    void setTutorID(int tutorID);
 }

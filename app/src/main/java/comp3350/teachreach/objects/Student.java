@@ -12,9 +12,10 @@ public class Student extends User implements IStudent {
     private List<ISession> sessionsPendingForApproval;
     private List<ISession> scheduledSessions;
 
-    public Student(String email,
-                   String name, String pronouns, String major) {
-        super(email, name, pronouns, major);
+    public Student(String name,
+                   String pronouns,
+                   String major) {
+        super( name, pronouns, major);
         sessionsPendingForApproval = new ArrayList<>();
         scheduledSessions = new ArrayList<>();
     }
