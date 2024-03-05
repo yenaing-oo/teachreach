@@ -72,13 +72,4 @@ public class StudentLoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-//    }
-
-//    private boolean validateInputs(String studentEmail, String password) {
-//        if (studentEmail.isEmpty() || password.isEmpty()) {
-//            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;
-//    }
 }

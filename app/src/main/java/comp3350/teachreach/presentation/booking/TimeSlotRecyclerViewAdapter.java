@@ -26,10 +26,6 @@ public class TimeSlotRecyclerViewAdapter extends RecyclerView.Adapter<TimeSlotRe
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
-    public TimeSlotRecyclerViewAdapter(ITimeSlotRecyclerView recyclerViewInterface) {
-        this.recyclerViewInterface = recyclerViewInterface;
-    }
-
     @NonNull
     @Override
     public TimeSlotRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

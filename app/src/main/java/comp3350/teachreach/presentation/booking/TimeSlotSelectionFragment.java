@@ -68,7 +68,7 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.searchResultRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.timeSlotRecyclerView);
 
         timeSlotRecyclerViewAdapter = new TimeSlotRecyclerViewAdapter(getContext(), timeSlotList, this);
         recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
