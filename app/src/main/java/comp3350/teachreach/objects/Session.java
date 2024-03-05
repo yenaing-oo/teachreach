@@ -19,7 +19,8 @@ public class Session implements ISession {
             int durationInMinutes, String location) {
         this.student = student;
         this.tutor = tutor;
-        atTime = TimeSlice.of(year, month, day, hour, minute,
+        atTime = TimeSlice.of(
+                year, month, day, hour, minute,
                 durationInMinutes);
         this.accepted = false;
         this.location = location;
