@@ -22,6 +22,13 @@ public class StudentProfile implements IUserProfile {
         this.accessAccount = new AccessAccount();
     }
 
+    public StudentProfile(
+            String email) {
+        this.accessStudent = new AccessStudent();
+        this.accessAccount = new AccessAccount();
+        this.theStudent = accessStudent.getStudentByEmail(email);
+    }
+
     @Override
     public String getUserEmail() {
         return this.theStudent.getEmail();

@@ -1,20 +1,20 @@
 package comp3350.teachreach.presentation.profile;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
 
-import comp3350.teachreach.R;
-import comp3350.teachreach.logic.Server;
-import comp3350.teachreach.logic.profile.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfile;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
+import comp3350.teachreach.logic.profile.TutorProfile;
 
 public class EditTutorProfileActivity extends AppCompatActivity {
 
@@ -31,7 +31,7 @@ public class EditTutorProfileActivity extends AppCompatActivity {
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
 
         String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfile tutorProfile = new TutorProfile(tutorEmail, Server.getTutorDataAccess());
+        ITutorProfile tutorProfile = new TutorProfile(tutorEmail);
 
         initializeFields(tutorProfile);
 
