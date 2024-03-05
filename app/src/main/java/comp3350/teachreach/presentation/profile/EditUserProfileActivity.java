@@ -2,7 +2,6 @@ package comp3350.teachreach.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,8 +9,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.logic.profile.IUserProfile;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.logic.profile.StudentProfile;
 
 public class EditUserProfileActivity extends AppCompatActivity {
@@ -46,7 +45,7 @@ public class EditUserProfileActivity extends AppCompatActivity {
         String studentEmail = getIntent().getStringExtra("USER_EMAIL");
 
         try {
-            userProfile = new StudentProfile(studentEmail, studentPersistence);
+            userProfile = new StudentProfile(studentEmail);
             etName.setText(userProfile.getUserName());
             etPronoun.setText(userProfile.getUserPronouns());
             etMajor.setText(userProfile.getUserMajor());

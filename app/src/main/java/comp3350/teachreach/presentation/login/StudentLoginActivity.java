@@ -56,13 +56,20 @@ public class StudentLoginActivity extends AppCompatActivity {
         String password = etStudentPassword.getText().toString().trim();
 
 //        if (validateInputs(studentEmail, password)) {
-        if (credentialHandler.validateCredential(studentEmail, password)) {
-            // If the credentials are correct, navigate to the SearchActivity
-            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
-            startActivity(intent);
-            finish(); // Close the current activity
-        } else {
-            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+        try {
+            final boolean correctCredential =
+                    credentialHandler.validateCredential(studentEmail, password);
+            if (correctCredential) {
+                // If the credentials are correct, navigate to the SearchActivity
+                Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+                startActivity(intent);
+                finish(); // Close the current activity
+            } else {
+                Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Account does not exist",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 //    }

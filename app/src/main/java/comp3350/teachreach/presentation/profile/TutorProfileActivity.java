@@ -2,18 +2,17 @@ package comp3350.teachreach.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.Server;
-import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.Course;
+import comp3350.teachreach.objects.interfaces.ICourse;
 
 public class TutorProfileActivity extends AppCompatActivity {
 
@@ -33,7 +32,7 @@ public class TutorProfileActivity extends AppCompatActivity {
         btnEditProfile = findViewById(R.id.btnEditProfile);
 
         String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfile tutorProfile = new TutorProfile(tutorEmail, Server.getTutorDataAccess());
+        ITutorProfile tutorProfile = new TutorProfile(tutorEmail);
 
         // Populate the UI with the tutor's profile data
         populateTutorProfile(tutorProfile);
@@ -52,9 +51,9 @@ public class TutorProfileActivity extends AppCompatActivity {
         // Further populate availability and preferred courses similarly
     }
 
-    private String formatCourses(List<Course> courses) {
+    private String formatCourses(List<ICourse> courses) {
         StringBuilder coursesStr = new StringBuilder();
-        for (Course course : courses) {
+        for (ICourse course : courses) {
             coursesStr.append(course.toString()).append("\n");
         }
         return coursesStr.toString();

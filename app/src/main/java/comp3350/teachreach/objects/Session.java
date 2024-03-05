@@ -1,91 +1,103 @@
 package comp3350.teachreach.objects;
 
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Session implements ISession {
-    private Student student;
-    private Tutor tutor;
-    private int day;
-    private int month;
-    private int year;
-    private int hour;
+    private int sessionID;
+    private IStudent student;
+    private ITutor tutor;
+    private TimeSlice atTime;
     private boolean accepted;
     private String location;
 
-    public Session(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
+    public Session(
+            IStudent student, ITutor tutor,
+            int day, int month, int year,
+            int hour, int minute,
+            int durationInMinutes, String location) {
         this.student = student;
         this.tutor = tutor;
-        this.day = day;
-        this.month = month;
-        this.year = year;
-        this.hour = hour;
+        atTime = TimeSlice.of(year, month, day, hour, minute,
+                durationInMinutes);
         this.accepted = false;
         this.location = location;
+        this.sessionID = -1;
     }
 
-    public void acceptSession() {
+    public Session(
+            IStudent theStudent, ITutor theTutor,
+            TimeSlice sessionTime, String location) {
+        this.student = theStudent;
+        this.tutor = theTutor;
+        atTime = sessionTime;
+        this.accepted = false;
+        this.location = location;
+        this.sessionID = -1;
+    }
+
+    public ISession acceptSession() {
         this.accepted = true;
+        return this;
     }
 
-    public Student getStudent() {
+    public IStudent getStudent() {
         return this.student;
     }
 
-    public void setStudent(Student newstudent) {
+    @Override
+    public ISession setStudent(IStudent newstudent) {
         this.student = newstudent;
+        return this;
     }
 
-    public Tutor getTutor() {
+    public ITutor getTutor() {
         return this.tutor;
     }
 
-    public void setTutor(Tutor newtutor) {
-        this.tutor = newtutor;
+    @Override
+    public ISession setTutor(ITutor newTutor) {
+        this.tutor = newTutor;
+        return this;
     }
 
-    public int getDay() {
-        return this.day;
+    @Override
+    public ISession setSessionID(int id) {
+        this.sessionID = id;
+        return this;
     }
 
-    public int getMonth() {
-        return this.month;
+    @Override
+    public int getSessionID() {
+        return this.sessionID;
     }
 
-    public int getYear() {
-        return this.year;
+    public TimeSlice getTime() {
+        return this.atTime;
     }
 
-    public void setDay(int newDay) {
-        this.day = newDay;
-    }
-
-    public void setMonth(int newMonth) {
-        this.month = newMonth;
-    }
-
-    public void setYear(int newYear) {
-        this.year = newYear;
-    }
-
-    public void setHour(int newHour) {
-        this.hour = newHour;
+    @Override
+    public ISession setTime(TimeSlice time) {
+        atTime = time;
+        return this;
     }
 
     public boolean getStage() {
         return this.accepted;
     }
 
-    public void setStage(boolean decision) {
+    public ISession setStage(boolean decision) {
         this.accepted = decision;
+        return this;
     }
 
     public String getLocation() {
         return this.location;
     }
 
-    public void setLocation(String location) {
+    public ISession setLocation(String location) {
         this.location = location;
-    }
-
-    public int getHour() {
-        return this.hour;
+        return this;
     }
 }

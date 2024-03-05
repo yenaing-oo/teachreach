@@ -2,6 +2,8 @@ package comp3350.teachreach.objects;
 
 import androidx.annotation.NonNull;
 
+import comp3350.teachreach.objects.interfaces.ICourse;
+
 public class Course implements ICourse {
     private String courseCode;
     private String courseName;

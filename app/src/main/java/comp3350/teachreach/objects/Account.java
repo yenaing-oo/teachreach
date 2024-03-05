@@ -2,6 +2,10 @@ package comp3350.teachreach.objects;
 
 import java.util.Optional;
 
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Account implements IAccount {
     private String email;
     private String password;
@@ -29,22 +33,27 @@ public class Account implements IAccount {
         this.password = password;
     }
 
-    public Account setStudentProfile(IStudent profile) {
+    @Override
+    public boolean isTutor() {
+        return !(this.tutorProfile instanceof NullTutor);
+    }
+
+    public Optional<IStudent> getStudentProfile() {
+        return Optional.ofNullable(this.studentProfile);
+    }
+
+    public IAccount setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
         return this;
     }
 
-    public Account setTutorProfile(ITutor profile) {
+    public Optional<ITutor> getTutorProfile() {
+        return Optional.ofNullable(this.tutorProfile);
+    }
+
+    public IAccount setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
         return this;
-    }
-
-    public IStudent getStudentProfile() {
-        return this.studentProfile;
-    }
-
-    public ITutor getTutorProfile() {
-        return this.tutorProfile;
     }
 
 }

@@ -18,18 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
-import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
 public class SearchActivity extends AppCompatActivity implements RecyclerViewInterface, SortDialogFragment.SortDialogListener {
 
     private SearchSortHandler handler;
-    private ArrayList<ITutor> tutorList;
+    private List<ITutor> tutorList;
     private ArrayList<String> courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
@@ -44,7 +46,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
         Button sortButton = findViewById(R.id.sortButton);
 
         handler = new SearchSortHandler();
-        tutorList = new ArrayList<>();
+        tutorList = Server.getTutorDataAccess().getTutors();
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
@@ -71,17 +73,16 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
 
         populateTutors();
 
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setUpCourseList() {
-        ArrayList<Course> courses = handler.getListOfCourses();
+        List<ICourse> courses = handler.getListOfCourses();
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
-
     }
 
     private void populateTutors() {
@@ -118,7 +119,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getOwner().getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
         startActivity(intent);
     }
 

@@ -1,60 +1,71 @@
 package comp3350.teachreach.objects;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class Tutor extends User implements ITutor {
-    private ArrayList<Course> tutoredCourses;
+    private List<ICourse> tutoredCourses;
     private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
-    private ArrayList<String> preferredLocations;
-    private boolean[][] availability;
-    private boolean[][] preferredAvailability;
+    private List<String> preferredLocations;
+    private List<ISession> pendingSessions;
+    private List<ISession> expiredSessions;
+    private List<ISession> approvedFutureSessions;
+    private List<List<TimeSlice>> preferredAvailability;
 
-    public Tutor(String name,
+    public Tutor(String email,
+                 String name,
                  String pronouns,
-                 String major,
-                 IAccount parentAccount) {
-        super(name, pronouns, major, parentAccount);
+                 String major) {
+        super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
-        this.availability = new boolean[7][24];
-        this.preferredAvailability = new boolean[7][24];
+        this.preferredAvailability = new ArrayList<>(7);
+        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
         this.reviewSum = 0;
         this.reviewCount = 0;
+        this.pendingSessions = new ArrayList<>();
+        this.expiredSessions = new ArrayList<>();
+        this.approvedFutureSessions = new ArrayList<>();
     }
 
-    public Tutor(String name,
+    public Tutor(String email,
+                 String name,
                  String pronouns,
                  String major,
-                 IAccount parentAccount,
                  double hourlyRate) {
-        super(name, pronouns, major, parentAccount);
+        super(email, name, pronouns, major);
         this.tutoredCourses = new ArrayList<>();
         this.preferredLocations = new ArrayList<>();
-        this.availability = new boolean[7][24];
-        this.preferredAvailability = new boolean[7][24];
+        this.preferredAvailability = new ArrayList<>(7);
+        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
         this.reviewSum = 0;
         this.reviewCount = 0;
         this.hourlyRate = hourlyRate;
+        this.pendingSessions = new ArrayList<>();
+        this.expiredSessions = new ArrayList<>();
+        this.approvedFutureSessions = new ArrayList<>();
     }
 
-    public ArrayList<Course> getCourses() {
+    @Override
+    public List<ICourse> getCourses() {
         return tutoredCourses;
     }
 
-    public Tutor addCourse(Course course) {
+    @Override
+    public Tutor addCourse(ICourse course) {
         this.tutoredCourses.add(course);
         return this;
     }
 
-    public ArrayList<String> getPreferredLocations() {
+    @Override
+    public List<String> getPreferredLocations() {
         return this.preferredLocations;
-    }
-
-    public Tutor setPreferredLocations(String preferredLocations) {
-        this.preferredLocations.add(preferredLocations);
-        return this;
     }
 
     public Tutor clearTutoredCourses() {
@@ -69,6 +80,11 @@ public class Tutor extends User implements ITutor {
     public Tutor setHourlyRate(double hourlyRate) {
         this.hourlyRate = hourlyRate;
         return this;
+    }
+
+    @Override
+    public boolean equals(ITutor other) {
+        return this.getEmail().equals(other.getEmail());
     }
 
     public Tutor addReview(int score) {
@@ -94,41 +110,24 @@ public class Tutor extends User implements ITutor {
         return this.reviewSum;
     }
 
-    public float getRating() {
-        return this.reviewCount > 0 ? ((float) this.reviewSum / (float) this.reviewCount) : 0;
-    }
-
     public Tutor clearReviews() {
         this.reviewSum = 0;
         this.reviewCount = 0;
         return this;
     }
 
-    public boolean[][] getAvailability() {
-        return this.availability;
-    }
-
-    public Tutor setAvailability(int day, int hour, boolean avail) {
-        this.availability[day][hour] = avail;
-        return this;
+    public List<ISession> getFutureSessions() {
+        return this.approvedFutureSessions;
     }
 
     @Override
-    public ITutor renewAvailability(boolean[][] newAvailability) {
-        return this;
-    }
-
-    public boolean[][] getPreferredAvailability() {
+    public List<List<TimeSlice>> getPreferredAvailability() {
         return this.preferredAvailability;
     }
 
     @Override
-    public ITutor renewPreferredAvailability(boolean[][] newPreferredAvailability) {
-        return this;
-    }
-
-    public ITutor setPreferredAvailability(int day, int hour, boolean avail) {
-        this.preferredAvailability[day][hour] = avail;
+    public Tutor setPreferredAvailability(List<List<TimeSlice>> weeklyAvailability) {
+        this.preferredAvailability = weeklyAvailability;
         return this;
     }
 
@@ -139,6 +138,12 @@ public class Tutor extends User implements ITutor {
     @Override
     public ITutor addPreferredLocation(String preferredLocation) {
         this.preferredLocations.add(preferredLocation);
+        return this;
+    }
+
+    @Override
+    public ITutor setPreferredLocations(List<String> preferredLocations) {
+        this.preferredLocations = preferredLocations;
         return this;
     }
 }

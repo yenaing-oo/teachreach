@@ -1,19 +1,21 @@
 package comp3350.teachreach.objects;
 
+import comp3350.teachreach.objects.interfaces.IUser;
+
 public class User implements IUser {
+    private String email;
     private String name;
     private String pronouns;
     private String major;
-    private IAccount belongsTo;
 
-    public User(String name,
+    public User(String email,
+                String name,
                 String pronouns,
-                String major,
-                IAccount parentAccount) {
+                String major) {
+        this.email = email;
         this.name = name;
         this.pronouns = pronouns;
         this.major = major;
-        this.belongsTo = parentAccount;
     }
 
     @Override
@@ -22,8 +24,9 @@ public class User implements IUser {
     }
 
     @Override
-    public void setName(String name) {
+    public IUser setName(String name) {
         this.name = name;
+        return this;
     }
 
     @Override
@@ -32,8 +35,9 @@ public class User implements IUser {
     }
 
     @Override
-    public void setPronouns(String pronouns) {
+    public IUser setPronouns(String pronouns) {
         this.pronouns = pronouns;
+        return this;
     }
 
     @Override
@@ -42,12 +46,19 @@ public class User implements IUser {
     }
 
     @Override
-    public void setMajor(String major) {
+    public IUser setMajor(String major) {
         this.major = major;
+        return this;
     }
 
     @Override
-    public IAccount getOwner() {
-        return this.belongsTo;
+    public String getEmail() {
+        return this.email;
+    }
+
+    @Override
+    public IUser setEmail(String email) {
+        this.email = email;
+        return this;
     }
 }

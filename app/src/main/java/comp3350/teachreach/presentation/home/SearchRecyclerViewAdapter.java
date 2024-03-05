@@ -10,20 +10,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
 
     private final RecyclerViewInterface recyclerViewInterface;
     Context context;
-    ArrayList<ITutor> tutorList;
+    List<ITutor> tutorList;
 
-    public SearchRecyclerViewAdapter(Context context, ArrayList<ITutor> tutorList, RecyclerViewInterface recyclerViewInterface) {
+    public SearchRecyclerViewAdapter(Context context,
+                                     RecyclerViewInterface recyclerViewInterface) {
         this.context = context;
-        this.tutorList = tutorList;
+        this.tutorList = Server.getTutorDataAccess().getTutors();
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
