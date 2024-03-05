@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoField;
 
 public class TimeSlice {
     private Instant startTime;
@@ -82,6 +83,46 @@ public class TimeSlice {
                 endTime, ZoneId.systemDefault());
     }
 
+    public int getStartYear() {
+        return startTime.get(ChronoField.YEAR);
+    }
+
+    public int getStartMonth() {
+        return startTime.get(ChronoField.MONTH_OF_YEAR);
+    }
+
+    public int getStartDay() {
+        return startTime.get(ChronoField.DAY_OF_MONTH);
+    }
+
+    public int getStartHour() {
+        return startTime.get(ChronoField.HOUR_OF_DAY);
+    }
+
+    public int getStartMinute() {
+        return endTime.get(ChronoField.MINUTE_OF_HOUR);
+    }
+
+    public int getEndYear() {
+        return endTime.get(ChronoField.YEAR);
+    }
+
+    public int getEndMonth() {
+        return endTime.get(ChronoField.MONTH_OF_YEAR);
+    }
+
+    public int getEndDay() {
+        return endTime.get(ChronoField.DAY_OF_MONTH);
+    }
+
+    public int getEndHour() {
+        return endTime.get(ChronoField.HOUR_OF_DAY);
+    }
+
+    public int getEndMinute() {
+        return endTime.get(ChronoField.MINUTE_OF_HOUR);
+    }
+
     public Instant getEndTime() {
         return endTime;
     }
@@ -98,7 +139,7 @@ public class TimeSlice {
         return this.startTime.isBefore(that.startTime) && this.endTime.isAfter(that.endTime);
     }
 
-    public void mergeWith(TimeSlice that) {
+    public TimeSlice mergeWith(TimeSlice that) {
         if (this.startTime.isAfter(that.startTime)) {
             this.startTime = that.startTime;
         }
@@ -106,5 +147,6 @@ public class TimeSlice {
             this.endTime = that.endTime;
         }
         this.duration = Duration.between(this.startTime, this.endTime);
+        return this;
     }
 }
