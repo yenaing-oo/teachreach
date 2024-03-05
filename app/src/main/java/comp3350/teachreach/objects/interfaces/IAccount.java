@@ -11,18 +11,19 @@ public interface IAccount {
     String getPassword();
 
     void setPassword(String password);
+
     boolean isTutor();
 
-    IAccount setStudentProfile(IStudent profile);
-
-    IAccount setTutorProfile(ITutor profile);
-
     Optional<IStudent> getStudentProfile();
+
+    IAccount setStudentProfile(IStudent profile);
 
     Optional<ITutor> getTutorProfile();
 
     int getAccountID();
 
     void setAccountID(int accountID);
+
+    IAccount setTutorProfile(ITutor profile);
 
 }

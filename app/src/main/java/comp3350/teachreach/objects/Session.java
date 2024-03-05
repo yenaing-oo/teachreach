@@ -1,5 +1,9 @@
 package comp3350.teachreach.objects;
 
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Session implements ISession {
     private int sessionID;
     private IStudent student;
@@ -15,7 +19,8 @@ public class Session implements ISession {
             int durationInMinutes, String location) {
         this.student = student;
         this.tutor = tutor;
-        atTime = TimeSlice.of(year, month, day, hour, minute,
+        atTime = TimeSlice.of(
+                year, month, day, hour, minute,
                 durationInMinutes);
         this.accepted = false;
         this.location = location;

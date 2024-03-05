@@ -4,35 +4,46 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
 public class TutorProfile implements ITutorProfile {
 
-    private final ITutor theTutor;
-    private final ITutorPersistence tutorsDataAccess;
-    private final AvailabilityManager availabilityManager;
+    private ITutor theTutor;
+    private AvailabilityManager availabilityManager;
+    private AccessAccount accessAccount;
+    private AccessTutor accessTutor;
+    private List<ITutor> tutors;
+
+    private TutorProfile() {
+        theTutor = null;
+        availabilityManager = null;
+        this.accessTutor = new AccessTutor();
+        this.accessAccount = new AccessAccount();
+        tutors = accessTutor.getTutors();
+    }
 
     public TutorProfile(
-            ITutor theTutor,
-            ITutorPersistence tutors) {
-
+            ITutor theTutor) {
+        this();
         this.theTutor = theTutor;
-        this.tutorsDataAccess = tutors;
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public TutorProfile(
-            String tutorEmail,
-            ITutorPersistence tutors) throws NoSuchElementException {
-
-        this.tutorsDataAccess = tutors;
-        this.theTutor = tutorsDataAccess
-                .getTutorByEmail(tutorEmail)
+            String tutorEmail) throws NoSuchElementException {
+        this();
+        this.theTutor = tutors
+                .stream()
+                .filter(t -> t.getEmail().equals(tutorEmail))
+                .findFirst()
                 .orElseThrow(NoSuchElementException::new);
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
@@ -58,8 +69,10 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public IAccount getUserAccount() {
-        return this.theTutor.getEmail();
+    public IAccount getUserAccount() throws NoSuchElementException {
+        return accessAccount
+                .getAccountByEmail(theTutor.getEmail())
+                .orElseThrow(NoSuchElementException::new);
     }
 
     @Override
@@ -142,8 +155,10 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public ITutorProfile addCourse(String courseCode, String courseName) {
-        if (this.theTutor.getCourses().stream().noneMatch(
-                course -> course.getCourseCode().equals(courseCode))) {
+        if (this.theTutor.getCourses()
+                .stream()
+                .noneMatch(course ->
+                        course.getCourseCode().equals(courseCode))) {
             this.theTutor.addCourse(new Course(courseCode, courseName));
         }
         return this;
@@ -151,15 +166,17 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public ITutorProfile removeCourse(String courseCode) {
-        this.theTutor.getCourses().removeIf(
-                course -> course.getCourseCode().equals(courseCode));
+        this.theTutor
+                .getCourses()
+                .removeIf(course -> course.getCourseCode().equals(courseCode));
         return this;
     }
 
     @Override
     public ITutorProfile addPreferredLocation(String preferredLocation) {
-        if (this.theTutor.getPreferredLocations().stream().noneMatch(
-                location -> location.equals(preferredLocation))) {
+        if (this.theTutor.getPreferredLocations()
+                .stream()
+                .noneMatch(location -> location.equals(preferredLocation))) {
             this.theTutor.addPreferredLocation(preferredLocation);
         }
         return this;
@@ -178,17 +195,12 @@ public class TutorProfile implements ITutorProfile {
     }
 
     @Override
-    public ITutorProfile setPreferredAvailability(int startYear,
-                                                  int startMonth,
-                                                  int startDay,
-                                                  int startHour,
-                                                  int startMinute,
-                                                  int endYear,
-                                                  int endMonth,
-                                                  int endDay,
-                                                  int endHour,
-                                                  int endMinute,
-                                                  List<DayOfWeek> daysOfWeek) {
+    public ITutorProfile setPreferredAvailability(
+            int startYear, int startMonth, int startDay,
+            int startHour, int startMinute,
+            int endYear, int endMonth, int endDay,
+            int endHour, int endMinute,
+            List<DayOfWeek> daysOfWeek) {
         this.availabilityManager.addWeeklyAvailability(
                 startYear, startMonth, startDay, startHour, startMinute,
                 endYear, endMonth, endDay, endHour, endMinute, daysOfWeek);
@@ -197,6 +209,6 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public void updateUserProfile() {
-        tutorsDataAccess.updateTutor(theTutor);
+        accessTutor.updateTutor(theTutor);
     }
 }

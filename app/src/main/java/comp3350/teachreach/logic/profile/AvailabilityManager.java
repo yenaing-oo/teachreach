@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
 public class AvailabilityManager {
@@ -22,8 +22,11 @@ public class AvailabilityManager {
             ITutor tutor) throws RuntimeException {
         this.ofTutor = tutor;
         dayOfWeekAvailability = ofTutor.getPreferredAvailability();
-        occupiedSlices = ofTutor.getFutureSessions().stream().map(
-                session -> session.getTime()).collect(Collectors.toList());
+        occupiedSlices = ofTutor
+                .getFutureSessions()
+                .stream()
+                .map(session -> session.getTime())
+                .collect(Collectors.toList());
     }
 
     protected AvailabilityManager addWeeklyAvailability(
@@ -34,13 +37,9 @@ public class AvailabilityManager {
             List<DayOfWeek> daysOfWeek) {
 
         final LocalDate startDate = LocalDate.of(
-                startYear,
-                startMonth,
-                startDay);
+                startYear, startMonth, startDay);
         final LocalDate endDate = LocalDate.of(
-                endYear,
-                endMonth,
-                endDay);
+                endYear, endMonth, endDay);
         final LocalTime startTime = LocalTime.of(startHour, startMinute);
         final LocalTime endTime = LocalTime.of(endHour, endMinute);
         final ZoneId zoneId = ZoneId.systemDefault();

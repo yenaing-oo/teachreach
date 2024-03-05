@@ -4,16 +4,18 @@ import static comp3350.teachreach.logic.account.AccountCreatorException.getExcep
 
 import java.util.List;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
-import comp3350.teachreach.logic.dataAccessObject.AccessStudent;
-import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessStudent;
+import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.interfaces.IAccountCreator;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 

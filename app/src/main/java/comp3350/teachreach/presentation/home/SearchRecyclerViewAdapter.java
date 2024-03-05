@@ -10,12 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
 

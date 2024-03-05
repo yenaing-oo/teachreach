@@ -14,11 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.ISessionPersistence;
-import comp3350.teachreach.objects.ISession;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.TimeSlice;
 
@@ -36,30 +35,7 @@ public class SessionHSQLDB implements ISessionPersistence {
     }
 
     private ISession fromResultSet(final ResultSet rs) throws SQLException {
-        final String studentEmail = rs.getString("student_email");
-        final String tutorEmail = rs.getString("tutor_email");
-        final String location = rs.getString("location");
-        final int sessionID = rs.getInt("session_id");
-        final boolean accepted = rs.getBoolean("accepted");
-        final Instant startTime = ((OffsetDateTime) rs
-                .getObject("start_date_time"))
-                .toInstant();
-        final Instant endTime = ((OffsetDateTime) rs
-                .getObject("end_date_time"))
-                .toInstant();
-        final TimeSlice sessionTime = new TimeSlice(
-                startTime, endTime,
-                Duration.between(startTime, endTime));
-        ISession resultSession =
-                new Session(
-                        Server.getStudentDataAccess()
-                                .getStudentByEmail(studentEmail)
-                                .orElseThrow(SQLException::new),
-                        Server.getTutorDataAccess()
-                                .getTutorByEmail(tutorEmail)
-                                .orElseThrow(SQLException::new),
-                        sessionTime, location).setSessionID(sessionID);
-        return accepted ? resultSession.acceptSession() : resultSession;
+        return null;
     }
 
     private Optional<ISession> fromResultSetWithinRange(
@@ -71,7 +47,7 @@ public class SessionHSQLDB implements ISessionPersistence {
         final Instant endTime = ((OffsetDateTime) rs
                 .getObject("end_date_time"))
                 .toInstant();
-        final TimeSlice sessionTime =new TimeSlice(
+        final TimeSlice sessionTime = new TimeSlice(
                 startTime, endTime,
                 Duration.between(startTime, endTime));
         resultSession = range.canContain(sessionTime) ? fromResultSet(rs) : null;
@@ -89,8 +65,8 @@ public class SessionHSQLDB implements ISessionPersistence {
                             "START_DATE_TIME, END_DATE_TIME, " +
                             "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setString(1, theStudent.getOwner().getEmail());
-            pst.setString(2, theTutor.getOwner().getEmail());
+            pst.setString(1, theStudent.getEmail());
+            pst.setString(2, theTutor.getEmail());
             pst.setObject(3,
                     OffsetDateTime.ofInstant(
                             sessionTime.getStartTime(), ZoneId.systemDefault()));
@@ -141,8 +117,8 @@ public class SessionHSQLDB implements ISessionPersistence {
                             "location = ?, accepted = ?" +
                             "WHERE session_id = ?");
             TimeSlice sessionTime = session.getTime();
-            pst.setString(1, session.getStudent().getOwner().getEmail());
-            pst.setString(2, session.getTutor().getOwner().getEmail());
+            pst.setString(1, session.getStudent().getEmail());
+            pst.setString(2, session.getTutor().getEmail());
             pst.setObject(3, OffsetDateTime.ofInstant(
                     sessionTime.getStartTime(), ZoneId.systemDefault()));
             pst.setObject(4, OffsetDateTime.ofInstant(

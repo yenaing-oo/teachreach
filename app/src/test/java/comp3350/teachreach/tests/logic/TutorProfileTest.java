@@ -10,22 +10,23 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.data.stubs.AccountStub;
 import comp3350.teachreach.data.stubs.StudentStub;
 import comp3350.teachreach.data.stubs.TutorStub;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.logic.account.ICredentialHandler;
-import comp3350.teachreach.logic.profile.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
+import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
-import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TutorProfileTest {
 
@@ -36,15 +37,11 @@ public class TutorProfileTest {
     public void setUp() throws AccountCreatorException {
         System.out.println("Starting a new test for TutorProfile");
         IAccountPersistence accountsDataAccess = new AccountStub();
-        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
+        IStudentPersistence studentsDataAccess = new StudentStub();
         tutorsDataAccess = new TutorStub(accountsDataAccess);
         ICredentialHandler credentialHandler = new CredentialHandler(accountsDataAccess);
 
-        AccountCreator accountCreator = new AccountCreator(
-                accountsDataAccess,
-                studentsDataAccess,
-                tutorsDataAccess,
-                credentialHandler);
+        AccountCreator accountCreator = new AccountCreator();
 
         IAccount newAccount = accountCreator.createAccount(
                         "fulopv@myumanitoba.ca",
@@ -59,9 +56,10 @@ public class TutorProfileTest {
                         "She/Her")
                 .buildAccount();
 
-        theTutorProfile = new TutorProfile(
-                newAccount.getTutorProfile().get(),
-                tutorsDataAccess);
+        theTutorProfile =
+                new TutorProfile(newAccount
+                        .getTutorProfile()
+                        .orElseThrow(NoSuchElementException::new));
     }
 
     @Test

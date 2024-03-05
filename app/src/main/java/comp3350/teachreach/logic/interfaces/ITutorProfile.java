@@ -1,9 +1,9 @@
-package comp3350.teachreach.logic.profile;
+package comp3350.teachreach.logic.interfaces;
 
 import java.time.DayOfWeek;
 import java.util.List;
 
-import comp3350.teachreach.objects.ICourse;
+import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.TimeSlice;
 
 public interface ITutorProfile extends IUserProfile {

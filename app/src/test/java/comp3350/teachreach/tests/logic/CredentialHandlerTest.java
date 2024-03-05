@@ -10,20 +10,13 @@ import org.junit.Test;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.application.TRData;
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
-import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
-import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
-import comp3350.teachreach.data.stubs.AccountStub;
-import comp3350.teachreach.data.stubs.StudentStub;
-import comp3350.teachreach.data.stubs.TutorStub;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.logic.account.ICredentialHandler;
+import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 
 public class CredentialHandlerTest {
     private ICredentialHandler credentialHandler;
@@ -40,11 +33,7 @@ public class CredentialHandlerTest {
         ITutorPersistence tutorsDataAccess = Server.getTutorDataAccess();
         credentialHandler = new CredentialHandler(accountsDataAccess);
 
-        AccountCreator accountCreator = new AccountCreator(
-                accountsDataAccess,
-                studentsDataAccess,
-                tutorsDataAccess,
-                credentialHandler);
+        AccountCreator accountCreator = new AccountCreator();
 
         accountCreator.createAccount(
                         "fulopv@myumanitoba.ca",

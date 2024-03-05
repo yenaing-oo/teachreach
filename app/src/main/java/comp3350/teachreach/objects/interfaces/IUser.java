@@ -1,4 +1,4 @@
-package comp3350.teachreach.objects;
+package comp3350.teachreach.objects.interfaces;
 
 public interface IUser {
     String getName();

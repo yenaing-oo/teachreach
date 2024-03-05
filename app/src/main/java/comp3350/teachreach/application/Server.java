@@ -1,17 +1,15 @@
 package comp3350.teachreach.application;
 
-import comp3350.teachreach.data.IAccountPersistence;
-import comp3350.teachreach.data.ICoursePersistence;
-import comp3350.teachreach.data.ISessionPersistence;
-import comp3350.teachreach.data.IStudentPersistence;
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.ICoursePersistence;
+import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
-import comp3350.teachreach.data.stubs.SessionStub;
-import comp3350.teachreach.data.stubs.TutorStub;
 
 public class Server {
     private static IAccountPersistence accountDataAccess;

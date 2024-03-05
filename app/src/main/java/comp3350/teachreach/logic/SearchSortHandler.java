@@ -3,33 +3,34 @@ package comp3350.teachreach.logic;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.ICoursePersistence;
-import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.data.interfaces.ICoursePersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.logic.DAOs.AccessCourse;
+import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchSortHandler {
-    private final ITutorPersistence dataAccessTutor;
-    private final ICoursePersistence dataAccessCourse;
+    private final AccessTutor accessTutor;
+    private final AccessCourse accessCourse;
 
     public SearchSortHandler() {
-        dataAccessTutor = Server.getTutorDataAccess();
-        dataAccessCourse = Server.getCourseDataAccess();
+        accessTutor = new AccessTutor();
+        accessCourse = new AccessCourse();
     }
 
     public SearchSortHandler(ITutorPersistence tutorDataAccess,
                              ICoursePersistence courseDataAccess) {
-        dataAccessTutor = tutorDataAccess;
-        dataAccessCourse = courseDataAccess;
+        accessTutor = new AccessTutor(tutorDataAccess);
+        accessCourse = new AccessCourse(courseDataAccess);
     }
 
     public List<ITutor> getListOfTutors() {
-        return dataAccessTutor.getTutors();
+        return accessTutor.getTutors();
     }
 
     public List<ICourse> getListOfCourses() {
-        return dataAccessCourse.getCourses();
+        return accessCourse.getCourses();
     }
 
 //    public ArrayList<Tutor> searchTutorClass(Course course) {
@@ -151,8 +152,11 @@ public class SearchSortHandler {
 //    }
 
     public List<ITutor> searchTutorByCourse(String courseCode) {
-        return dataAccessTutor.getTutors().stream().filter(tutor ->
-                tutor.getCourses().contains(courseCode)).collect(Collectors.toList());
+        return accessTutor.getTutors()
+                .stream()
+                .filter(tutor ->
+                        tutor.getCourses().contains(courseCode))
+                .collect(Collectors.toList());
 //        ArrayList<ITutor> selectedTutor = new ArrayList<>();
 //        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
 //

@@ -1,4 +1,4 @@
-package comp3350.teachreach.logic.account;
+package comp3350.teachreach.logic.interfaces;
 
 public interface ICredentialHandler {
     String processPassword(String plainPassword);

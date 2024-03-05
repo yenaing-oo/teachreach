@@ -3,11 +3,20 @@ package comp3350.teachreach.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITutor;
+
 public class Tutor extends User implements ITutor {
     private int tutorID;
     private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
+    private List<String> preferredLocations;
+    private List<ISession> pendingSessions;
+    private List<ISession> expiredSessions;
+    private List<ISession> approvedFutureSessions;
+    private List<List<TimeSlice>> preferredAvailability;
 
     public Tutor(String name,
                  String pronouns,

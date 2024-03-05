@@ -1,4 +1,6 @@
-package comp3350.teachreach.objects;
+package comp3350.teachreach.objects.interfaces;
+
+import comp3350.teachreach.objects.Course;
 
 public interface ICourse {
 

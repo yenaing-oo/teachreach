@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.data.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.ICourse;
-import comp3350.teachreach.objects.ITutor;
+import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.Tutor;
 
 public class TutorHSQLDB implements ITutorPersistence {
@@ -35,13 +35,11 @@ public class TutorHSQLDB implements ITutorPersistence {
         final String tutorMajor = rs.getString("tutor.major");
         final String tutorPronouns = rs.getString("tutor.pronouns");
 
-        Tutor resultTutor = new Tutor(
+        return new Tutor(
                 email,
                 tutorName,
                 tutorMajor,
                 tutorPronouns);
-
-        return resultTutor;
     }
 
     private ICourse fromResultSetCourse(final ResultSet rs) throws SQLException {
@@ -124,6 +122,8 @@ public class TutorHSQLDB implements ITutorPersistence {
             while (rs.next()) {
                 tutors.add(fromResultSet(rs));
             }
+            st.close();
+            rs.close();
             return tutors;
         } catch (final SQLException e) {
             throw new PersistenceException(e);

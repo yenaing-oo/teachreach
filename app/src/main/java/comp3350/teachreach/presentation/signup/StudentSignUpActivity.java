@@ -10,13 +10,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
-import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.logic.account.IAccountCreator;
-import comp3350.teachreach.objects.IStudent;
+import comp3350.teachreach.logic.interfaces.IAccountCreator;
+import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.profile.StudentProfileActivity;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
@@ -36,10 +35,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
         etPronoun = findViewById(R.id.etPronoun);
         btnCreateProfile = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator(Server.getAccountDataAccess(),
-                Server.getStudentDataAccess(),
-                Server.getTutorDataAccess(),
-                new CredentialHandler(Server.getAccountDataAccess()));
+        accountCreator = new AccountCreator();
 
         btnCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,7 +68,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
                                     "Failed while creating a new Account"));
 
             Intent intent = new Intent(
-                    StudentSignUpActivity.this, SearchActivity.class);
+                    StudentSignUpActivity.this, StudentProfileActivity.class);
             intent.putExtra("STUDENT_NAME", theStudent.getName());
             intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
             intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());
