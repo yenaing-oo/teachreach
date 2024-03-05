@@ -9,9 +9,7 @@ public class User implements IUser {
     private String major;
 
     public User(String email,
-                String name,
-                String pronouns,
-                String major) {
+                String name, String pronouns, String major) {
         this.email = email;
         this.name = name;
         this.pronouns = pronouns;

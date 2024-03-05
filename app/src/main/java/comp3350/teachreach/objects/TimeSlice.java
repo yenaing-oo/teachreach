@@ -13,7 +13,6 @@ public class TimeSlice {
 
     private Duration duration;
 
-
     public TimeSlice(Instant startTime, Instant endTime, Duration duration) {
         this.startTime = startTime;
         this.endTime = endTime;
@@ -21,11 +20,8 @@ public class TimeSlice {
     }
 
     public static TimeSlice of(
-            int year,
-            int month,
-            int day,
-            int hour,
-            int minute,
+            int year, int month, int day,
+            int hour, int minute,
             int durationInMinutes) {
         Instant start = LocalDateTime
                 .of(year, month, day, hour, minute)
@@ -36,32 +32,18 @@ public class TimeSlice {
     }
 
     public static TimeSlice of(
-            int startYear,
-            int startMonth,
-            int startDay,
-            int startHour,
-            int startMinute,
-            int endYear,
-            int endMonth,
-            int endDay,
-            int endHour,
-            int endMinute) {
+            int startYear, int startMonth, int startDay,
+            int startHour, int startMinute,
+            int endYear, int endMonth, int endDay,
+            int endHour, int endMinute) {
         Instant start = LocalDateTime
-                .of(
-                        startYear,
-                        startMonth,
-                        startDay,
-                        startHour,
-                        startMinute)
+                .of(startYear, startMonth, startDay,
+                        startHour, startMinute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
         Instant end = LocalDateTime
-                .of(
-                        endYear,
-                        endMonth,
-                        endDay,
-                        endHour,
-                        endMinute)
+                .of(endYear, endMonth, endDay,
+                        endHour, endMinute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
         Duration duration = Duration.between(start, end);
