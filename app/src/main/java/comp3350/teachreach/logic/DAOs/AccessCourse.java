@@ -39,4 +39,9 @@ public class AccessCourse {
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }
+
+    public ICourse insertCourse(ICourse newCourse) {
+        return coursePersistence.addCourse(newCourse.getCourseCode(),
+                newCourse.getCourseName()) ? newCourse : null;
+    }
 }
