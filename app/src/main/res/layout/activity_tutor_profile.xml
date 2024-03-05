@@ -41,16 +41,6 @@
         <!-- Placeholder for dynamically populated rating -->
 
         <TextView
-            android:id="@+id/tvAvailability"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Availability:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingBottom="8dp"/>
-
-        <!-- Placeholder for dynamically populated availability -->
-
-        <TextView
             android:id="@+id/tvPreferredCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,11 +51,10 @@
         <!-- Placeholder for dynamically populated preferred courses -->
 
         <Button
-            android:id="@+id/btnEditProfile"
+            android:id="@+id/btnBookSession"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:text="Book a session" />
     </LinearLayout>
 </ScrollView>
