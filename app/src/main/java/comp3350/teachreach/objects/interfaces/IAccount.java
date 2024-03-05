@@ -1,4 +1,4 @@
-package comp3350.teachreach.objects.interfaces;
+package comp3350.teachreach.objects;
 
 import java.util.Optional;
 
@@ -19,6 +19,10 @@ public interface IAccount {
     IAccount setStudentProfile(IStudent profile);
 
     Optional<ITutor> getTutorProfile();
+
+    int getAccountID();
+
+    void setAccountID(int accountID);
 
     IAccount setTutorProfile(ITutor profile);
 
