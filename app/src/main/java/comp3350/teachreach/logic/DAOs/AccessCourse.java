@@ -22,7 +22,7 @@ public class AccessCourse {
         //AccessCourse.courses = coursePersistence.getCourses();
     }
 
-    public static List<ICourse> getCourses() {
+    public synchronized List<ICourse> getCourses() {
         if (AccessCourse.courses == null) {
             AccessCourse.courses = coursePersistence.getCourses();
         }
