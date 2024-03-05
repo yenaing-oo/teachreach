@@ -17,8 +17,11 @@ import comp3350.teachreach.objects.ICourse;
 public class CourseHSQLDB implements ICoursePersistence {
     private final String dbPath;
 
+    private List<ICourse> courses;
+
     public CourseHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
+        this.courses = null;
     }
 
     private Connection connection() throws SQLException {
@@ -35,20 +38,23 @@ public class CourseHSQLDB implements ICoursePersistence {
 
     @Override
     public List<ICourse> getCourses() {
-        final List<ICourse> courses = new ArrayList<>();
-        try (final Connection c = this.connection()) {
-            final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery(
-                    "SELECT * FROM course");
-            while (rs.next()) {
-                courses.add(fromResultSet(rs));
+        if(courses == null) {
+            courses = new ArrayList<ICourse>();
+            try (final Connection c = this.connection()) {
+                final Statement st = c.createStatement();
+                final ResultSet rs = st.executeQuery(
+                        "SELECT * FROM course");
+                while (rs.next()) {
+                    courses.add(fromResultSet(rs));
+                }
+                st.close();
+                rs.close();
+                return courses;
+            } catch (SQLException e) {
+                throw new PersistenceException(e);
             }
-            st.close();
-            rs.close();
-            return courses;
-        } catch (SQLException e) {
-            throw new PersistenceException(e);
         }
+        return courses;
     }
 
     @Override
@@ -60,6 +66,7 @@ public class CourseHSQLDB implements ICoursePersistence {
             pst.setString(2, courseName);
             final boolean success = pst.executeUpdate() == 1;
             pst.close();
+            courses.add(new Course(courseCode, courseName));
             return success;
         } catch (SQLException e) {
             throw new PersistenceException(e);
@@ -68,6 +75,9 @@ public class CourseHSQLDB implements ICoursePersistence {
 
     @Override
     public Optional<ICourse> getCourseByCourseCode(String courseCode) {
+        if(courses == null) {
+            getCourses();
+        }
         ICourse resultCourse = null;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(

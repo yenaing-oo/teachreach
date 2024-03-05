@@ -3,6 +3,8 @@ package comp3350.teachreach.objects;
 import java.util.Optional;
 
 public class Account implements IAccount {
+
+    private int accountID;
     private String email;
     private String password;
     private ITutor tutorProfile = new NullTutor();
@@ -11,6 +13,12 @@ public class Account implements IAccount {
     public Account(String email, String password) {
         this.email = email;
         this.password = password;
+        this.accountID = -1;
+    }
+    public Account(String email, String password, int accountID) {
+        this.email = email;
+        this.password = password;
+        this.accountID = accountID;
     }
 
     public String getEmail() {
@@ -52,4 +60,11 @@ public class Account implements IAccount {
         return tutorProfile.setOwner(this);
     }
 
+    public int getAccountID() {
+        return this.accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
+    }
 }

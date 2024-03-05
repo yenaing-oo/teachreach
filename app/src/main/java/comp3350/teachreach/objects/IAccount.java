@@ -21,4 +21,8 @@ public interface IAccount {
 
     Optional<ITutor> getTutorProfile();
 
+    int getAccountID();
+
+    void setAccountID(int accountID);
+
 }

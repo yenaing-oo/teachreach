@@ -4,8 +4,6 @@ import java.util.List;
 
 public interface ITutor extends IUser {
 
-     List<ICourse> getCourses();
-     List<String> getPreferredLocations();
      int getReviewTotalSum();
      int getReviewCount();
      double getHourlyRate();
@@ -23,4 +21,8 @@ public interface ITutor extends IUser {
      ITutor setPreferredLocations(List<String> preferredLocations);
      List<List<TimeSlice>> getPreferredAvailability();
      List<ISession> getFutureSessions();
+
+     int getTutorID();
+
+     void setTutorID();
 }

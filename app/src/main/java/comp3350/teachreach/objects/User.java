@@ -1,16 +1,13 @@
 package comp3350.teachreach.objects;
 
 public class User implements IUser {
-    private String email;
     private String name;
     private String pronouns;
     private String major;
 
-    public User(String email,
-                String name,
+    public User(String name,
                 String pronouns,
                 String major) {
-        this.email = email;
         this.name = name;
         this.pronouns = pronouns;
         this.major = major;
@@ -49,14 +46,4 @@ public class User implements IUser {
         return this;
     }
 
-    @Override
-    public String getEmail() {
-        return this.email;
-    }
-
-    @Override
-    public IUser setEmail(String email) {
-        this.email = email;
-        return this;
-    }
 }

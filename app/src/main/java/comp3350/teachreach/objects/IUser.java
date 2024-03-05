@@ -13,7 +13,4 @@ public interface IUser {
 
     IUser setMajor(String major);
 
-    String getEmail();
-
-    IUser setEmail(String email);
 }

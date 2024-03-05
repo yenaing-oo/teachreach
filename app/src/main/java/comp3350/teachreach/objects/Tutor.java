@@ -4,48 +4,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tutor extends User implements ITutor {
-    private List<ICourse> tutoredCourses;
+    private int tutorID;
     private double hourlyRate;
     private int reviewSum;
     private int reviewCount;
-    private List<String> preferredLocations;
-    private List<ISession> pendingSessions;
-    private List<ISession> expiredSessions;
-    private List<ISession> approvedFutureSessions;
-    private List<List<TimeSlice>> preferredAvailability;
 
-    public Tutor(String email,
-                 String name,
+    public Tutor(String name,
                  String pronouns,
                  String major) {
-        super(email, name, pronouns, major);
-        this.tutoredCourses = new ArrayList<>();
-        this.preferredLocations = new ArrayList<>();
-        this.preferredAvailability = new ArrayList<>(7);
-        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
+        super( name, pronouns, major);
         this.reviewSum = 0;
         this.reviewCount = 0;
-        this.pendingSessions = new ArrayList<>();
-        this.expiredSessions = new ArrayList<>();
-        this.approvedFutureSessions = new ArrayList<>();
+        this.tutorID = -1;
     }
 
-    public Tutor(String email,
-                 String name,
+    public Tutor(String name,
                  String pronouns,
                  String major,
                  double hourlyRate) {
-        super(email, name, pronouns, major);
-        this.tutoredCourses = new ArrayList<>();
-        this.preferredLocations = new ArrayList<>();
-        this.preferredAvailability = new ArrayList<>(7);
-        this.preferredAvailability.replaceAll(ignored -> new ArrayList<>());
+        super(name, pronouns, major);
         this.reviewSum = 0;
         this.reviewCount = 0;
         this.hourlyRate = hourlyRate;
-        this.pendingSessions = new ArrayList<>();
-        this.expiredSessions = new ArrayList<>();
-        this.approvedFutureSessions = new ArrayList<>();
+        this.tutorID = -1;
+    }
+
+    public Tutor(String name,
+                 String pronouns,
+                 String major, int tutorID) {
+        super( name, pronouns, major);
+        this.reviewSum = 0;
+        this.reviewCount = 0;
+        this.tutorID = tutorID;
+    }
+
+    public Tutor(String name,
+                 String pronouns,
+                 String major,
+                 double hourlyRate, int tutorID) {
+        super(name, pronouns, major);
+        this.reviewSum = 0;
+        this.reviewCount = 0;
+        this.hourlyRate = hourlyRate;
+        this.tutorID = tutorID;
     }
 
     @Override
@@ -141,5 +142,13 @@ public class Tutor extends User implements ITutor {
     public ITutor setPreferredLocations(List<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
         return this;
+    }
+
+    public int getTutorID() {
+        return this.tutorID;
+    }
+
+    public void setTutorID(int tutorID) {
+        this.tutorID = tutorID;
     }
 }
