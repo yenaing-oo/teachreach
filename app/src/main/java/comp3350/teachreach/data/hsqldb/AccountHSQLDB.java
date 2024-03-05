@@ -8,18 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
 
 public class AccountHSQLDB implements IAccountPersistence {
-    private final String dbPath;
     private static List<IAccount> accounts = null;
+    private final String dbPath;
 
     public AccountHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
@@ -66,7 +62,7 @@ public class AccountHSQLDB implements IAccountPersistence {
             pst.setString(3, existingAccount.getEmail());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
-            for (IAccount a: accounts) {
+            for (IAccount a : accounts) {
                 if (a.getEmail().equals(existingAccount.getEmail())) {
                     a.setPassword(existingAccount.getPassword());
                     break;

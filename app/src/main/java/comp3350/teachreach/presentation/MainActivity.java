@@ -1,7 +1,5 @@
 package comp3350.teachreach.presentation;
 
-//package comp3350.teachreach.application;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;

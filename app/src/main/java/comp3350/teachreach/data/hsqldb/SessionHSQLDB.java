@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.ISessionPersistence;
 import comp3350.teachreach.objects.ISession;
 import comp3350.teachreach.objects.IStudent;
@@ -48,7 +47,7 @@ public class SessionHSQLDB implements ISessionPersistence {
         final Instant endTime = ((OffsetDateTime) rs
                 .getObject("end_date_time"))
                 .toInstant();
-        final TimeSlice sessionTime =new TimeSlice(
+        final TimeSlice sessionTime = new TimeSlice(
                 startTime, endTime,
                 Duration.between(startTime, endTime));
         resultSession = range.canContain(sessionTime) ? fromResultSet(rs) : null;

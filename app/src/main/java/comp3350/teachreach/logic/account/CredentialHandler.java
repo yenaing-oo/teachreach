@@ -11,8 +11,8 @@ import comp3350.teachreach.objects.IAccount;
 
 public class CredentialHandler implements ICredentialHandler {
 
-    private final AccessAccount accessAccount;
     private static List<IAccount> accounts;
+    private final AccessAccount accessAccount;
 
     public CredentialHandler() {
         this.accessAccount = new AccessAccount();

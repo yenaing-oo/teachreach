@@ -103,6 +103,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
 //            Toast.makeText(TutorSignUpActivity.this, "Signup failed. Please check your inputs and try again.", Toast.LENGTH_LONG).show();
 //        }
     }
+
     private void openFilePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*"); // Allow any file type.

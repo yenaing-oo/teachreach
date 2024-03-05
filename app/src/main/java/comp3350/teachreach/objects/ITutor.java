@@ -4,23 +4,39 @@ import java.util.List;
 
 public interface ITutor extends IUser {
 
-     List<ICourse> getCourses();
-     List<String> getPreferredLocations();
-     int getReviewTotalSum();
-     int getReviewCount();
-     double getHourlyRate();
-     boolean equals(ITutor other);
+    List<ICourse> getCourses();
 
-     ITutor addCourse(ICourse course);
-     ITutor clearTutoredCourses();
-     ITutor setHourlyRate(double hourlyRate);
-     ITutor addReview(int score);
-     ITutor setReviewCount(int count);
-     ITutor setReviewTotal(int score);
-     ITutor clearReviews();
-     ITutor setPreferredAvailability(final List<List<TimeSlice>> weeklyAvailability);
-     ITutor addPreferredLocation(String preferredLocation);
-     ITutor setPreferredLocations(List<String> preferredLocations);
-     List<List<TimeSlice>> getPreferredAvailability();
-     List<ISession> getFutureSessions();
+    List<String> getPreferredLocations();
+
+    ITutor setPreferredLocations(List<String> preferredLocations);
+
+    int getReviewTotalSum();
+
+    int getReviewCount();
+
+    ITutor setReviewCount(int count);
+
+    double getHourlyRate();
+
+    ITutor setHourlyRate(double hourlyRate);
+
+    boolean equals(ITutor other);
+
+    ITutor addCourse(ICourse course);
+
+    ITutor clearTutoredCourses();
+
+    ITutor addReview(int score);
+
+    ITutor setReviewTotal(int score);
+
+    ITutor clearReviews();
+
+    ITutor addPreferredLocation(String preferredLocation);
+
+    List<List<TimeSlice>> getPreferredAvailability();
+
+    ITutor setPreferredAvailability(final List<List<TimeSlice>> weeklyAvailability);
+
+    List<ISession> getFutureSessions();
 }

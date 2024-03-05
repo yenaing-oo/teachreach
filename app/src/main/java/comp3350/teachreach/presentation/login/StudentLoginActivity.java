@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.presentation.home.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;

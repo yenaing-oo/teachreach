@@ -1,7 +1,6 @@
 package comp3350.teachreach.logic.dataAccessObject;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.ICoursePersistence;

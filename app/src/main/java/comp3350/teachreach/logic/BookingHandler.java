@@ -2,7 +2,6 @@ package comp3350.teachreach.logic;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.ISessionPersistence;
@@ -108,7 +107,7 @@ public class BookingHandler {
         } else {
             throw new RuntimeException("Failed to request new session");
         }
-        assert(resultSession != null);
+        assert (resultSession != null);
         return resultSession;
     }
 

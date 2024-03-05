@@ -4,7 +4,6 @@ import comp3350.teachreach.logic.IAccountManager;
 import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
 import comp3350.teachreach.logic.dataAccessObject.AccessStudent;
 import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
-import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.IAccount;
 
 public class AccountManager implements IAccountManager {

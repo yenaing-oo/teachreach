@@ -28,7 +28,7 @@ public class StudentProfileActivity extends AppCompatActivity {
 
         // Retrieve the data from the intent
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             String name = intent.getStringExtra("STUDENT_NAME");
             String pronoun = intent.getStringExtra("STUDENT_PRONOUN");
             String major = intent.getStringExtra("STUDENT_MAJOR");
@@ -44,8 +44,8 @@ public class StudentProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Navigate to the SEARCH page
-                 Intent searchIntent = new Intent(StudentProfileActivity.this, SearchActivity.class);
-                 startActivity(searchIntent);
+                Intent searchIntent = new Intent(StudentProfileActivity.this, SearchActivity.class);
+                startActivity(searchIntent);
             }
         });
     }
