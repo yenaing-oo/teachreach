@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.IStudentPersistence;
@@ -36,15 +37,11 @@ public class TutorProfileTest {
     public void setUp() throws AccountCreatorException {
         System.out.println("Starting a new test for TutorProfile");
         IAccountPersistence accountsDataAccess = new AccountStub();
-        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
+        IStudentPersistence studentsDataAccess = new StudentStub();
         tutorsDataAccess = new TutorStub(accountsDataAccess);
         ICredentialHandler credentialHandler = new CredentialHandler(accountsDataAccess);
 
-        AccountCreator accountCreator = new AccountCreator(
-                accountsDataAccess,
-                studentsDataAccess,
-                tutorsDataAccess,
-                credentialHandler);
+        AccountCreator accountCreator = new AccountCreator();
 
         IAccount newAccount = accountCreator.createAccount(
                         "fulopv@myumanitoba.ca",
@@ -59,9 +56,10 @@ public class TutorProfileTest {
                         "She/Her")
                 .buildAccount();
 
-        theTutorProfile = new TutorProfile(
-                newAccount.getTutorProfile().get(),
-                tutorsDataAccess);
+        theTutorProfile =
+                new TutorProfile(newAccount
+                        .getTutorProfile()
+                        .orElseThrow(NoSuchElementException::new));
     }
 
     @Test

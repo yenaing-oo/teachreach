@@ -28,7 +28,7 @@ public class AccessTutor {
         return Collections.unmodifiableList(tutors);
     }
 
-    public ITutor getTutorByEmail(String email) {
+    public ITutor getTutorByEmail(String email) throws NullPointerException {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
         }

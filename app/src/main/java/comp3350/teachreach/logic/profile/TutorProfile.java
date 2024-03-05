@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.ITutorPersistence;
 import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
+import comp3350.teachreach.logic.dataAccessObject.AccessTutor;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.IAccount;
 import comp3350.teachreach.objects.ICourse;
@@ -14,27 +15,33 @@ import comp3350.teachreach.objects.TimeSlice;
 
 public class TutorProfile implements ITutorProfile {
 
-    private final ITutor theTutor;
+    private ITutor theTutor;
+    private AvailabilityManager availabilityManager;
     private AccessAccount accessAccount;
-    private final AvailabilityManager availabilityManager;
+    private AccessTutor accessTutor;
+
+    private TutorProfile() {
+        theTutor = null;
+        availabilityManager = null;
+        this.accessTutor = new AccessTutor();
+        this.accessAccount = new AccessAccount();
+    }
 
     public TutorProfile(
-            ITutor theTutor,
-            ITutorPersistence tutors) {
-
+            ITutor theTutor) {
+        super();
         this.theTutor = theTutor;
-        this.tutorsDataAccess = tutors;
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public TutorProfile(
-            String tutorEmail,
-            ITutorPersistence tutors) throws NoSuchElementException {
-
-        this.tutorsDataAccess = tutors;
-        this.theTutor = tutorsDataAccess
-                .getTutorByEmail(tutorEmail)
-                .orElseThrow(NoSuchElementException::new);
+            String tutorEmail) throws NoSuchElementException {
+        super();
+        try {
+            this.theTutor = accessTutor.getTutorByEmail(tutorEmail);
+        } catch (NullPointerException e) {
+            throw new NoSuchElementException();
+        }
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
@@ -60,7 +67,7 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public IAccount getUserAccount() {
-        return this.theTutor.getEmail();
+        return accessAccount.getAccountByEmail(theTutor.getEmail());
     }
 
     @Override
@@ -198,6 +205,6 @@ public class TutorProfile implements ITutorProfile {
 
     @Override
     public void updateUserProfile() {
-        tutorsDataAccess.updateTutor(theTutor);
+        accessTutor.updateTutor(theTutor);
     }
 }

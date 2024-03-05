@@ -120,7 +120,7 @@ public class SearchActivity extends AppCompatActivity implements RecyclerViewInt
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getOwner().getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
         startActivity(intent);
     }
 

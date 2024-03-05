@@ -36,10 +36,7 @@ public class StudentSignUpActivity extends AppCompatActivity {
         etPronoun = findViewById(R.id.etPronoun);
         btnCreateProfile = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator(Server.getAccountDataAccess(),
-                Server.getStudentDataAccess(),
-                Server.getTutorDataAccess(),
-                new CredentialHandler(Server.getAccountDataAccess()));
+        accountCreator = new AccountCreator();
 
         btnCreateProfile.setOnClickListener(new View.OnClickListener() {
             @Override

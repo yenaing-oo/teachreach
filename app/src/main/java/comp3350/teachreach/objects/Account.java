@@ -40,7 +40,7 @@ public class Account implements IAccount {
 
     public IAccount setStudentProfile(IStudent profile) {
         this.studentProfile = profile;
-        return studentProfile.setOwner(this);
+        return this;
     }
 
     public Optional<ITutor> getTutorProfile() {
@@ -49,7 +49,7 @@ public class Account implements IAccount {
 
     public IAccount setTutorProfile(ITutor profile) {
         this.tutorProfile = profile;
-        return tutorProfile.setOwner(this);
+        return this;
     }
 
 }

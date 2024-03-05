@@ -36,30 +36,7 @@ public class SessionHSQLDB implements ISessionPersistence {
     }
 
     private ISession fromResultSet(final ResultSet rs) throws SQLException {
-        final String studentEmail = rs.getString("student_email");
-        final String tutorEmail = rs.getString("tutor_email");
-        final String location = rs.getString("location");
-        final int sessionID = rs.getInt("session_id");
-        final boolean accepted = rs.getBoolean("accepted");
-        final Instant startTime = ((OffsetDateTime) rs
-                .getObject("start_date_time"))
-                .toInstant();
-        final Instant endTime = ((OffsetDateTime) rs
-                .getObject("end_date_time"))
-                .toInstant();
-        final TimeSlice sessionTime = new TimeSlice(
-                startTime, endTime,
-                Duration.between(startTime, endTime));
-        ISession resultSession =
-                new Session(
-                        Server.getStudentDataAccess()
-                                .getStudentByEmail(studentEmail)
-                                .orElseThrow(SQLException::new),
-                        Server.getTutorDataAccess()
-                                .getTutorByEmail(tutorEmail)
-                                .orElseThrow(SQLException::new),
-                        sessionTime, location).setSessionID(sessionID);
-        return accepted ? resultSession.acceptSession() : resultSession;
+        return null;
     }
 
     private Optional<ISession> fromResultSetWithinRange(

@@ -3,11 +3,13 @@ package comp3350.teachreach.objects;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 public class TimeSlice {
     private Instant startTime;
     private Instant endTime;
+
     private Duration duration;
 
 
@@ -15,18 +17,6 @@ public class TimeSlice {
         this.startTime = startTime;
         this.endTime = endTime;
         this.duration = duration;
-    }
-
-    public Instant getStartTime() {
-        return startTime;
-    }
-
-    public Instant getEndTime() {
-        return endTime;
-    }
-
-    public Duration getDuration() {
-        return duration;
     }
 
     public static TimeSlice of(
@@ -76,6 +66,28 @@ public class TimeSlice {
         Duration duration = Duration.between(start, end);
 
         return new TimeSlice(start, end, duration);
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public OffsetDateTime getStartODT() {
+        return OffsetDateTime.ofInstant(
+                startTime, ZoneId.systemDefault());
+    }
+
+    public OffsetDateTime getEndODT() {
+        return OffsetDateTime.ofInstant(
+                endTime, ZoneId.systemDefault());
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
     }
 
     public boolean conflictsWith(TimeSlice that) {

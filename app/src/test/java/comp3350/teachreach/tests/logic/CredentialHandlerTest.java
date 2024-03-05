@@ -40,11 +40,7 @@ public class CredentialHandlerTest {
         ITutorPersistence tutorsDataAccess = Server.getTutorDataAccess();
         credentialHandler = new CredentialHandler(accountsDataAccess);
 
-        AccountCreator accountCreator = new AccountCreator(
-                accountsDataAccess,
-                studentsDataAccess,
-                tutorsDataAccess,
-                credentialHandler);
+        AccountCreator accountCreator = new AccountCreator();
 
         accountCreator.createAccount(
                         "fulopv@myumanitoba.ca",

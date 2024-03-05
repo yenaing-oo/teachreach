@@ -7,23 +7,22 @@ import java.util.stream.Collectors;
 
 import comp3350.teachreach.data.IAccountPersistence;
 import comp3350.teachreach.data.ITutorPersistence;
-import comp3350.teachreach.objects.IAccount;
+import comp3350.teachreach.logic.dataAccessObject.AccessAccount;
 import comp3350.teachreach.objects.ITutor;
 
 public class TutorStub implements ITutorPersistence {
 
-    IAccountPersistence accountsDataAccess;
+    AccessAccount accessAccount;
     List<ITutor> tutors;
 
-    public TutorStub(IAccountPersistence accounts) {
-        accountsDataAccess = accounts;
+    public TutorStub(IAccountPersistence accountPersistence) {
+        accessAccount = new AccessAccount(accountPersistence);
         tutors = new ArrayList<>();
     }
 
     @Override
     public ITutor storeTutor(ITutor newTutor) throws RuntimeException {
-        if (accountsDataAccess.getAccountByEmail(
-                newTutor.getEmail()).isPresent()) {
+        if (accessAccount.getAccountByEmail(newTutor.getEmail()) != null) {
             tutors.add(newTutor);
             return newTutor;
         } else {
@@ -57,9 +56,10 @@ public class TutorStub implements ITutorPersistence {
 
     @Override
     public Optional<ITutor> getTutorByEmail(String email) throws NullPointerException {
-        return accountsDataAccess
-                .getAccountByEmail(email)
-                .flatMap(IAccount::getTutorProfile);
+        return tutors
+                .stream()
+                .filter(t -> t.getEmail().equals(email))
+                .findFirst();
     }
 
     @Override
