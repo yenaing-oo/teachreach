@@ -24,5 +24,5 @@ public interface ITutor extends IUser {
 
      int getTutorID();
 
-     void setTutorID();
+     void setTutorID(int tutorID);
 }

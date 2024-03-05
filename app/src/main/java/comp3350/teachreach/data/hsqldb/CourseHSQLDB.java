@@ -38,23 +38,22 @@ public class CourseHSQLDB implements ICoursePersistence {
 
     @Override
     public List<ICourse> getCourses() {
-        if(courses == null) {
-            courses = new ArrayList<ICourse>();
+        if(this.courses == null) {
+            this.courses = new ArrayList<ICourse>();
             try (final Connection c = this.connection()) {
                 final Statement st = c.createStatement();
                 final ResultSet rs = st.executeQuery(
                         "SELECT * FROM course");
                 while (rs.next()) {
-                    courses.add(fromResultSet(rs));
+                    this.courses.add(fromResultSet(rs));
                 }
                 st.close();
                 rs.close();
-                return courses;
             } catch (SQLException e) {
                 throw new PersistenceException(e);
             }
         }
-        return courses;
+        return this.courses;
     }
 
     @Override
@@ -104,6 +103,26 @@ public class CourseHSQLDB implements ICoursePersistence {
                     "SELECT * FROM course " +
                             "WHERE course_name LIKE ?");
             pst.setString(1, "%" + courseName + "%");
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                resultCourses.add(fromResultSet(rs));
+            }
+            pst.close();
+            rs.close();
+            return resultCourses;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public List<ICourse> getTutoredCourses(int tutorID) {
+        List<ICourse> resultCourses = new ArrayList<ICourse>();
+        try (final Connection c = this.connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT COURSEID, COURSENAME FROM TUTOREDCOURSES " +
+                            "INNER JOIN ON TUTOREDCOURSES.COURSEID=COURSE.COURSEID" +
+                            "WHERE TUTORID = ?");
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 resultCourses.add(fromResultSet(rs));

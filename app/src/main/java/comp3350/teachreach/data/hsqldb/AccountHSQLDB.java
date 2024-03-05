@@ -97,6 +97,7 @@ public class AccountHSQLDB implements IAccountPersistence {
     @Override
     public synchronized IAccount storeAccount(IAccount newAccount) {
         try (final Connection c = connection()) {
+            int tutorID = -1;
             if(newAccount.getTutorProfile().isPresent()) {
                 ITutor tutorProfile = newAccount.getTutorProfile().get();
                 final PreparedStatement pstTutor = c.prepareStatement(
@@ -107,13 +108,20 @@ public class AccountHSQLDB implements IAccountPersistence {
                 pstTutor.executeUpdate();
                 ResultSet tutorIDRS = pstTutor.getGeneratedKeys();
                 if(tutorIDRS.next()) {
-
+                    tutorID = tutorIDRS.getInt(1);
+                    tutorProfile.setTutorID(tutorID);
                 }
+
             }
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO ACCOUNTS (EMAIL, PASSWORD,  VALUES(?, ?)");
+                    "INSERT INTO ACCOUNTS (EMAIL, PASSWORD, TUTORID, NAME, PRONOUNS, MAJOR) VALUES(?, ?)");
+
             pst.setString(1, newAccount.getEmail());
             pst.setString(2, newAccount.getPassword());
+            pst.setInt(3, tutorID);
+            pst.setString(2, newAccount.getStudentProfile().get().getName());
+            pst.setString(2, newAccount.getStudentProfile().get().getPronouns());
+            pst.setString(2, newAccount.getStudentProfile().get().getMajor());
             pst.executeUpdate();
             pst.close();
             return newAccount;
