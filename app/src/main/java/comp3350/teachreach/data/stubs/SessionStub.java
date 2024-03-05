@@ -70,38 +70,38 @@ public class SessionStub implements ISessionPersistence {
 
     @Override
     public List<ISession> getSessionsByRangeForStudent(
-            String studentEmail, TimeSlice range) {
+            int StudentAID, TimeSlice range) {
         return sessions
                 .stream()
                 .filter(session ->
                         range.canContain(session.getTime()) &&
                                 session.getStudent()
-                                        .getEmail()
-                                        .equals(studentEmail))
+                                        .getAccountID()
+                                        ==StudentAID)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<ISession> getSessionsByRangeForTutor(
-            String studentEmail, TimeSlice range) {
+            int StudentAID, TimeSlice range) {
         return sessions
                 .stream()
                 .filter(session ->
                         range.canContain(session.getTime()) &&
                                 session.getTutor()
-                                        .getEmail()
-                                        .equals(studentEmail))
+                                        .getAccountID()
+                                        ==StudentAID)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ISession> getPendingSessionRequests(String tutorEmail) {
+    public List<ISession> getPendingSessionRequests(int AID) {
         return sessions
                 .stream()
                 .filter(session ->
                         session.getTutor()
-                                .getEmail()
-                                .equals(tutorEmail) &&
+                                .getAccountID()==
+                                AID &&
                                 session.getStage())
                 .collect(Collectors.toList());
     }

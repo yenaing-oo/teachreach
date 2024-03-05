@@ -41,20 +41,20 @@ public class AccessSession {
         return sessionPersistence.updateSession(session);
     }
     public static  List<ISession> getSessionsByRangeForStudent(
-            String userEmail, TimeSlice range) {
+            int AID, TimeSlice range) {
 
-        return sessionPersistence.getSessionsByRangeForStudent(userEmail,range);
+        return sessionPersistence.getSessionsByRangeForStudent(AID,range);
     }
 
     public static List<ISession> getSessionsByRangeForTutor(
-            String userEmail, TimeSlice range){
+            int AID, TimeSlice range){
 
-        return sessionPersistence.getSessionsByRangeForTutor(userEmail,range);
+        return sessionPersistence.getSessionsByRangeForTutor(AID,range);
     }
 
-    public static  List<ISession> getPendingSessionRequests(String userEmail){
+    public static  List<ISession> getPendingSessionRequests(int AID){
 
-        return sessionPersistence.getPendingSessionRequests(userEmail);
+        return sessionPersistence.getPendingSessionRequests(AID);
     }
 
 

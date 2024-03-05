@@ -112,7 +112,7 @@ public class BookingHandler {
     }
 
     public List<ISession> getPendingSessionRequests() {
-        return sessionsDataAccess.getPendingSessionRequests(theTutor.getEmail());
+        return sessionsDataAccess.getPendingSessionRequests(theTutor.getAccountID());
     }
 
     /*
