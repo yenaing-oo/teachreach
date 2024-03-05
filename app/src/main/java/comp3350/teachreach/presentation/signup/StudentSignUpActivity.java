@@ -1,22 +1,13 @@
 package comp3350.teachreach.presentation.signup;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.logic.account.AccountCreator;
-import comp3350.teachreach.logic.account.AccountCreatorException;
-import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.logic.account.IAccountCreator;
-import comp3350.teachreach.objects.IStudent;
-import comp3350.teachreach.presentation.home.SearchActivity;
 
 public class StudentSignUpActivity extends AppCompatActivity {
 
@@ -36,17 +27,17 @@ public class StudentSignUpActivity extends AppCompatActivity {
         etPronoun = findViewById(R.id.etPronoun);
         btnCreateProfile = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator(Server.getAccountDataAccess(),
-                Server.getStudentDataAccess(),
-                Server.getTutorDataAccess(),
-                new CredentialHandler(Server.getAccountDataAccess()));
-
-        btnCreateProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createProfile();
-            }
-        });
+//        accountCreator = new AccountCreator(Server.getAccountDataAccess(),
+//                Server.getStudentDataAccess(),
+//                Server.getTutorDataAccess(),
+//                new CredentialHandler(Server.getAccountDataAccess()));
+//
+//        btnCreateProfile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                createProfile();
+//            }
+//        });
     }
 
     private void createProfile() {
@@ -56,33 +47,33 @@ public class StudentSignUpActivity extends AppCompatActivity {
         String major = etMajor.getText().toString().trim();
         String pronoun = etPronoun.getText().toString().trim();
 
-        try {
-            IStudent theStudent = accountCreator
-                    .createAccount(
-                            email,
-                            password)
-                    .setStudentProfile(
-                            username,
-                            major,
-                            pronoun)
-                    .buildAccount()
-                    .getStudentProfile()
-                    .orElseThrow(
-                            () -> new AccountCreatorException(
-                                    "Failed while creating a new Account"));
-
-            Intent intent = new Intent(
-                    StudentSignUpActivity.this, SearchActivity.class);
-            intent.putExtra("STUDENT_NAME", theStudent.getName());
-            intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
-            intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());
-
-            startActivity(intent);
-            finish();
-        } catch (Exception e) {
-            Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
-                    Toast.LENGTH_LONG).show();
-        }
+//        try {
+//            IStudent theStudent = accountCreator
+//                    .createAccount(
+//                            email,
+//                            password)
+//                    .setStudentProfile(
+//                            username,
+//                            major,
+//                            pronoun)
+//                    .buildAccount()
+//                    .getStudentProfile()
+//                    .orElseThrow(
+//                            () -> new AccountCreatorException(
+//                                    "Failed while creating a new Account"));
+//
+//            Intent intent = new Intent(
+//                    StudentSignUpActivity.this, SearchActivity.class);
+//            intent.putExtra("STUDENT_NAME", theStudent.getName());
+//            intent.putExtra("STUDENT_PRONOUN", theStudent.getPronouns());
+//            intent.putExtra("STUDENT_MAJOR", theStudent.getMajor());
+//
+//            startActivity(intent);
+//            finish();
+//        } catch (Exception e) {
+//            Toast.makeText(StudentSignUpActivity.this, e.getMessage(),
+//                    Toast.LENGTH_LONG).show();
+//        }
 
 //        if (newStudent != null) {
 //            Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();

@@ -7,10 +7,10 @@ import comp3350.teachreach.logic.profile.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
 import comp3350.teachreach.objects.ITutor;
 
-public class TutorParser {
+public class TutorFormatter {
     private final ITutorProfile tutorProfile;
 
-    public TutorParser(ITutor tutor) {
+    public TutorFormatter(ITutor tutor) {
         this.tutorProfile = new TutorProfile(tutor, Server.getTutorDataAccess());
     }
 

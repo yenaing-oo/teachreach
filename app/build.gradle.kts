@@ -39,6 +39,7 @@ dependencies {
     implementation(files("libs/bcrypt-0.10.2.jar"))
     implementation(files("libs/bytes-1.6.1.jar"))
     implementation("org.hsqldb:hsqldb:2.4.1")
+    implementation("com.google.android.material:material:1.11.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.guava:guava:25.1-jre")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

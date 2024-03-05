@@ -49,4 +49,5 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
         dateDisplay.setVisibility(View.VISIBLE);
         addTimeSlotSelectionFragment();
     }
+
 }
