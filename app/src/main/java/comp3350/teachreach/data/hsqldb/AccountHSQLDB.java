@@ -6,11 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.NullTutor;
 import comp3350.teachreach.objects.Student;
@@ -203,5 +207,55 @@ public class AccountHSQLDB implements IAccountPersistence {
             getAccounts();
         }
         return this.tutors;
+    }
+
+    public synchronized List<String> getTutorLocations(int tutorID) {
+        List<String> locations = new ArrayList<String>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "Select LOCATIONNAME from TUTORLOCATIONS " +
+                    "where TUTORID = ?");
+            pst.setInt(1, tutorID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                locations.add(rs.getString("LOCATIONAME"));
+            }
+            rs.close();
+            pst.close();
+            return locations;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    public synchronized List<TimeSlice> getTutorAvailability(int tutorID) {
+        List<TimeSlice> availability = new ArrayList<TimeSlice>();
+
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "Select START_DATE_TIME, END_DATE_TIME from TUTOR_AVAILABILITY " +
+                            "where TUTORID = ?");
+            pst.setInt(1, tutorID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                availability.add(fromResultSetTimeSlice(rs));
+            }
+            rs.close();
+            pst.close();
+            return availability;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    private synchronized TimeSlice fromResultSetTimeSlice(ResultSet rs) throws SQLException{
+        final Instant startTime = ((OffsetDateTime) rs
+                .getObject("start_date_time"))
+                .toInstant();
+        final Instant endTime = ((OffsetDateTime) rs
+                .getObject("end_date_time"))
+                .toInstant();
+        return new TimeSlice(startTime, endTime, Duration.between(startTime, endTime));
     }
 }

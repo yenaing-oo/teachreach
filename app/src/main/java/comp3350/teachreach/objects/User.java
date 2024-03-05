@@ -7,7 +7,7 @@ public class User implements IUser {
     private String pronouns;
     private String major;
 
-    private int accountID
+    private int accountID;
 
     public User(String name, String pronouns, String major) {
         this.name = name;
