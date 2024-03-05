@@ -99,7 +99,8 @@ public class AccountHSQLDB implements IAccountPersistence {
             if(newAccount.getTutorProfile().isPresent()) {
                 ITutor tutorProfile = newAccount.getTutorProfile().get();
                 final PreparedStatement pstTutor = c.prepareStatement(
-                        "INSERT INTO TUTORS (HOURLYRATE, REVIEWSUM, REVIEWCOUNT) VALUES(?, ?, ?)");
+                        "INSERT INTO TUTORS (HOURLYRATE, REVIEWSUM, REVIEWCOUNT) VALUES(?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS);
                 pstTutor.setDouble(1, tutorProfile.getHourlyRate());
                 pstTutor.setInt(2, tutorProfile.getReviewTotalSum());
                 pstTutor.setInt(3, tutorProfile.getReviewCount());
@@ -112,7 +113,8 @@ public class AccountHSQLDB implements IAccountPersistence {
 
             }
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO ACCOUNTS (EMAIL, PASSWORD, TUTORID, NAME, PRONOUNS, MAJOR) VALUES(?, ?)");
+                    "INSERT INTO ACCOUNTS (EMAIL, PASSWORD, TUTORID, NAME, PRONOUNS, MAJOR) VALUES(?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
 
             pst.setString(1, newAccount.getEmail());
             pst.setString(2, newAccount.getPassword());

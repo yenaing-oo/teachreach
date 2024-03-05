@@ -16,10 +16,10 @@ public interface ISessionPersistence {
     boolean updateSession(ISession session);
 
     List<ISession> getSessionsByRangeForStudent(
-            String userEmail, TimeSlice range);
+            int studentID, TimeSlice range);
 
     List<ISession> getSessionsByRangeForTutor(
-            String userEmail, TimeSlice range);
+            int tutorID, TimeSlice range);
 
-    List<ISession> getPendingSessionRequests(String userEmail);
+    List<ISession> getPendingSessionRequests(int tutorID);
 }

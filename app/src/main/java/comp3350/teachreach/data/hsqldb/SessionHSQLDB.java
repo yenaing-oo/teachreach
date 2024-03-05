@@ -64,12 +64,12 @@ public class SessionHSQLDB implements ISessionPersistence {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO SESSION" +
-                            "(STUDENT_EMAIL, TUTOR_EMAIL, " +
+                            "(STUDENTID, TUTORID, " +
                             "START_DATE_TIME, END_DATE_TIME, " +
                             "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setString(1, theStudent.getEmail());
-            pst.setString(2, theTutor.getEmail());
+            pst.setInt(1, theStudent.getAccountID());
+            pst.setInt(2, theTutor.getTutorID());
             pst.setObject(3,
                     OffsetDateTime.ofInstant(
                             sessionTime.getStartTime(), ZoneId.systemDefault()));
@@ -100,7 +100,7 @@ public class SessionHSQLDB implements ISessionPersistence {
     public boolean deleteSession(ISession session) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "DELETE FROM session WHERE session_id = ?");
+                    "DELETE FROM session WHERE SESSION_ID = ?");
             pst.setInt(1, session.getSessionID());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
@@ -115,13 +115,13 @@ public class SessionHSQLDB implements ISessionPersistence {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "UPDATE session " +
-                            "SET student_email = ?, tutor_email = ?, " +
+                            "SET STUDENTID = ?, TUTORID = ?, " +
                             "start_date_time = ?, end_date_time = ?, " +
                             "location = ?, accepted = ?" +
                             "WHERE session_id = ?");
             TimeSlice sessionTime = session.getTime();
-            pst.setString(1, session.getStudent().getEmail());
-            pst.setString(2, session.getTutor().getEmail());
+            pst.setInt(1, session.getStudent().getAccountID());
+            pst.setInt(2, session.getTutor().getTutorID());
             pst.setObject(3, OffsetDateTime.ofInstant(
                     sessionTime.getStartTime(), ZoneId.systemDefault()));
             pst.setObject(4, OffsetDateTime.ofInstant(
@@ -139,12 +139,13 @@ public class SessionHSQLDB implements ISessionPersistence {
 
     @Override
     public List<ISession> getSessionsByRangeForStudent(
-            String userEmail, TimeSlice range) {
+            int studentID, TimeSlice range) {
         final List<ISession> sessions = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM session " +
-                            "WHERE student_email = ?");
+                            "WHERE STUDENTID = ?");
+            pst.setInt(1, studentID)
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
@@ -159,11 +160,11 @@ public class SessionHSQLDB implements ISessionPersistence {
 
     @Override
     public List<ISession> getSessionsByRangeForTutor(
-            String userEmail, TimeSlice range) {
+            int tutorID, TimeSlice range) {
         final List<ISession> sessions = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM session WHERE tutor_email = ?");
+                    "SELECT * FROM session WHERE TUTORID = ?");
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
@@ -177,13 +178,13 @@ public class SessionHSQLDB implements ISessionPersistence {
     }
 
     @Override
-    public List<ISession> getPendingSessionRequests(String userEmail) {
+    public List<ISession> getPendingSessionRequests(int tutorID) {
         final List<ISession> sessions = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM session " +
-                            "WHERE tutor_email = ? AND accepted = ?");
-            pst.setString(1, userEmail);
+                            "WHERE TUTORID = ? AND ACCEPTED = ?");
+            pst.setInt(1, tutorID);
             pst.setBoolean(2, false);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
