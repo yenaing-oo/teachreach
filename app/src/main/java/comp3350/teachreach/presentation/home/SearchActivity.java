@@ -24,6 +24,7 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
+import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
@@ -31,9 +32,10 @@ import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
 public class SearchActivity extends AppCompatActivity implements ITutorRecyclerView, SortDialogFragment.SortDialogListener {
 
-    private SearchSortHandler handler;
-    private List<ITutor> tutorList;
-    private ArrayList<String> courseStringList;
+    private ISearchSortHandler searchSortHandler;
+    private List<ITutor> tutors;
+    private List<ICourse> courses;
+    private List<String> courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
     private long backPressedTime;
@@ -47,8 +49,8 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         Button sortButton = findViewById(R.id.sortButton);
 
-        handler = new SearchSortHandler();
-        tutorList = Server.getTutorDataAccess().getTutors();
+        searchSortHandler = new SearchSortHandler();
+        tutors = Server.getTutorDataAccess().getTutors();
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
@@ -68,7 +70,7 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     }
 
     private void setUpCourseList() {
-        List<ICourse> courses = handler.getListOfCourses();
+        courses = searchSortHandler.getCourses();
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
@@ -80,23 +82,23 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         autoCompleteTextView.setThreshold(2);
         autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             autoCompleteTextView.clearFocus();
-            String selectedCourse = (String) parent.getItemAtPosition(position);
+            ICourse selectedCourse = courses.get(position);
             updateTutorList(selectedCourse);
         });
     }
 
     private void populateTutors() {
-        tutorList = handler.getListOfTutors();
+        tutors = searchSortHandler.getTutors();
     }
 
-    private void updateTutorList(String selectedCourse) {
-        tutorList = handler.searchTutorByCourse(selectedCourse);
+    private void updateTutorList(ICourse selectedCourse) {
+        tutors = searchSortHandler.getTutorsByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView) {
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutors, this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -111,20 +113,20 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private void sortTutors(SortCriteria sortCriteria) throws Exception {
+    private void sortTutors(SortCriteria sortCriteria) {
 
         switch (sortCriteria) {
             case HIGHEST_RATING:
-//                tutorList = handler.getTutorsByHighestRating();
+                tutors = searchSortHandler.getTutorsByRating();
                 break;
             case HOURLY_RATE_ASCENDING:
-//                tutorList = handler.getTutorsByHourlyRateAsc();
+                tutors = searchSortHandler.getTutorsByHourlyRateAsc();
                 break;
             case HOURLY_RATE_DESCENDING:
-//                tutorList = handler.getTutorsByHourlyRateDesc();
+                tutors = searchSortHandler.getTutorsByHourlyRateDesc();
                 break;
             default:
-                throw new Exception("Unable to handle sort critera: " + sortCriteria);
+                break;
         }
 
         // needs to use DIffUtil to improve efficiency
@@ -135,7 +137,7 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutors.get(position).getEmail());
         startActivity(intent);
     }
 
@@ -163,6 +165,7 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
 
     @Override
     public void applySort(SortCriteria sortCriteria) {
+        sortTutors(sortCriteria);
     }
 
     private void backIsPressed() {

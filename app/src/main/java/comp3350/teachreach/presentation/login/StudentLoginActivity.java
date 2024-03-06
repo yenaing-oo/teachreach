@@ -2,7 +2,6 @@ package comp3350.teachreach.presentation.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,8 +17,6 @@ import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 public class StudentLoginActivity extends AppCompatActivity {
 
     private EditText etStudentEmail, etStudentPassword;
-    private Button btnLogin;
-    private TextView tvSignUp;
 
     private CredentialHandler credentialHandler;
 
@@ -30,24 +27,16 @@ public class StudentLoginActivity extends AppCompatActivity {
 
         etStudentEmail = findViewById(R.id.etStudentEmail);
         etStudentPassword = findViewById(R.id.etStudentPassword);
-        btnLogin = findViewById(R.id.btnStudentLogin);
-        tvSignUp = findViewById(R.id.tvStudentSignUp);
+        Button btnLogin = findViewById(R.id.btnStudentLogin);
+        TextView tvSignUp = findViewById(R.id.tvStudentSignUp);
 
         credentialHandler = new CredentialHandler();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login();
-            }
-        });
+        btnLogin.setOnClickListener(v -> login());
 
-        tvSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(StudentLoginActivity.this, StudentSignUpActivity.class);
-                startActivity(intent);
-            }
+        tvSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(StudentLoginActivity.this, StudentSignUpActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -55,7 +44,6 @@ public class StudentLoginActivity extends AppCompatActivity {
         String studentEmail = etStudentEmail.getText().toString().trim();
         String password = etStudentPassword.getText().toString().trim();
 
-//        if (validateInputs(studentEmail, password)) {
         try {
             final boolean correctCredential =
                     credentialHandler.validateCredential(studentEmail, password);

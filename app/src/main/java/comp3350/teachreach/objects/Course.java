@@ -30,10 +30,7 @@ public class Course implements ICourse {
     }
 
     public boolean equals(Course otherCourse) {
-        boolean flag = false;
-        flag = this.courseCode.equalsIgnoreCase(otherCourse.courseCode);
-        flag &= this.courseName.equalsIgnoreCase(otherCourse.courseName);
-        return flag;
+        return this.courseCode.equalsIgnoreCase(otherCourse.courseCode);
     }
 
     @NonNull
