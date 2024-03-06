@@ -1,9 +1,12 @@
 package comp3350.teachreach.data.hsqldb;
 
 /**
- * java.sql.SQLException is a checked exception, but our interface doesn't have any
- * checked exceptions, so wrap java.sql.SQLException in an unchecked java.lang.RuntimeException
- * so we can throw them around, but not *have* to catch them if we don't want to.
+ * java.sql.SQLException is a checked exception, but our interface doesn't
+ * have any
+ * checked exceptions, so wrap java.sql.SQLException in an unchecked java
+ * .lang.RuntimeException
+ * so we can throw them around, but not *have* to catch them if we don't want
+ * to.
  */
 public
 class PersistenceException extends RuntimeException
@@ -12,5 +15,17 @@ class PersistenceException extends RuntimeException
     PersistenceException(final Exception cause)
     {
         super(cause);
+    }
+
+    public
+    PersistenceException(final String message)
+    {
+        super(message);
+    }
+
+    public
+    PersistenceException(final String message, final Exception cause)
+    {
+        super(message, cause);
     }
 }

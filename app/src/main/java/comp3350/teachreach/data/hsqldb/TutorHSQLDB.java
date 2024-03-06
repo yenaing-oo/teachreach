@@ -6,9 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.objects.Tutor;
@@ -36,11 +35,17 @@ class TutorHSQLDB implements ITutorPersistence
     private
     ITutor fromResultSet(final ResultSet rs) throws SQLException
     {
-        final String tutorName     = rs.getString("tutor.name");
-        final String tutorMajor    = rs.getString("tutor.major");
-        final String tutorPronouns = rs.getString("tutor.pronouns");
+        final int    tutorID     = rs.getInt("tutor_id");
+        final int    accountId   = rs.getInt("account_id");
+        final double hourlyRate  = rs.getDouble("hourly_rate");
+        final int    reviewSum   = rs.getInt("review_sum");
+        final int    reviewCount = rs.getInt("review_count");
 
-        return new Tutor(tutorName, tutorMajor, tutorPronouns);
+        return new Tutor(tutorID,
+                         accountId,
+                         hourlyRate,
+                         reviewSum,
+                         reviewCount);
     }
 
     @Override
@@ -49,19 +54,22 @@ class TutorHSQLDB implements ITutorPersistence
     {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO tutor VALUES(?, ?, ?, ?)");
+                    "INSERT INTO tutors VALUES(?, ?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
 
-            pst.setString(2, newTutor.getUserName());
-            pst.setString(3, newTutor.getUserMajor());
-            pst.setString(4, newTutor.getUserPronouns());
+            pst.setInt(1, newTutor.getAccountID());
+            pst.setDouble(2, newTutor.getHourlyRate());
+            pst.setInt(3, newTutor.getReviewSum());
+            pst.setInt(4, newTutor.getReviewCount());
             pst.executeUpdate();
             final ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
-                newTutor.setTutorID(rs.getInt(1));
+                rs.close();
+                return newTutor.setTutorID(rs.getInt(1));
             } else {
-                throw new SQLException();
+                rs.close();
+                throw new PersistenceException("Tutor mightn't be updated!");
             }
-            return newTutor;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
@@ -76,35 +84,15 @@ class TutorHSQLDB implements ITutorPersistence
 
     @Override
     public
-    Optional<ITutor> getTutorByEmail(String email)
+    Map<Integer, ITutor> getTutors()
     {
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM tutor " +
-                    "JOIN account ON account.email = tutor.email " +
-                    "WHERE tutor.email = ?");
-            pst.setString(1, email);
-            final ResultSet rs    = pst.executeQuery();
-            ITutor          tutor = null;
-            if (rs.next()) {
-                tutor = fromResultSet(rs);
-            }
-            return Optional.ofNullable(tutor);
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public
-    List<ITutor> getTutors()
-    {
-        final List<ITutor> tutors = new ArrayList<>();
+        final Map<Integer, ITutor> tutors = new HashMap<>();
         try (final Connection c = connection()) {
             final Statement st = c.createStatement();
-            final ResultSet rs = st.executeQuery("SELECT * FROM tutor");
+            final ResultSet rs = st.executeQuery("SELECT * FROM tutors");
             while (rs.next()) {
-                tutors.add(fromResultSet(rs));
+                final ITutor theTutor = fromResultSet(rs);
+                tutors.put(theTutor.getTutorID(), theTutor);
             }
             st.close();
             rs.close();
@@ -112,12 +100,5 @@ class TutorHSQLDB implements ITutorPersistence
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-    }
-
-    @Override
-    public
-    List<ITutor> getTutorsByName(String name)
-    {
-        return null;
     }
 }

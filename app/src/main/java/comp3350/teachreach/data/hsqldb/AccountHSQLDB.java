@@ -67,7 +67,8 @@ class AccountHSQLDB implements IAccountPersistence
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 pst.close();
-                throw new SQLException("Potential accountID collision!");
+                throw new PersistenceException("Potential accountID " +
+                                               "collision!");
             }
             final ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
@@ -100,7 +101,8 @@ class AccountHSQLDB implements IAccountPersistence
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 pst.close();
-                throw new SQLException("Account not found/not updated!");
+                throw new PersistenceException("Account not found/not " +
+                                               "updated!");
             }
             pst.close();
             return existingAccount;

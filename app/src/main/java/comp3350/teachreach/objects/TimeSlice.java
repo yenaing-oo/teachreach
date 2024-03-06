@@ -1,25 +1,26 @@
 package comp3350.teachreach.objects;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoField;
 
 public
 class TimeSlice
 {
-    private Instant startTime;
-    private Instant endTime;
+    private Instant  startTime;
+    private Instant  endTime;
     private Duration duration;
 
     public
-    TimeSlice(Instant startTime, Instant endTime, Duration duration)
+    TimeSlice(Instant startTime, Instant endTime)
     {
         this.startTime = startTime;
         this.endTime   = endTime;
-        this.duration  = duration;
+        this.duration  = Duration.between(startTime, endTime);
     }
 
     public static
@@ -33,8 +34,7 @@ class TimeSlice
                 .of(year, month, dayOfMonth, hour, minute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
-        Duration duration = Duration.ofMinutes(30);
-        return new TimeSlice(start, start.plus(duration), duration);
+        return new TimeSlice(start, start.plus(Duration.ofMinutes(30)));
     }
 
     public static
@@ -57,9 +57,7 @@ class TimeSlice
                 .of(endYear, endMonth, endDay, endHour, endMinute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
-        Duration duration = Duration.between(start, end);
-
-        return new TimeSlice(start, end, duration);
+        return new TimeSlice(start, end);
     }
 
     public
@@ -69,15 +67,15 @@ class TimeSlice
     }
 
     public
-    OffsetDateTime getStartODT()
+    Timestamp getStartTimestamp()
     {
-        return OffsetDateTime.ofInstant(startTime, ZoneId.systemDefault());
+        return (Timestamp) Date.from(startTime);
     }
 
     public
-    OffsetDateTime getEndODT()
+    Timestamp getEndTimestamp()
     {
-        return OffsetDateTime.ofInstant(endTime, ZoneId.systemDefault());
+        return (Timestamp) Date.from(endTime);
     }
 
     public
@@ -155,8 +153,8 @@ class TimeSlice
     public
     boolean conflictsWith(TimeSlice that)
     {
-        return !(this.startTime.isAfter(that.endTime) ||
-                 this.endTime.isBefore(that.startTime));
+        return that.endTime.isAfter(this.startTime) ||
+               that.startTime.isBefore(this.endTime);
     }
 
     public

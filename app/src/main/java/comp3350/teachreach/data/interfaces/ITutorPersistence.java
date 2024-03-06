@@ -1,7 +1,6 @@
 package comp3350.teachreach.data.interfaces;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import comp3350.teachreach.objects.interfaces.ITutor;
 
@@ -12,9 +11,5 @@ interface ITutorPersistence
 
     ITutor updateTutor(ITutor newTutor) throws RuntimeException;
 
-    Optional<ITutor> getTutorByEmail(String email);
-
-    List<ITutor> getTutors();
-
-    List<ITutor> getTutorsByName(String name);
+    Map<Integer, ITutor> getTutors();
 }
