@@ -54,7 +54,7 @@ class AccountStub implements IAccountPersistence
     public
     IAccount storeAccount(IAccount newAccount)
     {
-        return getAccountByEmail(newAccount.getEmail()).orElseGet(() -> {
+        return getAccountByEmail(newAccount.getAccountEmail()).orElseGet(() -> {
             accounts.add(newAccount);
             return newAccount;
         });
@@ -65,9 +65,9 @@ class AccountStub implements IAccountPersistence
     boolean updateAccount(IAccount existingAccount)
     {
         AtomicBoolean result = new AtomicBoolean(false);
-        getAccountByEmail(existingAccount.getEmail()).ifPresent(account -> {
-            account.setPassword(existingAccount.getPassword());
-            account.setEmail(existingAccount.getEmail());
+        getAccountByEmail(existingAccount.getAccountEmail()).ifPresent(account -> {
+            account.setAccountPassword(existingAccount.getAccountPassword());
+            account.setAccountEmail(existingAccount.getAccountEmail());
             result.set(true);
         });
         return result.get();
@@ -85,7 +85,7 @@ class AccountStub implements IAccountPersistence
     {
         return accounts
                 .stream()
-                .filter(account -> account.getEmail().equals(email))
+                .filter(account -> account.getAccountEmail().equals(email))
                 .findFirst();
     }
 }

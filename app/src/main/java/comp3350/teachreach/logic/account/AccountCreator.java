@@ -78,7 +78,7 @@ class AccountCreator implements IAccountCreator
 
         boolean inputIsValid = !(emptyEmail || emptyPassword || invalidEmail);
 
-        if (accounts.stream().anyMatch(a -> a.getEmail().equals(email))) {
+        if (accounts.stream().anyMatch(a -> a.getAccountEmail().equals(email))) {
             throw new AccountCreatorException("Account already exist!");
         }
 
@@ -102,7 +102,7 @@ class AccountCreator implements IAccountCreator
                                        "(Account not initialized)");
         }
 
-        Student newStudent = new Student(account.getEmail(),
+        Student newStudent = new Student(account.getAccountEmail(),
                                          username,
                                          major,
                                          pronoun);

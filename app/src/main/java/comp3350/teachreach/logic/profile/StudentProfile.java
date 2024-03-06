@@ -92,7 +92,7 @@ class StudentProfile implements IUserProfile
         return this.accessAccount
                 .getAccounts()
                 .stream()
-                .filter(a -> a.getEmail().equals(theStudent.getEmail()))
+                .filter(a -> a.getAccountEmail().equals(theStudent.getEmail()))
                 .findFirst()
                 .orElseThrow(NoSuchElementException::new);
     }

@@ -1,103 +1,93 @@
 package comp3350.teachreach.objects;
 
-import java.util.Optional;
-
 import comp3350.teachreach.objects.interfaces.IAccount;
-import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class Account implements IAccount
 {
-
-    private int      accountID;
-    private String   email;
-    private String   password;
-    private ITutor   tutorProfile   = new NullTutor();
-    private IStudent studentProfile = null;
+    private int    accountID;
+    private int    tutorID;
+    private String accountEmail;
+    private String accountPassword;
 
     public
-    Account(String email, String password)
+    Account(String accountEmail, String accountPassword)
     {
-        this.email     = email;
-        this.password  = password;
-        this.accountID = -1;
+        this.accountEmail    = accountEmail;
+        this.accountPassword = accountPassword;
+        this.accountID       = -1;
+        this.tutorID         = -1;
     }
 
     public
-    Account(String email, String password, int accountID)
+    Account(String accountEmail, String accountPassword, int accountID)
     {
-        this.email     = email;
-        this.password  = password;
-        this.accountID = accountID;
+        this.accountEmail    = accountEmail;
+        this.accountPassword = accountPassword;
+        this.accountID       = accountID;
+        this.tutorID         = -1;
     }
 
+    @Override
     public
-    String getEmail()
+    String getAccountEmail()
     {
-        return this.email;
+        return this.accountEmail;
     }
 
+    @Override
     public
-    void setEmail(String email)
+    void setAccountEmail(String accountEmail)
     {
-        this.email = email;
+        this.accountEmail = accountEmail;
     }
 
+    @Override
     public
-    String getPassword()
+    String getAccountPassword()
     {
-        return this.password;
+        return this.accountPassword;
     }
 
+    @Override
     public
-    void setPassword(String password)
+    void setAccountPassword(String accountPassword)
     {
-        this.password = password;
+        this.accountPassword = accountPassword;
     }
 
     @Override
     public
     boolean isTutor()
     {
-        return !(this.tutorProfile instanceof NullTutor);
+        return this.tutorID != -1;
     }
 
-    public
-    Optional<IStudent> getStudentProfile()
-    {
-        return Optional.ofNullable(this.studentProfile);
-    }
-
-    public
-    IAccount setStudentProfile(IStudent profile)
-    {
-        this.studentProfile = profile;
-        return this;
-    }
-
-    public
-    Optional<ITutor> getTutorProfile()
-    {
-        return Optional.ofNullable(this.tutorProfile);
-    }
-
-    public
-    IAccount setTutorProfile(ITutor profile)
-    {
-        this.tutorProfile = profile;
-        return this;
-    }
-
+    @Override
     public
     int getAccountID()
     {
         return this.accountID;
     }
 
+    @Override
     public
     void setAccountID(int accountID)
     {
         this.accountID = accountID;
+    }
+
+    @Override
+    public
+    int getTutorID()
+    {
+        return tutorID;
+    }
+
+    @Override
+    public
+    void setTutorID(int tutorID)
+    {
+        this.tutorID = tutorID;
     }
 }

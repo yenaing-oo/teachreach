@@ -54,13 +54,13 @@ class CredentialHandler implements ICredentialHandler
         }
         Optional<IAccount> maybeAccount = accounts
                 .stream()
-                .filter(account -> account.getEmail().equals(email))
+                .filter(account -> account.getAccountEmail().equals(email))
                 .findFirst();
         return maybeAccount
                 .map(account -> BCrypt
                         .verifyer()
                         .verify(password.toCharArray(),
-                                account.getPassword()).verified)
+                                account.getAccountPassword()).verified)
                 .orElseThrow(() -> new NoSuchElementException(
                         "No account found with the provided email."));
     }

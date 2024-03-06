@@ -6,26 +6,21 @@ public
 interface IAccount
 {
 
-    String getEmail();
+    String getAccountEmail();
 
-    void setEmail(String email);
+    void setAccountEmail(String accountEmail);
 
-    String getPassword();
+    String getAccountPassword();
 
-    void setPassword(String password);
+    void setAccountPassword(String accountPassword);
 
     boolean isTutor();
-
-    Optional<IStudent> getStudentProfile();
-
-    IAccount setStudentProfile(IStudent profile);
-
-    Optional<ITutor> getTutorProfile();
-
-    IAccount setTutorProfile(ITutor profile);
 
     int getAccountID();
 
     void setAccountID(int accountID);
 
+    int getTutorID();
+
+    void setTutorID(int tutorID);
 }

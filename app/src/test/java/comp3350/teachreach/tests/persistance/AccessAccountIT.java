@@ -83,7 +83,7 @@ class AccessAccountIT
     {
         final Optional<IAccount> a = accessAccount.getAccountByEmail(
                 "pankratz25@myumanitoba.ca");
-        final IAccount u = new Account(a.get().getEmail(),
+        final IAccount u = new Account(a.get().getAccountEmail(),
                                        "$2a$12$i" +
                                        "/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg" +
                                        ".PXVGNnjF4ld46hJe");
@@ -94,7 +94,7 @@ class AccessAccountIT
                 accessAccount
                         .getAccountByEmail("pankratz25@myumanitoba.ca")
                         .get()
-                        .getPassword());
+                        .getAccountPassword());
     }
 
     @After

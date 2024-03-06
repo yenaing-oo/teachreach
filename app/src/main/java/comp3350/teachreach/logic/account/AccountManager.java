@@ -64,7 +64,7 @@ class AccountManager implements IAccountManager
     {
         this.accessAccount.getAccountByEmail(email).ifPresent(account -> {
             if (credentialHandler.validateCredential(email, oldPassword)) {
-                this.theAccount.setPassword(credentialHandler.processPassword(
+                this.theAccount.setAccountPassword(credentialHandler.processPassword(
                         newPassword));
                 this.accessAccount.updateAccount(theAccount);
             }
@@ -80,7 +80,7 @@ class AccountManager implements IAccountManager
     {
         this.accessAccount.getAccountByEmail(oldEmail).ifPresent(account -> {
             if (credentialHandler.validateCredential(oldEmail, password)) {
-                this.theAccount.setEmail(newEmail);
+                this.theAccount.setAccountEmail(newEmail);
                 this.accessAccount.updateAccount(theAccount);
             }
         });

@@ -48,7 +48,7 @@ class AccessAccount
         }
         accounts
                 .stream()
-                .filter(a -> a.getEmail().equals(email))
+                .filter(a -> a.getAccountEmail().equals(email))
                 .findFirst()
                 .ifPresentOrElse(a -> account = a, () -> {
                     account  = null;

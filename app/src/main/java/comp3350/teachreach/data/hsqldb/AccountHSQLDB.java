@@ -149,8 +149,8 @@ class AccountHSQLDB implements IAccountPersistence
                     "PRONOUNS, MAJOR) VALUES(?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
-            pst.setString(1, newAccount.getEmail());
-            pst.setString(2, newAccount.getPassword());
+            pst.setString(1, newAccount.getAccountEmail());
+            pst.setString(2, newAccount.getAccountPassword());
             pst.setInt(3, tutorID);
             pst.setString(2, newAccount.getStudentProfile().get().getName());
             pst.setString(2,
@@ -180,8 +180,8 @@ class AccountHSQLDB implements IAccountPersistence
                     "SET EMAIL = ?, PASSWORD = ?, TUTORID = ?, " +
                     "NAME = ?, PRONOUNS = ?, MAJOR = ? " +
                     "WHERE ACCOUNTID = ?");
-            pst.setString(1, existingAccount.getEmail());
-            pst.setString(2, existingAccount.getPassword());
+            pst.setString(1, existingAccount.getAccountEmail());
+            pst.setString(2, existingAccount.getAccountPassword());
             if (existingAccount.getTutorProfile().isPresent()) {
                 pst.setInt(3,
                            existingAccount
