@@ -4,7 +4,9 @@ import java.util.List;
 
 import comp3350.teachreach.objects.TimeSlice;
 
-public interface ITutor extends IUser {
+public
+interface ITutor extends IUser
+{
 
     List<ICourse> getCourses();
 

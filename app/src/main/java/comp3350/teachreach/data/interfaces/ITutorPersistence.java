@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface ITutorPersistence {
+public
+interface ITutorPersistence
+{
     ITutor storeTutor(ITutor newTutor) throws RuntimeException;
 
     ITutor updateTutor(ITutor newTutor) throws RuntimeException;

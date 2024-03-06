@@ -10,12 +10,16 @@ import androidx.fragment.app.FragmentManager;
 import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.utils.DateUtils;
 
-public class BookingActivity extends AppCompatActivity implements OnDateChangeListener {
+public
+class BookingActivity extends AppCompatActivity implements OnDateChangeListener
+{
     private FragmentManager fragmentManager;
-    private TextView dateDisplay;
+    private TextView        dateDisplay;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
 
@@ -27,8 +31,11 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
 
     }
 
-    private void addDateSelectionFragment() {
-        DateSelectionFragment fragment = DateSelectionFragment.newInstance("email");
+    private
+    void addDateSelectionFragment()
+    {
+        DateSelectionFragment fragment = DateSelectionFragment.newInstance(
+                "email");
         fragment.setOnDateChangeListener(this);
         fragmentManager
                 .beginTransaction()
@@ -36,15 +43,21 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
                 .commit();
     }
 
-    private void addTimeSlotSelectionFragment() {
+    private
+    void addTimeSlotSelectionFragment()
+    {
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.timeSlotPickerFragmentView, TimeSlotSelectionFragment.newInstance(), "fragment")
+                .replace(R.id.timeSlotPickerFragmentView,
+                         TimeSlotSelectionFragment.newInstance(),
+                         "fragment")
                 .commit();
     }
 
     @Override
-    public void onDateChanged(int year, int month, int dayOfMonth) {
+    public
+    void onDateChanged(int year, int month, int dayOfMonth)
+    {
         dateDisplay.setText(DateUtils.formatDate(year, month, dayOfMonth));
         dateDisplay.setVisibility(View.VISIBLE);
         addTimeSlotSelectionFragment();

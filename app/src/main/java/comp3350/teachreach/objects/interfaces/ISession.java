@@ -2,7 +2,9 @@ package comp3350.teachreach.objects.interfaces;
 
 import comp3350.teachreach.objects.TimeSlice;
 
-public interface ISession {
+public
+interface ISession
+{
 
     ISession acceptSession();
 

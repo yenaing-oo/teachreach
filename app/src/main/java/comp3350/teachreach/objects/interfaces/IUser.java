@@ -1,6 +1,8 @@
 package comp3350.teachreach.objects.interfaces;
 
-public interface IUser {
+public
+interface IUser
+{
     String getName();
 
     IUser setName(String name);
@@ -13,8 +15,8 @@ public interface IUser {
 
     IUser setMajor(String major);
 
-    IUser setAccountID(int accountID);
-
     int getAccountID();
+
+    IUser setAccountID(int accountID);
 
 }

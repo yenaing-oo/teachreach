@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import comp3350.teachreach.objects.interfaces.ICourse;
 
-public interface ICoursePersistence {
+public
+interface ICoursePersistence
+{
     List<ICourse> getCourses();
 
     boolean addCourse(String courseCode, String courseName);

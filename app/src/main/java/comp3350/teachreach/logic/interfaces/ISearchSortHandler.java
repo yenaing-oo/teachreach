@@ -5,7 +5,9 @@ import java.util.List;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface ISearchSortHandler {
+public
+interface ISearchSortHandler
+{
     List<ITutor> getTutors();
 
     List<ITutor> getTutorsByCourse(Course course);
@@ -19,6 +21,6 @@ public interface ISearchSortHandler {
     List<ITutor> getTutorsByHourlyRate(boolean reverseOrder);
 
     // excluded as still figuring out how to best represent availability
-//    List<Tutor> getTutorsByAvailability();
+    //    List<Tutor> getTutorsByAvailability();
 
 }

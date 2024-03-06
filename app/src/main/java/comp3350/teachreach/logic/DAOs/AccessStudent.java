@@ -7,46 +7,61 @@ import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.objects.interfaces.IStudent;
 
-public class AccessStudent {
+public
+class AccessStudent
+{
     private IStudentPersistence studentPersistence;
-    private List<IStudent> students;
-    private IStudent student;
+    private List<IStudent>      students;
+    private IStudent            student;
 
-    public AccessStudent() {
+    public
+    AccessStudent()
+    {
         studentPersistence = Server.getStudentDataAccess();
-        students = null;
-        student = null;
+        students           = null;
+        student            = null;
     }
 
-    public AccessStudent(final IStudentPersistence studentPersistence) {
+    public
+    AccessStudent(final IStudentPersistence studentPersistence)
+    {
         this();
         this.studentPersistence = studentPersistence;
     }
 
-    public List<IStudent> getStudents() {
+    public
+    List<IStudent> getStudents()
+    {
         students = studentPersistence.getStudents();
         return Collections.unmodifiableList(students);
     }
 
-    public IStudent getStudentByAID(int AID) {
+    public
+    IStudent getStudentByAID(int AID)
+    {
         if (students == null) {
             students = studentPersistence.getStudents();
         }
-        students.stream()
-                .filter(s -> s.getAccountID()==AID)
+        students
+                .stream()
+                .filter(s -> s.getAccountID() == AID)
                 .findFirst()
                 .ifPresentOrElse(s -> student = s, () -> {
-                    student = null;
+                    student  = null;
                     students = null;
                 });
         return student;
     }
 
-    public IStudent insertStudent(IStudent newStudent) {
+    public
+    IStudent insertStudent(IStudent newStudent)
+    {
         return studentPersistence.storeStudent(newStudent);
     }
 
-    public IStudent updateStudent(IStudent existingStudent) {
+    public
+    IStudent updateStudent(IStudent existingStudent)
+    {
         return studentPersistence.updateStudent(existingStudent);
     }
 }

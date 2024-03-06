@@ -13,67 +13,94 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccount;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.tests.utils.TestUtils;
 
-public class AccessAccountIT {
+public
+class AccessAccountIT
+{
     private AccessAccount accessAccount;
-    private File tempDB;
-
+    private File          tempDB;
 
     @Before
-    public void setUp() throws IOException {
+    public
+    void setUp() throws IOException
+    {
         this.tempDB = TestUtils.copyDB();
-        final IAccountPersistence persistence =
-                new AccountHSQLDB(this.tempDB.getAbsolutePath().replace(".script", ""));
+        final IAccountPersistence persistence = new AccountHSQLDB(this.tempDB
+                                                                          .getAbsolutePath()
+                                                                          .replace(
+                                                                                  ".script",
+                                                                                  ""));
         this.accessAccount = new AccessAccount(persistence);
     }
 
     @Test
-    public void testGetAccounts() {
+    public
+    void testGetAccounts()
+    {
         final List<IAccount> accounts = accessAccount.getAccounts();
         assertEquals(1, accounts.size());
     }
 
     @Test
-    public void testGetAccountByEmail() {//NO EMAIL ANYMORE
-        final Optional<IAccount> account = accessAccount
-                .getAccountByEmail("pankratz25@myumanitoba.ca");
+    public
+    void testGetAccountByEmail()
+    {//NO EMAIL ANYMORE
+        final Optional<IAccount> account = accessAccount.getAccountByEmail(
+                "pankratz25@myumanitoba.ca");
         assertTrue(account.isPresent());
     }
 
     @Test
-    public void testGetAccountByEmailBad() {
-        final Optional<IAccount> account = accessAccount
-                .getAccountByEmail("a@myumanitoba.ca");
+    public
+    void testGetAccountByEmailBad()
+    {
+        final Optional<IAccount> account = accessAccount.getAccountByEmail(
+                "a@myumanitoba.ca");
         assertFalse(account.isPresent());
     }
 
     @Test
-    public void testStoreAccount() {
+    public
+    void testStoreAccount()
+    {
         final IAccount a = new Account("pankratz@myumanitoba.ca", "AI");
         accessAccount.insertAccount(a);
-        assertEquals(2, accessAccount.getAccounts().size()); //Change number base on database
+        assertEquals(2,
+                     accessAccount
+                             .getAccounts()
+                             .size()); //Change number base on database
     }
 
     @Test
-    public void testUpdateAccount() {
-        final Optional<IAccount> a = accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca");
+    public
+    void testUpdateAccount()
+    {
+        final Optional<IAccount> a = accessAccount.getAccountByEmail(
+                "pankratz25@myumanitoba.ca");
         final IAccount u = new Account(a.get().getEmail(),
-                "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe");
+                                       "$2a$12$i" +
+                                       "/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg" +
+                                       ".PXVGNnjF4ld46hJe");
         accessAccount.updateAccount(u);
         assertEquals(1, accessAccount.getAccounts().size());
         assertEquals(
                 "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe",
-                accessAccount.getAccountByEmail("pankratz25@myumanitoba.ca").get().getPassword());
+                accessAccount
+                        .getAccountByEmail("pankratz25@myumanitoba.ca")
+                        .get()
+                        .getPassword());
     }
 
     @After
-    public void tearDown() {
+    public
+    void tearDown()
+    {
         this.tempDB.delete();
     }
 }

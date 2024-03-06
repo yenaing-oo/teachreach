@@ -28,54 +28,53 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorProfileTest {
+public
+class TutorProfileTest
+{
 
-    private ITutorProfile theTutorProfile = null;
+    private ITutorProfile     theTutorProfile  = null;
     private ITutorPersistence tutorsDataAccess = null;
 
     @Before
-    public void setUp() throws AccountCreatorException {
+    public
+    void setUp() throws AccountCreatorException
+    {
         System.out.println("Starting a new test for TutorProfile");
         IAccountPersistence accountsDataAccess = new AccountStub();
         IStudentPersistence studentsDataAccess = new StudentStub();
         tutorsDataAccess = new TutorStub(accountsDataAccess);
-        ICredentialHandler credentialHandler = new CredentialHandler(accountsDataAccess);
+        ICredentialHandler credentialHandler = new CredentialHandler(
+                accountsDataAccess);
 
         AccountCreator accountCreator = new AccountCreator();
 
-        IAccount newAccount = accountCreator.createAccount(
-                        "fulopv@myumanitoba.ca",
-                        "Nagyon jo")
-                .setStudentProfile(
-                        "Victoria",
-                        "Education",
-                        "She/Her")
-                .setTutorProfile(
-                        "Ms. Philip",
-                        "Education",
-                        "She/Her")
+        IAccount newAccount = accountCreator
+                .createAccount("fulopv@myumanitoba.ca", "Nagyon jo")
+                .setStudentProfile("Victoria", "Education", "She/Her")
+                .setTutorProfile("Ms. Philip", "Education", "She/Her")
                 .buildAccount();
 
-        theTutorProfile =
-                new TutorProfile(newAccount
-                        .getTutorProfile()
-                        .orElseThrow(NoSuchElementException::new));
+        theTutorProfile = new TutorProfile(newAccount
+                                                   .getTutorProfile()
+                                                   .orElseThrow(
+                                                           NoSuchElementException::new));
     }
 
     @Test
-    public void testHourlyRate() {
+    public
+    void testHourlyRate()
+    {
         theTutorProfile.setHourlyRate(420.69).updateUserProfile();
         ITutor updatedTutor = tutorsDataAccess
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
-        assertEquals(
-                420.69,
-                updatedTutor.getHourlyRate(),
-                0.01);
+        assertEquals(420.69, updatedTutor.getHourlyRate(), 0.01);
     }
 
     @Test
-    public void testAvgReview() {
+    public
+    void testAvgReview()
+    {
         theTutorProfile
                 .addReview(5)
                 .addReview(4)
@@ -86,14 +85,16 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        assertEquals(
-                (double) (5 + 4 + 5) / 3,
-                (double) updatedTutor.getReviewTotalSum() / (double) updatedTutor.getReviewCount(),
-                0.1);
+        assertEquals((double) (5 + 4 + 5) / 3,
+                     (double) updatedTutor.getReviewTotalSum() /
+                     (double) updatedTutor.getReviewCount(),
+                     0.1);
     }
 
     @Test
-    public void testCourseList() {
+    public
+    void testCourseList()
+    {
         theTutorProfile
                 .addCourse("COMP 1010", "Introduction")
                 .addCourse("COMP 1010", "CS 1")
@@ -110,16 +111,26 @@ public class TutorProfileTest {
 
         assertEquals(2, updatedCourseList.size());
 
-        assertTrue(updatedCourseList.stream().anyMatch(
-                course -> course.getCourseCode().equals("COMP 1010")
-                        && course.getCourseName().equals("Introduction")));
+        assertTrue(updatedCourseList
+                           .stream()
+                           .anyMatch(course -> course
+                                                       .getCourseCode()
+                                                       .equals("COMP 1010") &&
+                                               course
+                                                       .getCourseName()
+                                                       .equals("Introduction")));
 
-        assertTrue(updatedCourseList.stream().anyMatch(
-                course -> course.getCourseCode().equals("ASTR 1830")));
+        assertTrue(updatedCourseList
+                           .stream()
+                           .anyMatch(course -> course
+                                   .getCourseCode()
+                                   .equals("ASTR 1830")));
     }
 
     @Test
-    public void testCourseListRemove() {
+    public
+    void testCourseListRemove()
+    {
         theTutorProfile
                 .addCourse("COMP 1010", "Introduction")
                 .addCourse("COMP 1010", "CS 1")
@@ -141,15 +152,23 @@ public class TutorProfileTest {
 
         assertEquals(1, updatedCourseList.size());
 
-        assertFalse(updatedCourseList.stream().anyMatch(
-                course -> course.getCourseCode().equals("COMP 1010")));
+        assertFalse(updatedCourseList
+                            .stream()
+                            .anyMatch(course -> course
+                                    .getCourseCode()
+                                    .equals("COMP 1010")));
 
-        assertTrue(updatedCourseList.stream().anyMatch(
-                course -> course.getCourseCode().equals("ASTR 1830")));
+        assertTrue(updatedCourseList
+                           .stream()
+                           .anyMatch(course -> course
+                                   .getCourseCode()
+                                   .equals("ASTR 1830")));
     }
 
     @Test
-    public void testPreferredLocation() {
+    public
+    void testPreferredLocation()
+    {
         theTutorProfile
                 .addPreferredLocation("420 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
@@ -160,22 +179,27 @@ public class TutorProfileTest {
                 .getTutorByEmail(theTutorProfile.getUserEmail())
                 .get();
 
-        List<String> preferredLocations =
-                updatedTutor.getPreferredLocations();
+        List<String> preferredLocations = updatedTutor.getPreferredLocations();
 
         assertNotNull(preferredLocations);
 
         assertEquals(2, preferredLocations.size());
 
-        assertTrue(preferredLocations.stream().anyMatch(
-                location -> location.equals("420 Feltcher Argue")));
+        assertTrue(preferredLocations
+                           .stream()
+                           .anyMatch(location -> location.equals(
+                                   "420 Feltcher Argue")));
 
-        assertTrue(preferredLocations.stream().anyMatch(
-                location -> location.equals("400 Feltcher Argue")));
+        assertTrue(preferredLocations
+                           .stream()
+                           .anyMatch(location -> location.equals(
+                                   "400 Feltcher Argue")));
     }
 
     @Test
-    public void testPreferredLocations() {
+    public
+    void testPreferredLocations()
+    {
         theTutorProfile
                 .addPreferredLocation("420 Feltcher Argue")
                 .addPreferredLocation("400 Feltcher Argue")
@@ -197,10 +221,15 @@ public class TutorProfileTest {
 
         assertEquals(4, updatedTutor.getPreferredLocations().size());
 
-        assertTrue(updatedTutor.getPreferredLocations().stream().anyMatch(
-                location -> location.equals("400 Tier")));
+        assertTrue(updatedTutor
+                           .getPreferredLocations()
+                           .stream()
+                           .anyMatch(location -> location.equals("400 Tier")));
 
-        assertTrue(updatedTutor.getPreferredLocations().stream().anyMatch(
-                location -> location.equals("420 Feltcher Argue")));
+        assertTrue(updatedTutor
+                           .getPreferredLocations()
+                           .stream()
+                           .anyMatch(location -> location.equals(
+                                   "420 Feltcher Argue")));
     }
 }

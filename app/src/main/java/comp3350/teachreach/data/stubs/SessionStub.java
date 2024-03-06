@@ -9,48 +9,61 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.objects.Session;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.objects.TimeSlice;
 
-public class SessionStub implements ISessionPersistence {
+public
+class SessionStub implements ISessionPersistence
+{
 
-    List<ISession> sessions;
-    int sessionIDCounter;
+    List<ISession>      sessions;
+    int                 sessionIDCounter;
     IAccountPersistence accountsDataAccess;
     IStudentPersistence studentsDataAccess;
-    ITutorPersistence tutorsDataAccess;
+    ITutorPersistence   tutorsDataAccess;
 
-    public SessionStub() {
-        sessions = new ArrayList<>();
+    public
+    SessionStub()
+    {
+        sessions         = new ArrayList<>();
         sessionIDCounter = 0;
 
         accountsDataAccess = new AccountStub();
         studentsDataAccess = new StudentStub();
-        tutorsDataAccess = new TutorStub(accountsDataAccess);
+        tutorsDataAccess   = new TutorStub(accountsDataAccess);
     }
 
     @Override
-    public ISession storeSession(
-            IStudent theStudent, ITutor theTutor,
-            TimeSlice sessionTime, String location) {
-        ISession newSession = new Session(
-                theStudent, theTutor, sessionTime, location);
+    public
+    ISession storeSession(IStudent theStudent,
+                          ITutor theTutor,
+                          TimeSlice sessionTime,
+                          String location)
+    {
+        ISession newSession = new Session(theStudent,
+                                          theTutor,
+                                          sessionTime,
+                                          location);
         return newSession.setSessionID(sessionIDCounter++);
     }
 
     @Override
-    public boolean deleteSession(ISession session) {
-        return sessions.removeIf(otherSession ->
-                session.getSessionID() == otherSession.getSessionID());
+    public
+    boolean deleteSession(ISession session)
+    {
+        return sessions.removeIf(otherSession -> session.getSessionID() ==
+                                                 otherSession.getSessionID());
     }
 
     @Override
-    public boolean updateSession(ISession session) {
+    public
+    boolean updateSession(ISession session)
+    {
         ISession updatedSession = null;
-        boolean result = false;
+        boolean  result         = false;
         for (ISession s : sessions) {
             if (s.getSessionID() == session.getSessionID()) {
                 s.setLocation(session.getLocation());
@@ -58,7 +71,7 @@ public class SessionStub implements ISessionPersistence {
                 s.setTutor(session.getTutor());
                 s.setStage(session.getStage());
                 updatedSession = s;
-                result = true;
+                result         = true;
                 break;
             }
         }
@@ -69,40 +82,37 @@ public class SessionStub implements ISessionPersistence {
     }
 
     @Override
-    public List<ISession> getSessionsByRangeForStudent(
-            int StudentAID, TimeSlice range) {
+    public
+    List<ISession> getSessionsByRangeForStudent(int StudentAID, TimeSlice range)
+    {
         return sessions
                 .stream()
-                .filter(session ->
-                        range.canContain(session.getTime()) &&
-                                session.getStudent()
-                                        .getAccountID()
-                                        ==StudentAID)
+                .filter(session -> range.canContain(session.getTime()) &&
+                                   session.getStudent().getAccountID() ==
+                                   StudentAID)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ISession> getSessionsByRangeForTutor(
-            int StudentAID, TimeSlice range) {
+    public
+    List<ISession> getSessionsByRangeForTutor(int StudentAID, TimeSlice range)
+    {
         return sessions
                 .stream()
-                .filter(session ->
-                        range.canContain(session.getTime()) &&
-                                session.getTutor()
-                                        .getAccountID()
-                                        ==StudentAID)
+                .filter(session -> range.canContain(session.getTime()) &&
+                                   session.getTutor().getAccountID() ==
+                                   StudentAID)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<ISession> getPendingSessionRequests(int AID) {
+    public
+    List<ISession> getPendingSessionRequests(int AID)
+    {
         return sessions
                 .stream()
-                .filter(session ->
-                        session.getTutor()
-                                .getAccountID()==
-                                AID &&
-                                session.getStage())
+                .filter(session -> session.getTutor().getAccountID() == AID &&
+                                   session.getStage())
                 .collect(Collectors.toList());
     }
 }

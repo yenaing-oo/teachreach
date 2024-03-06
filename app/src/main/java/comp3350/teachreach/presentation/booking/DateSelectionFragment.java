@@ -15,12 +15,16 @@ import comp3350.teachreach.R;
  * Use the {@link DateSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DateSelectionFragment extends Fragment {
-    private static final String EMAIL = "EMAIL";
-    private View fragmentView;
-    private OnDateChangeListener dateChangeListener;
+public
+class DateSelectionFragment extends Fragment
+{
+    private static final String               EMAIL = "EMAIL";
+    private              View                 fragmentView;
+    private              OnDateChangeListener dateChangeListener;
 
-    public DateSelectionFragment() {
+    public
+    DateSelectionFragment()
+    {
         // Required empty public constructor
     }
 
@@ -32,16 +36,20 @@ public class DateSelectionFragment extends Fragment {
      * @return A new instance of fragment DateSelectionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DateSelectionFragment newInstance(String email) {
+    public static
+    DateSelectionFragment newInstance(String email)
+    {
         DateSelectionFragment fragment = new DateSelectionFragment();
-        Bundle args = new Bundle();
+        Bundle                args     = new Bundle();
         args.putString(EMAIL, email);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
@@ -52,9 +60,14 @@ public class DateSelectionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        fragmentView = inflater.inflate(R.layout.fragment_date_selection, container, false);
+    public
+    View onCreateView(LayoutInflater inflater,
+                      ViewGroup container,
+                      Bundle savedInstanceState)
+    {
+        fragmentView = inflater.inflate(R.layout.fragment_date_selection,
+                                        container,
+                                        false);
 
         // Inflate the layout for this fragment
         setupCalendar();
@@ -62,8 +75,11 @@ public class DateSelectionFragment extends Fragment {
         return fragmentView;
     }
 
-    private void setupCalendar() {
-        CalendarView calendarView = fragmentView.findViewById(R.id.calendarView);
+    private
+    void setupCalendar()
+    {
+        CalendarView calendarView
+                = fragmentView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             if (dateChangeListener != null) {
                 dateChangeListener.onDateChanged(year, month, dayOfMonth);
@@ -71,7 +87,9 @@ public class DateSelectionFragment extends Fragment {
         });
     }
 
-    public void setOnDateChangeListener(OnDateChangeListener listener) {
+    public
+    void setOnDateChangeListener(OnDateChangeListener listener)
+    {
         this.dateChangeListener = listener;
     }
 

@@ -27,16 +27,21 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
-public class SearchActivity extends AppCompatActivity implements ITutorRecyclerView, SortDialogFragment.SortDialogListener {
+public
+class SearchActivity extends AppCompatActivity
+        implements ITutorRecyclerView, SortDialogFragment.SortDialogListener
+{
 
-    private SearchSortHandler handler;
-    private List<ITutor> tutorList;
-    private ArrayList<String> courseStringList;
+    private SearchSortHandler         handler;
+    private List<ITutor>              tutorList;
+    private ArrayList<String>         courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
-    private AutoCompleteTextView autoCompleteTextView;
+    private AutoCompleteTextView      autoCompleteTextView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -44,16 +49,19 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         Button sortButton = findViewById(R.id.sortButton);
 
-        handler = new SearchSortHandler();
-        tutorList = Server.getTutorDataAccess().getTutors();
+        handler          = new SearchSortHandler();
+        tutorList        = Server.getTutorDataAccess().getTutors();
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseStringList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                                                               android.R.layout.simple_list_item_1,
+                                                               courseStringList);
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+        autoCompleteTextView.setOnItemClickListener((parent, view, position,
+                                                     id) -> {
             autoCompleteTextView.clearFocus();
             String selectedCourse = (String) parent.getItemAtPosition(position);
 
@@ -64,42 +72,56 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
 
         populateTutors();
 
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this,
+                                                                  tutorList,
+                                                                  this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void setUpCourseList() {
+    private
+    void setUpCourseList()
+    {
         List<ICourse> courses = handler.getListOfCourses();
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
     }
 
-    private void populateTutors() {
+    private
+    void populateTutors()
+    {
         tutorList = handler.getListOfTutors();
     }
 
-    private void updateTutorList(String selectedCourse) {
+    private
+    void updateTutorList(String selectedCourse)
+    {
         tutorList = handler.searchTutorByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void sortTutors(SortCriteria sortCriteria) throws Exception {
+    private
+    void sortTutors(SortCriteria sortCriteria) throws Exception
+    {
 
         switch (sortCriteria) {
             case HIGHEST_RATING:
-//                tutorList = handler.getTutorsByHighestRating();
+                //                tutorList = handler
+                //                .getTutorsByHighestRating();
                 break;
             case HOURLY_RATE_ASCENDING:
-//                tutorList = handler.getTutorsByHourlyRateAsc();
+                //                tutorList = handler
+                //                .getTutorsByHourlyRateAsc();
                 break;
             case HOURLY_RATE_DESCENDING:
-//                tutorList = handler.getTutorsByHourlyRateDesc();
+                //                tutorList = handler
+                //                .getTutorsByHourlyRateDesc();
                 break;
             default:
-                throw new Exception("Unable to handle sort critera: " + sortCriteria);
+                throw new Exception(
+                        "Unable to handle sort critera: " + sortCriteria);
         }
 
         // needs to use DIffUtil to improve efficiency
@@ -108,22 +130,29 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     }
 
     @Override
-    public void onTutorItemClick(int position) {
+    public
+    void onTutorItemClick(int position)
+    {
         Intent intent = new Intent(this, TutorProfileActivity.class);
         intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
         startActivity(intent);
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public
+    boolean dispatchTouchEvent(MotionEvent event)
+    {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(),
+                                      (int) event.getRawY())) {
                     v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm
+                            =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
@@ -131,12 +160,16 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         return super.dispatchTouchEvent(event);
     }
 
-    public void openDialog() {
+    public
+    void openDialog()
+    {
         SortDialogFragment sortDialogFragment = new SortDialogFragment();
         sortDialogFragment.show(getSupportFragmentManager(), "Sort Dialog");
     }
 
     @Override
-    public void applySort(SortCriteria sortCriteria) {
+    public
+    void applySort(SortCriteria sortCriteria)
+    {
     }
 }

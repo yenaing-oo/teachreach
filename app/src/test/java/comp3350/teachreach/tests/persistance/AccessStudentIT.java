@@ -1,4 +1,6 @@
 package comp3350.teachreach.tests.persistance;
 
-public class AccessStudentIT {
+public
+class AccessStudentIT
+{
 }

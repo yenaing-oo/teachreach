@@ -3,10 +3,12 @@ package comp3350.teachreach.logic.interfaces;
 import java.time.DayOfWeek;
 import java.util.List;
 
-import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ICourse;
 
-public interface ITutorProfile extends IUserProfile {
+public
+interface ITutorProfile extends IUserProfile
+{
     double getHourlyRate();
 
     ITutorProfile setHourlyRate(double hourlyRate);
@@ -23,11 +25,16 @@ public interface ITutorProfile extends IUserProfile {
 
     List<List<TimeSlice>> getPreferredAvailability();
 
-    List<TimeSlice> getAvailableTimeSlotOfRange(
-            int startYear, int startMonth, int startDay,
-            int startHour, int startMinute,
-            int endYear, int endMonth, int endDay,
-            int endHour, int endMinute);
+    List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
+                                                int startMonth,
+                                                int startDay,
+                                                int startHour,
+                                                int startMinute,
+                                                int endYear,
+                                                int endMonth,
+                                                int endDay,
+                                                int endHour,
+                                                int endMinute);
 
     ITutorProfile addReview(int score);
 
@@ -41,12 +48,17 @@ public interface ITutorProfile extends IUserProfile {
 
     ITutorProfile resetPreferredAvailability();
 
-    ITutorProfile setPreferredAvailability(
-            int startYear, int startMonth, int startDay,
-            int startHour, int startMinute,
-            int endYear, int endMonth, int endDay,
-            int endHour, int endMinute,
-            List<DayOfWeek> daysOfWeek);
+    ITutorProfile setPreferredAvailability(int startYear,
+                                           int startMonth,
+                                           int startDay,
+                                           int startHour,
+                                           int startMinute,
+                                           int endYear,
+                                           int endMonth,
+                                           int endDay,
+                                           int endHour,
+                                           int endMinute,
+                                           List<DayOfWeek> daysOfWeek);
 
     void updateUserProfile(); // NEED TO BE CALLED AFTER CHANGE OF PROFILE
 }

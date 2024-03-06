@@ -1,6 +1,8 @@
 package comp3350.teachreach.logic.interfaces;
 
-public interface IAccountManager {
+public
+interface IAccountManager
+{
     IAccountManager updateAccountUsername(String newName);
 
     IAccountManager updateAccountUserPronouns(String pronouns);

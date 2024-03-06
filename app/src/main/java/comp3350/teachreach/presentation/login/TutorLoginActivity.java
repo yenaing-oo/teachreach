@@ -15,62 +15,81 @@ import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
-public class TutorLoginActivity extends AppCompatActivity {
+public
+class TutorLoginActivity extends AppCompatActivity
+{
 
     private EditText etTutorEmail, etTutorPassword;
-    private Button btnLogin;
-    private TextView tvSignUp;
+    private Button            btnLogin;
+    private TextView          tvSignUp;
     private CredentialHandler credentialHandler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_login);
 
-        etTutorEmail = findViewById(R.id.etTutorEmail);
+        etTutorEmail    = findViewById(R.id.etTutorEmail);
         etTutorPassword = findViewById(R.id.etTutorPassword);
-        btnLogin = findViewById(R.id.btnTutorLogin);
-        tvSignUp = findViewById(R.id.tvTutorSignUp);
+        btnLogin        = findViewById(R.id.btnTutorLogin);
+        tvSignUp        = findViewById(R.id.tvTutorSignUp);
 
         credentialHandler = new CredentialHandler();
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        btnLogin.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
+            public
+            void onClick(View v)
+            {
                 login();
             }
         });
 
-        tvSignUp.setOnClickListener(new View.OnClickListener() {
+        tvSignUp.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TutorLoginActivity.this, TutorSignUpActivity.class);
+            public
+            void onClick(View v)
+            {
+                Intent intent = new Intent(TutorLoginActivity.this,
+                                           TutorSignUpActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    private void login() {
-        String email = etTutorEmail.getText().toString().trim();
+    private
+    void login()
+    {
+        String email    = etTutorEmail.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
 
         if (credentialHandler.validateCredential(email, password)) {//credential
 
-            Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
+            Intent intent = new Intent(TutorLoginActivity.this,
+                                       TutorProfileActivity.class);
             intent.putExtra("TUTOR_EMAIL_KEY", email);
             startActivity(intent);
             finish(); // Close the current activity
         } else {
-            Toast.makeText(this, "Invalid email or password. Please try again.", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "Invalid email or password. Please try again.",
+                              Toast.LENGTH_SHORT)
+                    .show();
         }
     }
-//    }
+    //    }
 
-//    private boolean validateInputs(String email, String password) {
-//        if (email.isEmpty() || password.isEmpty()) {
-//            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        return true;}
+    //    private boolean validateInputs(String email, String password) {
+    //        if (email.isEmpty() || password.isEmpty()) {
+    //            Toast.makeText(this, "Email and password cannot be empty",
+    //            Toast.LENGTH_SHORT).show();
+    //            return false;
+    //        }
+    //        return true;}
 
 }

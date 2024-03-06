@@ -1,13 +1,19 @@
 package comp3350.teachreach.logic.account;
 
-public class AccountCreatorException extends Exception {
-    public AccountCreatorException(String message) {
+public
+class AccountCreatorException extends Exception
+{
+    public
+    AccountCreatorException(String message)
+    {
         super(message);
     }
 
-    public static AccountCreatorException getException(boolean emptyEmail,
-                                                       boolean emptyPassword,
-                                                       boolean invalidEmail) {
+    public static
+    AccountCreatorException getException(boolean emptyEmail,
+                                         boolean emptyPassword,
+                                         boolean invalidEmail)
+    {
         if (emptyEmail) {
             return new AccountCreatorException("Email cannot be empty");
         } else if (emptyPassword) {

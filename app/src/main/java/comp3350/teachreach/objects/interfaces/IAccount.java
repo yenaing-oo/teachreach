@@ -2,7 +2,9 @@ package comp3350.teachreach.objects.interfaces;
 
 import java.util.Optional;
 
-public interface IAccount {
+public
+interface IAccount
+{
 
     String getEmail();
 
@@ -20,10 +22,10 @@ public interface IAccount {
 
     Optional<ITutor> getTutorProfile();
 
+    IAccount setTutorProfile(ITutor profile);
+
     int getAccountID();
 
     void setAccountID(int accountID);
-
-    IAccount setTutorProfile(ITutor profile);
 
 }

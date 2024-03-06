@@ -13,16 +13,20 @@ import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.logic.profile.StudentProfile;
 
-public class EditUserProfileActivity extends AppCompatActivity {
+public
+class EditUserProfileActivity extends AppCompatActivity
+{
 
     private EditText etName, etPronoun, etMajor;
-    private Button btnSaveProfile;
+    private Button       btnSaveProfile;
     private IUserProfile userProfile;
 
     private IStudentPersistence studentPersistence;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
 
@@ -33,14 +37,18 @@ public class EditUserProfileActivity extends AppCompatActivity {
         btnSaveProfile.setOnClickListener(v -> saveUserProfile());
     }
 
-    private void initializeViews() {
-        etName = findViewById(R.id.etName);
-        etPronoun = findViewById(R.id.etPronoun);
-        etMajor = findViewById(R.id.etMajor);
+    private
+    void initializeViews()
+    {
+        etName         = findViewById(R.id.etName);
+        etPronoun      = findViewById(R.id.etPronoun);
+        etMajor        = findViewById(R.id.etMajor);
         btnSaveProfile = findViewById(R.id.btnSaveProfile);
     }
 
-    private void loadUserProfile() {
+    private
+    void loadUserProfile()
+    {
         // Retrieve the email from intent or another source
         String studentEmail = getIntent().getStringExtra("USER_EMAIL");
 
@@ -50,16 +58,22 @@ public class EditUserProfileActivity extends AppCompatActivity {
             etPronoun.setText(userProfile.getUserPronouns());
             etMajor.setText(userProfile.getUserMajor());
         } catch (Exception e) { // Catching a broader exception for simplicity
-            Toast.makeText(this, "User profile not found.", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "User profile not found.",
+                              Toast.LENGTH_SHORT)
+                    .show();
             finish();
         }
     }
 
-    private void saveUserProfile() {
+    private
+    void saveUserProfile()
+    {
         if (userProfile != null) {
-            String name = etName.getText().toString();
+            String name    = etName.getText().toString();
             String pronoun = etPronoun.getText().toString();
-            String major = etMajor.getText().toString();
+            String major   = etMajor.getText().toString();
 
             userProfile.setUserName(name);
             userProfile.setUserPronouns(pronoun);
@@ -72,10 +86,18 @@ public class EditUserProfileActivity extends AppCompatActivity {
             data.putExtra("UPDATED_MAJOR", major);
             setResult(RESULT_OK, data);
 
-            Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "Profile updated successfully!",
+                              Toast.LENGTH_SHORT)
+                    .show();
             finish(); // Close activity and return
         } else {
-            Toast.makeText(this, "Error updating profile. Please try again.", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "Error updating profile. Please try again.",
+                              Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

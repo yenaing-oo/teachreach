@@ -13,27 +13,35 @@ import comp3350.teachreach.logic.profile.TutorProfile;
 import comp3350.teachreach.presentation.booking.BookingActivity;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
-public class TutorProfileActivity extends AppCompatActivity {
+public
+class TutorProfileActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_profile);
 
-        TextView tvCourses = findViewById(R.id.tvCourses);
-        TextView tvPrice = findViewById(R.id.tvPrice);
-        TextView tvRating = findViewById(R.id.tvRating);
-        Button btnBookSession = findViewById(R.id.btnBookSession);
+        TextView tvCourses      = findViewById(R.id.tvCourses);
+        TextView tvPrice        = findViewById(R.id.tvPrice);
+        TextView tvRating       = findViewById(R.id.tvRating);
+        Button   btnBookSession = findViewById(R.id.btnBookSession);
 
-        ITutorProfile tutorProfile = new TutorProfile(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
-        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(tutorProfile);
+        ITutorProfile tutorProfile
+                = new TutorProfile(getIntent().getStringExtra(
+                        "TUTOR_EMAIL_KEY"));
+        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
+                tutorProfile);
 
         tvCourses.setText(tutorProfileFormatter.getCourses());
         tvPrice.setText(String.valueOf(tutorProfileFormatter.getHourlyRate()));
         tvRating.setText(String.valueOf(tutorProfileFormatter.getRating()));
 
         btnBookSession.setOnClickListener(v -> {
-            Intent intent = new Intent(TutorProfileActivity.this, BookingActivity.class);
+            Intent intent = new Intent(TutorProfileActivity.this,
+                                       BookingActivity.class);
             startActivity(intent);
         });
     }

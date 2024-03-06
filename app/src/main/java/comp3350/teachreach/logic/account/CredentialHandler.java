@@ -10,45 +10,58 @@ import comp3350.teachreach.logic.DAOs.AccessAccount;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
-public class CredentialHandler implements ICredentialHandler {
-
+public
+class CredentialHandler implements ICredentialHandler
+{
     private static List<IAccount> accounts;
-    private final AccessAccount accessAccount;
+    private final  AccessAccount  accessAccount;
 
-    public CredentialHandler() {
-        this.accessAccount = new AccessAccount();
+    public
+    CredentialHandler()
+    {
+        this.accessAccount         = new AccessAccount();
         CredentialHandler.accounts = accessAccount.getAccounts();
     }
 
-    public CredentialHandler(IAccountPersistence accounts) {
+    public
+    CredentialHandler(IAccountPersistence accounts)
+    {
         this();
         CredentialHandler.accounts = accounts.getAccounts();
     }
 
-    public String processPassword(String plainPassword) {
-        return BCrypt.withDefaults().hashToString(12, plainPassword.toCharArray());
+    public
+    String processPassword(String plainPassword)
+    {
+        return BCrypt
+                .withDefaults()
+                .hashToString(12, plainPassword.toCharArray());
     }
 
     @Override
-    public boolean validateCredential(String email, String password) {
-        final boolean emptyEmail = !InputValidator.isNotEmpty(email);
+    public
+    boolean validateCredential(String email, String password)
+    {
+        final boolean emptyEmail    = !InputValidator.isNotEmpty(email);
         final boolean emptyPassword = !InputValidator.isNotEmpty(password);
-        final boolean invalidEmail = !InputValidator.isValidEmail(email);
+        final boolean invalidEmail  = !InputValidator.isValidEmail(email);
         if (emptyEmail) {
-            throw new IllegalArgumentException(
-                    "Email mustn't be empty");
+            throw new IllegalArgumentException("Email mustn't be empty");
         } else if (emptyPassword) {
-            throw new IllegalArgumentException(
-                    "Password mustn't be empty");
+            throw new IllegalArgumentException("Password mustn't be empty");
         } else if (invalidEmail) {
-            throw new IllegalArgumentException(
-                    "Invalid email address");
+            throw new IllegalArgumentException("Invalid email address");
         }
         Optional<IAccount> maybeAccount = accounts
                 .stream()
                 .filter(account -> account.getEmail().equals(email))
                 .findFirst();
-        return maybeAccount.map(account -> BCrypt.verifyer().verify(password.toCharArray(), account.getPassword()).verified)
-                .orElseThrow(() -> new NoSuchElementException("No account found with the provided email."));
+        return maybeAccount
+                .map(account -> BCrypt
+                        .verifyer()
+                        .verify(password.toCharArray(),
+                                account.getPassword()).verified)
+                .orElseThrow(() -> new NoSuchElementException(
+                        "No account found with the provided email."));
     }
 }

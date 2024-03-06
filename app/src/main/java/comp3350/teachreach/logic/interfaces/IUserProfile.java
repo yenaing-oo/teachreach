@@ -2,7 +2,9 @@ package comp3350.teachreach.logic.interfaces;
 
 import comp3350.teachreach.objects.interfaces.IAccount;
 
-public interface IUserProfile {
+public
+interface IUserProfile
+{
     String getUserEmail();
 
     String getUserName();
