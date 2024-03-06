@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,6 +74,8 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
         timeSlotRecyclerViewAdapter = new TimeSlotRecyclerViewAdapter(getContext(), timeSlotList, this);
         recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true, 0));
     }
 
     @Override

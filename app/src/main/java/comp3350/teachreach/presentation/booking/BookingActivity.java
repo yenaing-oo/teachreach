@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.utils.DateUtils;
+import comp3350.teachreach.presentation.utils.DateUtils;
 
 public class BookingActivity extends AppCompatActivity implements OnDateChangeListener {
     private FragmentManager fragmentManager;

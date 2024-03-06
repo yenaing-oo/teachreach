@@ -11,7 +11,7 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.profile.TutorProfile;
 import comp3350.teachreach.presentation.booking.BookingActivity;
-import comp3350.teachreach.utils.TutorProfileFormatter;
+import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
 public class TutorProfileActivity extends AppCompatActivity {
 

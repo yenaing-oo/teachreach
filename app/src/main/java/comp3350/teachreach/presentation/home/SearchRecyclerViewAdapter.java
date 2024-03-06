@@ -15,7 +15,7 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.profile.TutorProfile;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.utils.TutorProfileFormatter;
+import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
 public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
 
@@ -64,19 +64,16 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
             super(itemView);
 
             imageView = itemView.findViewById(R.id.tutorImage);
-            tvUserName = itemView.findViewById(R.id.timeSlot);
+            tvUserName = itemView.findViewById(R.id.timeSlotText);
             tvRating = itemView.findViewById(R.id.tutorRating);
             tvHourlyRate = itemView.findViewById(R.id.tutorHourlyRate);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (recyclerViewInterface != null) {
-                        int pos = getAdapterPosition();
+            itemView.setOnClickListener(v -> {
+                if (recyclerViewInterface != null) {
+                    int pos = getAdapterPosition();
 
-                        if (pos != RecyclerView.NO_POSITION) {
-                            recyclerViewInterface.onTutorItemClick(pos);
-                        }
+                    if (pos != RecyclerView.NO_POSITION) {
+                        recyclerViewInterface.onTutorItemClick(pos);
                     }
                 }
             });

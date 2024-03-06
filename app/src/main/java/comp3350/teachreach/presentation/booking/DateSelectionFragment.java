@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import comp3350.teachreach.R;
@@ -72,12 +71,9 @@ public class DateSelectionFragment extends Fragment {
 
     private void setupCalendar() {
         CalendarView calendarView = fragmentView.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                if (dateChangeListener != null) {
-                    dateChangeListener.onDateChanged(year, month, dayOfMonth);
-                }
+        calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            if (dateChangeListener != null) {
+                dateChangeListener.onDateChanged(year, month, dayOfMonth);
             }
         });
     }
