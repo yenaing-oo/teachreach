@@ -71,12 +71,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
                     email,
                     password);
 
-            accountCreator.setStudentProfile(
-                    username,
-                    major,
-                    pronoun
-            );
-
             accountCreator.setTutorProfile(
                     username,
                     major,

@@ -1,4 +1,4 @@
-package comp3350.teachreach.utils;
+package comp3350.teachreach.presentation.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -10,10 +10,6 @@ public class DateUtils {
         Calendar selectedDate = Calendar.getInstance();
         selectedDate.set(year, month, dayOfMonth);
 
-        return dateFormatHelper(selectedDate);
-    }
-
-    public static String formatDate(Calendar selectedDate) {
         return dateFormatHelper(selectedDate);
     }
 

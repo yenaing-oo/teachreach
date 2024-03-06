@@ -30,7 +30,7 @@
                 tools:srcCompat="@drawable/user_icon" />
 
             <TextView
-                android:id="@+id/timeSlot"
+                android:id="@+id/timeSlotText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -49,7 +49,7 @@
                 android:text="Rating"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/tutorImage"
-                app:layout_constraintTop_toBottomOf="@+id/timeSlot" />
+                app:layout_constraintTop_toBottomOf="@+id/timeSlotText" />
 
             <TextView
                 android:id="@+id/tutorHourlyRate"

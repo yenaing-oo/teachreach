@@ -22,7 +22,6 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
-
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
@@ -111,7 +110,7 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     @Override
     public void onTutorItemClick(int position) {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getTutorID());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
         startActivity(intent);
     }
 

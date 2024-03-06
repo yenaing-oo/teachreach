@@ -5,11 +5,12 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="395dp"
+        android:id="@+id/timeSlotCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="#FCFAFF"
+        app:cardBackgroundColor="#fcfaff"
         app:cardCornerRadius="20dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +25,7 @@
             android:layout_height="100dp">
 
             <TextView
-                android:id="@+id/timeSlot"
+                android:id="@+id/timeSlotText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="9:30 AM"
