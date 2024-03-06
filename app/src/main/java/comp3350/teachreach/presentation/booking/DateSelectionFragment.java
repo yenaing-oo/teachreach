@@ -16,15 +16,7 @@ import comp3350.teachreach.R;
  * create an instance of this fragment.
  */
 public class DateSelectionFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String EMAIL = "EMAIL";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private View fragmentView;
     private OnDateChangeListener dateChangeListener;
 
@@ -53,7 +45,8 @@ public class DateSelectionFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(EMAIL);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(EMAIL);
             // fetch available dates for tutor associated with email
         }
     }
@@ -62,7 +55,7 @@ public class DateSelectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_date_selection, container, false);
-        ;
+
         // Inflate the layout for this fragment
         setupCalendar();
 

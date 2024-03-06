@@ -13,10 +13,6 @@ public class DateUtils {
         return dateFormatHelper(selectedDate);
     }
 
-    public static String formatDate(Calendar selectedDate) {
-        return dateFormatHelper(selectedDate);
-    }
-
     private static String dateFormatHelper(Calendar date) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
         return sdf.format(date.getTime());

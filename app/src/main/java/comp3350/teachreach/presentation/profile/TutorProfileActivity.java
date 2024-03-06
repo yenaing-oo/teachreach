@@ -15,23 +15,18 @@ import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
 public class TutorProfileActivity extends AppCompatActivity {
 
-    private TextView tvCourses, tvPrice, tvRating;
-    private Button btnBookSession;
-    private ITutorProfile tutorProfile;
-    private TutorProfileFormatter tutorProfileFormatter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_profile);
 
-        tvCourses = findViewById(R.id.tvCourses);
-        tvPrice = findViewById(R.id.tvPrice);
-        tvRating = findViewById(R.id.tvRating);
-        btnBookSession = findViewById(R.id.btnBookSession);
+        TextView tvCourses = findViewById(R.id.tvCourses);
+        TextView tvPrice = findViewById(R.id.tvPrice);
+        TextView tvRating = findViewById(R.id.tvRating);
+        Button btnBookSession = findViewById(R.id.btnBookSession);
 
-        tutorProfile = new TutorProfile(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
-        tutorProfileFormatter = new TutorProfileFormatter(tutorProfile);
+        ITutorProfile tutorProfile = new TutorProfile(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
+        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(tutorProfile);
 
         tvCourses.setText(tutorProfileFormatter.getCourses());
         tvPrice.setText(String.valueOf(tutorProfileFormatter.getHourlyRate()));

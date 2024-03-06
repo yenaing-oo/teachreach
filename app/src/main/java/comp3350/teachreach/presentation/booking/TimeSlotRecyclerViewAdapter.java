@@ -17,8 +17,8 @@ import comp3350.teachreach.R;
 
 public class TimeSlotRecyclerViewAdapter extends RecyclerView.Adapter<TimeSlotRecyclerViewAdapter.MyViewHolder> {
     private final ITimeSlotRecyclerView recyclerViewInterface;
-    private Context context;
-    private List<String> timeSlotList;
+    private final Context context;
+    private final List<String> timeSlotList;
     private int selectedPosition = RecyclerView.NO_POSITION;
 
     public TimeSlotRecyclerViewAdapter(Context context,
