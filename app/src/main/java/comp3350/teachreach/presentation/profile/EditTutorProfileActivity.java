@@ -33,9 +33,7 @@ class EditTutorProfileActivity extends AppCompatActivity
         etPreferredLocation = findViewById(R.id.etPreferredLocation);
         btnSaveChanges      = findViewById(R.id.btnSaveChanges);
 
-        String        tutorEmail
-                                   = getIntent().getStringExtra(
-                "TUTOR_EMAIL_KEY");
+        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
         ITutorProfile tutorProfile = new TutorProfile(tutorEmail);
 
         initializeFields(tutorProfile);

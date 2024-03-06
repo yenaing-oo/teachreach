@@ -28,7 +28,6 @@ class BookingActivity extends AppCompatActivity implements OnDateChangeListener
 
         fragmentManager = getSupportFragmentManager();
         addDateSelectionFragment();
-
     }
 
     private
@@ -62,5 +61,4 @@ class BookingActivity extends AppCompatActivity implements OnDateChangeListener
         dateDisplay.setVisibility(View.VISIBLE);
         addTimeSlotSelectionFragment();
     }
-
 }

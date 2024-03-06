@@ -23,7 +23,7 @@ class StudentStub implements IStudentPersistence
     public
     IStudent storeStudent(IStudent newStudent)
     {
-        return getStudentByEmail(newStudent.getAccountID()).orElseGet(() -> {
+        return getStudentByEmail(newStudent.getStudentAccountID()).orElseGet(() -> {
             students.add(newStudent);
             return newStudent;
         });
@@ -36,9 +36,9 @@ class StudentStub implements IStudentPersistence
         AtomicReference<IStudent> theStudent
                 = new AtomicReference<>(newStudent);
         getStudentByEmail(newStudent.getEmail()).ifPresentOrElse(s -> {
-            s.setName(newStudent.getName());
-            s.setMajor(newStudent.getMajor());
-            s.setPronouns(newStudent.getPronouns());
+            s.setName(newStudent.getUserName());
+            s.setMajor(newStudent.getUserMajor());
+            s.setPronouns(newStudent.getUserPronouns());
             theStudent.set(s);
         }, () -> {
             storeStudent(newStudent);

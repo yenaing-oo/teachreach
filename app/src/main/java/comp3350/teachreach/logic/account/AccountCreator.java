@@ -7,7 +7,7 @@ import java.util.List;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudent;
 import comp3350.teachreach.logic.DAOs.AccessTutor;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
@@ -24,21 +24,21 @@ class AccountCreator implements IAccountCreator
 {
 
     private final ICredentialHandler handler;
-    private final IStudent           student       = null;
-    private final ITutor             tutor         = null;
-    private       AccessAccount      accessAccount = null;
-    private       List<IAccount>     accounts      = null;
-    private       IAccount           account       = null;
-    private       AccessStudent      accessStudent = null;
-    private       List<IStudent>     students      = null;
-    private       AccessTutor        accessTutor   = null;
-    private       List<ITutor>       tutors        = null;
+    private final IStudent           student        = null;
+    private final ITutor             tutor          = null;
+    private       AccessAccounts     accessAccounts = null;
+    private       List<IAccount>     accounts       = null;
+    private       IAccount           account        = null;
+    private       AccessStudent      accessStudent  = null;
+    private       List<IStudent>     students       = null;
+    private       AccessTutor        accessTutor    = null;
+    private       List<ITutor>       tutors         = null;
 
     public
     AccountCreator()
     {
-        accessAccount = new AccessAccount();
-        accounts      = accessAccount.getAccounts();
+        accessAccounts = new AccessAccounts();
+        accounts       = accessAccounts.getAccounts();
 
         accessStudent = new AccessStudent();
         students      = accessStudent.getStudents();
@@ -54,8 +54,8 @@ class AccountCreator implements IAccountCreator
                    IStudentPersistence students,
                    ITutorPersistence tutors)
     {
-        this.accessAccount = new AccessAccount(accounts);
-        this.accounts      = accessAccount.getAccounts();
+        this.accessAccounts = new AccessAccounts(accounts);
+        this.accounts       = accessAccounts.getAccounts();
 
         this.accessStudent = new AccessStudent(students);
         this.students      = accessStudent.getStudents();
@@ -78,13 +78,15 @@ class AccountCreator implements IAccountCreator
 
         boolean inputIsValid = !(emptyEmail || emptyPassword || invalidEmail);
 
-        if (accounts.stream().anyMatch(a -> a.getAccountEmail().equals(email))) {
+        if (accounts
+                .stream()
+                .anyMatch(a -> a.getAccountEmail().equals(email))) {
             throw new AccountCreatorException("Account already exist!");
         }
 
         if (inputIsValid) {
             account = new Account(email, handler.processPassword(password));
-            this.accessAccount.insertAccount(account);
+            this.accessAccounts.insertAccount(account);
         } else {
             throw getException(emptyEmail, emptyPassword, invalidEmail);
         }

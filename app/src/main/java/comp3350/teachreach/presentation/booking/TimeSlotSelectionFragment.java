@@ -95,8 +95,7 @@ class TimeSlotSelectionFragment extends Fragment
         recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         int spacingInPixels
-                =
-                getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+                = getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
                                                                      spacingInPixels,
                                                                      true,

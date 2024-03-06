@@ -10,7 +10,7 @@ interface ICoursePersistence
 {
     List<ICourse> getCourses();
 
-    boolean addCourse(String courseCode, String courseName);
+    Optional<ICourse> addCourse(String courseCode, String courseName);
 
     Optional<ICourse> getCourseByCourseCode(String courseCode);
 

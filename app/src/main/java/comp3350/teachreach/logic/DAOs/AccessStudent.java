@@ -2,6 +2,7 @@ package comp3350.teachreach.logic.DAOs;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
@@ -11,8 +12,8 @@ public
 class AccessStudent
 {
     private IStudentPersistence studentPersistence;
-    private List<IStudent>      students;
-    private IStudent            student;
+    private       List<IStudent> students;
+    private final IStudent       student;
 
     public
     AccessStudent()
@@ -37,19 +38,17 @@ class AccessStudent
     }
 
     public
-    IStudent getStudentByAID(int AID)
+    IStudent getStudentByAccountID(int studentAccountID)
     {
         if (students == null) {
             students = studentPersistence.getStudents();
         }
         students
                 .stream()
-                .filter(s -> s.getAccountID() == AID)
+                .filter(s -> s.getStudentAccountID() == studentAccountID)
                 .findFirst()
-                .ifPresentOrElse(s -> student = s, () -> {
-                    student  = null;
-                    students = null;
-                });
+                .orElseThrow(() -> new DataAccessException("Account not found",
+                                                           new NoSuchElementException()));
         return student;
     }
 

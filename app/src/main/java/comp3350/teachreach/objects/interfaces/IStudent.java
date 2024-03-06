@@ -1,13 +1,13 @@
 package comp3350.teachreach.objects.interfaces;
 
-import java.util.List;
-
 public
-interface IStudent extends IUser
+interface IStudent
 {
-    List<ISession> getScheduledSessions();
+    int getStudentID();
 
-    List<ISession> getSessionsPendingForApproval();
+    IStudent setStudentID(int studentID);
 
-    IStudent addPendingSession(ISession newSession);
+    int getStudentAccountID();
+
+    IStudent setStudentAccountID(int accountID);
 }

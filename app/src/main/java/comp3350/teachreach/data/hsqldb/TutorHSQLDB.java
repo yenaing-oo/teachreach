@@ -11,9 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
@@ -30,8 +28,9 @@ class TutorHSQLDB implements ITutorPersistence
     private
     Connection connection() throws SQLException
     {
-        return DriverManager.getConnection(
-                "jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
+        return DriverManager.getConnection(String.format(
+                "jdbc:hsqldb:file:%s;shutdown=true",
+                dbPath), "SA", "");
     }
 
     private
@@ -44,37 +43,6 @@ class TutorHSQLDB implements ITutorPersistence
         return new Tutor(tutorName, tutorMajor, tutorPronouns);
     }
 
-    private
-    ICourse fromResultSetCourse(final ResultSet rs) throws SQLException
-    {
-        return new Course(rs.getString("tutor_course.tutored_course_code"),
-                          rs.getString("course.course_name"));
-    }
-
-    private
-    List<ICourse> getTutoredCourses(String tutorEmail)
-    {
-        final List<ICourse> resultCourses = new ArrayList<>();
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM tutor_course " + "JOIN tutor " +
-                    "ON tutor.email = tutor_course.tutor_email " +
-                    "JOIN course " + "ON tutored_course_code = course_code " +
-                    "WHERE tutor.email = ?");
-            pst.setString(1, tutorEmail);
-            final ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                final ICourse course = fromResultSetCourse(rs);
-                resultCourses.add(course);
-            }
-            pst.close();
-            rs.close();
-            return resultCourses;
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
     @Override
     public
     ITutor storeTutor(ITutor newTutor) throws PersistenceException
@@ -83,9 +51,9 @@ class TutorHSQLDB implements ITutorPersistence
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutor VALUES(?, ?, ?, ?)");
 
-            pst.setString(2, newTutor.getName());
-            pst.setString(3, newTutor.getMajor());
-            pst.setString(4, newTutor.getPronouns());
+            pst.setString(2, newTutor.getUserName());
+            pst.setString(3, newTutor.getUserMajor());
+            pst.setString(4, newTutor.getUserPronouns());
             pst.executeUpdate();
             final ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {

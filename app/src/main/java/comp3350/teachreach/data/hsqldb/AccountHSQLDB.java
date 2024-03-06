@@ -11,11 +11,10 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.NullTutor;
-import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -24,61 +23,27 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class AccountHSQLDB implements IAccountPersistence
 {
-    private final String         dbPath;
-    private       List<IAccount> accounts;
-    private       List<IAccount> tutors;
+    private final String                 dbPath;
+    private       Map<Integer, IAccount> accounts;
 
     public
     AccountHSQLDB(final String dbPath)
     {
         this.dbPath   = dbPath;
         this.accounts = null;
-        this.tutors   = null;
     }
 
     private
     Connection connection() throws SQLException
     {
-        return DriverManager.getConnection(
-                "jdbc:hsqldb:file:" + dbPath + ";shutdown=true", "SA", "");
+        return DriverManager.getConnection(String.format(
+                "jdbc:hsqldb:file:%s;shutdown=true",
+                dbPath), "SA", "");
     }
 
     private
     Account fromResultSet(final ResultSet rs) throws SQLException
     {
-        final int    accountID = rs.getInt("ACCOUNTID");
-        final String email     = rs.getString("EMAIL");
-        final String password  = rs.getString("PASSWORD");
-        final int    tutorID   = rs.getInt("TUTORID");
-        final String name      = rs.getString("NAME");
-        final String pronouns  = rs.getString("PRONOUNS");
-        final String major     = rs.getString("MAJOR");
-
-        ITutor tutorProfile = new NullTutor();
-
-        if (tutorID != -1) {
-            try (final Connection c = connection()) {
-                final PreparedStatement st = c.prepareStatement(
-                        "SELECT * FROM TUTORS WHERE TUTORID=?");
-                st.setInt(1, tutorID);
-
-                final ResultSet tutorResultSet = st.executeQuery();
-                tutorProfile = fromResultSetTutor(tutorResultSet,
-                                                  name,
-                                                  pronouns,
-                                                  major);
-                rs.close();
-                st.close();
-            } catch (final SQLException e) {
-                throw new PersistenceException(e);
-            }
-
-        }
-        Student studentProfile = new Student(name, pronouns, major);
-        Account createdAccount = new Account(email, password, accountID);
-        createdAccount.setTutorProfile(tutorProfile);
-
-        return createdAccount;
     }
 
     private
@@ -126,32 +91,14 @@ class AccountHSQLDB implements IAccountPersistence
     IAccount storeAccount(IAccount newAccount)
     {
         try (final Connection c = connection()) {
-            int tutorID = -1;
-            if (newAccount.getTutorProfile().isPresent()) {
-                ITutor tutorProfile = newAccount.getTutorProfile().get();
-                final PreparedStatement pstTutor = c.prepareStatement(
-                        "INSERT INTO TUTORS (HOURLYRATE, REVIEWSUM, " +
-                        "REVIEWCOUNT) VALUES(?, ?, ?)",
-                        Statement.RETURN_GENERATED_KEYS);
-                pstTutor.setDouble(1, tutorProfile.getHourlyRate());
-                pstTutor.setInt(2, tutorProfile.getReviewTotalSum());
-                pstTutor.setInt(3, tutorProfile.getReviewCount());
-                pstTutor.executeUpdate();
-                ResultSet tutorIDRS = pstTutor.getGeneratedKeys();
-                if (tutorIDRS.next()) {
-                    tutorID = tutorIDRS.getInt(1);
-                    tutorProfile.setTutorID(tutorID);
-                }
-
-            }
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO ACCOUNTS (EMAIL, PASSWORD, TUTORID, NAME, " +
-                    "PRONOUNS, MAJOR) VALUES(?, ?)",
+                    "INSERT INTO ACCOUNTS(EMAIL, PASSWORD, NAME, PRONOUNS, " +
+                    "MAJOR) VALUES(?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             pst.setString(1, newAccount.getAccountEmail());
             pst.setString(2, newAccount.getAccountPassword());
-            pst.setInt(3, tutorID);
+            pst.setString(3, );
             pst.setString(2, newAccount.getStudentProfile().get().getName());
             pst.setString(2,
                           newAccount.getStudentProfile().get().getPronouns());
@@ -293,8 +240,7 @@ class AccountHSQLDB implements IAccountPersistence
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "Select START_DATE_TIME, END_DATE_TIME from " +
-                    "TUTOR_AVAILABILITY " +
-                    "where TUTORID = ?");
+                    "TUTOR_AVAILABILITY " + "where TUTORID = ?");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {

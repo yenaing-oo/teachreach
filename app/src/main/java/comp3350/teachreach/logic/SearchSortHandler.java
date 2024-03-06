@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessCourse;
+import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutor;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -13,22 +13,22 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class SearchSortHandler
 {
-    private final AccessTutor  accessTutor;
-    private final AccessCourse accessCourse;
+    private final AccessTutor   accessTutor;
+    private final AccessCourses accessCourses;
 
     public
     SearchSortHandler()
     {
-        accessTutor  = new AccessTutor();
-        accessCourse = new AccessCourse();
+        accessTutor   = new AccessTutor();
+        accessCourses = new AccessCourses();
     }
 
     public
     SearchSortHandler(ITutorPersistence tutorDataAccess,
                       ICoursePersistence courseDataAccess)
     {
-        accessTutor  = new AccessTutor(tutorDataAccess);
-        accessCourse = new AccessCourse(courseDataAccess);
+        accessTutor   = new AccessTutor(tutorDataAccess);
+        accessCourses = new AccessCourses(courseDataAccess);
     }
 
     public
@@ -40,7 +40,7 @@ class SearchSortHandler
     public
     List<ICourse> getListOfCourses()
     {
-        return accessCourse.getCourses();
+        return accessCourses.getCourses();
     }
 
     //    public ArrayList<Tutor> searchTutorClass(Course course) {

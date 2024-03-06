@@ -12,16 +12,16 @@ import java.util.List;
 
 import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
-import comp3350.teachreach.logic.DAOs.AccessCourse;
+import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
-class AccessCourseIT
+class AccessCoursesIT
 {
-    private AccessCourse accessCourse;
-    private File         tempDB;
+    private AccessCourses accessCourses;
+    private File          tempDB;
 
     @Before
     public
@@ -33,14 +33,14 @@ class AccessCourseIT
                                                                         .replace(
                                                                                 ".script",
                                                                                 ""));
-        this.accessCourse = new AccessCourse(persistence);
+        this.accessCourses = new AccessCourses(persistence);
     }
 
     @Test
     public
     void testGetCourses()
     {
-        final List<ICourse> courses = accessCourse.getCourses();
+        final List<ICourse> courses = accessCourses.getCourses();
         assertEquals(1, courses.size());
     }
 
@@ -48,7 +48,7 @@ class AccessCourseIT
     public
     void testGetCourseByCode()
     {
-        final ICourse course = accessCourse.getCourseByCode("COMP 1010");
+        final ICourse course = accessCourses.getCourseByCode("COMP 1010");
         assertNotNull(course);
         assertEquals(course.getCourseCode(), "COMP 1010");
     }
@@ -57,11 +57,10 @@ class AccessCourseIT
     public
     void testGetCourseByName()
     {
-        final List<ICourse> course = accessCourse.getCourseByName(
-                "Introduction to Computer Science");
-        assertNotNull(course);
-        assertEquals(course.get(0).getCourseName(),
-                     "Introduction to Computer Science");
+        final List<ICourse> courses = accessCourses.getCoursesByName(
+                "Computer Science");
+        assertNotNull(courses);
+        assertEquals(1, courses.size());
     }
 
     @Test
@@ -69,8 +68,8 @@ class AccessCourseIT
     void testInsertCourse()
     {
         final ICourse course = new Course("COMP5555", "GOD OF COMPUTER");
-        accessCourse.insertCourse(course);
-        assertEquals(accessCourse.getCourses().size(), 6);
+        accessCourses.insertCourse(course);
+        assertEquals(accessCourses.getCourses().size(), 6);
     }
 
 

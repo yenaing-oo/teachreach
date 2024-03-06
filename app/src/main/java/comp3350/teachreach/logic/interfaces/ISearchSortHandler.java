@@ -22,5 +22,4 @@ interface ISearchSortHandler
 
     // excluded as still figuring out how to best represent availability
     //    List<Tutor> getTutorsByAvailability();
-
 }

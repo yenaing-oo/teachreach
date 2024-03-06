@@ -1,7 +1,5 @@
 package comp3350.teachreach.objects;
 
-import androidx.annotation.NonNull;
-
 import comp3350.teachreach.objects.interfaces.ICourse;
 
 public
@@ -17,44 +15,47 @@ class Course implements ICourse
         this.courseName = courseName;
     }
 
+    @Override
     public
     String getCourseCode()
     {
         return this.courseCode;
     }
 
+    @Override
     public
-    void setCourseCode(String courseCode)
+    Course setCourseCode(String courseCode)
     {
         this.courseCode = courseCode;
+        return this;
     }
 
+    @Override
     public
     String getCourseName()
     {
         return courseName;
     }
 
+    @Override
     public
-    void setCourseName(String courseName)
+    Course setCourseName(String courseName)
     {
         this.courseName = courseName;
+        return this;
     }
 
+    @Override
     public
-    boolean equals(Course otherCourse)
+    boolean equals(ICourse otherCourse)
     {
-        boolean flag = false;
-        flag = this.courseCode.equalsIgnoreCase(otherCourse.courseCode);
-        flag &= this.courseName.equalsIgnoreCase(otherCourse.courseName);
-        return flag;
+        return this.courseCode.equalsIgnoreCase(otherCourse.getCourseCode());
     }
 
-    @NonNull
     @Override
     public
     String toString()
     {
-        return this.courseCode + ": " + this.courseName;
+        return String.format("%s: %s", this.courseCode, this.courseName);
     }
 }

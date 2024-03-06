@@ -1,59 +1,53 @@
 package comp3350.teachreach.objects;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.function.Predicate;
-
-import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 
 public
-class Student extends User implements IStudent
+class Student implements IStudent
 {
-    private final List<ISession> sessionsPendingForApproval;
-    private final List<ISession> scheduledSessions;
+    private int studentID = -1;
+    private int accountID = -1;
 
     public
-    Student(String name, String pronouns, String major)
+    Student(int accountID)
     {
-        super(name, pronouns, major);
-        sessionsPendingForApproval = new ArrayList<>();
-        scheduledSessions          = new ArrayList<>();
+        this.accountID = accountID;
     }
 
     public
-    List<ISession> getScheduledSessions()
+    Student(int studentID, int accountID)
     {
-        return scheduledSessions;
+        this(accountID);
+        this.studentID = studentID;
     }
 
+    @Override
     public
-    List<ISession> getSessionsPendingForApproval()
+    int getStudentID()
     {
-        return sessionsPendingForApproval;
+        return studentID;
     }
 
+    @Override
     public
-    Student addPendingSession(ISession newSession)
+    Student setStudentID(int studentID)
     {
-        sessionsPendingForApproval.add(newSession);
+        this.studentID = studentID;
         return this;
     }
 
-    // This moves specified  approved Session to the approved List
-    //  if it's found in the pending List.
+    @Override
     public
-    boolean pendingSessionApproved(ISession approvedSession)
+    int getStudentAccountID()
     {
-        assert (approvedSession.getStage());
-        final Predicate<ISession> sessionIDMatch = session ->
-                session.getSessionID() == approvedSession.getSessionID();
-        return sessionsPendingForApproval.removeIf(sessionIDMatch) &&
-               scheduledSessions.add(sessionsPendingForApproval
-                                             .stream()
-                                             .filter(sessionIDMatch)
-                                             .findFirst()
-                                             .orElseThrow(NoSuchElementException::new));
+        return accountID;
+    }
+
+    @Override
+    public
+    Student setStudentAccountID(int accountID)
+    {
+        this.accountID = accountID;
+        return this;
     }
 }

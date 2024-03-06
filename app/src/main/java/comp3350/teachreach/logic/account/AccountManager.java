@@ -1,6 +1,6 @@
 package comp3350.teachreach.logic.account;
 
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudent;
 import comp3350.teachreach.logic.DAOs.AccessTutor;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
@@ -10,7 +10,7 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 public
 class AccountManager implements IAccountManager
 {
-    private final AccessAccount      accessAccount;
+    private final AccessAccounts     accessAccounts;
     private final AccessStudent      accessStudent;
     private final AccessTutor        accessTutor;
     private final ICredentialHandler credentialHandler;
@@ -19,7 +19,7 @@ class AccountManager implements IAccountManager
     public
     AccountManager(IAccount theAccount)
     {
-        accessAccount          = new AccessAccount();
+        accessAccounts         = new AccessAccounts();
         accessStudent          = new AccessStudent();
         accessTutor            = new AccessTutor();
         this.credentialHandler = new CredentialHandler();
@@ -62,11 +62,11 @@ class AccountManager implements IAccountManager
                                    String oldPassword,
                                    String newPassword)
     {
-        this.accessAccount.getAccountByEmail(email).ifPresent(account -> {
+        this.accessAccounts.getAccountByEmail(email).ifPresent(account -> {
             if (credentialHandler.validateCredential(email, oldPassword)) {
                 this.theAccount.setAccountPassword(credentialHandler.processPassword(
                         newPassword));
-                this.accessAccount.updateAccount(theAccount);
+                this.accessAccounts.updateAccount(theAccount);
             }
         });
         return this;
@@ -78,10 +78,10 @@ class AccountManager implements IAccountManager
                                 String oldEmail,
                                 String newEmail)
     {
-        this.accessAccount.getAccountByEmail(oldEmail).ifPresent(account -> {
+        this.accessAccounts.getAccountByEmail(oldEmail).ifPresent(account -> {
             if (credentialHandler.validateCredential(oldEmail, password)) {
                 this.theAccount.setAccountEmail(newEmail);
-                this.accessAccount.updateAccount(theAccount);
+                this.accessAccounts.updateAccount(theAccount);
             }
         });
         return this;

@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
-import comp3350.teachreach.logic.profile.StudentProfile;
+import comp3350.teachreach.logic.profile.StudentProfileFetcher;
 
 public
 class EditUserProfileActivity extends AppCompatActivity
@@ -29,7 +29,6 @@ class EditUserProfileActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
-
 
         initializeViews();
         loadUserProfile();
@@ -53,7 +52,7 @@ class EditUserProfileActivity extends AppCompatActivity
         String studentEmail = getIntent().getStringExtra("USER_EMAIL");
 
         try {
-            userProfile = new StudentProfile(studentEmail);
+            userProfile = new StudentProfileFetcher(studentEmail);
             etName.setText(userProfile.getUserName());
             etPronoun.setText(userProfile.getUserPronouns());
             etMajor.setText(userProfile.getUserMajor());

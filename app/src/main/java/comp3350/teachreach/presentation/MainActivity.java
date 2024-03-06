@@ -35,7 +35,6 @@ class MainActivity extends AppCompatActivity
         Button btnStudent = findViewById(R.id.btnStudentLogin);
         Button btnTutor   = findViewById(R.id.btnTutor);
 
-
         btnStudent.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -44,7 +43,6 @@ class MainActivity extends AppCompatActivity
             {
                 Intent intent = new Intent(MainActivity.this,
                                            StudentLoginActivity.class);
-
 
                 startActivity(intent);
             }
@@ -63,7 +61,6 @@ class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
     }
 
     private
@@ -71,11 +68,10 @@ class MainActivity extends AppCompatActivity
     {
         final String DB_PATH = "db";
 
-        String[]     assetNames;
-        Context      context       = getApplicationContext();
-        File         dataDirectory = context.getDir(DB_PATH,
-                                                    Context.MODE_PRIVATE);
-        AssetManager assetManager  = getAssets();
+        String[] assetNames;
+        Context  context = getApplicationContext();
+        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
+        AssetManager assetManager = getAssets();
 
         try {
 
@@ -88,7 +84,6 @@ class MainActivity extends AppCompatActivity
 
             TRData.setDBPathName(
                     dataDirectory.toString() + "/" + TRData.getDBPathName());
-
         } catch (final IOException ioe) {
             Toast
                     .makeText(this,

@@ -56,7 +56,6 @@ class Server
         return courseDataAccess;
     }
 
-
     public static synchronized
     ISessionPersistence getSessionDataAccess()
     {

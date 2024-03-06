@@ -1,115 +1,80 @@
 package comp3350.teachreach.objects;
 
-import java.util.List;
-
-import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-class Tutor extends User implements ITutor
+class Tutor implements ITutor
 {
-    private int                   tutorID;
-    private double                hourlyRate;
-    private int                   reviewSum;
-    private int                   reviewCount;
-    private List<String>          preferredLocations;
-    private List<ISession>        pendingSessions;
-    private List<ISession>        expiredSessions;
-    private List<ISession>        approvedFutureSessions;
-    private List<List<TimeSlice>> preferredAvailability;
+    private int    tutorID     = -1;
+    private int    accountID   = -1;
+    private double hourlyRate  = 0;
+    private int    reviewSum   = 0;
+    private int    reviewCount = 0;
 
     public
-    Tutor(String name, String pronouns, String major)
+    Tutor(int accountID)
     {
-        super(name, pronouns, major);
-        this.reviewSum   = 0;
-        this.reviewCount = 0;
-        this.tutorID     = -1;
+        this.accountID = accountID;
     }
 
     public
-    Tutor(String name, String pronouns, String major, double hourlyRate)
+    Tutor(int tutorID, int accountID)
     {
-        super(name, pronouns, major);
-        this.reviewSum   = 0;
-        this.reviewCount = 0;
-        this.hourlyRate  = hourlyRate;
-        this.tutorID     = -1;
+        this.accountID = accountID;
+        this.tutorID   = tutorID;
     }
 
     public
-    Tutor(String name, String pronouns, String major, int tutorID)
-    {
-        super(name, pronouns, major);
-        this.reviewSum   = 0;
-        this.reviewCount = 0;
-        this.tutorID     = tutorID;
-    }
-
-    public
-    Tutor(String name,
-          String pronouns,
-          String major,
+    Tutor(int tutorID,
+          int accountID,
           double hourlyRate,
-          int tutorID)
+          int reviewSum,
+          int reviewCount)
     {
-        super(name, pronouns, major);
-        this.reviewSum   = 0;
-        this.reviewCount = 0;
+        this(tutorID, accountID);
         this.hourlyRate  = hourlyRate;
-        this.tutorID     = tutorID;
+        this.reviewSum   = reviewSum;
+        this.reviewCount = reviewCount;
     }
 
     @Override
     public
-    List<ICourse> getCourses()
+    int getTutorID()
     {
-        return tutoredCourses;
+        return tutorID;
     }
 
     @Override
     public
-    List<String> getPreferredLocations()
+    Tutor setTutorID(int tutorID)
     {
-        return this.preferredLocations;
-    }
-
-    @Override
-    public
-    ITutor setPreferredLocations(List<String> preferredLocations)
-    {
-        this.preferredLocations = preferredLocations;
+        this.tutorID = tutorID;
         return this;
     }
 
     @Override
     public
-    int getReviewTotalSum()
+    int getAccountID()
     {
-        return this.reviewSum;
-    }
-
-    public
-    int getReviewCount()
-    {
-        return this.reviewCount;
+        return accountID;
     }
 
     @Override
     public
-    ITutor setReviewCount(int count)
+    Tutor setAccountID(int accountID)
     {
-        this.reviewCount = count;
+        this.accountID = accountID;
         return this;
     }
 
+    @Override
     public
     double getHourlyRate()
     {
-        return this.hourlyRate;
+        return hourlyRate;
     }
 
+    @Override
     public
     Tutor setHourlyRate(double hourlyRate)
     {
@@ -119,88 +84,31 @@ class Tutor extends User implements ITutor
 
     @Override
     public
-    boolean equals(ITutor other)
+    int getReviewCount()
     {
-        return this.getEmail().equals(other.getEmail());
+        return reviewCount;
     }
 
     @Override
     public
-    Tutor addCourse(ICourse course)
+    Tutor setReviewCount(int reviewCount)
     {
-        this.tutoredCourses.add(course);
-        return this;
-    }
-
-    public
-    Tutor clearTutoredCourses()
-    {
-        tutoredCourses.clear();
-        return this;
-    }
-
-    public
-    Tutor addReview(int score)
-    {
-        this.reviewSum += score;
-        this.reviewCount++;
+        this.reviewCount = reviewCount;
         return this;
     }
 
     @Override
     public
-    ITutor setReviewTotal(int score)
+    int getReviewSum()
     {
-        this.reviewSum = score;
-        return null;
-    }
-
-    public
-    Tutor clearReviews()
-    {
-        this.reviewSum   = 0;
-        this.reviewCount = 0;
-        return this;
+        return reviewSum;
     }
 
     @Override
     public
-    ITutor addPreferredLocation(String preferredLocation)
+    Tutor setReviewSum(int reviewSum)
     {
-        this.preferredLocations.add(preferredLocation);
+        this.reviewSum = reviewSum;
         return this;
-    }
-
-    @Override
-    public
-    List<List<TimeSlice>> getPreferredAvailability()
-    {
-        return this.preferredAvailability;
-    }
-
-    @Override
-    public
-    Tutor setPreferredAvailability(List<List<TimeSlice>> weeklyAvailability)
-    {
-        this.preferredAvailability = weeklyAvailability;
-        return this;
-    }
-
-    public
-    List<ISession> getFutureSessions()
-    {
-        return this.approvedFutureSessions;
-    }
-
-    public
-    int getTutorID()
-    {
-        return this.tutorID;
-    }
-
-    public
-    void setTutorID(int tutorID)
-    {
-        this.tutorID = tutorID;
     }
 }

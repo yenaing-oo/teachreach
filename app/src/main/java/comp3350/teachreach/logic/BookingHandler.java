@@ -95,7 +95,6 @@ class BookingHandler
         return sessionsDataAccess.getPendingSessionRequests(theTutor.getAccountID());
     }
 
-
     //
     //    public ArrayList<Session> getListOfSession() {
     //        return sessionsDataAccess.getSessions();
@@ -124,7 +123,6 @@ class BookingHandler
     //        pending)
     //        return tutorAvailability;
     //    }
-
 
     //public Session createStudentRequests(Student student, Tutor tutor,
     //                                      int day, int month, int year,
@@ -200,7 +198,6 @@ class BookingHandler
     //        }
     //    }
     //2.Send it to database, like confimation
-
 
     //lower function
     //all get set

@@ -60,8 +60,7 @@ class SearchActivity extends AppCompatActivity
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
-        autoCompleteTextView.setOnItemClickListener((parent, view, position,
-                                                     id) -> {
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
             autoCompleteTextView.clearFocus();
             String selectedCourse = (String) parent.getItemAtPosition(position);
 
@@ -126,7 +125,6 @@ class SearchActivity extends AppCompatActivity
 
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
-
     }
 
     @Override
@@ -151,8 +149,7 @@ class SearchActivity extends AppCompatActivity
                                       (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm
-                            =
-                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }

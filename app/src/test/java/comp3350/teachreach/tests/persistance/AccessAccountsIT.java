@@ -15,16 +15,16 @@ import java.util.Optional;
 
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
-class AccessAccountIT
+class AccessAccountsIT
 {
-    private AccessAccount accessAccount;
-    private File          tempDB;
+    private AccessAccounts accessAccounts;
+    private File           tempDB;
 
     @Before
     public
@@ -36,14 +36,14 @@ class AccessAccountIT
                                                                           .replace(
                                                                                   ".script",
                                                                                   ""));
-        this.accessAccount = new AccessAccount(persistence);
+        this.accessAccounts = new AccessAccounts(persistence);
     }
 
     @Test
     public
     void testGetAccounts()
     {
-        final List<IAccount> accounts = accessAccount.getAccounts();
+        final List<IAccount> accounts = accessAccounts.getAccounts();
         assertEquals(1, accounts.size());
     }
 
@@ -51,7 +51,7 @@ class AccessAccountIT
     public
     void testGetAccountByEmail()
     {//NO EMAIL ANYMORE
-        final Optional<IAccount> account = accessAccount.getAccountByEmail(
+        final Optional<IAccount> account = accessAccounts.getAccountByEmail(
                 "pankratz25@myumanitoba.ca");
         assertTrue(account.isPresent());
     }
@@ -60,7 +60,7 @@ class AccessAccountIT
     public
     void testGetAccountByEmailBad()
     {
-        final Optional<IAccount> account = accessAccount.getAccountByEmail(
+        final Optional<IAccount> account = accessAccounts.getAccountByEmail(
                 "a@myumanitoba.ca");
         assertFalse(account.isPresent());
     }
@@ -70,9 +70,9 @@ class AccessAccountIT
     void testStoreAccount()
     {
         final IAccount a = new Account("pankratz@myumanitoba.ca", "AI");
-        accessAccount.insertAccount(a);
+        accessAccounts.insertAccount(a);
         assertEquals(2,
-                     accessAccount
+                     accessAccounts
                              .getAccounts()
                              .size()); //Change number base on database
     }
@@ -81,17 +81,17 @@ class AccessAccountIT
     public
     void testUpdateAccount()
     {
-        final Optional<IAccount> a = accessAccount.getAccountByEmail(
+        final Optional<IAccount> a = accessAccounts.getAccountByEmail(
                 "pankratz25@myumanitoba.ca");
         final IAccount u = new Account(a.get().getAccountEmail(),
                                        "$2a$12$i" +
                                        "/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg" +
                                        ".PXVGNnjF4ld46hJe");
-        accessAccount.updateAccount(u);
-        assertEquals(1, accessAccount.getAccounts().size());
+        accessAccounts.updateAccount(u);
+        assertEquals(1, accessAccounts.getAccounts().size());
         assertEquals(
                 "$2a$12$i/QZJZjGQ7leHCtg5Ttx2O3yWfmtkplQYMLg.PXVGNnjF4ld46hJe",
-                accessAccount
+                accessAccounts
                         .getAccountByEmail("pankratz25@myumanitoba.ca")
                         .get()
                         .getAccountPassword());

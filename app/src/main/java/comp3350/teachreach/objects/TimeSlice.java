@@ -12,7 +12,6 @@ class TimeSlice
 {
     private Instant startTime;
     private Instant endTime;
-
     private Duration duration;
 
     public

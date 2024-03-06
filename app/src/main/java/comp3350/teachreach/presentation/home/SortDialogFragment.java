@@ -59,8 +59,7 @@ class SortDialogFragment extends AppCompatDialogFragment
                                                    = view.findViewById(
                                                    radioGroup.getCheckedRadioButtonId());
                                            SortCriteria sortCriteria
-                                                   =
-                                                   (SortCriteria) selectedRadioButton.getTag();
+                                                   = (SortCriteria) selectedRadioButton.getTag();
                                            listener.applySort(sortCriteria);
                                        }
                                    });
@@ -87,5 +86,4 @@ class SortDialogFragment extends AppCompatDialogFragment
     {
         void applySort(SortCriteria sortCriteria);
     }
-
 }

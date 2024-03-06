@@ -81,7 +81,7 @@ class SessionHSQLDB implements ISessionPersistence
                     "START_DATE_TIME, END_DATE_TIME, " +
                     "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setInt(1, theStudent.getAccountID());
+            pst.setInt(1, theStudent.getStudentAccountID());
             pst.setInt(2, theTutor.getTutorID());
             pst.setObject(3,
                           OffsetDateTime.ofInstant(sessionTime.getStartTime(),
@@ -144,7 +144,7 @@ class SessionHSQLDB implements ISessionPersistence
             pst.setObject(4,
                           OffsetDateTime.ofInstant(sessionTime.getEndTime(),
                                                    ZoneId.systemDefault()));
-            pst.setString(5, session.getLocation());
+            pst.setString(5, session.getAtLocation());
             pst.setBoolean(6, session.getStage());
             pst.setInt(7, session.getSessionID());
             boolean success = pst.executeUpdate() == 1;

@@ -1,26 +1,41 @@
 package comp3350.teachreach.objects.interfaces;
 
-import java.util.Optional;
-
 public
 interface IAccount
 {
-
     String getAccountEmail();
 
-    void setAccountEmail(String accountEmail);
+    IAccount setAccountEmail(String accountEmail);
 
     String getAccountPassword();
 
-    void setAccountPassword(String accountPassword);
-
-    boolean isTutor();
+    IAccount setAccountPassword(String accountPassword);
 
     int getAccountID();
 
-    void setAccountID(int accountID);
+    IAccount setAccountID(int accountID);
+
+    String getUserName();
+
+    IAccount setUserName(String newUserName);
+
+    String getUserPronouns();
+
+    IAccount setUserPronouns(String pronouns);
+
+    String getUserMajor();
+
+    IAccount setUserMajor(String major);
 
     int getTutorID();
 
-    void setTutorID(int tutorID);
+    IAccount setTutorID(int tutorID);
+
+    int getStudentID();
+
+    IAccount setStudentID(int studentID);
+
+    boolean isStudent();
+
+    boolean isTutor();
 }

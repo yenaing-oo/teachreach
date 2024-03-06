@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
@@ -14,13 +14,13 @@ public
 class CredentialHandler implements ICredentialHandler
 {
     private static List<IAccount> accounts;
-    private final  AccessAccount  accessAccount;
+    private final  AccessAccounts accessAccounts;
 
     public
     CredentialHandler()
     {
-        this.accessAccount         = new AccessAccount();
-        CredentialHandler.accounts = accessAccount.getAccounts();
+        this.accessAccounts        = new AccessAccounts();
+        CredentialHandler.accounts = accessAccounts.getAccounts();
     }
 
     public

@@ -1,50 +1,27 @@
 package comp3350.teachreach.objects.interfaces;
 
-import java.util.List;
-
-import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.Tutor;
 
 public
-interface ITutor extends IUser
+interface ITutor
 {
+    int getTutorID();
 
-    List<ICourse> getCourses();
+    Tutor setTutorID(int tutorID);
 
-    List<String> getPreferredLocations();
+    int getAccountID();
 
-    ITutor setPreferredLocations(List<String> preferredLocations);
-
-    int getReviewTotalSum();
-
-    int getReviewCount();
-
-    ITutor setReviewCount(int count);
+    Tutor setAccountID(int accountID);
 
     double getHourlyRate();
 
-    ITutor setHourlyRate(double hourlyRate);
+    Tutor setHourlyRate(double hourlyRate);
 
-    boolean equals(ITutor other);
+    int getReviewCount();
 
-    ITutor addCourse(ICourse course);
+    Tutor setReviewCount(int reviewCount);
 
-    ITutor clearTutoredCourses();
+    int getReviewSum();
 
-    ITutor addReview(int score);
-
-    ITutor setReviewTotal(int score);
-
-    ITutor clearReviews();
-
-    ITutor addPreferredLocation(String preferredLocation);
-
-    List<List<TimeSlice>> getPreferredAvailability();
-
-    ITutor setPreferredAvailability(final List<List<TimeSlice>> weeklyAvailability);
-
-    List<ISession> getFutureSessions();
-
-    int getTutorID();
-
-    void setTutorID(int tutorID);
+    Tutor setReviewSum(int reviewSum);
 }

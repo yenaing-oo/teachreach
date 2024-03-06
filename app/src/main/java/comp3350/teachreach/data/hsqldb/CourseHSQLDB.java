@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
@@ -19,7 +21,7 @@ class CourseHSQLDB implements ICoursePersistence
 {
     private final String dbPath;
 
-    private List<ICourse> courses;
+    private Map<String, ICourse> courses;
 
     public
     CourseHSQLDB(final String dbPath)
@@ -45,38 +47,43 @@ class CourseHSQLDB implements ICoursePersistence
 
     @Override
     public
-    List<ICourse> getCourses()
+    Map<String, ICourse> getCourses() throws PersistenceException
     {
         if (this.courses == null) {
-            this.courses = new ArrayList<ICourse>();
-            try (final Connection c = this.connection()) {
-                final Statement st = c.createStatement();
-                final ResultSet rs = st.executeQuery("SELECT * FROM course");
-                while (rs.next()) {
-                    this.courses.add(fromResultSet(rs));
-                }
-                st.close();
-                rs.close();
-            } catch (SQLException e) {
-                throw new PersistenceException(e);
-            }
+            this.courses = new HashMap<>();
         }
-        return this.courses;
+        try (final Connection c = this.connection()) {
+            final Statement st = c.createStatement();
+            final ResultSet rs = st.executeQuery("SELECT * FROM course");
+            ICourse         theCourse;
+            while (rs.next()) {
+                theCourse = fromResultSet(rs);
+                this.courses.putIfAbsent(theCourse.getCourseCode(), theCourse);
+            }
+            st.close();
+            rs.close();
+            return this.courses;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override
     public
-    boolean addCourse(String courseCode, String courseName)
+    Optional<ICourse> addCourse(String courseCode, String courseName)
+            throws PersistenceException
     {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO course VALUES(?, ?)");
             pst.setString(1, courseCode);
             pst.setString(2, courseName);
-            final boolean success = pst.executeUpdate() == 1;
+            pst.executeUpdate();
             pst.close();
-            courses.add(new Course(courseCode, courseName));
-            return success;
+            return Optional.ofNullable(this.courses.putIfAbsent(courseCode,
+                                                                new Course(
+                                                                        courseCode,
+                                                                        courseName)));
         } catch (SQLException e) {
             throw new PersistenceException(e);
         }
@@ -87,9 +94,8 @@ class CourseHSQLDB implements ICoursePersistence
     Optional<ICourse> getCourseByCourseCode(String courseCode)
     {
         if (courses == null) {
-            getCourses();
+            courses = getCourses();
         }
-        ICourse resultCourse = null;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM course " + "WHERE course_code = ?");
@@ -113,7 +119,7 @@ class CourseHSQLDB implements ICoursePersistence
         List<ICourse> resultCourses = new ArrayList<>();
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM course " + "WHERE course_name LIKE ?");
+                    "SELECT * FROM course WHERE course_name LIKE ?");
             pst.setString(1, "%" + courseName + "%");
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -130,7 +136,7 @@ class CourseHSQLDB implements ICoursePersistence
     public
     List<ICourse> getTutoredCourses(int tutorID)
     {
-        List<ICourse> resultCourses = new ArrayList<ICourse>();
+        List<ICourse> resultCourses = new ArrayList<>();
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT COURSEID, COURSENAME FROM TUTOREDCOURSES " +

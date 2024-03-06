@@ -7,28 +7,28 @@ import java.util.stream.Collectors;
 
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class TutorStub implements ITutorPersistence
 {
 
-    AccessAccount accessAccount;
-    List<ITutor>  tutors;
+    AccessAccounts accessAccounts;
+    List<ITutor>   tutors;
 
     public
     TutorStub(IAccountPersistence accountPersistence)
     {
-        accessAccount = new AccessAccount(accountPersistence);
-        tutors        = new ArrayList<>();
+        accessAccounts = new AccessAccounts(accountPersistence);
+        tutors         = new ArrayList<>();
     }
 
     @Override
     public
     ITutor storeTutor(ITutor newTutor) throws RuntimeException
     {
-        if (accessAccount.getAccountByEmail(newTutor.getEmail()) != null) {
+        if (accessAccounts.getAccountByEmail(newTutor.getEmail()) != null) {
             tutors.add(newTutor);
             return newTutor;
         } else {
@@ -50,9 +50,9 @@ class TutorStub implements ITutorPersistence
                     .setReviewCount(newTutor.getReviewCount())
                     .setReviewTotal(newTutor.getReviewTotalSum());
 
-            tutor.setName(newTutor.getName());
-            tutor.setMajor(newTutor.getMajor());
-            tutor.setPronouns(newTutor.getPronouns());
+            tutor.setName(newTutor.getUserName());
+            tutor.setMajor(newTutor.getUserMajor());
+            tutor.setPronouns(newTutor.getUserPronouns());
         });
 
         return maybeTutor.orElseThrow(() -> new RuntimeException(
@@ -82,7 +82,7 @@ class TutorStub implements ITutorPersistence
     {
         return tutors
                 .stream()
-                .filter(tutor -> tutor.getName().contains(name))
+                .filter(tutor -> tutor.getUserName().contains(name))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

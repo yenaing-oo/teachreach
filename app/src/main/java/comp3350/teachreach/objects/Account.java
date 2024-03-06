@@ -5,27 +5,39 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 public
 class Account implements IAccount
 {
-    private int    accountID;
-    private int    tutorID;
+    private int    accountID = -1;
+    private int    tutorID   = -1;
+    private int    studentID = -1;
     private String accountEmail;
     private String accountPassword;
+    private String userName;
+    private String userPronouns;
+    private String userMajor;
 
     public
-    Account(String accountEmail, String accountPassword)
+    Account(String accountEmail,
+            String accountPassword,
+            String userName,
+            String userPronouns,
+            String userMajor)
     {
         this.accountEmail    = accountEmail;
         this.accountPassword = accountPassword;
-        this.accountID       = -1;
-        this.tutorID         = -1;
+        this.userName        = userName;
+        this.userPronouns    = userPronouns;
+        this.userMajor       = userMajor;
     }
 
     public
-    Account(String accountEmail, String accountPassword, int accountID)
+    Account(String accountEmail,
+            String accountPassword,
+            String userName,
+            String userPronouns,
+            String userMajor,
+            int accountID)
     {
-        this.accountEmail    = accountEmail;
-        this.accountPassword = accountPassword;
-        this.accountID       = accountID;
-        this.tutorID         = -1;
+        this(accountEmail, accountPassword, userName, userPronouns, userMajor);
+        this.accountID = accountID;
     }
 
     @Override
@@ -37,9 +49,10 @@ class Account implements IAccount
 
     @Override
     public
-    void setAccountEmail(String accountEmail)
+    Account setAccountEmail(String accountEmail)
     {
         this.accountEmail = accountEmail;
+        return this;
     }
 
     @Override
@@ -51,16 +64,10 @@ class Account implements IAccount
 
     @Override
     public
-    void setAccountPassword(String accountPassword)
+    Account setAccountPassword(String accountPassword)
     {
         this.accountPassword = accountPassword;
-    }
-
-    @Override
-    public
-    boolean isTutor()
-    {
-        return this.tutorID != -1;
+        return this;
     }
 
     @Override
@@ -72,9 +79,55 @@ class Account implements IAccount
 
     @Override
     public
-    void setAccountID(int accountID)
+    Account setAccountID(int accountID)
     {
         this.accountID = accountID;
+        return this;
+    }
+
+    @Override
+    public
+    String getUserName()
+    {
+        return this.userName;
+    }
+
+    @Override
+    public
+    Account setUserName(String newUserName)
+    {
+        this.userName = newUserName;
+        return this;
+    }
+
+    @Override
+    public
+    String getUserPronouns()
+    {
+        return this.userPronouns;
+    }
+
+    @Override
+    public
+    Account setUserPronouns(String pronouns)
+    {
+        this.userPronouns = pronouns;
+        return this;
+    }
+
+    @Override
+    public
+    String getUserMajor()
+    {
+        return this.userMajor;
+    }
+
+    @Override
+    public
+    Account setUserMajor(String major)
+    {
+        this.userMajor = major;
+        return this;
     }
 
     @Override
@@ -86,8 +139,38 @@ class Account implements IAccount
 
     @Override
     public
-    void setTutorID(int tutorID)
+    Account setTutorID(int tutorID)
     {
         this.tutorID = tutorID;
+        return this;
+    }
+
+    @Override
+    public
+    int getStudentID()
+    {
+        return this.studentID;
+    }
+
+    @Override
+    public
+    Account setStudentID(int studentID)
+    {
+        this.studentID = studentID;
+        return this;
+    }
+
+    @Override
+    public
+    boolean isStudent()
+    {
+        return this.studentID != -1;
+    }
+
+    @Override
+    public
+    boolean isTutor()
+    {
+        return this.tutorID != -1;
     }
 }

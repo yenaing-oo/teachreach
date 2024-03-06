@@ -52,9 +52,9 @@ class StudentHSQLDB implements IStudentPersistence
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO student VALUES(?, ?, ?, ?)");
             pst.setString(1, newStudent.getEmail());
-            pst.setString(2, newStudent.getName());
-            pst.setString(3, newStudent.getMajor());
-            pst.setString(4, newStudent.getPronouns());
+            pst.setString(2, newStudent.getUserName());
+            pst.setString(3, newStudent.getUserMajor());
+            pst.setString(4, newStudent.getUserPronouns());
             pst.executeUpdate();
             pst.close();
             return newStudent;
@@ -71,9 +71,9 @@ class StudentHSQLDB implements IStudentPersistence
             final PreparedStatement pst = c.prepareStatement("UPDATE student " +
                                                              "SET name = ?, major = ?, pronouns = ?" +
                                                              "WHERE email = ?");
-            pst.setString(1, newStudent.getName());
-            pst.setString(2, newStudent.getMajor());
-            pst.setString(3, newStudent.getPronouns());
+            pst.setString(1, newStudent.getUserName());
+            pst.setString(2, newStudent.getUserMajor());
+            pst.setString(3, newStudent.getUserPronouns());
             pst.setString(4, newStudent.getEmail());
             pst.executeUpdate();
             pst.close();

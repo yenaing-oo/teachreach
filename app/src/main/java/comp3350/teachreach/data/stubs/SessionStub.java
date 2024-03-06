@@ -66,7 +66,7 @@ class SessionStub implements ISessionPersistence
         boolean  result         = false;
         for (ISession s : sessions) {
             if (s.getSessionID() == session.getSessionID()) {
-                s.setLocation(session.getLocation());
+                s.setSessionLocation(session.getAtLocation());
                 s.setStudent(session.getStudent());
                 s.setTutor(session.getTutor());
                 s.setStage(session.getStage());

@@ -2,35 +2,35 @@ package comp3350.teachreach.logic.profile;
 
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudent;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 
 public
-class StudentProfile implements IUserProfile
+class StudentProfileFetcher implements IUserProfile
 {
-    private final IStudent      theStudent;
-    private final AccessStudent accessStudent;
-    private final AccessAccount accessAccount;
-
+    private final IStudent       theStudent;
+    private final AccessStudent  accessStudent;
+    private final AccessAccounts accessAccounts;
 
     public
-    StudentProfile(IStudent theStudent)
+    StudentProfileFetcher(IStudent theStudent)
     {
 
-        this.theStudent    = theStudent;
-        this.accessStudent = new AccessStudent();
-        this.accessAccount = new AccessAccount();
+        this.theStudent     = theStudent;
+        this.accessStudent  = new AccessStudent();
+        this.accessAccounts = new AccessAccounts();
     }
 
     public
-    StudentProfile(String email)
+    StudentProfileFetcher(int studentAccountID)
     {
-        this.accessStudent = new AccessStudent();
-        this.accessAccount = new AccessAccount();
-        this.theStudent    = accessStudent.getStudentByEmail(email);
+        this.accessStudent  = new AccessStudent();
+        this.accessAccounts = new AccessAccounts();
+        this.theStudent     = accessStudent.getStudentByAccountID(
+                studentAccountID)
     }
 
     @Override
@@ -44,7 +44,7 @@ class StudentProfile implements IUserProfile
     public
     String getUserName()
     {
-        return this.theStudent.getName();
+        return this.theStudent.getUserName();
     }
 
     @Override
@@ -59,7 +59,7 @@ class StudentProfile implements IUserProfile
     public
     String getUserPronouns()
     {
-        return this.theStudent.getPronouns();
+        return this.theStudent.getUserPronouns();
     }
 
     @Override
@@ -74,7 +74,7 @@ class StudentProfile implements IUserProfile
     public
     String getUserMajor()
     {
-        return this.theStudent.getMajor();
+        return this.theStudent.getUserMajor();
     }
 
     @Override
@@ -89,7 +89,7 @@ class StudentProfile implements IUserProfile
     public
     IAccount getUserAccount()
     {
-        return this.accessAccount
+        return this.accessAccounts
                 .getAccounts()
                 .stream()
                 .filter(a -> a.getAccountEmail().equals(theStudent.getEmail()))

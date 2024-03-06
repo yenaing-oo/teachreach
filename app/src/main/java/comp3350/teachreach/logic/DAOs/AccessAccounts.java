@@ -9,14 +9,14 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public
-class AccessAccount
+class AccessAccounts
 {
     private static IAccountPersistence accountPersistence;
     private static List<IAccount>      accounts;
     private        IAccount            account;
 
     public
-    AccessAccount()
+    AccessAccounts()
     {
         accountPersistence = Server.getAccountDataAccess();
         accounts           = null;
@@ -24,30 +24,29 @@ class AccessAccount
     }
 
     public
-    AccessAccount(final IAccountPersistence accountPersistence)
+    AccessAccounts(final IAccountPersistence accountPersistence)
     {
         this();
-        AccessAccount.accountPersistence = accountPersistence;
+        AccessAccounts.accountPersistence = accountPersistence;
     }
 
-    public synchronized
+    public
     List<IAccount> getAccounts()
     {
         if (accounts == null) {
-            AccessAccount.accounts = accountPersistence.getAccounts();
+            AccessAccounts.accounts = accountPersistence.getAccounts();
         }
         return Collections.unmodifiableList(accounts);
     }
 
-    //CHANGE FROM EMAIL TO ID LATER
     public
     Optional<IAccount> getAccountByEmail(String email)
     {
         if (accounts == null) {
-            AccessAccount.accounts = accountPersistence.getAccounts();
+            AccessAccounts.accounts = accountPersistence.getAccounts();
         }
         accounts
-                .stream()
+                .parallelStream()
                 .filter(a -> a.getAccountEmail().equals(email))
                 .findFirst()
                 .ifPresentOrElse(a -> account = a, () -> {

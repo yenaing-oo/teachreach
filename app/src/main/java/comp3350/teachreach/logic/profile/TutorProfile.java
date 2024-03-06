@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import comp3350.teachreach.logic.DAOs.AccessAccount;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessTutor;
 import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
@@ -17,7 +17,7 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class TutorProfile implements ITutorProfile
 {
-    private final AccessAccount       accessAccount;
+    private final AccessAccounts      accessAccounts;
     private final AccessTutor         accessTutor;
     private final List<ITutor>        tutors;
     private       ITutor              theTutor;
@@ -29,7 +29,7 @@ class TutorProfile implements ITutorProfile
         theTutor            = null;
         availabilityManager = null;
         this.accessTutor    = new AccessTutor();
-        this.accessAccount  = new AccessAccount();
+        this.accessAccounts = new AccessAccounts();
         tutors              = accessTutor.getTutors();
     }
 
@@ -64,7 +64,7 @@ class TutorProfile implements ITutorProfile
     public
     String getUserName()
     {
-        return this.theTutor.getName();
+        return this.theTutor.getUserName();
     }
 
     @Override
@@ -79,7 +79,7 @@ class TutorProfile implements ITutorProfile
     public
     String getUserPronouns()
     {
-        return this.theTutor.getPronouns();
+        return this.theTutor.getUserPronouns();
     }
 
     @Override
@@ -94,7 +94,7 @@ class TutorProfile implements ITutorProfile
     public
     String getUserMajor()
     {
-        return this.theTutor.getMajor();
+        return this.theTutor.getUserMajor();
     }
 
     @Override
@@ -109,7 +109,7 @@ class TutorProfile implements ITutorProfile
     public
     IAccount getUserAccount() throws NoSuchElementException
     {
-        return accessAccount
+        return accessAccounts
                 .getAccountByEmail(theTutor.getEmail())
                 .orElseThrow(NoSuchElementException::new);
     }

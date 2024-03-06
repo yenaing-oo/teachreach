@@ -150,6 +150,5 @@ class TutorSignUpActivity extends AppCompatActivity
                 createTutorProfile();
             }
         });
-
     }
 }

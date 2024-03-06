@@ -20,7 +20,6 @@ class AccessSession
     AccessSession()
     {
         AccessSession.sessionPersistence = Server.getSessionDataAccess();
-
     }
 
     public
@@ -76,6 +75,4 @@ class AccessSession
 
         return sessionPersistence.getPendingSessionRequests(AID);
     }
-
-
 }
