@@ -19,15 +19,13 @@ public class TimeSlice {
         this.duration = duration;
     }
 
-    public static TimeSlice of(
-            int year, int month, int day,
-            int hour, int minute,
-            int durationInMinutes) {
+    public static TimeSlice ofHalfAnHourFrom(
+            int year, int month, int dayOfMonth, int hour, int minute) {
         Instant start = LocalDateTime
-                .of(year, month, day, hour, minute)
+                .of(year, month, dayOfMonth, hour, minute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
-        Duration duration = Duration.ofMinutes(durationInMinutes);
+        Duration duration = Duration.ofMinutes(30);
         return new TimeSlice(start, start.plus(duration), duration);
     }
 
@@ -37,13 +35,11 @@ public class TimeSlice {
             int endYear, int endMonth, int endDay,
             int endHour, int endMinute) {
         Instant start = LocalDateTime
-                .of(startYear, startMonth, startDay,
-                        startHour, startMinute)
+                .of(startYear, startMonth, startDay, startHour, startMinute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
         Instant end = LocalDateTime
-                .of(endYear, endMonth, endDay,
-                        endHour, endMinute)
+                .of(endYear, endMonth, endDay, endHour, endMinute)
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
         Duration duration = Duration.between(start, end);
