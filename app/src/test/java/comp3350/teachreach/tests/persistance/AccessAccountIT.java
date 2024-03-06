@@ -40,7 +40,7 @@ public class AccessAccountIT {
     }
 
     @Test
-    public void testGetAccountByEmail() {
+    public void testGetAccountByEmail() {//NO EMAIL ANYMORE
         final Optional<IAccount> account = accessAccount
                 .getAccountByEmail("pankratz25@myumanitoba.ca");
         assertTrue(account.isPresent());
@@ -57,7 +57,7 @@ public class AccessAccountIT {
     public void testStoreAccount() {
         final IAccount a = new Account("pankratz@myumanitoba.ca", "AI");
         accessAccount.insertAccount(a);
-        assertEquals(2, accessAccount.getAccounts().size());
+        assertEquals(2, accessAccount.getAccounts().size()); //Change number base on database
     }
 
     @Test
