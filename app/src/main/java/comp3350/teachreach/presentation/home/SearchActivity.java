@@ -11,7 +11,9 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +36,7 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     private ArrayList<String> courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView autoCompleteTextView;
+    private long backPressedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,24 +52,19 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseStringList);
-        autoCompleteTextView.setAdapter(arrayAdapter);
-        autoCompleteTextView.setThreshold(2);
-
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
-            autoCompleteTextView.clearFocus();
-            String selectedCourse = (String) parent.getItemAtPosition(position);
-
-            updateTutorList(selectedCourse);
-        });
-
+        setUpAutoCompleteTextView();
         sortButton.setOnClickListener(v -> openDialog());
-
         populateTutors();
+        setUpRecyclerView(recyclerView);
+        setUpBackButtonHandler();
 
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
-        recyclerView.setAdapter(searchRecyclerViewAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                backIsPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     private void setUpCourseList() {
@@ -74,6 +72,17 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
+    }
+
+    private void setUpAutoCompleteTextView() {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseStringList);
+        autoCompleteTextView.setAdapter(arrayAdapter);
+        autoCompleteTextView.setThreshold(2);
+        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+            autoCompleteTextView.clearFocus();
+            String selectedCourse = (String) parent.getItemAtPosition(position);
+            updateTutorList(selectedCourse);
+        });
     }
 
     private void populateTutors() {
@@ -84,6 +93,22 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         tutorList = handler.searchTutorByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    private void setUpRecyclerView(RecyclerView recyclerView) {
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+        recyclerView.setAdapter(searchRecyclerViewAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void setUpBackButtonHandler() {
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                backIsPressed();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
     private void sortTutors(SortCriteria sortCriteria) throws Exception {
@@ -139,4 +164,18 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
     @Override
     public void applySort(SortCriteria sortCriteria) {
     }
+
+    private void backIsPressed() {
+        // Check if back button was pressed within a certain interval (e.g., 2 seconds)
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            // If back button was pressed within the interval, exit the app
+            finishAffinity();
+        } else {
+            // Otherwise, display a toast message indicating to press back again to exit
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+        }
+        // Update the back press time
+        backPressedTime = System.currentTimeMillis();
+    }
+
 }
