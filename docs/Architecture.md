@@ -85,6 +85,43 @@
 - Contain Information about a Session
 
 
-**=======================ITERATION 2=================================**
-![Iteration2Architm](/uploads/1705d54c32ccce7cd10efe8ced4a68e9/Iteration2Architm.png)
+**============================================ITERATION 2==============================================**
+### **Iteration Two Architecture**
+![Iteration2Architm2](/uploads/8de416dd05cd84f917f708bc4ed3a4b0/Iteration2Architm2.png)
 
+### **Presentation Layer**
+**Search**
+**Profile**
+**Booking**
+**Signup**
+**Login**
+
+
+### **Logic Layer**
+**Profile**
+**Account**
+**Booking**
+**SearchSort**
+
+**Accessors**
+### **Data Layer**
+**Account**
+**Course**
+**Student**
+**Tutor**
+**Session**
+**tutorAvailability**
+**TutorLocation**
+**TutorCourse**
+
+**HSDBQ**
+**Stub**
+
+
+### **Domain Specific Object**
+**Student**
+**Tutor**
+**Account**
+**Course**
+**Session**
+**TimeSlice**
