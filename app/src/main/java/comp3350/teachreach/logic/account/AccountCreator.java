@@ -10,18 +10,21 @@ import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class AccountCreator implements IAccountCreator
 {
-
     private final ICredentialHandler handler;
     private       AccessAccounts     accessAccounts = null;
     private       AccessStudents     accessStudents = null;
     private       AccessTutors       accessTutors   = null;
     private       IAccount           newAccount     = null;
+    private       ITutor             newTutor       = null;
+    private       IStudent           newStudent     = null;
 
     public
     AccountCreator()
@@ -92,47 +95,78 @@ class AccountCreator implements IAccountCreator
                     "(Account not initialized)");
         }
         try {
-            IStudent newStudent = new Student(newAccount.getAccountID());
+            newStudent = new Student(newAccount.getAccountID());
             newStudent = accessStudents.insertStudent(newStudent);
             newAccount.setStudentID(newStudent.getStudentID());
+            return this;
         } catch (final Exception e) {
             throw new AccountCreatorException("Failed to make new student :(",
                                               e);
         }
-
-        this.account.setStudentProfile(newStudent);
-        return this;
     }
 
     @Override
     public
-    AccountCreator setTutorProfile(String username,
-                                   String major,
-                                   String pronoun) throws RuntimeException
+    AccountCreator newTutorProfile() throws AccountCreatorException
     {
-        if (this.account == null) {
-            throw new RuntimeException("Failed to set Tutor profile:-" +
-                                       "(Account not initialized)");
+        if (this.newAccount == null) {
+            throw new AccountCreatorException("Failed to set Tutor profile:-" +
+                                              "(Account not initialized)");
         }
-
-        Tutor newTutor = new Tutor(username,
-                                   major,
-                                   pronoun,
-                                   account.getAccountID());
-        accessTutors.insertTutor(newTutor);
-
-        this.account.setTutorProfile(newTutor);
-        return this;
+        try {
+            newTutor = new Tutor(newAccount.getAccountID());
+            newTutor = accessTutors.insertTutor(newTutor);
+            newAccount.setTutorID(newTutor.getTutorID());
+            return this;
+        } catch (final Exception e) {
+            throw new AccountCreatorException("Failed to make new tutor :(", e);
+        }
     }
 
     @Override
     public
     IAccount buildAccount() throws AccountCreatorException
     {
-        if (account == null) {
-            throw getException(false, false, false);
+        if (newAccount == null) {
+            throw new AccountCreatorException("New account not created!");
         }
-        return account;
+        if (!(newAccount.isStudent() || newAccount.isTutor())) {
+            throw new AccountCreatorException(
+                    "Account is neither a student nor a tutor :(");
+        }
+        assert newAccount.getAccountID() != -1;
+        return newAccount;
+    }
+
+    @Override
+    public
+    ITutor getNewTutor() throws AccountCreatorException
+    {
+        if (newTutor == null) {
+            throw new AccountCreatorException("New tutor not created");
+        }
+        if (newTutor.getAccountID() != this.buildAccount().getAccountID()) {
+            newTutor.setAccountID(newAccount.getAccountID());
+        }
+        assert newAccount.getAccountID() != -1;
+        assert newTutor.getTutorID() != -1;
+        return newTutor;
+    }
+
+    @Override
+    public
+    IStudent getNewStudent() throws AccountCreatorException
+    {
+        if (newStudent == null) {
+            throw new AccountCreatorException("New student not created");
+        }
+        if (newStudent.getStudentAccountID() !=
+            this.buildAccount().getAccountID()) {
+            newStudent.setStudentAccountID(newAccount.getAccountID());
+        }
+        assert newAccount.getAccountID() != -1;
+        assert newStudent.getStudentID() != -1;
+        return newStudent;
     }
 }
 

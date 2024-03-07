@@ -1,21 +1,27 @@
 package comp3350.teachreach.logic.interfaces;
 
+import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.account.AccountCreatorException;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 interface IAccountCreator
 {
-    IAccountCreator createAccount(String email, String password)
-            throws AccountCreatorException;
+    AccountCreator createAccount(String email,
+                                 String password,
+                                 String name,
+                                 String pronouns,
+                                 String major) throws AccountCreatorException;
 
-    IAccountCreator setStudentProfile(String username,
-                                      String major,
-                                      String pronoun) throws RuntimeException;
+    IAccountCreator newStudentProfile() throws AccountCreatorException;
 
-    IAccountCreator setTutorProfile(String username,
-                                    String major,
-                                    String pronoun) throws RuntimeException;
+    IAccountCreator newTutorProfile() throws AccountCreatorException;
 
     IAccount buildAccount() throws AccountCreatorException;
+
+    ITutor getNewTutor() throws AccountCreatorException;
+
+    IStudent getNewStudent() throws AccountCreatorException;
 }
