@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.data.interfaces.ITutorLocation;
 
-public class TutorLocationHSQLDB {
+public class TutorLocationHSQLDB implements ITutorLocation {
     private final String dbPath;
 
     public
@@ -36,6 +34,7 @@ public class TutorLocationHSQLDB {
         return location;
     }
 
+    @Override
     public List<String> getTutorLocationByTID(int tutor_id){
         final List<String> tutorLocation = new ArrayList<>();
         try (final Connection c = connection()) {
@@ -54,6 +53,7 @@ public class TutorLocationHSQLDB {
         }
     }
 
+    @Override
     public boolean storeTutorLocation(int tutor_id, String location){
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(

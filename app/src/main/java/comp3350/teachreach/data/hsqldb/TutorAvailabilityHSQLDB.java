@@ -10,12 +10,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import comp3350.teachreach.data.interfaces.ITutorAvailability;
 import comp3350.teachreach.objects.TimeSlice;
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorAvailabilityHSQLDB {
+public class TutorAvailabilityHSQLDB implements ITutorAvailability {
 
     private final String dbPath;
 
