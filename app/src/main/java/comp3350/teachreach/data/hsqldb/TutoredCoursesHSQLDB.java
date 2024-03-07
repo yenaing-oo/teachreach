@@ -34,7 +34,7 @@ public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
         return new Course(courseID,courseName);
     }
 
-    public List<ICourse> getTutorCourseByTID(int tutorID) {
+    public List<ICourse> getTutorCourseByTutorID(int tutorID) {
         final List<ICourse> tutoredCourse = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_courses WHERE tutor_id = ?");

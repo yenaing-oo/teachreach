@@ -21,7 +21,7 @@ public class AccessTutoredCourses
 
     public List<ICourse> getTutorCourseByTID(int tutorID){
         try {
-            return TutoredCoursesPersistence.getTutorCourseByTID(tutorID);
+            return TutoredCoursesPersistence.getTutorCourseByTutorID(tutorID);
         }
         catch (final Exception e) {
             throw new DataAccessException(
