@@ -5,4 +5,5 @@
     <string name="choose_a_date_and_time">Choose a date and time</string>
     <string name="date_display">Date Display</string>
     <string name="shr_button_review">Review booking</string>
+    <string name="confirm_booking">Confirm Booking</string>
 </resources>

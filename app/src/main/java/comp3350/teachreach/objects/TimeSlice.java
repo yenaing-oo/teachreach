@@ -11,12 +11,9 @@ public class TimeSlice {
     private Instant startTime;
     private Instant endTime;
 
-    private Duration duration;
-
-    public TimeSlice(Instant startTime, Instant endTime, Duration duration) {
+    public TimeSlice(Instant startTime, Instant endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
-        this.duration = duration;
     }
 
     public static TimeSlice of(
@@ -28,7 +25,7 @@ public class TimeSlice {
                 .atZone(ZoneId.systemDefault())
                 .toInstant();
         Duration duration = Duration.ofMinutes(durationInMinutes);
-        return new TimeSlice(start, start.plus(duration), duration);
+        return new TimeSlice(start, start.plus(duration));
     }
 
     public static TimeSlice of(
@@ -48,7 +45,7 @@ public class TimeSlice {
                 .toInstant();
         Duration duration = Duration.between(start, end);
 
-        return new TimeSlice(start, end, duration);
+        return new TimeSlice(start, end);
     }
 
     public Instant getStartTime() {
@@ -110,7 +107,7 @@ public class TimeSlice {
     }
 
     public Duration getDuration() {
-        return duration;
+        return Duration.between(startTime, endTime);
     }
 
     public boolean conflictsWith(TimeSlice that) {
@@ -128,7 +125,6 @@ public class TimeSlice {
         if (this.endTime.isBefore(that.endTime)) {
             this.endTime = that.endTime;
         }
-        this.duration = Duration.between(this.startTime, this.endTime);
         return this;
     }
 }

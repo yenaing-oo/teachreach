@@ -1,7 +1,6 @@
 package comp3350.teachreach.logic.profile;
 
 import java.time.DayOfWeek;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -10,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AvailabilityManager {
     private final ITutor ofTutor;
@@ -54,8 +53,8 @@ public class AvailabilityManager {
                         currDate, endTime, zoneId);
                 TimeSlice timeSlice = new TimeSlice(
                         startDateTime.toInstant(),
-                        endDateTime.toInstant(),
-                        Duration.between(startDateTime, endDateTime));
+                        endDateTime.toInstant()
+                );
                 List<TimeSlice> toBeAdded = new ArrayList<>();
                 for (TimeSlice that :
                         dayOfWeekAvailability
