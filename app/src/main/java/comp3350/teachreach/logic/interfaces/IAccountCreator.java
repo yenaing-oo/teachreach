@@ -1,7 +1,7 @@
 package comp3350.teachreach.logic.interfaces;
 
 import comp3350.teachreach.logic.account.AccountCreator;
-import comp3350.teachreach.logic.account.AccountCreatorException;
+import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;

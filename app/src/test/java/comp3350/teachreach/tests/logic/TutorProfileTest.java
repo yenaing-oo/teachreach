@@ -19,7 +19,7 @@
 //import comp3350.teachreach.data.stubs.StudentStub;
 //import comp3350.teachreach.data.stubs.TutorStub;
 //import comp3350.teachreach.logic.account.AccountCreator;
-//import comp3350.teachreach.logic.account.AccountCreatorException;
+//import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
 //import comp3350.teachreach.logic.account.CredentialHandler;
 //import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 //import comp3350.teachreach.logic.interfaces.ITutorProfile;

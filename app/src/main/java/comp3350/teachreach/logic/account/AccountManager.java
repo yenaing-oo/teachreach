@@ -1,8 +1,8 @@
 package comp3350.teachreach.logic.account;
 
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessStudents;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.account.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -10,18 +10,22 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 public
 class AccountManager implements IAccountManager
 {
-    private final AccessAccounts accessAccounts;
-    private final AccessStudents     accessStudents;
-    private final AccessTutors       accessTutors;
+    private final AccessAccounts     accessAccounts;
     private final ICredentialHandler credentialHandler;
-    private final IAccount           theAccount;
+    private       IAccount           theAccount;
 
     public
     AccountManager(IAccount theAccount)
     {
-        accessAccounts = new AccessAccounts();
-        accessStudents         = new AccessStudents();
-        accessTutors           = new AccessTutors();
+        accessAccounts         = new AccessAccounts();
+        this.credentialHandler = new CredentialHandler();
+        this.theAccount        = theAccount;
+    }
+
+    public
+    AccountManager(IAccount theAccount, IAccountPersistence accountPersistence)
+    {
+        accessAccounts         = new AccessAccounts(accountPersistence);
         this.credentialHandler = new CredentialHandler();
         this.theAccount        = theAccount;
     }
@@ -29,61 +33,86 @@ class AccountManager implements IAccountManager
     @Override
     public
     IAccountManager updateAccountUsername(String newName)
+            throws AccountManagerException
     {
-        this.theAccount.getStudentProfile().ifPresent(student -> {
-            student.setName(newName);
-            this.accessStudents.updateStudent(student);
-        });
-        this.theAccount.getTutorProfile().ifPresent(tutor -> {
-            tutor.setName(newName);
-            this.accessTutors.updateTutor(tutor);
-        });
-        return this;
+        try {
+            theAccount = accessAccounts.updateAccount(theAccount.setUserName(
+                    newName));
+            return this;
+        } catch (final Exception e) {
+            throw new AccountManagerException("Failed to update user name :(",
+                                              e);
+        }
     }
 
     @Override
     public
     IAccountManager updateAccountUserPronouns(String pronouns)
+            throws AccountManagerException
     {
-        this.theAccount.getStudentProfile().ifPresent(student -> {
-            student.setPronouns(pronouns);
-            this.accessStudents.updateStudent(student);
-        });
-        this.theAccount.getTutorProfile().ifPresent(tutor -> {
-            tutor.setPronouns(pronouns);
-            this.accessTutors.updateTutor(tutor);
-        });
-        return this;
+        try {
+            theAccount
+                    = accessAccounts.updateAccount(theAccount.setUserPronouns(
+                    pronouns));
+            return this;
+        } catch (final Exception e) {
+            throw new AccountManagerException(
+                    "Failed to update user pronouns :(",
+                    e);
+        }
     }
 
     @Override
     public
-    IAccountManager updatePassword(String email,
-                                   String oldPassword,
-                                   String newPassword)
+    IAccountManager updateAccountUserMajor(String major)
+            throws AccountManagerException
     {
-        this.accessAccounts.getAccountByEmail(email).ifPresent(account -> {
-            if (credentialHandler.validateCredential(email, oldPassword)) {
-                this.theAccount.setAccountPassword(credentialHandler.processPassword(
-                        newPassword));
-                this.accessAccounts.updateAccount(theAccount);
-            }
-        });
-        return this;
+        return null;
     }
 
     @Override
     public
-    IAccountManager updateEmail(String password,
-                                String oldEmail,
-                                String newEmail)
+    IAccountManager updatePassword(String oldPlainPassword,
+                                   String newPlainPassword)
+            throws AccountManagerException
     {
-        this.accessAccounts.getAccountByEmail(oldEmail).ifPresent(account -> {
-            if (credentialHandler.validateCredential(oldEmail, password)) {
-                this.theAccount.setAccountEmail(newEmail);
-                this.accessAccounts.updateAccount(theAccount);
-            }
-        });
-        return this;
+        try {
+            assert credentialHandler.validateCredential(theAccount.getAccountEmail(),
+                                                        oldPlainPassword);
+
+            theAccount
+                    =
+                    accessAccounts.updateAccount(theAccount.setAccountPassword(
+                    credentialHandler.processPassword(newPlainPassword)));
+
+            return this;
+        } catch (final AssertionError e) {
+            throw new AccountManagerException("Invalid password!", e);
+        } catch (final Exception e) {
+            throw new AccountManagerException(
+                    "Failed while updating password :(",
+                    e);
+        }
+    }
+
+    @Override
+    public
+    IAccountManager updateEmail(String plainPassword, String newEmail)
+            throws AccountManagerException
+    {
+        try {
+            assert credentialHandler.validateCredential(theAccount.getAccountEmail(),
+                                                        plainPassword);
+            theAccount
+                    = accessAccounts.updateAccount(theAccount.setAccountEmail(
+                    newEmail));
+            return this;
+        } catch (final AssertionError e) {
+            throw new AccountManagerException("Invalid email or password!", e);
+        } catch (final Exception e) {
+            throw new AccountManagerException(
+                    "Failed to update account email :(",
+                    e);
+        }
     }
 }

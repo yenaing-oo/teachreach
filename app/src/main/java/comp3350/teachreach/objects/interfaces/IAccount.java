@@ -9,7 +9,7 @@ interface IAccount
 
     String getAccountPassword();
 
-    IAccount setAccountPassword(String accountPassword);
+    IAccount setAccountPassword(String accountPasswordDigest);
 
     int getAccountID();
 

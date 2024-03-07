@@ -14,7 +14,7 @@
 //import comp3350.teachreach.data.interfaces.IStudentPersistence;
 //import comp3350.teachreach.data.interfaces.ITutorPersistence;
 //import comp3350.teachreach.logic.account.AccountCreator;
-//import comp3350.teachreach.logic.account.AccountCreatorException;
+//import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
 //import comp3350.teachreach.logic.account.CredentialHandler;
 //import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 //

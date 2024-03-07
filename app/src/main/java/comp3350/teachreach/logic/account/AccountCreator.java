@@ -6,6 +6,7 @@ import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.Account;
