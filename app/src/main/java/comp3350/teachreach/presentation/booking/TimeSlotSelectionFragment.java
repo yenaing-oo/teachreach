@@ -1,7 +1,7 @@
 package comp3350.teachreach.presentation.booking;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,18 +24,9 @@ import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
  * create an instance of this fragment.
  */
 public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecyclerView {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
     private List<String> timeSlotList;
+    private OnTimeSlotSelectedListener timeSlotSelectedListener;
 
     public TimeSlotSelectionFragment() {
         // Required empty public constructor
@@ -45,6 +36,18 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
     public static TimeSlotSelectionFragment newInstance() {
         TimeSlotSelectionFragment fragment = new TimeSlotSelectionFragment();
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof OnTimeSlotSelectedListener) {
+            timeSlotSelectedListener = (OnTimeSlotSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnTimeSlotSelectedListener");
+        }
     }
 
     @Override
@@ -80,6 +83,10 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
 
     @Override
     public void onTimeSlotItemClick(int position) {
-        Log.e("slot", "time slot clicked!");
+        // Retrieve the clicked time slot
+        String selectedTimeSlot = timeSlotList.get(position);
+        // Pass the time slot back to the activity
+        timeSlotSelectedListener.onTimeSlotSelected(selectedTimeSlot);
     }
+
 }

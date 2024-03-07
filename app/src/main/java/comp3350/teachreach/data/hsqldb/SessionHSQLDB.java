@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -15,11 +14,11 @@ import java.util.List;
 import java.util.Optional;
 
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.objects.Session;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.objects.TimeSlice;
 
 public class SessionHSQLDB implements ISessionPersistence {
     private final String dbPath;
@@ -48,8 +47,8 @@ public class SessionHSQLDB implements ISessionPersistence {
                 .getObject("end_date_time"))
                 .toInstant();
         final TimeSlice sessionTime = new TimeSlice(
-                startTime, endTime,
-                Duration.between(startTime, endTime));
+                startTime, endTime
+        );
         resultSession = range.canContain(sessionTime) ? fromResultSet(rs) : null;
         return Optional.ofNullable(resultSession);
     }

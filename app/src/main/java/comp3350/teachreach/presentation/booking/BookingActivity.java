@@ -7,12 +7,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.button.MaterialButton;
+
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.BookingHandler;
 import comp3350.teachreach.presentation.utils.DateUtils;
 
-public class BookingActivity extends AppCompatActivity implements OnDateChangeListener {
+public class BookingActivity extends AppCompatActivity implements OnDateChangeListener, OnTimeSlotSelectedListener {
     private FragmentManager fragmentManager;
     private TextView dateDisplay;
+    private MaterialButton reviewBookingButton;
+
+    private String timeSlot;
+    private BookingHandler bookingHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +28,7 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
 
         dateDisplay = findViewById(R.id.dateDisplayTextView);
         dateDisplay.setVisibility(View.GONE);
+        reviewBookingButton.setEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
         addDateSelectionFragment();
@@ -44,10 +52,14 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
     }
 
     @Override
-    public void onDateChanged(int year, int month, int dayOfMonth) {
+    public void onDateSelected(int year, int month, int dayOfMonth) {
         dateDisplay.setText(DateUtils.formatDate(year, month, dayOfMonth));
         dateDisplay.setVisibility(View.VISIBLE);
         addTimeSlotSelectionFragment();
     }
 
+    @Override
+    public void onTimeSlotSelected(String timeSlot) {
+
+    }
 }

@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
-import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.search.SearchActivity;
 
 public class StudentProfileActivity extends AppCompatActivity {
 
