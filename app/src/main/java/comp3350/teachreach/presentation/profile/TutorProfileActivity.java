@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfile;
+import comp3350.teachreach.logic.profile.TutorProfileFetcher;
 import comp3350.teachreach.presentation.booking.BookingActivity;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
@@ -30,7 +30,7 @@ class TutorProfileActivity extends AppCompatActivity
         Button   btnBookSession = findViewById(R.id.btnBookSession);
 
         ITutorProfile tutorProfile
-                = new TutorProfile(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
+                = new TutorProfileFetcher(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
                 tutorProfile);
 

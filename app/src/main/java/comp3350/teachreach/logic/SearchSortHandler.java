@@ -6,20 +6,20 @@ import java.util.stream.Collectors;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
-import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class SearchSortHandler
 {
-    private final AccessTutor   accessTutor;
+    private final AccessTutors  accessTutors;
     private final AccessCourses accessCourses;
 
     public
     SearchSortHandler()
     {
-        accessTutor   = new AccessTutor();
+        accessTutors  = new AccessTutors();
         accessCourses = new AccessCourses();
     }
 
@@ -27,14 +27,14 @@ class SearchSortHandler
     SearchSortHandler(ITutorPersistence tutorDataAccess,
                       ICoursePersistence courseDataAccess)
     {
-        accessTutor   = new AccessTutor(tutorDataAccess);
+        accessTutors  = new AccessTutors(tutorDataAccess);
         accessCourses = new AccessCourses(courseDataAccess);
     }
 
     public
     List<ITutor> getListOfTutors()
     {
-        return accessTutor.getTutors();
+        return accessTutors.getTutors();
     }
 
     public
@@ -174,7 +174,7 @@ class SearchSortHandler
     public
     List<ITutor> searchTutorByCourse(String courseCode)
     {
-        return accessTutor
+        return accessTutors
                 .getTutors()
                 .stream()
                 .filter(tutor -> tutor.getCourses().contains(courseCode))

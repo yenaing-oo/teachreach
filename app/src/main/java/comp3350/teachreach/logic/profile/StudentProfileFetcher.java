@@ -3,7 +3,7 @@ package comp3350.teachreach.logic.profile;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessStudent;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
@@ -12,7 +12,7 @@ public
 class StudentProfileFetcher implements IUserProfile
 {
     private final IStudent       theStudent;
-    private final AccessStudent  accessStudent;
+    private final AccessStudents accessStudents;
     private final AccessAccounts accessAccounts;
 
     public
@@ -20,17 +20,17 @@ class StudentProfileFetcher implements IUserProfile
     {
 
         this.theStudent     = theStudent;
-        this.accessStudent  = new AccessStudent();
+        this.accessStudents = new AccessStudents();
         this.accessAccounts = new AccessAccounts();
     }
 
     public
     StudentProfileFetcher(int studentAccountID)
     {
-        this.accessStudent  = new AccessStudent();
+        this.accessStudents = new AccessStudents();
         this.accessAccounts = new AccessAccounts();
-        this.theStudent     = accessStudent.getStudentByAccountID(
-                studentAccountID)
+        this.theStudent     = accessStudents.getStudentByAccountID(
+                studentAccountID);
     }
 
     @Override
@@ -101,6 +101,6 @@ class StudentProfileFetcher implements IUserProfile
     public
     void updateUserProfile()
     {
-        this.accessStudent.updateStudent(theStudent);
+        this.accessStudents.updateStudent(theStudent);
     }
 }

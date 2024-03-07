@@ -9,19 +9,9 @@ class AccountCreatorException extends Exception
         super(message);
     }
 
-    public static
-    AccountCreatorException getException(boolean emptyEmail,
-                                         boolean emptyPassword,
-                                         boolean invalidEmail)
+    public
+    AccountCreatorException(String message, Throwable cause)
     {
-        if (emptyEmail) {
-            return new AccountCreatorException("Email cannot be empty");
-        } else if (emptyPassword) {
-            return new AccountCreatorException("Password cannot be empty");
-        } else if (invalidEmail) {
-            return new AccountCreatorException("Email provided is invalid");
-        } else {
-            return new AccountCreatorException("New Account wasn't created.");
-        }
+        super(message, cause);
     }
 }

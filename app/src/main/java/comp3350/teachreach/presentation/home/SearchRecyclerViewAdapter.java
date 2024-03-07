@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.profile.TutorProfile;
+import comp3350.teachreach.logic.profile.TutorProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
@@ -58,7 +58,7 @@ class SearchRecyclerViewAdapter
             int position)
     {
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
-                new TutorProfile(tutorList.get(position)));
+                new TutorProfileFetcher(tutorList.get(position)));
         holder.imageView.setImageResource(R.drawable.user_icon);
         holder.tvUserName.setText(tutorProfileFormatter.getName());
         holder.tvRating.setText(tutorProfileFormatter.getRating());

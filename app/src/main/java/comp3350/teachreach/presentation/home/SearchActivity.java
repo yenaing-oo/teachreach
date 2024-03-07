@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -34,7 +34,7 @@ class SearchActivity extends AppCompatActivity
 
     private SearchSortHandler         handler;
     private List<ITutor>              tutorList;
-    private ArrayList<String>         courseStringList;
+    private List<String>              courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView      autoCompleteTextView;
 
@@ -50,7 +50,7 @@ class SearchActivity extends AppCompatActivity
         Button sortButton = findViewById(R.id.sortButton);
 
         handler          = new SearchSortHandler();
-        tutorList        = Server.getTutorDataAccess().getTutors();
+        tutorList        = new AccessTutors().getTutors();
         courseStringList = new ArrayList<>();
 
         setUpCourseList();
@@ -60,7 +60,8 @@ class SearchActivity extends AppCompatActivity
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
 
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+        autoCompleteTextView.setOnItemClickListener((parent, view, position,
+                                                     id) -> {
             autoCompleteTextView.clearFocus();
             String selectedCourse = (String) parent.getItemAtPosition(position);
 
@@ -82,6 +83,10 @@ class SearchActivity extends AppCompatActivity
     void setUpCourseList()
     {
         List<ICourse> courses = handler.getListOfCourses();
+        //        courseStringList = courses
+        //                .stream()
+        //                .map(ICourse::getCourseCode)
+        //                .collect(Collectors.toList());
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
@@ -132,7 +137,7 @@ class SearchActivity extends AppCompatActivity
     void onTutorItemClick(int position)
     {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
+        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getTutorID());
         startActivity(intent);
     }
 
@@ -149,7 +154,8 @@ class SearchActivity extends AppCompatActivity
                                       (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm
-                            = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }

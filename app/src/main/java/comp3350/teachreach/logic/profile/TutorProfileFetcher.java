@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.interfaces.ITutorProfile;
 import comp3350.teachreach.logic.interfaces.IUserProfile;
 import comp3350.teachreach.objects.Course;
@@ -15,26 +15,26 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-class TutorProfile implements ITutorProfile
+class TutorProfileFetcher implements ITutorProfile
 {
-    private final AccessAccounts      accessAccounts;
-    private final AccessTutor         accessTutor;
-    private final List<ITutor>        tutors;
+    private final AccessAccounts accessAccounts;
+    private final AccessTutors   accessTutors;
+    private final List<ITutor>   tutors;
     private       ITutor              theTutor;
     private       AvailabilityManager availabilityManager;
 
     private
-    TutorProfile()
+    TutorProfileFetcher()
     {
         theTutor            = null;
         availabilityManager = null;
-        this.accessTutor    = new AccessTutor();
+        this.accessTutors   = new AccessTutors();
         this.accessAccounts = new AccessAccounts();
-        tutors              = accessTutor.getTutors();
+        tutors              = accessTutors.getTutors();
     }
 
     public
-    TutorProfile(ITutor theTutor)
+    TutorProfileFetcher(ITutor theTutor)
     {
         this();
         this.theTutor            = theTutor;
@@ -42,7 +42,7 @@ class TutorProfile implements ITutorProfile
     }
 
     public
-    TutorProfile(String tutorEmail) throws NoSuchElementException
+    TutorProfileFetcher(String tutorEmail) throws NoSuchElementException
     {
         this();
         this.theTutor            = tutors
@@ -294,6 +294,6 @@ class TutorProfile implements ITutorProfile
     public
     void updateUserProfile()
     {
-        accessTutor.updateTutor(theTutor);
+        accessTutors.updateTutor(theTutor);
     }
 }

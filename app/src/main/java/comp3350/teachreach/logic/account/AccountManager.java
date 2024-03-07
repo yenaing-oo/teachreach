@@ -1,8 +1,8 @@
 package comp3350.teachreach.logic.account;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessStudent;
-import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -10,18 +10,18 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 public
 class AccountManager implements IAccountManager
 {
-    private final AccessAccounts     accessAccounts;
-    private final AccessStudent      accessStudent;
-    private final AccessTutor        accessTutor;
+    private final AccessAccounts accessAccounts;
+    private final AccessStudents     accessStudents;
+    private final AccessTutors       accessTutors;
     private final ICredentialHandler credentialHandler;
     private final IAccount           theAccount;
 
     public
     AccountManager(IAccount theAccount)
     {
-        accessAccounts         = new AccessAccounts();
-        accessStudent          = new AccessStudent();
-        accessTutor            = new AccessTutor();
+        accessAccounts = new AccessAccounts();
+        accessStudents         = new AccessStudents();
+        accessTutors           = new AccessTutors();
         this.credentialHandler = new CredentialHandler();
         this.theAccount        = theAccount;
     }
@@ -32,11 +32,11 @@ class AccountManager implements IAccountManager
     {
         this.theAccount.getStudentProfile().ifPresent(student -> {
             student.setName(newName);
-            this.accessStudent.updateStudent(student);
+            this.accessStudents.updateStudent(student);
         });
         this.theAccount.getTutorProfile().ifPresent(tutor -> {
             tutor.setName(newName);
-            this.accessTutor.updateTutor(tutor);
+            this.accessTutors.updateTutor(tutor);
         });
         return this;
     }
@@ -47,11 +47,11 @@ class AccountManager implements IAccountManager
     {
         this.theAccount.getStudentProfile().ifPresent(student -> {
             student.setPronouns(pronouns);
-            this.accessStudent.updateStudent(student);
+            this.accessStudents.updateStudent(student);
         });
         this.theAccount.getTutorProfile().ifPresent(tutor -> {
             tutor.setPronouns(pronouns);
-            this.accessTutor.updateTutor(tutor);
+            this.accessTutors.updateTutor(tutor);
         });
         return this;
     }

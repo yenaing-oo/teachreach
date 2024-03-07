@@ -1,52 +1,35 @@
 package comp3350.teachreach.logic.account;
 
-import static comp3350.teachreach.logic.account.AccountCreatorException.getException;
-
-import java.util.List;
-
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessStudent;
-import comp3350.teachreach.logic.DAOs.AccessTutor;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.logic.interfaces.ICredentialHandler;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class AccountCreator implements IAccountCreator
 {
 
     private final ICredentialHandler handler;
-    private final IStudent           student        = null;
-    private final ITutor             tutor          = null;
     private       AccessAccounts     accessAccounts = null;
-    private       List<IAccount>     accounts       = null;
-    private       IAccount           account        = null;
-    private       AccessStudent      accessStudent  = null;
-    private       List<IStudent>     students       = null;
-    private       AccessTutor        accessTutor    = null;
-    private       List<ITutor>       tutors         = null;
+    private       AccessStudents     accessStudents = null;
+    private       AccessTutors       accessTutors   = null;
+    private       IAccount           newAccount     = null;
 
     public
     AccountCreator()
     {
         accessAccounts = new AccessAccounts();
-        accounts       = accessAccounts.getAccounts();
-
-        accessStudent = new AccessStudent();
-        students      = accessStudent.getStudents();
-
-        accessTutor = new AccessTutor();
-        tutors      = accessTutor.getTutors();
-
-        handler = new CredentialHandler();
+        accessStudents = new AccessStudents();
+        accessTutors   = new AccessTutors();
+        handler        = new CredentialHandler();
     }
 
     public
@@ -55,60 +38,67 @@ class AccountCreator implements IAccountCreator
                    ITutorPersistence tutors)
     {
         this.accessAccounts = new AccessAccounts(accounts);
-        this.accounts       = accessAccounts.getAccounts();
-
-        this.accessStudent = new AccessStudent(students);
-        this.students      = accessStudent.getStudents();
-
-        this.accessTutor = new AccessTutor(tutors);
-        this.tutors      = accessTutor.getTutors();
-
-        this.handler = new CredentialHandler(accounts);
+        this.accessStudents = new AccessStudents(students);
+        this.accessTutors   = new AccessTutors(tutors);
+        this.handler        = new CredentialHandler(accounts);
     }
 
     @Override
     public
-    AccountCreator createAccount(String email, String password)
-            throws AccountCreatorException
+    AccountCreator createAccount(String email,
+                                 String password,
+                                 String name,
+                                 String pronouns,
+                                 String major) throws AccountCreatorException
     {
-
         boolean emptyEmail    = !InputValidator.isNotEmpty(email);
         boolean emptyPassword = !InputValidator.isNotEmpty(password);
+        boolean emptyName     = !InputValidator.isNotEmpty(name);
         boolean invalidEmail  = !InputValidator.isValidEmail(email);
-
-        boolean inputIsValid = !(emptyEmail || emptyPassword || invalidEmail);
-
-        if (accounts
-                .stream()
-                .anyMatch(a -> a.getAccountEmail().equals(email))) {
-            throw new AccountCreatorException("Account already exist!");
+        boolean inputIsValid = !(emptyEmail || emptyPassword || invalidEmail ||
+                                 emptyName);
+        if (!inputIsValid) {
+            throw new AccountCreatorException(emptyEmail || invalidEmail ?
+                                              "Please check if your email " +
+                                              "address is valid!" :
+                                              emptyPassword ?
+                                              "Password cannot be empty" :
+                                              emptyName ?
+                                              "Name cannot be empty" :
+                                              "Invalid input!");
         }
-
-        if (inputIsValid) {
-            account = new Account(email, handler.processPassword(password));
-            this.accessAccounts.insertAccount(account);
-        } else {
-            throw getException(emptyEmail, emptyPassword, invalidEmail);
+        try {
+            newAccount = new Account(email,
+                                     handler.processPassword(password),
+                                     name,
+                                     pronouns,
+                                     major);
+            newAccount = accessAccounts.insertAccount(newAccount);
+            return this;
+        } catch (final Exception e) {
+            throw new AccountCreatorException(
+                    "Account with associated email might already exist!",
+                    e);
         }
-        return this;
     }
 
     @Override
     public
-    AccountCreator setStudentProfile(String username,
-                                     String major,
-                                     String pronoun) throws RuntimeException
+    AccountCreator newStudentProfile() throws AccountCreatorException
     {
-        if (this.account == null) {
-            throw new RuntimeException("Failed to set Student profile:-" +
-                                       "(Account not initialized)");
+        if (this.newAccount == null) {
+            throw new AccountCreatorException(
+                    "Failed to create a new student profile:-" +
+                    "(Account not initialized)");
         }
-
-        Student newStudent = new Student(account.getAccountEmail(),
-                                         username,
-                                         major,
-                                         pronoun);
-        accessStudent.insertStudent(newStudent);
+        try {
+            IStudent newStudent = new Student(newAccount.getAccountID());
+            newStudent = accessStudents.insertStudent(newStudent);
+            newAccount.setStudentID(newStudent.getStudentID());
+        } catch (final Exception e) {
+            throw new AccountCreatorException("Failed to make new student :(",
+                                              e);
+        }
 
         this.account.setStudentProfile(newStudent);
         return this;
@@ -129,7 +119,7 @@ class AccountCreator implements IAccountCreator
                                    major,
                                    pronoun,
                                    account.getAccountID());
-        accessTutor.insertTutor(newTutor);
+        accessTutors.insertTutor(newTutor);
 
         this.account.setTutorProfile(newTutor);
         return this;
