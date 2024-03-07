@@ -1,17 +1,16 @@
 package comp3350.teachreach.logic;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.profile.AvailabilityManager;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.objects.TimeSlice;
 
 public class BookingHandler {
     private final ITutor theTutor;
@@ -25,31 +24,6 @@ public class BookingHandler {
         sessionsDataAccess = Server.getSessionDataAccess();
         tutorsDataAccess = Server.getTutorDataAccess();
         studentsDataAccess = Server.getStudentDataAccess();
-        availabilityManager = new AvailabilityManager(theTutor);
-    }
-
-    public BookingHandler(
-            ITutor theTutor,
-            ITutorPersistence tutors,
-            IStudentPersistence students,
-            ISessionPersistence sessions) {
-        this.theTutor = theTutor;
-        sessionsDataAccess = sessions;
-        tutorsDataAccess = tutors;
-        studentsDataAccess = students;
-        availabilityManager = new AvailabilityManager(theTutor);
-    }
-
-    public BookingHandler(
-            String theTutorsEmail,
-            ITutorPersistence tutors,
-            IStudentPersistence students,
-            ISessionPersistence sessions) {
-        sessionsDataAccess = sessions;
-        tutorsDataAccess = tutors;
-        studentsDataAccess = students;
-        this.theTutor = tutorsDataAccess.getTutorByEmail(theTutorsEmail)
-                .orElseThrow(NoSuchElementException::new);
         availabilityManager = new AvailabilityManager(theTutor);
     }
 

@@ -29,8 +29,8 @@ public class TutorProfileActivity extends AppCompatActivity {
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(tutorProfile);
 
         tvCourses.setText(tutorProfileFormatter.getCourses());
-        tvPrice.setText(String.valueOf(tutorProfileFormatter.getHourlyRate()));
-        tvRating.setText(String.valueOf(tutorProfileFormatter.getRating()));
+        tvPrice.setText(tutorProfileFormatter.getHourlyRate());
+        tvRating.setText(tutorProfileFormatter.getRating());
 
         btnBookSession.setOnClickListener(v -> {
             Intent intent = new Intent(TutorProfileActivity.this, BookingActivity.class);
