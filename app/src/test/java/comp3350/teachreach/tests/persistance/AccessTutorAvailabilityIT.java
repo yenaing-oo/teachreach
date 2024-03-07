@@ -1,9 +1,11 @@
 package comp3350.teachreach.tests.persistance;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import comp3350.teachreach.data.hsqldb.TutorAvailabilityHSQLDB;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
@@ -26,4 +28,15 @@ public class AccessTutorAvailabilityIT {
                         ""));
         this.accessTutorAvailability = new AccessTutorAvailability(persistence);
     }
+
+    @Test
+    public void storeTutorTimeSlice(int tutor_id, Timestamp start_time, Timestamp end_Time){
+       // accessTutorAvailability.storeTutorTimeSlice();
+    }
+    @Test
+    public void  getTutorTimeSliceByTutorID(int tutor_id){  //need to add some on database
+       // List<TimeSlice>;
+        // accessTutorAvailability.getTutorTimeSliceByTutorID();
+    }
+
 }
