@@ -35,11 +35,11 @@ public class TutorLocationHSQLDB implements ITutorLocation {
     }
 
     @Override
-    public List<String> getTutorLocationByTID(int tutor_id){
+    public List<String> getTutorLocationByTutorID(int tutorID){
         final List<String> tutorLocation = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_locations WHERE tutor_id = ?");
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final String theLocation = fromResultSet(rs);
@@ -54,13 +54,13 @@ public class TutorLocationHSQLDB implements ITutorLocation {
     }
 
     @Override
-    public boolean storeTutorLocation(int tutor_id, String location){
+    public boolean storeTutorLocation(int tutorID, String location){
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutor_locations VALUES(?, ?)"
             );
 
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             pst.setString(2, location);
 
             final boolean success = pst.executeUpdate() == 1;

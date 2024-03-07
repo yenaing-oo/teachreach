@@ -3,7 +3,7 @@ package comp3350.teachreach.data.interfaces;
 import java.util.List;
 
 public interface ITutorLocation {
-    List<String> getTutorLocationByTID(int tutor_id);
+    List<String> getTutorLocationByTutorID(int tutorID);
 
-    boolean storeTutorLocation(int tutor_id, String location);
+    boolean storeTutorLocation(int tutorID, String location);
 }

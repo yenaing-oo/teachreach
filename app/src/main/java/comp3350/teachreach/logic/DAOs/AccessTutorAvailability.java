@@ -36,7 +36,7 @@ public class AccessTutorAvailability {
             return TutorAvailabilityPersistence.storeTutorTimeSlice(tutorID,startTime,endTime);
 
     } catch (final Exception e) {
-        throw new DataAccessException("Failed to store session!", e);
+        throw new DataAccessException("Failed to store tutor time slice!", e);
     }
     }
     //boolean storeTutorTimeSlice(int tutor_id, Timestamp start_time, Timestamp end_Time);
