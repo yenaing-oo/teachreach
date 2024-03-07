@@ -4,10 +4,12 @@ import org.junit.Before;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
+import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
@@ -28,5 +30,17 @@ class AccessSessionsIT
                                                                                   ""));
         this.accessSessions = new AccessSessions(persistence);
     }
+//    public
+//    boolean deleteSession(ISession session)
 
+    // ISession storeSession(int studentID,
+    //                          int tutorID,
+    //                          TimeSlice sessionTime,
+    //                          String location)
+
+    // ISession updateSession(ISession session)
+    //  List<ISession> getSessionsByTutorID(int tutorID)
+    //List<ISession> getPendingSessionsByTutorID(int tutorID)
+    // List<ISession> getPendingSessionsByStudentID(int studentID)
+    //    List<ISession> getSessionsByStudentID(int studentID)
 }

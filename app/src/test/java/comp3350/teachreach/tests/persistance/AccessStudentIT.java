@@ -28,4 +28,10 @@ class AccessStudentIT
                         ""));
         this.accessStudents = new AccessStudents(persistence);
     }
+    //
+    //
+    //
+    //Map<Integer, IStudent> getStudents()
+    //IStudent getStudentByAccountID(int studentAccountID)
+    //IStudent insertStudent(IStudent newStudent)
 }

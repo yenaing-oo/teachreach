@@ -2,18 +2,19 @@ package comp3350.teachreach.tests.persistance;
 
 import org.junit.Before;
 
+import java.io.File;
 import java.io.IOException;
 
 import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
 class AccessTutorIT
 {
-    private AccessStudents accessTutors;
+    private AccessTutors accessTutors;
+    private File tempDB;
     @Before
     public
     void setUp() throws IOException
@@ -26,4 +27,11 @@ class AccessTutorIT
                         ""));
         this.accessTutors = new AccessTutors(persistence);
     }
+    //
+    //
+    //
+    // ITutor getTutorByAccountID(int accountID)
+    //ITutor getTutorByTutorID(int tutorID)
+    // ITutor insertTutor(ITutor newTutor)
+    // ITutor updateTutor(ITutor existingTutor)
 }
