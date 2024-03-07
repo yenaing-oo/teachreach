@@ -89,7 +89,7 @@ class AccessSessions
                     .collect(Collectors.toList());
         } catch (final Exception e) {
             throw new DataAccessException(
-                    "Failed to get sessions bt tutor's " + "id", e);
+                    "Failed to get sessions by tutor's " + "id", e);
         }
     }
 

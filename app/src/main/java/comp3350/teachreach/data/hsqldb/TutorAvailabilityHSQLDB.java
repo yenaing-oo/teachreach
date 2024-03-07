@@ -39,7 +39,7 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailability {
         return new TimeSlice(startDateTime,endDateTime);
     }
 
-    public List<TimeSlice> getTutorTimeSliceByTID(int tutor_id){
+    public List<TimeSlice> getTutorTimeSliceByTutorID(int tutor_id){
         final List<TimeSlice> tutorTimeSlice = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM TUTOR_AVAILABILITY WHERE tutor_id = ?");
