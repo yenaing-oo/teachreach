@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
-import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.presentation.home.SearchActivity;
@@ -54,12 +53,9 @@ class StudentSignUpActivity extends AppCompatActivity
 
         try {
             newStudent = accountCreator
-                    .createAccount(email, password)
-                    .setStudentProfile(username, major, pronoun)
-                    .buildAccount()
-                    .getStudentProfile()
-                    .orElseThrow(() -> new AccountCreatorException(
-                            "Failed while creating a new Account"));
+                    .createAccount(email, password, username, pronoun, major)
+                    .newStudentProfile()
+                    .getNewStudent();
 
             Toast
                     .makeText(StudentSignUpActivity.this,

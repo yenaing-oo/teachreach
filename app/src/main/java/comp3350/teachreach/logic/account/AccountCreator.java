@@ -120,6 +120,7 @@ class AccountCreator implements IAccountCreator
             newAccount.setTutorID(newTutor.getTutorID());
             return this;
         } catch (final Exception e) {
+            e.printStackTrace();
             throw new AccountCreatorException("Failed to make new tutor :(", e);
         }
     }

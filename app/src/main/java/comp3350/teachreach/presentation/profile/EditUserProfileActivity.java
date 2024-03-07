@@ -9,7 +9,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
+import comp3350.teachreach.logic.account.AccountManager;
+import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.StudentProfileHandler;
 
@@ -19,9 +22,10 @@ class EditUserProfileActivity extends AppCompatActivity
 
     private EditText etName, etPronoun, etMajor;
     private Button              btnSaveProfile;
-    private IUserProfileHandler userProfile;
-
-    private IStudentPersistence studentPersistence;
+    private IAccountManager     accountManager;
+    private IUserProfileHandler userProfileHandler;
+    private AccessAccounts      accessAccounts;
+    private AccessStudents      accessStudents;
 
     @Override
     protected
@@ -49,13 +53,17 @@ class EditUserProfileActivity extends AppCompatActivity
     void loadUserProfile()
     {
         // Retrieve the email from intent or another source
-        String studentEmail = getIntent().getStringExtra("USER_EMAIL");
+        int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
 
         try {
-            userProfile = new StudentProfileHandler(studentEmail);
-            etName.setText(userProfile.getUserName());
-            etPronoun.setText(userProfile.getUserPronouns());
-            etMajor.setText(userProfile.getUserMajor());
+            userProfileHandler
+                    =
+                    new StudentProfileHandler(accessStudents.getStudentByStudentID(
+                    studentID));
+
+            etName.setText(userProfileHandler.getUserName());
+            etPronoun.setText(userProfileHandler.getUserPronouns());
+            etMajor.setText(userProfileHandler.getUserMajor());
         } catch (Exception e) { // Catching a broader exception for simplicity
             Toast
                     .makeText(this,
@@ -69,15 +77,22 @@ class EditUserProfileActivity extends AppCompatActivity
     private
     void saveUserProfile()
     {
-        if (userProfile != null) {
+        int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
+        try {
+            accountManager = new AccountManager(accessAccounts
+                                                        .getAccounts()
+                                                        .get(accessStudents
+                                                                     .getStudentByStudentID(
+                                                                             studentID)
+                                                                     .getStudentAccountID()));
             String name    = etName.getText().toString();
             String pronoun = etPronoun.getText().toString();
             String major   = etMajor.getText().toString();
 
-            userProfile.setUserName(name);
-            userProfile.setUserPronouns(pronoun);
-            userProfile.setUserMajor(major);
-            userProfile.updateUserProfile();
+            accountManager
+                    .updateAccountUsername(name)
+                    .updateAccountUserPronouns(pronoun)
+                    .updateAccountUserMajor(major);
 
             Intent data = new Intent();
             data.putExtra("UPDATED_NAME", name);
@@ -91,7 +106,7 @@ class EditUserProfileActivity extends AppCompatActivity
                               Toast.LENGTH_SHORT)
                     .show();
             finish(); // Close activity and return
-        } else {
+        } catch (final Exception e) {
             Toast
                     .makeText(this,
                               "Error updating profile. Please try again.",

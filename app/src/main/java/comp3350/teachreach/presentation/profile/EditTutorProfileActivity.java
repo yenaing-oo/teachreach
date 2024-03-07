@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
@@ -33,8 +34,9 @@ class EditTutorProfileActivity extends AppCompatActivity
         etPreferredLocation = findViewById(R.id.etPreferredLocation);
         btnSaveChanges      = findViewById(R.id.btnSaveChanges);
 
-        String               tutorEmail   = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutorEmail);
+        int                  tutorID      = getIntent().getIntExtra("TUTOR_ID",
+                                                                    -1);
+        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutorID);
 
         initializeFields(tutorProfile);
 
@@ -45,7 +47,9 @@ class EditTutorProfileActivity extends AppCompatActivity
     private
     void initializeFields(ITutorProfileHandler tutorProfile)
     {
-        etPrice.setText(String.format("%.2f", tutorProfile.getHourlyRate()));
+        etPrice.setText(String.format(Locale.US,
+                                      "%.2f",
+                                      tutorProfile.getHourlyRate()));
         String preferredLocations = String.join(", ",
                                                 tutorProfile.getPreferredLocations());
         etPreferredLocation.setText(preferredLocations);
@@ -66,7 +70,7 @@ class EditTutorProfileActivity extends AppCompatActivity
                     .collect(Collectors.toList());
             tutorProfile.addPreferredLocations(locations);
 
-            tutorProfile.updateUserProfile();
+            tutorProfile.updateTutorProfile();
 
             Toast
                     .makeText(this,

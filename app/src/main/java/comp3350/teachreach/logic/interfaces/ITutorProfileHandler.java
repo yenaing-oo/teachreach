@@ -8,7 +8,7 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-interface ITutorProfileHandler
+interface ITutorProfileHandler extends IUserProfileHandler
 {
     double getHourlyRate();
 

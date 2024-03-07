@@ -41,9 +41,10 @@ class TutorSignUpActivity extends AppCompatActivity
         String pronoun  = etPronouns.getText().toString();
 
         try {
-            accountCreator = accountCreator.createAccount(email, password);
-
-            accountCreator.setTutorProfile(username, major, pronoun);
+            accountCreator
+                    .createAccount(email, password, username, major, pronoun)
+                    .newTutorProfile()
+                    .getNewTutor();
 
             Toast
                     .makeText(TutorSignUpActivity.this,

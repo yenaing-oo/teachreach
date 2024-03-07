@@ -30,7 +30,9 @@ class TutorProfileActivity extends AppCompatActivity
         Button   btnBookSession = findViewById(R.id.btnBookSession);
 
         ITutorProfileHandler tutorProfile
-                = new TutorProfileHandler(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
+                = new TutorProfileHandler(getIntent().getIntExtra(
+                "TUTOR_EMAIL_KEY",
+                -1));
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
                 tutorProfile);
 

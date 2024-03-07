@@ -9,18 +9,18 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 public
 class TutorProfileFormatter
 {
-    private final ITutorProfileHandler tutorProfile;
+    private final ITutorProfileHandler tutorProfileHandler;
 
     public
     TutorProfileFormatter(ITutorProfileHandler tutorProfile)
     {
-        this.tutorProfile = tutorProfile;
+        this.tutorProfileHandler = tutorProfile;
     }
 
     public
     String getName()
     {
-        return tutorProfile.getUserName();
+        return tutorProfileHandler.getUserName();
     }
 
     public
@@ -28,8 +28,9 @@ class TutorProfileFormatter
     {
         String rating = String.format(Locale.US,
                                       "%.1f",
-                                      tutorProfile.getAvgReview());
-        String numReviews = Integer.toString(tutorProfile.getReviewCount());
+                                      tutorProfileHandler.getAvgReview());
+        String numReviews
+                = Integer.toString(tutorProfileHandler.getReviewCount());
         return String.format("Rating: %s⭐ (%s)", rating, numReviews);
     }
 
@@ -38,14 +39,14 @@ class TutorProfileFormatter
     {
         String hourlyRate = String.format(Locale.US,
                                           "%.2f",
-                                          tutorProfile.getHourlyRate());
+                                          tutorProfileHandler.getHourlyRate());
         return "$" + hourlyRate + "/hr";
     }
 
     public
     String getCourses()
     {
-        List<ICourse> courses    = tutorProfile.getCourses();
+        List<ICourse> courses    = tutorProfileHandler.getCourses();
         StringBuilder coursesStr = new StringBuilder();
         for (ICourse course : courses) {
             coursesStr.append(course.toString()).append("\n");

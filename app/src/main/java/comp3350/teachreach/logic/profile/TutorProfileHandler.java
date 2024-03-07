@@ -16,34 +16,34 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
 {
-    private final AccessAccounts      accessAccounts;
-    private final AccessTutors        accessTutors;
-    private       ITutor              theTutor;
-    private       IAccount            parentAccount;
-    private       AvailabilityManager availabilityManager;
+    private final AccessAccounts accessAccounts;
+    private final AccessTutors   accessTutors;
+    private       ITutor         theTutor;
+    private       IAccount       parentAccount;
+    //    private       AvailabilityManager availabilityManager;
 
     public
     TutorProfileHandler(ITutor theTutor)
     {
-        accessAccounts           = new AccessAccounts();
-        accessTutors             = new AccessTutors();
-        this.theTutor            = theTutor;
-        this.parentAccount       = accessAccounts
+        accessAccounts     = new AccessAccounts();
+        accessTutors       = new AccessTutors();
+        this.theTutor      = theTutor;
+        this.parentAccount = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        this.availabilityManager = new AvailabilityManager(theTutor);
+        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public
     TutorProfileHandler(int tutorID)
     {
-        accessAccounts           = new AccessAccounts();
-        accessTutors             = new AccessTutors();
-        this.theTutor            = accessTutors.getTutorByTutorID(tutorID);
-        this.parentAccount       = accessAccounts
+        accessAccounts     = new AccessAccounts();
+        accessTutors       = new AccessTutors();
+        this.theTutor      = accessTutors.getTutorByTutorID(tutorID);
+        this.parentAccount = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        this.availabilityManager = new AvailabilityManager(theTutor);
+        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     @Override
@@ -138,7 +138,8 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     List<List<TimeSlice>> getPreferredAvailability()
     {
-        return this.availabilityManager.getWeeklyAvailability();
+        return null;
+        //        return this.availabilityManager.getWeeklyAvailability();
     }
 
     @Override
@@ -154,17 +155,19 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
                                                 int endHour,
                                                 int endMinute)
     {
+        return new ArrayList<>();
 
-        return this.availabilityManager.getAvailableTimeSlotOfRange(startYear,
-                                                                    startMonth,
-                                                                    startDay,
-                                                                    startHour,
-                                                                    startMinute,
-                                                                    endYear,
-                                                                    endMonth,
-                                                                    endDay,
-                                                                    endHour,
-                                                                    endMinute);
+        //        return this.availabilityManager.getAvailableTimeSlotOfRange
+        //        (startYear,
+        //                                                                    startMonth,
+        //                                                                    startDay,
+        //                                                                    startHour,
+        //                                                                    startMinute,
+        //                                                                    endYear,
+        //                                                                    endMonth,
+        //                                                                    endDay,
+        //                                                                    endHour,
+        //                                                                    endMinute);
     }
 
     @Override
@@ -207,7 +210,7 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     ITutorProfileHandler resetPreferredAvailability()
     {
-        this.availabilityManager.clearWeeklyAvailability();
+        //        this.availabilityManager.clearWeeklyAvailability();
         return this;
     }
 
@@ -225,17 +228,17 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
                                                   int endMinute,
                                                   List<DayOfWeek> daysOfWeek)
     {
-        this.availabilityManager.addWeeklyAvailability(startYear,
-                                                       startMonth,
-                                                       startDay,
-                                                       startHour,
-                                                       startMinute,
-                                                       endYear,
-                                                       endMonth,
-                                                       endDay,
-                                                       endHour,
-                                                       endMinute,
-                                                       daysOfWeek);
+        //        this.availabilityManager.addWeeklyAvailability(startYear,
+        //                                                       startMonth,
+        //                                                       startDay,
+        //                                                       startHour,
+        //                                                       startMinute,
+        //                                                       endYear,
+        //                                                       endMonth,
+        //                                                       endDay,
+        //                                                       endHour,
+        //                                                       endMinute,
+        //                                                       daysOfWeek);
         return this;
     }
 

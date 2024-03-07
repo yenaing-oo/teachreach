@@ -19,7 +19,7 @@ public class AccessTutoredCourses
     }
 
 
-    public List<ICourse> getTutorCourseByTID(int tutorID){
+    public List<ICourse> getTutoredCoursesByTutorID(int tutorID){
         try {
             return TutoredCoursesPersistence.getTutorCourseByTutorID(tutorID);
         }

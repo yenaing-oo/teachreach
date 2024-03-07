@@ -112,7 +112,7 @@ class AccountHSQLDB implements IAccountPersistence
     }
 
     @Override
-    public
+    public synchronized
     Map<Integer, IAccount> getAccounts()
     {
         try (final Connection c = connection()) {

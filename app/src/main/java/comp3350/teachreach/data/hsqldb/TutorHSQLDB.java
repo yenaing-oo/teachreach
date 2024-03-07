@@ -54,7 +54,8 @@ class TutorHSQLDB implements ITutorPersistence
     {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO tutors VALUES(?, ?, ?, ?)",
+                    "INSERT INTO tutors (account_id, hourly_rate, review_sum," +
+                    " review_count) VALUES(?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
 
             pst.setInt(1, newTutor.getAccountID());
@@ -64,8 +65,9 @@ class TutorHSQLDB implements ITutorPersistence
             pst.executeUpdate();
             final ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
+                newTutor = newTutor.setTutorID(rs.getInt(1));
                 rs.close();
-                return newTutor.setTutorID(rs.getInt(1));
+                return newTutor;
             } else {
                 rs.close();
                 throw new PersistenceException("Tutor mightn't be updated!");
