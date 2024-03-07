@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.TutorHomeActivity;
 
 public class TutorSignUpActivity extends AppCompatActivity {
 
@@ -78,7 +78,7 @@ public class TutorSignUpActivity extends AppCompatActivity {
             );
 
             Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
+            Intent intent = new Intent(TutorSignUpActivity.this, TutorHomeActivity.class);
             intent.putExtra("TUTOR_EMAIL_KEY", email);
 
             startActivity(intent);
