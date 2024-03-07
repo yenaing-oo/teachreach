@@ -9,7 +9,7 @@ interface IStudentPersistence
 {
     IStudent storeStudent(IStudent newStudent);
 
-    IStudent storeStudent(int accountID) throws RuntimeException;
+    IStudent storeStudent(int accountID);
 
     Map<Integer, IStudent> getStudents();
 }

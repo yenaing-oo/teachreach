@@ -1,5 +1,6 @@
 package comp3350.teachreach.data.stubs;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -13,6 +14,14 @@ class SessionStub implements ISessionPersistence
 {
     private static Map<Integer, ISession> sessions;
     private static int                    sessionCount = 1;
+
+    public
+    SessionStub()
+    {
+        if (sessions == null) {
+            SessionStub.sessions = new HashMap<>();
+        }
+    }
 
     /**
      * @param studentID   the student's id

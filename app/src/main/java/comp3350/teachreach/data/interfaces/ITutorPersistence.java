@@ -7,9 +7,9 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 interface ITutorPersistence
 {
-    ITutor storeTutor(ITutor newTutor) throws RuntimeException;
+    ITutor storeTutor(ITutor newTutor);
 
-    ITutor updateTutor(ITutor newTutor) throws RuntimeException;
+    ITutor updateTutor(ITutor newTutor);
 
     Map<Integer, ITutor> getTutors();
 }
