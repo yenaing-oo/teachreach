@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.data.interfaces.ITutorLocation;
+import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 
-public class TutorLocationHSQLDB implements ITutorLocation {
+public class TutorLocationHSQLDB implements ITutorLocationPersistence {
     private final String dbPath;
 
     public

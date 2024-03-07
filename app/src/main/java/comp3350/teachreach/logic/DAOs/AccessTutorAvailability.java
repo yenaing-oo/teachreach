@@ -4,17 +4,17 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.interfaces.ITutorAvailability;
+import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.objects.TimeSlice;
 
 public class AccessTutorAvailability {
-    private static ITutorAvailability TutorAvailabilityPersistence;
+    private static ITutorAvailabilityPersistence TutorAvailabilityPersistence;
     public
     AccessTutorAvailability()
     {
         TutorAvailabilityPersistence = Server.getTutorAvailabilityAccess();
     }
-    AccessTutorAvailability(ITutorAvailability tutorAvailabilityAccess)
+    public AccessTutorAvailability(ITutorAvailabilityPersistence tutorAvailabilityAccess)
     {
         AccessTutorAvailability.TutorAvailabilityPersistence = tutorAvailabilityAccess;
     }

@@ -7,15 +7,15 @@ import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorAvailabilityHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorLocationHSQLDB;
-import comp3350.teachreach.data.hsqldb.TutoredCourseHSQLDB;
+import comp3350.teachreach.data.hsqldb.TutoredCoursesHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.data.interfaces.ITutorAvailability;
-import comp3350.teachreach.data.interfaces.ITutorLocation;
+import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
+import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.data.interfaces.ITutoredCourse;
+import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 
 public
 class Server
@@ -25,9 +25,9 @@ class Server
     private static ITutorPersistence   tutorDataAccess;
     private static ICoursePersistence  courseDataAccess;
     private static ISessionPersistence sessionDataAccess;
-    private static ITutorAvailability  tutorAvailabilityAccess;
-    private static ITutoredCourse      tutoredCourseAccess;
-    private static ITutorLocation      tutorLocationAccess;
+    private static ITutorAvailabilityPersistence tutorAvailabilityAccess;
+    private static ITutoredCoursesPersistence tutoredCourseAccess;
+    private static ITutorLocationPersistence tutorLocationAccess;
 
     public static synchronized
     IAccountPersistence getAccountDataAccess()
@@ -73,24 +73,21 @@ class Server
         }
         return sessionDataAccess;
     }
-    public static synchronized
-    ITutoredCourse getTutorCourseAccess()
+    public static synchronized ITutoredCoursesPersistence getTutorCourseAccess()
     {
         if (tutoredCourseAccess == null) {
-            tutoredCourseAccess = new TutoredCourseHSQLDB(TRData.getDBPathName());
+            tutoredCourseAccess = new TutoredCoursesHSQLDB(TRData.getDBPathName());
         }
         return tutoredCourseAccess;
     }
-    public static synchronized
-    ITutorLocation getTutorLocationAccess()
+    public static synchronized ITutorLocationPersistence getTutorLocationAccess()
     {
         if (tutorLocationAccess == null) {
             tutorLocationAccess = new TutorLocationHSQLDB(TRData.getDBPathName());
         }
         return tutorLocationAccess;
     }
-    public static synchronized
-    ITutorAvailability getTutorAvailabilityAccess()
+    public static synchronized ITutorAvailabilityPersistence getTutorAvailabilityAccess()
     {
         if (tutorAvailabilityAccess== null) {
             tutorAvailabilityAccess = new TutorAvailabilityHSQLDB(TRData.getDBPathName());

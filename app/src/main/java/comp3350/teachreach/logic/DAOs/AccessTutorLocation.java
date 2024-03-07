@@ -3,16 +3,16 @@ package comp3350.teachreach.logic.DAOs;
 import java.util.List;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.interfaces.ITutorLocation;
+import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 
 public class AccessTutorLocation {
-    private static ITutorLocation TutorLocationPersistence;
+    private static ITutorLocationPersistence TutorLocationPersistence;
 
     public AccessTutorLocation(){
         TutorLocationPersistence = Server.getTutorLocationAccess();
     }
 
-    public AccessTutorLocation(ITutorLocation tutorLocationAccess){
+    public AccessTutorLocation(ITutorLocationPersistence tutorLocationAccess){
         AccessTutorLocation.TutorLocationPersistence = tutorLocationAccess;
     }
 

@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.data.interfaces.ITutoredCourse;
+import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
-public class TutoredCourseHSQLDB implements ITutoredCourse {
+public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
     private final String dbPath;
 
-    public TutoredCourseHSQLDB(final String dbPath)
+    public TutoredCoursesHSQLDB(final String dbPath)
     {
         this.dbPath = dbPath;
     }
