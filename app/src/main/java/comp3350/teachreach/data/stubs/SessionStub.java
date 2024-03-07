@@ -2,6 +2,7 @@ package comp3350.teachreach.data.stubs;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
@@ -58,6 +59,45 @@ class SessionStub implements ISessionPersistence
                                                  otherSession.getSessionID());
     }
 
+    /**
+     * @param studentID
+     * @param tutorID
+     * @param sessionTime
+     * @param location
+     * @return
+     */
+    @Override
+    public
+    ISession storeSession(int studentID,
+                          int tutorID,
+                          TimeSlice sessionTime,
+                          String location)
+    {
+        return null;
+    }
+
+    /**
+     * @param newSession
+     * @return
+     */
+    @Override
+    public
+    ISession storeSession(ISession newSession)
+    {
+        return null;
+    }
+
+    /**
+     * @param sessionID
+     * @return
+     */
+    @Override
+    public
+    boolean deleteSession(int sessionID)
+    {
+        return false;
+    }
+
     @Override
     public
     boolean updateSession(ISession session)
@@ -79,6 +119,16 @@ class SessionStub implements ISessionPersistence
             throw new NoSuchElementException();
         }
         return result;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public
+    Map<Integer, ISession> getSessions()
+    {
+        return null;
     }
 
     @Override

@@ -1,28 +1,37 @@
 package comp3350.teachreach.data.stubs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public
 class AccountStub implements IAccountPersistence
 {
 
-    ArrayList<IAccount> accounts;
+    private static Map<Integer, IAccount> accounts  = null;
+    private static int                    currentID = 1;
 
     public
     AccountStub()
     {
-        accounts = new ArrayList<>();
+        if (accounts == null) {
+            AccountStub.accounts = new HashMap<>();
+        }
 
-        //        this.storeTutor(new Tutor("Jackson Pankratz", "He/Him",
-        //                "Computer Science", "pankratz25@myumanitoba.ca",
-        //                "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI
-        //                .RdOKAHYdRhgiw7Z5YxTd6.beOG", 13.5));
+        this.storeAccount(new Account("guderr@myumanitoba.ca",
+                                      "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI" +
+                                      ".RdOKAHYdRhgiw7Z5YxTd6.beOG",
+                                      "Robert Guderian",
+                                      "He/Him",
+                                      "Computer Science"));
+        // accountID should be 1, password should be "veryStrongPassword"
+        // assert (git) gud err == nil xx
+        // no one should care enough to read this xx - KT
+
         //        this.storeTutor(new Tutor("Camryn Mcmillan", "She/Her",
         //        "Computer Science",
         //                "mcmill5@myumanitoba.ca",
@@ -50,42 +59,44 @@ class AccountStub implements IAccountPersistence
         //                .PXVGNnjF4ld46hJe"));
     }
 
+    /**
+     * @param newAccount A new account consist of email, password digest,
+     *                   name, pronouns, and major
+     * @return an IAccount object with a generated integer account identifier
+     */
     @Override
     public
     IAccount storeAccount(IAccount newAccount)
     {
-        return getAccountByEmail(newAccount.getAccountEmail()).orElseGet(() -> {
-            accounts.add(newAccount);
-            return newAccount;
-        });
+        return AccountStub.accounts.put(currentID++, newAccount);
     }
 
+    /**
+     * @param existingAccount An existing IAccount object consist of int
+     *                        accountID, String email, String password digest,
+     *                        String name, String pronouns, and String major
+     * @return The updated account object
+     * @throws NoSuchElementException if account isn't found
+     */
     @Override
     public
-    boolean updateAccount(IAccount existingAccount)
+    IAccount updateAccount(IAccount existingAccount)
     {
-        AtomicBoolean result = new AtomicBoolean(false);
-        getAccountByEmail(existingAccount.getAccountEmail()).ifPresent(account -> {
-            account.setAccountPassword(existingAccount.getAccountPassword());
-            account.setAccountEmail(existingAccount.getAccountEmail());
-            result.set(true);
-        });
-        return result.get();
+        if (accounts.containsKey(existingAccount.getAccountID())) {
+            return accounts.put(existingAccount.getAccountID(),
+                                existingAccount);
+        } else {
+            throw new NoSuchElementException();
+        }
     }
 
+    /**
+     * @return Map from Integer accountID -> IAccount object
+     */
     @Override
     public
-    List<IAccount> getAccounts()
+    Map<Integer, IAccount> getAccounts()
     {
-        return this.accounts;
-    }
-
-    private
-    Optional<IAccount> getAccountByEmail(String email)
-    {
-        return accounts
-                .stream()
-                .filter(account -> account.getAccountEmail().equals(email))
-                .findFirst();
+        return accounts;
     }
 }
