@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.TutorHomeActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
 public class TutorLoginActivity extends AppCompatActivity {
@@ -41,12 +41,9 @@ public class TutorLoginActivity extends AppCompatActivity {
             }
         });
 
-        tvSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(TutorLoginActivity.this, TutorSignUpActivity.class);
-                startActivity(intent);
-            }
+        tvSignUp.setOnClickListener(v -> {
+            Intent intent = new Intent(TutorLoginActivity.this, TutorSignUpActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -56,7 +53,7 @@ public class TutorLoginActivity extends AppCompatActivity {
 
         if (credentialHandler.validateCredential(email, password)) {//credential
 
-            Intent intent = new Intent(TutorLoginActivity.this, TutorProfileActivity.class);
+            Intent intent = new Intent(TutorLoginActivity.this, TutorHomeActivity.class);
             intent.putExtra("TUTOR_EMAIL_KEY", email);
             startActivity(intent);
             finish(); // Close the current activity
