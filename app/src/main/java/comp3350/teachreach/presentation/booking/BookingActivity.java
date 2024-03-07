@@ -7,12 +7,15 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.button.MaterialButton;
+
 import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.utils.DateUtils;
 
 public class BookingActivity extends AppCompatActivity implements OnDateChangeListener {
     private FragmentManager fragmentManager;
     private TextView dateDisplay;
+    private MaterialButton reviewBookingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +24,7 @@ public class BookingActivity extends AppCompatActivity implements OnDateChangeLi
 
         dateDisplay = findViewById(R.id.dateDisplayTextView);
         dateDisplay.setVisibility(View.GONE);
+        reviewBookingButton.setEnabled(false);
 
         fragmentManager = getSupportFragmentManager();
         addDateSelectionFragment();
