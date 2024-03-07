@@ -50,7 +50,7 @@ class TutorHSQLDB implements ITutorPersistence
 
     @Override
     public
-    ITutor storeTutor(ITutor newTutor) throws PersistenceException
+    ITutor storeTutor(ITutor newTutor)
     {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
@@ -77,9 +77,27 @@ class TutorHSQLDB implements ITutorPersistence
 
     @Override
     public
-    ITutor updateTutor(ITutor newTutor) throws PersistenceException
+    ITutor updateTutor(ITutor existingTutor)
     {
-        return null;
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "UPDATE tutors SET hourly_rate = ?, review_sum = ?, " +
+                    "review_count = ? WHERE tutor_id = ?");
+            pst.setDouble(1, existingTutor.getHourlyRate());
+            pst.setInt(2, existingTutor.getReviewSum());
+            pst.setInt(3, existingTutor.getReviewCount());
+            pst.setInt(4, existingTutor.getTutorID());
+
+            final boolean success = pst.executeUpdate() == 1;
+            if (!success) {
+                pst.close();
+                throw new PersistenceException("Tutor not found/not updated!");
+            }
+            pst.close();
+            return existingTutor;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     @Override

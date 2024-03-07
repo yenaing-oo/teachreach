@@ -1,7 +1,7 @@
 package comp3350.teachreach.logic.DAOs;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
@@ -11,60 +11,74 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 public
 class AccessAccounts
 {
-    private static IAccountPersistence accountPersistence;
-    private static List<IAccount>      accounts;
-    private        IAccount            account;
+    private static IAccountPersistence    accountPersistence;
+    private static Map<Integer, IAccount> accounts = null;
 
     public
     AccessAccounts()
     {
         accountPersistence = Server.getAccountDataAccess();
-        accounts           = null;
-        account            = null;
+        accounts           = accountPersistence.getAccounts();
     }
 
     public
     AccessAccounts(final IAccountPersistence accountPersistence)
     {
-        this();
         AccessAccounts.accountPersistence = accountPersistence;
+        accounts                          = accountPersistence.getAccounts();
     }
 
     public
-    List<IAccount> getAccounts()
+    Map<Integer, IAccount> getAccounts()
     {
-        if (accounts == null) {
-            AccessAccounts.accounts = accountPersistence.getAccounts();
+        try {
+            if (accounts == null) {
+                AccessAccounts.accounts = accountPersistence.getAccounts();
+            }
+            return Collections.unmodifiableMap(accounts);
+        } catch (final Exception e) {
+            throw new DataAccessException("Fail to get all accounts!", e);
         }
-        return Collections.unmodifiableList(accounts);
     }
 
     public
     Optional<IAccount> getAccountByEmail(String email)
     {
-        if (accounts == null) {
-            AccessAccounts.accounts = accountPersistence.getAccounts();
+        try {
+            if (accounts == null) {
+                AccessAccounts.accounts = accountPersistence.getAccounts();
+            }
+            return accounts
+                    .values()
+                    .stream()
+                    .filter(a -> a.getAccountEmail().equals(email))
+                    .findFirst();
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get account by email", e);
         }
-        accounts
-                .parallelStream()
-                .filter(a -> a.getAccountEmail().equals(email))
-                .findFirst()
-                .ifPresentOrElse(a -> account = a, () -> {
-                    account  = null;
-                    accounts = null;
-                });
-        return Optional.ofNullable(account);
     }
 
     public
     IAccount insertAccount(IAccount newAccount)
     {
-        return accountPersistence.storeAccount(newAccount);
+        try {
+            newAccount = accountPersistence.storeAccount(newAccount);
+            accounts   = accountPersistence.getAccounts();
+            return newAccount;
+        } catch (final Exception e) {
+            throw new DataAccessException("Error storing new Account", e);
+        }
     }
 
     public
-    boolean updateAccount(IAccount existingAccount)
+    IAccount updateAccount(IAccount existingAccount)
     {
-        return accountPersistence.updateAccount(existingAccount);
+        try {
+            existingAccount = accountPersistence.updateAccount(existingAccount);
+            accounts        = accountPersistence.getAccounts();
+            return existingAccount;
+        } catch (final Exception e) {
+            throw new DataAccessException("Error updating account!", e);
+        }
     }
 }

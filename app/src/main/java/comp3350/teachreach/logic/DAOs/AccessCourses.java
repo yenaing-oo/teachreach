@@ -1,6 +1,8 @@
 package comp3350.teachreach.logic.DAOs;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
@@ -10,8 +12,8 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 public
 class AccessCourses
 {
-    private static ICoursePersistence coursePersistence;
-    private static List<ICourse>      courses = null;
+    private static ICoursePersistence   coursePersistence;
+    private static Map<String, ICourse> courses = null;
 
     public
     AccessCourses()
@@ -28,16 +30,20 @@ class AccessCourses
     }
 
     public
-    List<ICourse> getCourses()
+    Map<String, ICourse> getCourses()
     {
-        if (AccessCourses.courses == null) {
-            AccessCourses.courses = coursePersistence.getCourses();
+        try {
+            if (AccessCourses.courses == null) {
+                AccessCourses.courses = coursePersistence.getCourses();
+            }
+            return Collections.unmodifiableMap(courses);
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get all courses!", e);
         }
-        return courses;
     }
 
     public
-    ICourse getCourseByCode(String courseCode) throws DataAccessException
+    ICourse getCourseByCode(String courseCode)
     {
         return coursePersistence
                 .getCourseByCourseCode(courseCode)
@@ -48,15 +54,23 @@ class AccessCourses
     public
     List<ICourse> getCoursesByName(String courseName)
     {
-        return coursePersistence.getCoursesByName(courseName);
+        try {
+            return coursePersistence.getCoursesByName(courseName);
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get courses by name", e);
+        }
     }
 
     public
     ICourse insertCourse(ICourse newCourse) throws DataAccessException
     {
-        return coursePersistence
-                .addCourse(newCourse.getCourseCode(), newCourse.getCourseName())
-                .orElseThrow(() -> new DataAccessException(
-                        "Course already exist"));
+        try {
+            newCourse = coursePersistence.addCourse(newCourse.getCourseCode(),
+                                                    newCourse.getCourseName());
+            courses   = coursePersistence.getCourses();
+            return newCourse;
+        } catch (final Exception e) {
+            throw new DataAccessException("Course might've already exist!", e);
+        }
     }
 }

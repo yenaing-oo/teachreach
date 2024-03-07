@@ -67,8 +67,8 @@ class AccountHSQLDB implements IAccountPersistence
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 pst.close();
-                throw new PersistenceException("Potential accountID " +
-                                               "collision!");
+                throw new PersistenceException(
+                        "Potential accountID " + "collision!");
             }
             final ResultSet rs = pst.getGeneratedKeys();
             if (rs.next()) {
@@ -88,7 +88,7 @@ class AccountHSQLDB implements IAccountPersistence
     {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "UPDATE ACCOUNTS " + "SET EMAIL = ?, PASSWORD = ?, " +
+                    "UPDATE ACCOUNTS SET EMAIL = ?, PASSWORD = ?, " +
                     "NAME = ?, PRONOUNS = ?, MAJOR = ? " +
                     "WHERE ACCOUNT_ID = ?");
             pst.setString(1, existingAccount.getAccountEmail());
@@ -101,8 +101,8 @@ class AccountHSQLDB implements IAccountPersistence
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 pst.close();
-                throw new PersistenceException("Account not found/not " +
-                                               "updated!");
+                throw new PersistenceException(
+                        "Account not found/not " + "updated!");
             }
             pst.close();
             return existingAccount;

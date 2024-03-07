@@ -7,14 +7,14 @@ import java.io.IOException;
 
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.logic.DAOs.AccessSession;
+import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
-class AccessSessionIT
+class AccessSessionsIT
 {
-    private AccessSession accessSession;
-    private File          tempDB;
+    private AccessSessions accessSessions;
+    private File           tempDB;
 
     @Before
     public
@@ -26,7 +26,7 @@ class AccessSessionIT
                                                                           .replace(
                                                                                   ".script",
                                                                                   ""));
-        this.accessSession = new AccessSession(persistence);
+        this.accessSessions = new AccessSessions(persistence);
     }
 
 }
