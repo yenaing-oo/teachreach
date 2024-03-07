@@ -30,13 +30,13 @@ public class AccessTutoredCoursesIT {
         this.accessTutoredCourses = new AccessTutoredCourses(persistence);
     }
     @Test
-    public void testGetTutorCourseByTID(int tutorID)
+    public void testGetTutorCourseByTID()
     {//   List<ICourse> getTutorCourseByTID(int tutorID);
         //accessTutoredCourses.getTutorCourseByTID(3);
         }
 
     @Test
-    public void testStoreTutorCourse(int tutorID, int sessionID){
+    public void testStoreTutorCourse(){
        // boolean storeTutorCourse(int tutorID, int sessionID);
         //accessTutoredCourses.storeTutorCourse(3,3);
     }

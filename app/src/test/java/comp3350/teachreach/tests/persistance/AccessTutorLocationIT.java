@@ -29,12 +29,12 @@ public class AccessTutorLocationIT {
     }
 
     @Test
-    public void testGetTutorLocationByTutorID(int tutorID){
+    public void testGetTutorLocationByTutorID(){
         //accessTutorLocation.getTutorLocationByTutorID(3);
     } //List<String> getTutorLocationByTutorID(int tutorID);
 
     @Test
-    public void testStoreTutorLocation(int tutorID, String location){
+    public void testStoreTutorLocation(){
         //accessTutorLocation.storeTutorLocation(3,"hihi");
     }
     //boolean storeTutorLocation(int tutorID, String location);

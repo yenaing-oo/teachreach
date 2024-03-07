@@ -1,6 +1,7 @@
 package comp3350.teachreach.tests.persistance;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,16 @@ class AccessStudentIT
                         ".script",
                         ""));
         this.accessStudents = new AccessStudents(persistence);
+    }
+    @Test
+    public void testGetStudents(){}
+    @Test
+    public void testGetStudentByAccountID(){
+
+    }
+    @Test
+    public void testInsertStudent(){
+
     }
     //
     //
