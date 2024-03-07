@@ -1,6 +1,7 @@
 package comp3350.teachreach.tests.persistance;
 
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,4 +27,15 @@ public class AccessTutorLocationIT {
                         ""));
         this.accessTutorLocation = new AccessTutorLocation(persistence);
     }
+
+    @Test
+    public void testGetTutorLocationByTutorID(int tutorID){
+        //accessTutorLocation.getTutorLocationByTutorID(3);
+    } //List<String> getTutorLocationByTutorID(int tutorID);
+
+    @Test
+    public void testStoreTutorLocation(int tutorID, String location){
+        //accessTutorLocation.storeTutorLocation(3,"hihi");
+    }
+    //boolean storeTutorLocation(int tutorID, String location);
 }
