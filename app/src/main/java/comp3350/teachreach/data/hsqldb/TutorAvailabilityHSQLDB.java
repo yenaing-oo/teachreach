@@ -39,11 +39,11 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
         return new TimeSlice(startDateTime,endDateTime);
     }
 
-    public List<TimeSlice> getTutorTimeSliceByTutorID(int tutor_id){
+    public List<TimeSlice> getTutorTimeSliceByTutorID(int tutorID){
         final List<TimeSlice> tutorTimeSlice = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM TUTOR_AVAILABILITY WHERE tutor_id = ?");
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final TimeSlice theTimeSlice= fromResultSet(rs);
@@ -57,13 +57,13 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
         }
 
     }
-    public boolean storeTutorTimeSlice(int tutor_id, Timestamp start_time, Timestamp end_Time){
+    public boolean storeTutorTimeSlice(int tutorID, Timestamp start_time, Timestamp end_Time){
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutor_locations VALUES(?, ?, ?)"
             );
 
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             pst.setTimestamp(2, start_time);
             pst.setTimestamp(3, end_Time);
 

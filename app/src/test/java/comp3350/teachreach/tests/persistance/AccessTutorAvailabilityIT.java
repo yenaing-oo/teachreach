@@ -30,11 +30,11 @@ public class AccessTutorAvailabilityIT {
     }
 
     @Test
-    public void storeTutorTimeSlice(int tutor_id, Timestamp start_time, Timestamp end_Time){
+    public void storeTutorTimeSlice(int tutorID, Timestamp start_time, Timestamp end_Time){
        // accessTutorAvailability.storeTutorTimeSlice();
     }
     @Test
-    public void  getTutorTimeSliceByTutorID(int tutor_id){  //need to add some on database
+    public void  getTutorTimeSliceByTutorID(int tutorID){  //need to add some on database
        // List<TimeSlice>;
         // accessTutorAvailability.getTutorTimeSliceByTutorID();
     }
