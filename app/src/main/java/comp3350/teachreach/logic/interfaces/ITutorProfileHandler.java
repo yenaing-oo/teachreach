@@ -5,6 +5,7 @@ import java.util.List;
 
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 interface ITutorProfileHandler
@@ -60,5 +61,5 @@ interface ITutorProfileHandler
                                                   int endMinute,
                                                   List<DayOfWeek> daysOfWeek);
 
-    void updateUserProfile(); // NEED TO BE CALLED AFTER CHANGE OF PROFILE
+    ITutor updateTutorProfile();
 }

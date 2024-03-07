@@ -9,17 +9,9 @@ interface IUserProfileHandler
 
     String getUserName();
 
-    IUserProfileHandler setUserName(String name);
-
     String getUserPronouns();
-
-    IUserProfileHandler setUserPronouns(String pronouns);
 
     String getUserMajor();
 
-    IUserProfileHandler setUserMajor(String major);
-
     IAccount getUserAccount();
-
-    void updateUserProfile();
 }

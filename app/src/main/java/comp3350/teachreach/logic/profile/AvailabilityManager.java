@@ -21,7 +21,7 @@ class AvailabilityManager
     private final List<List<TimeSlice>> dayOfWeekAvailability;
 
     public
-    AvailabilityManager(ITutor tutor) throws RuntimeException
+    AvailabilityManager(ITutor tutor)
     {
         this.ofTutor          = tutor;
         dayOfWeekAvailability = ofTutor.getPreferredAvailability();

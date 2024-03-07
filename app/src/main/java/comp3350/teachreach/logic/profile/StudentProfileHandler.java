@@ -12,7 +12,7 @@ class StudentProfileHandler implements IUserProfileHandler
     private final AccessStudents accessStudents;
     private final AccessAccounts accessAccounts;
     private final IStudent       theStudent;
-    private       IAccount       parentAccount;
+    private final IAccount       parentAccount;
 
     public
     StudentProfileHandler(IStudent theStudent)
@@ -52,25 +52,9 @@ class StudentProfileHandler implements IUserProfileHandler
 
     @Override
     public
-    StudentProfileHandler setUserName(String name)
-    {
-        parentAccount = this.parentAccount.setUserName(name);
-        return this;
-    }
-
-    @Override
-    public
     String getUserPronouns()
     {
         return this.parentAccount.getUserPronouns();
-    }
-
-    @Override
-    public
-    StudentProfileHandler setUserPronouns(String pronouns)
-    {
-        parentAccount = this.parentAccount.setUserPronouns(pronouns);
-        return this;
     }
 
     @Override
@@ -82,23 +66,8 @@ class StudentProfileHandler implements IUserProfileHandler
 
     @Override
     public
-    StudentProfileHandler setUserMajor(String major)
-    {
-        this.parentAccount.setUserMajor(major);
-        return this;
-    }
-
-    @Override
-    public
     IAccount getUserAccount()
     {
         return parentAccount;
-    }
-
-    @Override
-    public
-    void updateUserProfile()
-    {
-        parentAccount = this.accessAccounts.updateAccount(parentAccount);
     }
 }

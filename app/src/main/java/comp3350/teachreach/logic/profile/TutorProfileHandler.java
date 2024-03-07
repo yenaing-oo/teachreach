@@ -1,14 +1,13 @@
 package comp3350.teachreach.logic.profile;
 
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
-import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
@@ -19,37 +18,31 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
 {
     private final AccessAccounts      accessAccounts;
     private final AccessTutors        accessTutors;
-    private final List<ITutor>        tutors;
     private       ITutor              theTutor;
+    private       IAccount            parentAccount;
     private       AvailabilityManager availabilityManager;
-
-    private
-    TutorProfileHandler()
-    {
-        theTutor            = null;
-        availabilityManager = null;
-        this.accessTutors   = new AccessTutors();
-        this.accessAccounts = new AccessAccounts();
-        tutors              = accessTutors.getTutors();
-    }
 
     public
     TutorProfileHandler(ITutor theTutor)
     {
-        this();
+        accessAccounts           = new AccessAccounts();
+        accessTutors             = new AccessTutors();
         this.theTutor            = theTutor;
+        this.parentAccount       = accessAccounts
+                .getAccounts()
+                .get(theTutor.getAccountID());
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public
-    TutorProfileHandler(String tutorEmail) throws NoSuchElementException
+    TutorProfileHandler(int tutorID)
     {
-        this();
-        this.theTutor            = tutors
-                .stream()
-                .filter(t -> t.getEmail().equals(tutorEmail))
-                .findFirst()
-                .orElseThrow(NoSuchElementException::new);
+        accessAccounts           = new AccessAccounts();
+        accessTutors             = new AccessTutors();
+        this.theTutor            = accessTutors.getTutorByTutorID(tutorID);
+        this.parentAccount       = accessAccounts
+                .getAccounts()
+                .get(theTutor.getAccountID());
         this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
@@ -57,61 +50,35 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     String getUserEmail()
     {
-        return this.theTutor.getEmail();
+        return this.parentAccount.getAccountEmail();
     }
 
     @Override
     public
     String getUserName()
     {
-        return this.theTutor.getUserName();
-    }
-
-    @Override
-    public
-    IUserProfileHandler setUserName(String name)
-    {
-        this.theTutor.setName(name);
-        return this;
+        return this.parentAccount.getUserName();
     }
 
     @Override
     public
     String getUserPronouns()
     {
-        return this.theTutor.getUserPronouns();
-    }
-
-    @Override
-    public
-    IUserProfileHandler setUserPronouns(String pronouns)
-    {
-        this.theTutor.setPronouns(pronouns);
-        return this;
+        return this.parentAccount.getUserPronouns();
     }
 
     @Override
     public
     String getUserMajor()
     {
-        return this.theTutor.getUserMajor();
+        return this.parentAccount.getUserMajor();
     }
 
     @Override
     public
-    IUserProfileHandler setUserMajor(String major)
+    IAccount getUserAccount()
     {
-        this.theTutor.setMajor(major);
-        return this;
-    }
-
-    @Override
-    public
-    IAccount getUserAccount() throws NoSuchElementException
-    {
-        return accessAccounts
-                .getAccountByEmail(theTutor.getEmail())
-                .orElseThrow(NoSuchElementException::new);
+        return parentAccount;
     }
 
     @Override
@@ -134,7 +101,7 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     double getAvgReview()
     {
         return theTutor.getReviewCount() > 0 ?
-               ((double) theTutor.getReviewTotalSum() /
+               ((double) theTutor.getReviewSum() /
                 (double) theTutor.getReviewCount()) :
                0;
     }
@@ -150,21 +117,21 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     int getReviewSum()
     {
-        return this.theTutor.getReviewTotalSum();
+        return this.theTutor.getReviewSum();
     }
 
     @Override
     public
     List<ICourse> getCourses()
     {
-        return theTutor.getCourses();
+        return new ArrayList<>();
     }
 
     @Override
     public
     List<String> getPreferredLocations()
     {
-        return theTutor.getPreferredLocations();
+        return new ArrayList<>();
     }
 
     @Override
@@ -204,7 +171,6 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     ITutorProfileHandler addReview(int score)
     {
-        this.theTutor.addReview(score);
         return this;
     }
 
@@ -212,14 +178,6 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     ITutorProfileHandler addCourse(String courseCode, String courseName)
     {
-        if (this.theTutor
-                .getCourses()
-                .stream()
-                .noneMatch(course -> course
-                        .getCourseCode()
-                        .equals(courseCode))) {
-            this.theTutor.addCourse(new Course(courseCode, courseName));
-        }
         return this;
     }
 
@@ -227,9 +185,6 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     ITutorProfileHandler removeCourse(String courseCode)
     {
-        this.theTutor
-                .getCourses()
-                .removeIf(course -> course.getCourseCode().equals(courseCode));
         return this;
     }
 
@@ -237,12 +192,6 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     public
     ITutorProfileHandler addPreferredLocation(String preferredLocation)
     {
-        if (this.theTutor
-                .getPreferredLocations()
-                .stream()
-                .noneMatch(location -> location.equals(preferredLocation))) {
-            this.theTutor.addPreferredLocation(preferredLocation);
-        }
         return this;
     }
 
@@ -292,8 +241,9 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
 
     @Override
     public
-    void updateUserProfile()
+    ITutor updateTutorProfile()
     {
-        accessTutors.updateTutor(theTutor);
+        theTutor = accessTutors.updateTutor(theTutor);
+        return theTutor;
     }
 }
