@@ -88,14 +88,6 @@ public class TutorSignUpActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
-//        if (newTutor != null) {
-//            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
-//            Intent intent = new Intent(TutorSignUpActivity.this, TutorProfileActivity.class);
-//            startActivity(intent);
-//            finish(); // To prevent returning to the signup screen
-//        } else {
-//            Toast.makeText(TutorSignUpActivity.this, "Signup failed. Please check your inputs and try again.", Toast.LENGTH_LONG).show();
-//        }
     }
 
     private void openFilePicker() {
