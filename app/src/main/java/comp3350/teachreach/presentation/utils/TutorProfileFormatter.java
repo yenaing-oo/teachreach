@@ -3,16 +3,16 @@ package comp3350.teachreach.presentation.utils;
 import java.util.List;
 import java.util.Locale;
 
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
 public
 class TutorProfileFormatter
 {
-    private final ITutorProfile tutorProfile;
+    private final ITutorProfileHandler tutorProfile;
 
     public
-    TutorProfileFormatter(ITutorProfile tutorProfile)
+    TutorProfileFormatter(ITutorProfileHandler tutorProfile)
     {
         this.tutorProfile = tutorProfile;
     }

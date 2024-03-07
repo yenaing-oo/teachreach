@@ -10,16 +10,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.logic.interfaces.IUserProfile;
-import comp3350.teachreach.logic.profile.StudentProfileFetcher;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
+import comp3350.teachreach.logic.profile.StudentProfileHandler;
 
 public
 class EditUserProfileActivity extends AppCompatActivity
 {
 
     private EditText etName, etPronoun, etMajor;
-    private Button       btnSaveProfile;
-    private IUserProfile userProfile;
+    private Button              btnSaveProfile;
+    private IUserProfileHandler userProfile;
 
     private IStudentPersistence studentPersistence;
 
@@ -52,7 +52,7 @@ class EditUserProfileActivity extends AppCompatActivity
         String studentEmail = getIntent().getStringExtra("USER_EMAIL");
 
         try {
-            userProfile = new StudentProfileFetcher(studentEmail);
+            userProfile = new StudentProfileHandler(studentEmail);
             etName.setText(userProfile.getUserName());
             etPronoun.setText(userProfile.getUserPronouns());
             etMajor.setText(userProfile.getUserMajor());

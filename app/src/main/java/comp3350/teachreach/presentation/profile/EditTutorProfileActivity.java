@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfileFetcher;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 
 public
 class EditTutorProfileActivity extends AppCompatActivity
@@ -33,8 +33,8 @@ class EditTutorProfileActivity extends AppCompatActivity
         etPreferredLocation = findViewById(R.id.etPreferredLocation);
         btnSaveChanges      = findViewById(R.id.btnSaveChanges);
 
-        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfile tutorProfile = new TutorProfileFetcher(tutorEmail);
+        String               tutorEmail   = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
+        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutorEmail);
 
         initializeFields(tutorProfile);
 
@@ -43,7 +43,7 @@ class EditTutorProfileActivity extends AppCompatActivity
     }
 
     private
-    void initializeFields(ITutorProfile tutorProfile)
+    void initializeFields(ITutorProfileHandler tutorProfile)
     {
         etPrice.setText(String.format("%.2f", tutorProfile.getHourlyRate()));
         String preferredLocations = String.join(", ",
@@ -52,7 +52,7 @@ class EditTutorProfileActivity extends AppCompatActivity
     }
 
     private
-    void saveProfileChanges(ITutorProfile tutorProfile)
+    void saveProfileChanges(ITutorProfileHandler tutorProfile)
     {
         try {
             double price = Double.parseDouble(etPrice.getText().toString());

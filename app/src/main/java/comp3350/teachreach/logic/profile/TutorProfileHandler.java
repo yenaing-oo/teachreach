@@ -6,8 +6,8 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.interfaces.IUserProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -15,16 +15,16 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-class TutorProfileFetcher implements ITutorProfile
+class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
 {
-    private final AccessAccounts accessAccounts;
-    private final AccessTutors   accessTutors;
-    private final List<ITutor>   tutors;
+    private final AccessAccounts      accessAccounts;
+    private final AccessTutors        accessTutors;
+    private final List<ITutor>        tutors;
     private       ITutor              theTutor;
     private       AvailabilityManager availabilityManager;
 
     private
-    TutorProfileFetcher()
+    TutorProfileHandler()
     {
         theTutor            = null;
         availabilityManager = null;
@@ -34,7 +34,7 @@ class TutorProfileFetcher implements ITutorProfile
     }
 
     public
-    TutorProfileFetcher(ITutor theTutor)
+    TutorProfileHandler(ITutor theTutor)
     {
         this();
         this.theTutor            = theTutor;
@@ -42,7 +42,7 @@ class TutorProfileFetcher implements ITutorProfile
     }
 
     public
-    TutorProfileFetcher(String tutorEmail) throws NoSuchElementException
+    TutorProfileHandler(String tutorEmail) throws NoSuchElementException
     {
         this();
         this.theTutor            = tutors
@@ -69,7 +69,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    IUserProfile setUserName(String name)
+    IUserProfileHandler setUserName(String name)
     {
         this.theTutor.setName(name);
         return this;
@@ -84,7 +84,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    IUserProfile setUserPronouns(String pronouns)
+    IUserProfileHandler setUserPronouns(String pronouns)
     {
         this.theTutor.setPronouns(pronouns);
         return this;
@@ -99,7 +99,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    IUserProfile setUserMajor(String major)
+    IUserProfileHandler setUserMajor(String major)
     {
         this.theTutor.setMajor(major);
         return this;
@@ -123,7 +123,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile setHourlyRate(double hourlyRate)
+    ITutorProfileHandler setHourlyRate(double hourlyRate)
     {
         this.theTutor.setHourlyRate(hourlyRate);
         return this;
@@ -202,7 +202,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile addReview(int score)
+    ITutorProfileHandler addReview(int score)
     {
         this.theTutor.addReview(score);
         return this;
@@ -210,7 +210,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile addCourse(String courseCode, String courseName)
+    ITutorProfileHandler addCourse(String courseCode, String courseName)
     {
         if (this.theTutor
                 .getCourses()
@@ -225,7 +225,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile removeCourse(String courseCode)
+    ITutorProfileHandler removeCourse(String courseCode)
     {
         this.theTutor
                 .getCourses()
@@ -235,7 +235,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile addPreferredLocation(String preferredLocation)
+    ITutorProfileHandler addPreferredLocation(String preferredLocation)
     {
         if (this.theTutor
                 .getPreferredLocations()
@@ -248,7 +248,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile addPreferredLocations(List<String> preferredLocations)
+    ITutorProfileHandler addPreferredLocations(List<String> preferredLocations)
     {
         preferredLocations.forEach(this::addPreferredLocation);
         return this;
@@ -256,7 +256,7 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile resetPreferredAvailability()
+    ITutorProfileHandler resetPreferredAvailability()
     {
         this.availabilityManager.clearWeeklyAvailability();
         return this;
@@ -264,17 +264,17 @@ class TutorProfileFetcher implements ITutorProfile
 
     @Override
     public
-    ITutorProfile setPreferredAvailability(int startYear,
-                                           int startMonth,
-                                           int startDay,
-                                           int startHour,
-                                           int startMinute,
-                                           int endYear,
-                                           int endMonth,
-                                           int endDay,
-                                           int endHour,
-                                           int endMinute,
-                                           List<DayOfWeek> daysOfWeek)
+    ITutorProfileHandler setPreferredAvailability(int startYear,
+                                                  int startMonth,
+                                                  int startDay,
+                                                  int startHour,
+                                                  int startMinute,
+                                                  int endYear,
+                                                  int endMonth,
+                                                  int endDay,
+                                                  int endHour,
+                                                  int endMinute,
+                                                  List<DayOfWeek> daysOfWeek)
     {
         this.availabilityManager.addWeeklyAvailability(startYear,
                                                        startMonth,

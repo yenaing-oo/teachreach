@@ -53,6 +53,21 @@ class AccessStudents
     }
 
     public
+    IStudent getStudentByStudentID(int studentID)
+    {
+        if (students == null) {
+            students = studentPersistence.getStudents();
+        }
+        return AccessStudents.students
+                .values()
+                .stream()
+                .filter(s -> s.getStudentID() == studentID)
+                .findFirst()
+                .orElseThrow(() -> new DataAccessException("Student not found!",
+                                                           new NoSuchElementException()));
+    }
+
+    public
     IStudent insertStudent(IStudent newStudent)
     {
         try {

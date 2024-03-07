@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.interfaces.IUserProfile;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.presentation.home.SearchActivity;
 
 public
@@ -20,7 +20,7 @@ class StudentProfileActivity extends AppCompatActivity
 
     private TextView tvName, tvPronoun, tvMajor;
     private Button btnGoToSearch, btnEditProfile;
-    private IUserProfile userProfile;
+    private IUserProfileHandler userProfile;
 
     private
     void initializeViews()

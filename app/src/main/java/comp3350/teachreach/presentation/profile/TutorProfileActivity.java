@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfileFetcher;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.presentation.booking.BookingActivity;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
@@ -29,8 +29,8 @@ class TutorProfileActivity extends AppCompatActivity
         TextView tvRating       = findViewById(R.id.tvRating);
         Button   btnBookSession = findViewById(R.id.btnBookSession);
 
-        ITutorProfile tutorProfile
-                = new TutorProfileFetcher(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
+        ITutorProfileHandler tutorProfile
+                = new TutorProfileHandler(getIntent().getStringExtra("TUTOR_EMAIL_KEY"));
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
                 tutorProfile);
 
