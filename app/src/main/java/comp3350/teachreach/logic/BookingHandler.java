@@ -13,7 +13,7 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.objects.TimeSlice;
 
-public class BookingHandler {
+public class BookingHandler implements comp3350.teachreach.logic.interfaces.IBookingHandler {
     private final ITutor theTutor;
     private final AvailabilityManager availabilityManager;
     private ISessionPersistence sessionsDataAccess;

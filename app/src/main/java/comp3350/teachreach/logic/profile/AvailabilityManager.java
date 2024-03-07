@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class AvailabilityManager {
+public class AvailabilityManager implements comp3350.teachreach.logic.interfaces.IAvailabilityManager {
     private final ITutor ofTutor;
     private final List<TimeSlice> occupiedSlices;
     private final List<List<TimeSlice>> dayOfWeekAvailability;
