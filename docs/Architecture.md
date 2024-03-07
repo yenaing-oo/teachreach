@@ -85,3 +85,6 @@
 - Contain Information about a Session
 
 
+**=======================ITERATION 2=================================**
+![Iteration2Architm](/uploads/1705d54c32ccce7cd10efe8ced4a68e9/Iteration2Architm.png)
+
