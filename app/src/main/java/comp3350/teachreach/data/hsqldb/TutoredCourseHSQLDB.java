@@ -34,11 +34,11 @@ public class TutoredCourseHSQLDB implements ITutoredCourse {
         return new Course(courseID,courseName);
     }
 
-    public List<ICourse> getTutorCourseByTID(int tutor_id) {
+    public List<ICourse> getTutorCourseByTID(int tutorID) {
         final List<ICourse> tutoredCourse = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_courses WHERE tutor_id = ?");
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final ICourse theCourse = fromResultSet(rs);
