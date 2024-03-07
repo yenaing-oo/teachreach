@@ -5,20 +5,17 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutoredCourseHSQLDB {
+public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
     private final String dbPath;
 
-    public
-    TutoredCourseHSQLDB(final String dbPath)
+    public TutoredCoursesHSQLDB(final String dbPath)
     {
         this.dbPath = dbPath;
     }
@@ -37,11 +34,11 @@ public class TutoredCourseHSQLDB {
         return new Course(courseID,courseName);
     }
 
-    private List<ICourse> getTutorCourseByTID(int tutor_id){
+    public List<ICourse> getTutorCourseByTID(int tutorID) {
         final List<ICourse> tutoredCourse = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_courses WHERE tutor_id = ?");
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final ICourse theCourse = fromResultSet(rs);
@@ -55,8 +52,8 @@ public class TutoredCourseHSQLDB {
         }
 
     }
-
-    public boolean storeTutorCourse(int tutorID,int sessionID){
+    @Override
+    public boolean storeTutorCourse(int tutorID, int sessionID){
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutored_courses VALUES(?, ?)"

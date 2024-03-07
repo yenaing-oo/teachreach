@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.ICourse;
-import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 
-public class TutorLocationHSQLDB {
+public class TutorLocationHSQLDB implements ITutorLocationPersistence {
     private final String dbPath;
 
     public
@@ -36,11 +34,12 @@ public class TutorLocationHSQLDB {
         return location;
     }
 
-    public List<String> getTutorLocationByTID(int tutor_id){
+    @Override
+    public List<String> getTutorLocationByTutorID(int tutorID){
         final List<String> tutorLocation = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_locations WHERE tutor_id = ?");
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
                 final String theLocation = fromResultSet(rs);
@@ -54,13 +53,14 @@ public class TutorLocationHSQLDB {
         }
     }
 
-    public boolean storeTutorLocation(int tutor_id, String location){
+    @Override
+    public boolean storeTutorLocation(int tutorID, String location){
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO tutor_locations VALUES(?, ?)"
             );
 
-            pst.setInt(1, tutor_id);
+            pst.setInt(1, tutorID);
             pst.setString(2, location);
 
             final boolean success = pst.executeUpdate() == 1;
