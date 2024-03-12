@@ -39,7 +39,7 @@ class CredentialHandler implements ICredentialHandler
 
     @Override
     public
-    boolean validateCredential(String email, String plainPassword)
+    Optional<IAccount> validateCredential(String email, String plainPassword)
     {
         final boolean emptyEmail    = !InputValidator.isNotEmpty(email);
         final boolean emptyPassword = !InputValidator.isNotEmpty(plainPassword);
@@ -57,11 +57,9 @@ class CredentialHandler implements ICredentialHandler
                 .filter(account -> account.getAccountEmail().equals(email))
                 .findFirst();
         return maybeAccount
-                .map(account -> BCrypt
+                .filter(account -> BCrypt
                         .verifyer()
                         .verify(plainPassword.toCharArray(),
-                                account.getAccountPassword()).verified)
-                .orElseThrow(() -> new RuntimeException(
-                        "Invalid email or password"));
+                                account.getAccountPassword()).verified);
     }
 }

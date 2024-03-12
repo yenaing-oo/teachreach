@@ -77,8 +77,10 @@ class AccountManager implements IAccountManager
             throws AccountManagerException
     {
         try {
-            assert credentialHandler.validateCredential(theAccount.getAccountEmail(),
-                                                        oldPlainPassword);
+            assert credentialHandler
+                    .validateCredential(theAccount.getAccountEmail(),
+                                        oldPlainPassword)
+                    .isPresent();
 
             theAccount
                     =
@@ -101,8 +103,10 @@ class AccountManager implements IAccountManager
             throws AccountManagerException
     {
         try {
-            assert credentialHandler.validateCredential(theAccount.getAccountEmail(),
-                                                        plainPassword);
+            assert credentialHandler
+                    .validateCredential(theAccount.getAccountEmail(),
+                                        plainPassword)
+                    .isPresent();
             theAccount
                     = accessAccounts.updateAccount(theAccount.setAccountEmail(
                     newEmail));

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
 public
@@ -41,7 +42,7 @@ class TutorSignUpActivity extends AppCompatActivity
         String pronoun  = etPronouns.getText().toString();
 
         try {
-            accountCreator
+            ITutor newTutor = accountCreator
                     .createAccount(email, password, username, major, pronoun)
                     .newTutorProfile()
                     .getNewTutor();
@@ -53,7 +54,7 @@ class TutorSignUpActivity extends AppCompatActivity
                     .show();
             Intent intent = new Intent(TutorSignUpActivity.this,
                                        TutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", email);
+            intent.putExtra("TUTOR_EMAIL_KEY", newTutor.getTutorID());
 
             startActivity(intent);
             finish();

@@ -10,8 +10,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Optional;
+
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.CredentialHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
@@ -66,20 +69,28 @@ class TutorLoginActivity extends AppCompatActivity
     {
         String email    = etTutorEmail.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
+        try {
+            Optional<IAccount> theAccount
+                    = credentialHandler.validateCredential(email, password);
 
-        if (credentialHandler.validateCredential(email, password)) {//credential
+            if (theAccount.isPresent()) {//credential matches
 
-            Intent intent = new Intent(TutorLoginActivity.this,
-                                       TutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", email);
-            startActivity(intent);
-            finish(); // Close the current activity
-        } else {
-            Toast
-                    .makeText(this,
-                              "Invalid email or password. Please try again.",
-                              Toast.LENGTH_SHORT)
-                    .show();
+                Intent intent = new Intent(TutorLoginActivity.this,
+                                           TutorProfileActivity.class);
+                intent.putExtra("TUTOR_EMAIL_KEY",
+                                theAccount.get().getTutorID());
+                startActivity(intent);
+                finish(); // Close the current activity
+            } else {
+                Toast
+                        .makeText(this,
+                                  "Invalid email or password. Please try " +
+                                  "again.",
+                                  Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
         }
     }
     //    }
