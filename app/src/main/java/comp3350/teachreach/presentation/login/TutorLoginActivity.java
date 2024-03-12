@@ -13,8 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Optional;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
@@ -72,13 +74,15 @@ class TutorLoginActivity extends AppCompatActivity
         try {
             Optional<IAccount> theAccount
                     = credentialHandler.validateCredential(email, password);
-
+            AccessTutors tutorAccess = new AccessTutors();
             if (theAccount.isPresent()) {//credential matches
+                ITutor iTutor = tutorAccess.getTutorByAccountID(theAccount
+                                                                        .get()
+                                                                        .getAccountID());
 
                 Intent intent = new Intent(TutorLoginActivity.this,
                                            TutorProfileActivity.class);
-                intent.putExtra("TUTOR_EMAIL_KEY",
-                                theAccount.get().getTutorID());
+                intent.putExtra("TUTOR_EMAIL_KEY", iTutor.getTutorID());
                 startActivity(intent);
                 finish(); // Close the current activity
             } else {

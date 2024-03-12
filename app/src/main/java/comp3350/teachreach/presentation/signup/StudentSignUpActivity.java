@@ -67,6 +67,7 @@ class StudentSignUpActivity extends AppCompatActivity
             startActivity(intent);
             finish();
         } catch (Exception e) {
+            e.printStackTrace();
             Toast
                     .makeText(StudentSignUpActivity.this,
                               e.getMessage(),

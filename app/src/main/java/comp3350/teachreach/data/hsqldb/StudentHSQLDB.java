@@ -59,12 +59,14 @@ class StudentHSQLDB implements IStudentPersistence
             pst.setInt(1, accountID);
             pst.executeUpdate();
             final ResultSet rs = pst.getGeneratedKeys();
-            pst.close();
             if (rs.next()) {
+                Student newStudent = new Student(rs.getInt(1), accountID);
                 rs.close();
-                return new Student(rs.getInt(1), accountID);
+                pst.close();
+                return newStudent;
             } else {
                 rs.close();
+                pst.close();
                 throw new PersistenceException("New student not stored!");
             }
         } catch (final SQLException e) {

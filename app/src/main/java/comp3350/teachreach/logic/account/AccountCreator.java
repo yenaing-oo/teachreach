@@ -101,6 +101,7 @@ class AccountCreator implements IAccountCreator
             newAccount.setStudentID(newStudent.getStudentID());
             return this;
         } catch (final Exception e) {
+
             throw new AccountCreatorException("Failed to make new student :(",
                                               e);
         }
