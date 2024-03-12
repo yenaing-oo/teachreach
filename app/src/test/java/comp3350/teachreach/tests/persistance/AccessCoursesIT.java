@@ -3,6 +3,7 @@ package comp3350.teachreach.tests.persistance;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -75,5 +76,12 @@ class AccessCoursesIT
         final ICourse course = new Course("COMP 5555", "GOD OF COMPUTER");
         accessCourses.insertCourse(course);
         assertEquals(1, accessCourses.getCourses().size());
+    }
+
+    @After
+    public
+    void tearDown()
+    {
+        this.tempDB.delete();
     }
 }
