@@ -82,7 +82,7 @@ class DateSelectionFragment extends Fragment
                 = fragmentView.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             if (dateChangeListener != null) {
-                dateChangeListener.onDateChanged(year, month, dayOfMonth);
+                dateChangeListener.onDateSelected(year, month, dayOfMonth);
             }
         });
     }

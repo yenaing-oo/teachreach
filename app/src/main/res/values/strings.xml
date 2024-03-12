@@ -2,4 +2,8 @@
     <string name="app_name">Teach Reach</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_a_date_and_time">Choose a date and time</string>
+    <string name="date_display">Date Display</string>
+    <string name="shr_button_review">Review booking</string>
+    <string name="confirm_booking">Confirm Booking</string>
 </resources>

@@ -14,7 +14,7 @@ import java.util.Optional;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.CredentialHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
-import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.search.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
 public

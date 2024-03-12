@@ -12,7 +12,7 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.presentation.home.SearchActivity;
+import comp3350.teachreach.presentation.search.SearchActivity;
 
 public
 class StudentSignUpActivity extends AppCompatActivity

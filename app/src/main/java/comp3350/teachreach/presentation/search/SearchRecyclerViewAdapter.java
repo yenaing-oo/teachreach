@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.home;
+package comp3350.teachreach.presentation.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
