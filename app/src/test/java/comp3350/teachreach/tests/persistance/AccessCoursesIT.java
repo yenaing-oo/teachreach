@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
@@ -40,15 +41,17 @@ class AccessCoursesIT
     public
     void testGetCourses()
     {
-        final List<ICourse> courses = accessCourses.getCourses();
-        assertEquals(1, courses.size());
+        final Map<String, ICourse> courses = accessCourses.getCourses();
+        assertEquals(0, courses.size());
     }
 
     @Test
     public
     void testGetCourseByCode()
     {
-        final ICourse course = accessCourses.getCourseByCode("COMP 1010");
+        ICourse course = new Course("COMP 1010", "GOD OF COMPUTER");
+        accessCourses.insertCourse(course);
+        course = accessCourses.getCourseByCode("COMP 1010");
         assertNotNull(course);
         assertEquals(course.getCourseCode(), "COMP 1010");
     }
@@ -57,8 +60,10 @@ class AccessCoursesIT
     public
     void testGetCourseByName()
     {
-        final List<ICourse> courses = accessCourses.getCoursesByName(
-                "Computer Science");
+        ICourse course = new Course("COMP 1010", "GOD OF COMPUTER");
+        accessCourses.insertCourse(course);
+        final List<ICourse> courses
+                = accessCourses.getCoursesByName("COMPUTER");
         assertNotNull(courses);
         assertEquals(1, courses.size());
     }
@@ -67,10 +72,8 @@ class AccessCoursesIT
     public
     void testInsertCourse()
     {
-        final ICourse course = new Course("COMP5555", "GOD OF COMPUTER");
+        final ICourse course = new Course("COMP 5555", "GOD OF COMPUTER");
         accessCourses.insertCourse(course);
-        assertEquals(accessCourses.getCourses().size(), 6);
+        assertEquals(1, accessCourses.getCourses().size());
     }
-
-
 }

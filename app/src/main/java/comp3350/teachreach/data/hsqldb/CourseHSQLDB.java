@@ -88,7 +88,7 @@ class CourseHSQLDB implements ICoursePersistence
         ICourse resultCourse = null;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM courses WHERE course_code = ?");
+                    "SELECT * FROM courses WHERE course_id = ?");
             pst.setString(1, courseCode);
             final ResultSet rs = pst.executeQuery();
             if (rs.next()) {
