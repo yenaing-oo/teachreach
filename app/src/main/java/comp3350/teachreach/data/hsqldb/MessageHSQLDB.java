@@ -43,14 +43,13 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
 
     @Override
-    public int createGroup(int studentAccountID, int tutorAccountID){
+    public int createGroup(int studentID, int tutorID){
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO CHAT_GROUPS(STUDENT_ACCOUNT_ID, TUTOR_ACCOUNT_ID) VALUES(?, ?)",
+                    "INSERT INTO CHAT_GROUPS (STUDENT_ID, TUTOR_ID) VALUES(?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setInt(1,  studentAccountID);
-            pst.setInt(2, tutorAccountID);
-            pst.executeUpdate();
+            pst.setInt(1,  studentID);
+            pst.setInt(2, tutorID);
             boolean success = pst.executeUpdate() == 1;
             pst.close();
             if (!success) {
@@ -67,7 +66,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
     @Override
     public IMessage storeMessage(int groupID, int senderAccountID, String message){
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES( group_ID, sender_ID, message"+
+            final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES (group_ID, sender_ID, message"+
                     "VALUES()) VALUES(?,?,?) ");
             pst.setInt(1, groupID);
             pst.setInt(2, senderAccountID);
@@ -97,7 +96,8 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         final int resultGroupID;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM GROUPS WHERE STUDENT_ACCOUNT_ID = ? AND TUTOR_ACCOUNT_ID =?");
+                    "SELECT * FROM PUBLIC.CHAT_GROUPS WHERE STUDENT_ACCOUNT_ID = ? AND TUTOR_ACCOUNT_ID = ?");
+                    //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
             pst.setInt(1, studentAccountID);
             pst.setInt(2, tutorAccountID);
             final ResultSet rs = pst.executeQuery();
@@ -120,7 +120,8 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
     public List<IMessage> retrieveAllMessageByGroupID(int groupID){
         List<IMessage> resultMessages = new ArrayList<>();
         try(final Connection c = connection()){
-            final PreparedStatement pst = c.prepareStatement("Select * from MESSAGE where group_id = ? ORDER BY MESSAGE_ID ASC");
+            final PreparedStatement pst = c.prepareStatement(//"Select * from Accounts");
+                    "Select * from MESSAGE where group_id = ? ORDER BY MESSAGE_ID ASC");
             pst.setInt(1, groupID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {

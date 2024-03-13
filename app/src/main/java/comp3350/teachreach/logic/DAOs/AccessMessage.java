@@ -25,9 +25,9 @@ public class AccessMessage {
 
     }
 
-    public int createGroup(int studentAccountID, int tutorAccountID){
+    public int createGroup(int studentID, int tutorID){
         try{
-             return messagePersistence.createGroup(studentAccountID,tutorAccountID);
+             return messagePersistence.createGroup(studentID,tutorID);
         }
         catch (final Exception e) {
             throw new DataAccessException("Group might've already exist!", e);

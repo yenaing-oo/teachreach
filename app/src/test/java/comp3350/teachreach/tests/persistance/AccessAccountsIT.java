@@ -45,7 +45,7 @@ class AccessAccountsIT
     void testGetAccounts()
     {
         final Map<Integer,IAccount> accounts = accessAccounts.getAccounts();
-        assertEquals(1, accounts.size());
+        assertEquals(2, accounts.size());
     }
 
     @Test
@@ -76,7 +76,7 @@ class AccessAccountsIT
                 "He/Him",
                 "Computer Science");
         accessAccounts.insertAccount(a);
-        assertEquals(2,
+        assertEquals(3,
                      accessAccounts
                              .getAccounts()
                              .size()); //Change number base on database

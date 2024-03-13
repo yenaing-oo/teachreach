@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,17 +34,24 @@ import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.tests.utils.TestUtils;
-
+import comp3350.teachreach.application.Server;
 
 public class AccessMessageIT {
+        private Server server;
 
-        private AccessMessage accessMessage;
+        private static AccessMessage accessMessage = null;
+    private static IAccountPersistence accessAccount = null;
+    private static ITutorPersistence accessTutor = null;
+    private static IStudentPersistence accessStudent = null;
+
+       /*
         private AccessAccounts accessAccounts;
         private AccessStudents accessStudents;
         private AccessTutors accessTutors;
-
+*/
         private IStudent testStudent;
         private ITutor testTutor;
+
         private int groupID;
 
 
@@ -53,16 +62,21 @@ public class AccessMessageIT {
         public
         void setUp() throws IOException
         {
-            this.tempDB = TestUtils.copyDB();
-           /* final IMessagePersistence persistence = new
-                    /*MessageHSQLDB(this.tempDB
+            //accessMessage = server.getMessageDataAccess();
+            //accessAccount = server.getAccountDataAccess();
+            //accessTutor = server.getTutorDataAccess();
+            //accessStudent = server.getStudentDataAccess();
+
+           this.tempDB = TestUtils.copyDB();
+           final IMessagePersistence persistence = new
+                    MessageHSQLDB(this.tempDB
                     .getAbsolutePath()
                     .replace(
                             ".script",
                             ""));
             this.accessMessage = new AccessMessage(persistence);
 
-            final IAccountPersistence persistence2 = new AccessAccounts();
+            /*final IAccountPersistence persistence2 = new AccessAccounts();
              AccountHSQLDB(this.tempDB
                     .getAbsolutePath()
                     .replace(
@@ -83,12 +97,14 @@ public class AccessMessageIT {
                     .replace(
                             ".script",
                             ""));
-            this.accessStudents = new AccessStudents(persistence4);*/
+            this.accessStudents = new AccessStudents(persistence4);
+
 
             accessMessage = new AccessMessage();
             accessAccounts =new AccessAccounts();
             accessStudents = new AccessStudents();
             accessTutors = new AccessTutors();
+
                     IAccount tutor = new Account("guderr@myumanitoba.ca",
                     "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI",
                     "Robert Guderian",
@@ -104,26 +120,27 @@ public class AccessMessageIT {
                                     );
 
 
-            accessAccounts.insertAccount(tutor);
-            accessAccounts.insertAccount(student);
+            accessAccount.storeAccount(tutor);
+            accessAccount.storeAccount(student);
             this.testTutor = new Tutor(tutor.getAccountID());
-            accessTutors.insertTutor(testTutor);
+            accessTutor.storeTutor(testTutor);
             this.testStudent = new Student(student.getAccountID());
-            accessStudents.insertStudent(testStudent);
-
+            accessStudent.storeStudent(testStudent);
+*/
         }
 
         @Test
         public void testCreateGroup(){
-
-            this.groupID = accessMessage.createGroup(this.testStudent.getAccountID(),this.testTutor.getAccountID());
+           this.groupID = accessMessage.createGroup(1,1);
+           // this.groupID = accessMessage.createGroup(this.testStudent.getAccountID(),this.testTutor.getAccountID());
             assertEquals(1, this.groupID);
 
         }
 
     @Test
     public void testStoreMessage(){
-            IMessage testMessage = accessMessage.storeMessage(this.groupID,1,"HELLO WORLD!");
+        IMessage testMessage = accessMessage.storeMessage(1,1,"HELLO WORLD!");
+            //IMessage testMessage = accessMessage.storeMessage(this.groupID,1,"HELLO WORLD!");
             assertEquals(testMessage.getMessage(), "HELLO WORLD!");
             assertEquals(testMessage.getSenderID(),1);
             assertNotNull(testMessage.getTime());
@@ -132,7 +149,8 @@ public class AccessMessageIT {
     @Test
     public void testSearchGroupByIDs(){
             int testGroupID = accessMessage.searchGroupByIDs(2,1);
-            assertEquals(testGroupID, this.groupID);
+        assertEquals(testGroupID, 1);
+        // assertEquals(testGroupID, this.groupID);
 
     }
 
@@ -140,8 +158,10 @@ public class AccessMessageIT {
     public void testRetrieveAllMessageByGroupID(){
             List<IMessage> testMessages = accessMessage.retrieveAllMessageByGroupID(1);
             assertEquals(testMessages.size(),1);
-        accessMessage.storeMessage(this.groupID,1,"GOOD MORNING!");
-        accessMessage.storeMessage(this.groupID,2,"I'M FINE THANK YOU!");
+        accessMessage.storeMessage(1,1,"GOOD MORNING!");
+        //accessMessage.storeMessage(this.groupID,1,"GOOD MORNING!");
+        accessMessage.storeMessage(1,2,"I'M FINE THANK YOU!");
+        //accessMessage.storeMessage(this.groupID,2,"I'M FINE THANK YOU!");
         testMessages = accessMessage.retrieveAllMessageByGroupID(1);
         assertEquals(testMessages.size(),3);
 

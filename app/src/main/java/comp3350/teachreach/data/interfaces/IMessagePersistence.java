@@ -5,7 +5,7 @@ import java.util.List;
 import comp3350.teachreach.objects.interfaces.IMessage;
 
 public interface IMessagePersistence {
-    int createGroup(int studentAccountID, int tutorAccountID);
+    int createGroup(int studentID, int tutorID);
 
     IMessage storeMessage(int groupID, int senderAccountID, String message);
 
