@@ -1,15 +1,17 @@
 package comp3350.teachreach.objects.interfaces;
 
-public interface IMessage {
-    int getTutorID();
+import java.sql.Timestamp;
 
-    int getStudentID();
+public interface IMessage {
+    int getSenderID();
+
+    Timestamp getTime();
 
     String getMessage();
 
+    void setSenderID(int senderID);
+
     void setMessage(String message);
 
-    void setStudentID(int studentID);
-
-    void setTutorID(int tutorID);
+    void setTime(Timestamp time);
 }

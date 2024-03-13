@@ -1,31 +1,33 @@
 package comp3350.teachreach.objects;
 
 import java.time.Instant;
+import java.sql.Timestamp;
 
 public class Message implements comp3350.teachreach.objects.interfaces.IMessage {
 
-    private int tutorID;
+    private int senderID;
 
-    private int studentID;
+    private Timestamp time;
 
     private String message;
 
-    public Message(int tutorID,
-                   int studentID,
-                   String message){
-        this.tutorID = tutorID;
-        this.studentID = studentID;
+    public Message(int senderAccountID,
+                   Timestamp time,
+                   String message) {
+        this.senderID = senderAccountID;
+        this.time = time;
         this.message = message;
     }
 
     @Override
-    public int getTutorID() {
-        return tutorID;
+    public int getSenderID() {
+        return senderID;
     }
 
+
     @Override
-    public int getStudentID() {
-        return studentID;
+    public Timestamp getTime() {
+        return time;
     }
 
     @Override
@@ -34,17 +36,19 @@ public class Message implements comp3350.teachreach.objects.interfaces.IMessage 
     }
 
     @Override
+    public void setSenderID(int senderID) {
+        this.senderID = senderID;
+    }
+
+    @Override
     public void setMessage(String message) {
         this.message = message;
     }
 
     @Override
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
-    }
-
-    @Override
-    public void setTutorID(int tutorID) {
-        this.tutorID = tutorID;
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }
+
+
