@@ -31,7 +31,7 @@ class TutorProfileActivity extends AppCompatActivity
 
         ITutorProfileHandler tutorProfile
                 = new TutorProfileHandler(getIntent().getIntExtra(
-                "TUTOR_EMAIL_KEY",
+                "TUTOR_ID",
                 -1));
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
                 tutorProfile);

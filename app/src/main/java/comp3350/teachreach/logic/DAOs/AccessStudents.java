@@ -46,7 +46,7 @@ class AccessStudents
         return AccessStudents.students
                 .values()
                 .stream()
-                .filter(s -> s.getStudentAccountID() == studentAccountID)
+                .filter(s -> s.getAccountID() == studentAccountID)
                 .findFirst()
                 .orElseThrow(() -> new DataAccessException("Account not found!",
                                                            new NoSuchElementException()));

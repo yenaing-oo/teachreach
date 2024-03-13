@@ -9,11 +9,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Optional;
-
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.account.CredentialHandler;
-import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.logic.account.AuthenticationHandler;
+import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.presentation.search.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
@@ -23,7 +21,7 @@ class StudentLoginActivity extends AppCompatActivity
 
     private EditText etStudentEmail, etStudentPassword;
 
-    private CredentialHandler credentialHandler;
+    private AuthenticationHandler authenticationHandler;
 
     @Override
     protected
@@ -37,7 +35,7 @@ class StudentLoginActivity extends AppCompatActivity
         Button   btnLogin = findViewById(R.id.btnStudentLogin);
         TextView tvSignUp = findViewById(R.id.tvStudentSignUp);
 
-        credentialHandler = new CredentialHandler();
+        authenticationHandler = new AuthenticationHandler();
 
         btnLogin.setOnClickListener(v -> login());
 
@@ -48,37 +46,19 @@ class StudentLoginActivity extends AppCompatActivity
         });
     }
 
-    private
-    void login()
-    {
-        String studentEmail = etStudentEmail.getText().toString().trim();
-        String password     = etStudentPassword.getText().toString().trim();
+    private void login() {
+        String email = etStudentEmail.getText().toString().trim();
+        String password = etStudentPassword.getText().toString().trim();
 
         try {
-            Optional<IAccount> theAccount
-                    = credentialHandler.validateCredential(studentEmail,
-                                                           password);
-            if (theAccount.isPresent()) {
-                // If the credentials are correct, navigate to the
-                // SearchActivity
-                Intent intent = new Intent(StudentLoginActivity.this,
-                                           SearchActivity.class);
-                startActivity(intent);
-                finish(); // Close the current activity
-            } else {
-                Toast
-                        .makeText(this,
-                                  "Invalid email or password. Please try " +
-                                  "again.",
-                                  Toast.LENGTH_SHORT)
-                        .show();
-            }
+            InputValidator.validateEmail(email);
+            InputValidator.validatePassword(password);
+            authenticationHandler.authenticateStudent(email, password);
+            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+            startActivity(intent);
+            finish();
         } catch (Exception e) {
-            Toast
-                    .makeText(this,
-                              "Account does not exist",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

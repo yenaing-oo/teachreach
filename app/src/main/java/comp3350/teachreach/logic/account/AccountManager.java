@@ -1,55 +1,51 @@
 package comp3350.teachreach.logic.account;
 
+import android.util.Log;
+
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.account.exceptions.AccountManagerException;
+import comp3350.teachreach.logic.exceptions.AccountManagerException;
+import comp3350.teachreach.logic.exceptions.InvalidCredentialException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
-import comp3350.teachreach.logic.interfaces.ICredentialHandler;
+import comp3350.teachreach.logic.interfaces.IAuthenticationHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public
-class AccountManager implements IAccountManager
-{
-    private final AccessAccounts     accessAccounts;
-    private final ICredentialHandler credentialHandler;
-    private       IAccount           theAccount;
+class AccountManager implements IAccountManager {
+    private final AccessAccounts accessAccounts;
+    private final IAuthenticationHandler authenticationHandler;
+    private IAccount theAccount;
 
-    public
-    AccountManager(IAccount theAccount)
-    {
-        accessAccounts         = new AccessAccounts();
-        this.credentialHandler = new CredentialHandler();
-        this.theAccount        = theAccount;
+    public AccountManager(IAccount theAccount) {
+        accessAccounts = new AccessAccounts();
+        this.authenticationHandler = new AuthenticationHandler();
+        this.theAccount = theAccount;
     }
 
-    public
-    AccountManager(IAccount theAccount, IAccountPersistence accountPersistence)
-    {
-        accessAccounts         = new AccessAccounts(accountPersistence);
-        this.credentialHandler = new CredentialHandler();
-        this.theAccount        = theAccount;
+    public AccountManager(IAccount theAccount, IAccountPersistence accountPersistence) {
+        accessAccounts = new AccessAccounts(accountPersistence);
+        this.authenticationHandler = new AuthenticationHandler();
+        this.theAccount = theAccount;
     }
 
     @Override
-    public
-    IAccountManager updateAccountUsername(String newName)
-            throws AccountManagerException
-    {
+    public IAccountManager updateAccountUsername(String newName)
+            throws AccountManagerException {
         try {
             theAccount = accessAccounts.updateAccount(theAccount.setUserName(
                     newName));
             return this;
         } catch (final Exception e) {
             throw new AccountManagerException("Failed to update user name :(",
-                                              e);
+                    e);
         }
     }
 
     @Override
-    public
-    IAccountManager updateAccountUserPronouns(String pronouns)
-            throws AccountManagerException
-    {
+    public IAccountManager updateAccountUserPronouns(String pronouns)
+            throws AccountManagerException {
         try {
             theAccount
                     = accessAccounts.updateAccount(theAccount.setUserPronouns(
@@ -63,60 +59,55 @@ class AccountManager implements IAccountManager
     }
 
     @Override
-    public
-    IAccountManager updateAccountUserMajor(String major)
-            throws AccountManagerException
-    {
+    public IAccountManager updateAccountUserMajor(String major)
+            throws AccountManagerException {
         return null;
     }
 
     @Override
-    public
-    IAccountManager updatePassword(String oldPlainPassword,
-                                   String newPlainPassword)
-            throws AccountManagerException
-    {
+    public IAccountManager updatePassword(String oldPlainPassword,
+                                          String newPlainPassword)
+            throws InvalidCredentialException, InvalidPasswordException, AccountManagerException {
         try {
-            assert credentialHandler
-                    .validateCredential(theAccount.getAccountEmail(),
-                                        oldPlainPassword)
-                    .isPresent();
+            InputValidator.validatePassword(oldPlainPassword);
+            InputValidator.validatePassword(newPlainPassword);
 
-            theAccount
-                    =
-                    accessAccounts.updateAccount(theAccount.setAccountPassword(
-                    credentialHandler.processPassword(newPlainPassword)));
+            if (newPlainPassword.equals(oldPlainPassword)) {
+                throw new InvalidPasswordException("New password is the same as current password");
+            }
+
+            authenticationHandler.authenticateUser(theAccount.getAccountEmail(), oldPlainPassword);
+
+            theAccount.setAccountPassword(PasswordManager.encryptPassword(newPlainPassword));
+            theAccount = accessAccounts.updateAccount(theAccount);
 
             return this;
-        } catch (final AssertionError e) {
-            throw new AccountManagerException("Invalid password!", e);
-        } catch (final Exception e) {
-            throw new AccountManagerException(
-                    "Failed while updating password :(",
-                    e);
+        } catch (InvalidPasswordException e) {
+            throw e;
+        } catch (InvalidCredentialException e) {
+            throw new InvalidCredentialException("Entered current password is incorrect");
+        } catch (Exception e) {
+            Log.e("ACCMNG", "Unexpected error while updating password", e);
+            throw new AccountManagerException("Failed to update password");
         }
     }
 
     @Override
-    public
-    IAccountManager updateEmail(String plainPassword, String newEmail)
-            throws AccountManagerException
-    {
+    public IAccountManager updateEmail(String currentPlainPassword, String newEmail)
+            throws AccountManagerException, InvalidCredentialException, InvalidPasswordException, InvalidEmailException {
         try {
-            assert credentialHandler
-                    .validateCredential(theAccount.getAccountEmail(),
-                                        plainPassword)
-                    .isPresent();
-            theAccount
-                    = accessAccounts.updateAccount(theAccount.setAccountEmail(
-                    newEmail));
+            InputValidator.validateEmail(newEmail);
+            InputValidator.validatePassword(currentPlainPassword);
+            authenticationHandler.authenticateUser(theAccount.getAccountEmail(), currentPlainPassword);
+            theAccount = accessAccounts.updateAccount(theAccount.setAccountEmail(newEmail));
             return this;
-        } catch (final AssertionError e) {
-            throw new AccountManagerException("Invalid email or password!", e);
-        } catch (final Exception e) {
-            throw new AccountManagerException(
-                    "Failed to update account email :(",
-                    e);
+        } catch (InvalidEmailException | InvalidPasswordException e) {
+            throw e;
+        } catch (InvalidCredentialException e) {
+            throw new InvalidCredentialException("Entered password is incorrect");
+        } catch (Exception e) {
+            Log.e("ACCMNG", "Unexpected error while updating email", e);
+            throw new AccountManagerException("Failed to update account email", e);
         }
     }
 }

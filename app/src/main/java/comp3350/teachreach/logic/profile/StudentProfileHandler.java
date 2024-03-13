@@ -19,21 +19,19 @@ class StudentProfileHandler implements IUserProfileHandler
     {
         this.accessStudents = new AccessStudents();
         this.accessAccounts = new AccessAccounts();
-        this.theStudent     = theStudent;
-        this.parentAccount  = accessAccounts
+        this.theStudent = theStudent;
+        this.parentAccount = accessAccounts
                 .getAccounts()
-                .get(theStudent.getStudentAccountID());
+                .get(theStudent.getAccountID());
     }
 
-    public
-    StudentProfileHandler(int studentID)
-    {
+    public StudentProfileHandler(int studentID) {
         this.accessStudents = new AccessStudents();
         this.accessAccounts = new AccessAccounts();
-        this.theStudent     = accessStudents.getStudentByStudentID(studentID);
-        this.parentAccount  = accessAccounts
+        this.theStudent = accessStudents.getStudentByStudentID(studentID);
+        this.parentAccount = accessAccounts
                 .getAccounts()
-                .get(theStudent.getStudentAccountID());
+                .get(theStudent.getAccountID());
     }
 
     @Override

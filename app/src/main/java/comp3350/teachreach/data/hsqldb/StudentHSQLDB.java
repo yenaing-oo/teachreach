@@ -45,7 +45,7 @@ class StudentHSQLDB implements IStudentPersistence
     public
     IStudent storeStudent(IStudent newStudent)
     {
-        return storeStudent(newStudent.getStudentAccountID());
+        return storeStudent(newStudent.getAccountID());
     }
 
     @Override
@@ -84,7 +84,7 @@ class StudentHSQLDB implements IStudentPersistence
             final ResultSet rs = st.executeQuery("SELECT * FROM students");
             while (rs.next()) {
                 final IStudent student = fromResultSet(rs);
-                students.put(student.getStudentAccountID(), student);
+                students.put(student.getAccountID(), student);
             }
             rs.close();
             st.close();

@@ -1,4 +1,4 @@
-package comp3350.teachreach.logic.account.exceptions;
+package comp3350.teachreach.logic.exceptions;
 
 public
 class AccountManagerException extends Exception

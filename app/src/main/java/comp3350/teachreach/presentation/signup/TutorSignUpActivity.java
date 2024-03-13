@@ -26,9 +26,6 @@ class TutorSignUpActivity extends AppCompatActivity
 
     private EditText etTutorUsername, etTutorPassword, etTutorEmail,
             etTutorMajor, etPronouns;
-    private Button btnUploadTranscript, btnTutorSubmit;
-    private TextView        tvVerificationOutput;
-    private Uri             transcriptUri;
     // Uri of the selected transcript file
     private IAccountCreator accountCreator;
 
@@ -42,10 +39,7 @@ class TutorSignUpActivity extends AppCompatActivity
         String pronoun  = etPronouns.getText().toString();
 
         try {
-            ITutor newTutor = accountCreator
-                    .createAccount(email, password, username, major, pronoun)
-                    .newTutorProfile()
-                    .getNewTutor();
+            ITutor newTutor = accountCreator.createTutorAccount(email, password, username, major, pronoun);
 
             Toast
                     .makeText(TutorSignUpActivity.this,
@@ -54,7 +48,7 @@ class TutorSignUpActivity extends AppCompatActivity
                     .show();
             Intent intent = new Intent(TutorSignUpActivity.this,
                                        TutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", newTutor.getTutorID());
+            intent.putExtra("TUTOR_ID", newTutor.getTutorID());
 
             startActivity(intent);
             finish();
@@ -109,7 +103,7 @@ class TutorSignUpActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
             if (data != null) {
-                transcriptUri = data.getData();
+                Uri transcriptUri = data.getData();
                 // Handle the transcript file.
             }
         }
@@ -117,28 +111,24 @@ class TutorSignUpActivity extends AppCompatActivity
 
     @Override
     protected
-    void onCreate(Bundle savedInstanceState)
-    {
+    void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_sign_up);
 
-        etTutorUsername      = findViewById(R.id.etTutorUsername);
-        etTutorPassword      = findViewById(R.id.etTutorPassword);
-        etTutorEmail         = findViewById(R.id.etTutorEmail);
-        etTutorMajor         = findViewById(R.id.etTutorMajor);
-        etPronouns           = findViewById(R.id.etPronouns);
-        btnUploadTranscript  = findViewById(R.id.btnUploadTranscript);
-        btnTutorSubmit       = findViewById(R.id.btnTutorSubmit);
-        tvVerificationOutput = findViewById(R.id.tvVerificationOutput);
+        etTutorUsername = findViewById(R.id.etTutorUsername);
+        etTutorPassword = findViewById(R.id.etTutorPassword);
+        etTutorEmail = findViewById(R.id.etTutorEmail);
+        etTutorMajor = findViewById(R.id.etTutorMajor);
+        etPronouns = findViewById(R.id.etPronouns);
+        Button btnUploadTranscript = findViewById(R.id.btnUploadTranscript);
+        Button btnTutorSubmit = findViewById(R.id.btnTutorSubmit);
+        TextView tvVerificationOutput = findViewById(R.id.tvVerificationOutput);
 
         accountCreator = new AccountCreator();
 
-        btnUploadTranscript.setOnClickListener(new View.OnClickListener()
-        {
+        btnUploadTranscript.setOnClickListener(new View.OnClickListener() {
             @Override
-            public
-            void onClick(View v)
-            {
+            public void onClick(View v) {
                 openFilePicker();
             }
         });

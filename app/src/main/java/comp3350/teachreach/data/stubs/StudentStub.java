@@ -25,7 +25,7 @@ class StudentStub implements IStudentPersistence
     public
     IStudent storeStudent(IStudent newStudent)
     {
-        return storeStudent(newStudent.getStudentAccountID());
+        return storeStudent(newStudent.getAccountID());
     }
 
     @Override

@@ -173,7 +173,7 @@ class SearchActivity extends AppCompatActivity
     void onTutorItemClick(int position)
     {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutors.get(position).getTutorID());
+        intent.putExtra("TUTOR_ID", tutors.get(position).getTutorID());
         startActivity(intent);
     }
 

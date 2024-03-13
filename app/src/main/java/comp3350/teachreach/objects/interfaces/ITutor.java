@@ -11,7 +11,7 @@ interface ITutor
 
     int getAccountID();
 
-    Tutor setAccountID(int accountID);
+    void setAccountID(int accountID);
 
     double getHourlyRate();
 

@@ -22,8 +22,6 @@ class EditUserProfileActivity extends AppCompatActivity
 
     private EditText etName, etPronoun, etMajor;
     private Button              btnSaveProfile;
-    private IAccountManager     accountManager;
-    private IUserProfileHandler userProfileHandler;
     private AccessAccounts      accessAccounts;
     private AccessStudents      accessStudents;
 
@@ -56,9 +54,7 @@ class EditUserProfileActivity extends AppCompatActivity
         int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
 
         try {
-            userProfileHandler
-                    =
-                    new StudentProfileHandler(accessStudents.getStudentByStudentID(
+            IUserProfileHandler userProfileHandler = new StudentProfileHandler(accessStudents.getStudentByStudentID(
                     studentID));
 
             etName.setText(userProfileHandler.getUserName());
@@ -79,15 +75,15 @@ class EditUserProfileActivity extends AppCompatActivity
     {
         int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
         try {
-            accountManager = new AccountManager(accessAccounts
-                                                        .getAccounts()
-                                                        .get(accessStudents
-                                                                     .getStudentByStudentID(
-                                                                             studentID)
-                                                                     .getStudentAccountID()));
-            String name    = etName.getText().toString();
+            IAccountManager accountManager = new AccountManager(accessAccounts
+                    .getAccounts()
+                    .get(accessStudents
+                            .getStudentByStudentID(
+                                    studentID)
+                            .getAccountID()));
+            String name = etName.getText().toString();
             String pronoun = etPronoun.getText().toString();
-            String major   = etMajor.getText().toString();
+            String major = etMajor.getText().toString();
 
             accountManager
                     .updateAccountUsername(name)

@@ -1,6 +1,9 @@
 package comp3350.teachreach.logic.interfaces;
 
-import comp3350.teachreach.logic.account.exceptions.AccountManagerException;
+import comp3350.teachreach.logic.exceptions.AccountManagerException;
+import comp3350.teachreach.logic.exceptions.InvalidCredentialException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 
 public
 interface IAccountManager
@@ -16,8 +19,8 @@ interface IAccountManager
 
     IAccountManager updatePassword(String oldPlainPasswordFromUser,
                                    String newPlainPasswordFromUser)
-            throws AccountManagerException;
+            throws InvalidCredentialException, InvalidPasswordException, AccountManagerException;
 
     IAccountManager updateEmail(String password, String newEmail)
-            throws AccountManagerException;
+            throws AccountManagerException, InvalidCredentialException, InvalidPasswordException, InvalidEmailException;
 }

@@ -18,7 +18,6 @@ class BookingActivity extends AppCompatActivity
 {
     private FragmentManager fragmentManager;
     private TextView        dateDisplay;
-    private MaterialButton  reviewBookingButton;
 
     private String timeSlot;
 
@@ -30,6 +29,8 @@ class BookingActivity extends AppCompatActivity
         setContentView(R.layout.activity_booking);
 
         dateDisplay = findViewById(R.id.dateDisplayTextView);
+        MaterialButton reviewBookingButton = findViewById(R.id.review_booking_button);
+
         dateDisplay.setVisibility(View.GONE);
         reviewBookingButton.setEnabled(false);
 

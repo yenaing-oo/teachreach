@@ -7,7 +7,7 @@ interface IStudent
 
     IStudent setStudentID(int studentID);
 
-    int getStudentAccountID();
+    int getAccountID();
 
-    IStudent setStudentAccountID(int accountID);
+    void setAccountID(int accountID);
 }
