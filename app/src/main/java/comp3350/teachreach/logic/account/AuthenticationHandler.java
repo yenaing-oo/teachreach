@@ -6,6 +6,7 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.DAOs.DataAccessException;
 import comp3350.teachreach.logic.exceptions.InvalidCredentialException;
 import comp3350.teachreach.logic.interfaces.IAuthenticationHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -46,20 +47,22 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 
     @Override
     public ITutor authenticateTutor(String email, String plainPassword) throws InvalidCredentialException {
-        IAccount account = authenticateUser(email, plainPassword);
-        if (account.getTutorID() == -1) {
+        try {
+            IAccount account = authenticateUser(email, plainPassword);
+            return tutorAccess.getTutorByAccountID(account.getAccountID());
+        } catch (DataAccessException e) {
             throw new InvalidCredentialException("Invalid username or password");
         }
-        return tutorAccess.getTutorByAccountID(account.getAccountID());
     }
 
     @Override
     public IStudent authenticateStudent(String email, String plainPassword) throws InvalidCredentialException {
-        IAccount account = authenticateUser(email, plainPassword);
-        if (account.getStudentID() == -1) {
+        try {
+            IAccount account = authenticateUser(email, plainPassword);
+            return studentAccess.getStudentByAccountID(account.getAccountID());
+        } catch (DataAccessException e) {
             throw new InvalidCredentialException("Invalid username or password");
         }
-        return studentAccess.getStudentByAccountID(account.getAccountID());
     }
 
 

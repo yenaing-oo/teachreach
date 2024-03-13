@@ -37,9 +37,7 @@ class AccessTutors
         return Collections.unmodifiableMap(tutors);
     }
 
-    public
-    ITutor getTutorByAccountID(int accountID)
-    {
+    public ITutor getTutorByAccountID(int accountID) throws DataAccessException {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
         }
