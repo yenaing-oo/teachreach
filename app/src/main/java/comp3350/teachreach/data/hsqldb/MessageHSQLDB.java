@@ -43,10 +43,10 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
 
     @Override
-    public void createGroup(int studentAccountID, int tutorAccountID){
+    public int createGroup(int studentAccountID, int tutorAccountID){
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO CHAT_GROUPS(studentAccountID, tutorAccountID) VALUES(?, ?)",
+                    "INSERT INTO CHAT_GROUPS(STUDENT_ACCOUNT_ID, TUTOR_ACCOUNT_ID) VALUES(?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             pst.setInt(1,  studentAccountID);
             pst.setInt(2, tutorAccountID);
@@ -57,13 +57,15 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
                 c.close();
                 throw new PersistenceException("Chat Group mightn't be stored!");
             }
+            final ResultSet rs = pst.getGeneratedKeys();
+            return rs.getInt(1);
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public void storeMessage(int groupID, int senderAccountID, String message){
+    public IMessage storeMessage(int groupID, int senderAccountID, String message){
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES( group_ID, sender_ID, message"+
                     "VALUES()) VALUES(?,?,?) ");
@@ -71,13 +73,18 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
             pst.setInt(2, senderAccountID);
             pst.setString(3, message);
 
-            pst.executeUpdate();
-            boolean success = pst.executeUpdate() == 1;
-            pst.close();
-            if (!success) {
-                c.close();
-                throw new PersistenceException("Message mightn't be stored!");
+            final ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                pst.close();
+                rs.close();
+                return fromResultSet(rs);
             }
+            else {
+                rs.close();
+                c.close();
+                throw new PersistenceException("Message not generated!");
+            }
+
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }

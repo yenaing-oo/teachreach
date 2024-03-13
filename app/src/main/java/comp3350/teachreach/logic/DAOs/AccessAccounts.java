@@ -18,14 +18,14 @@ class AccessAccounts
     AccessAccounts()
     {
         accountPersistence = Server.getAccountDataAccess();
-        accounts           = accountPersistence.getAccounts();
+//        accounts           = accountPersistence.getAccounts();
     }
 
     public
     AccessAccounts(final IAccountPersistence accountPersistence)
     {
         AccessAccounts.accountPersistence = accountPersistence;
-        accounts                          = accountPersistence.getAccounts();
+//        accounts                          = accountPersistence.getAccounts();
     }
 
     public
@@ -63,7 +63,7 @@ class AccessAccounts
     {
         try {
             newAccount = accountPersistence.storeAccount(newAccount);
-            accounts   = accountPersistence.getAccounts();
+       //     accounts   = accountPersistence.getAccounts();
             return newAccount;
         } catch (final Exception e) {
             throw new DataAccessException("Error storing new Account", e);

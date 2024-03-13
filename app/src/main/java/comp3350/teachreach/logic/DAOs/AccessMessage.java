@@ -1,18 +1,16 @@
 package comp3350.teachreach.logic.DAOs;
 
 import java.util.List;
-import java.util.Map;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IMessagePersistence;
-import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.IMessage;
 
 public class AccessMessage {
 
     private static IMessagePersistence messagePersistence;
-   // private static Map<String, ICourse> courses = null;
+
+
 
     public
     AccessMessage ()
@@ -27,9 +25,9 @@ public class AccessMessage {
 
     }
 
-    public  void createGroup(int studentAccountID, int tutorAccountID){
+    public int createGroup(int studentAccountID, int tutorAccountID){
         try{
-            messagePersistence.createGroup(studentAccountID,tutorAccountID);
+             return messagePersistence.createGroup(studentAccountID,tutorAccountID);
         }
         catch (final Exception e) {
             throw new DataAccessException("Group might've already exist!", e);
@@ -38,9 +36,9 @@ public class AccessMessage {
 
 
 
-    public void storeMessage(int groupID, int senderAccountID, String message){
+    public IMessage storeMessage(int groupID, int senderAccountID, String message){
         try{
-            messagePersistence.storeMessage(groupID,senderAccountID,message);
+            return messagePersistence.storeMessage(groupID,senderAccountID,message);
         }
         catch (final Exception e) {
             throw new DataAccessException("Exception on storing Message!", e);
