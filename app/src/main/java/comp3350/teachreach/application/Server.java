@@ -2,6 +2,7 @@ package comp3350.teachreach.application;
 
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.hsqldb.CourseHSQLDB;
+import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutorAvailabilityHSQLDB;
@@ -10,6 +11,7 @@ import comp3350.teachreach.data.hsqldb.TutorLocationHSQLDB;
 import comp3350.teachreach.data.hsqldb.TutoredCoursesHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
+import comp3350.teachreach.data.interfaces.IMessagePersistence;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
@@ -29,6 +31,7 @@ class Server
     private static ITutoredCoursesPersistence tutoredCourseAccess;
     private static ITutorLocationPersistence tutorLocationAccess;
 
+    private static IMessagePersistence messageAccess;
     public static synchronized
     IAccountPersistence getAccountDataAccess()
     {
@@ -93,5 +96,14 @@ class Server
             tutorAvailabilityAccess = new TutorAvailabilityHSQLDB(TRData.getDBPathName());
         }
         return tutorAvailabilityAccess;
+    }
+
+    public static synchronized
+    IMessagePersistence getMessageDataAccess()
+    {
+        if (messageAccess == null) {
+            messageAccess = new MessageHSQLDB(TRData.getDBPathName());
+        }
+        return messageAccess;
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 import comp3350.teachreach.objects.Message;
 import comp3350.teachreach.objects.interfaces.IMessage;
 
-public class MessageHSQLDB {
+public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessagePersistence {
     private final String dbPath;
 
     public
@@ -42,6 +42,7 @@ public class MessageHSQLDB {
     }
 
 
+    @Override
     public void createGroup(int studentAccountID, int tutorAccountID){
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
@@ -61,6 +62,7 @@ public class MessageHSQLDB {
         }
     }
 
+    @Override
     public void storeMessage(int groupID, int senderAccountID, String message){
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES( group_ID, sender_ID, message"+
@@ -83,6 +85,7 @@ public class MessageHSQLDB {
 
 
 
+    @Override
     public int searchGroupByIDs(int studentAccountID, int tutorAccountID){
         final int resultGroupID;
         try (final Connection c = this.connection()) {
@@ -106,6 +109,7 @@ public class MessageHSQLDB {
         }
     }
 
+    @Override
     public List<IMessage> retrieveAllMessageByGroupID(int groupID){
         List<IMessage> resultMessages = new ArrayList<>();
         try(final Connection c = connection()){
@@ -128,8 +132,9 @@ public class MessageHSQLDB {
     //public void deleteMessage(){}
 
 
+///Modifies Message
 
 
-    public void deleteGroup(){}
+ //   public void deleteGroup(){}
 
 }
