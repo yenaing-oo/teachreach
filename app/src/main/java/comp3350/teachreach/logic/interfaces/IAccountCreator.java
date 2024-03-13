@@ -1,22 +1,24 @@
 package comp3350.teachreach.logic.interfaces;
 
-import comp3350.teachreach.logic.account.AccountCreatorException;
-import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
+import comp3350.teachreach.logic.exceptions.AccountCreatorException;
+import comp3350.teachreach.logic.exceptions.InvalidNameException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface IAccountCreator {
-    IAccountCreator createAccount(
-            String email,
-            String password) throws AccountCreatorException;
+public
+interface IAccountCreator {
+    IStudent createStudentAccount(String email,
+                                  String password,
+                                  String name,
+                                  String pronouns,
+                                  String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException;
 
-    IAccountCreator setStudentProfile(
-            String username,
-            String major,
-            String pronoun) throws RuntimeException;
-
-    IAccountCreator setTutorProfile(
-            String username,
-            String major,
-            String pronoun) throws RuntimeException;
-
-    IAccount buildAccount() throws AccountCreatorException;
+    ITutor createTutorAccount(String email,
+                              String password,
+                              String name,
+                              String pronouns,
+                              String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException;
 }

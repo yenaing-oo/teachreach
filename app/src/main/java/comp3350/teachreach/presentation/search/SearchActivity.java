@@ -24,22 +24,29 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.SearchSortHandler;
+import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
-public class SearchActivity extends AppCompatActivity implements ITutorRecyclerView, SortDialogFragment.SortDialogListener {
+public
+class SearchActivity extends AppCompatActivity
+        implements ITutorRecyclerView, SortDialogFragment.SortDialogListener
+{
 
-    private SearchSortHandler handler;
-    private List<ITutor> tutorList;
-    private ArrayList<String> courseStringList;
+    private ISearchSortHandler        searchSortHandler;
+    private List<ITutor>              tutors;
+    private List<ICourse>             courses;
+    private List<String>              courseStringList;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
-    private AutoCompleteTextView autoCompleteTextView;
-    private long backPressedTime;
+    private AutoCompleteTextView      autoCompleteTextView;
+    private long                      backPressedTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
@@ -47,9 +54,12 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         Button sortButton = findViewById(R.id.sortButton);
 
-        handler = new SearchSortHandler();
-        tutorList = Server.getTutorDataAccess().getTutors();
-        courseStringList = new ArrayList<>();
+        searchSortHandler = new SearchSortHandler();
+        tutors            = new ArrayList<>(Server
+                                                    .getTutorDataAccess()
+                                                    .getTutors()
+                                                    .values());
+        courseStringList  = new ArrayList<>();
 
         setUpCourseList();
         setUpAutoCompleteTextView();
@@ -58,97 +68,130 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         setUpRecyclerView(recyclerView);
         setUpBackButtonHandler();
 
-        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(
+                true /* enabled by default */)
+        {
             @Override
-            public void handleOnBackPressed() {
+            public
+            void handleOnBackPressed()
+            {
                 backIsPressed();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private void setUpCourseList() {
-        List<ICourse> courses = handler.getListOfCourses();
+    private
+    void setUpCourseList()
+    {
+        courses = searchSortHandler.getCourses();
         for (int i = 0; i < courses.size(); i++) {
             courseStringList.add(courses.get(i).getCourseCode());
         }
     }
 
-    private void setUpAutoCompleteTextView() {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, courseStringList);
+    private
+    void setUpAutoCompleteTextView()
+    {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                                                               android.R.layout.simple_list_item_1,
+                                                               courseStringList);
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setThreshold(2);
-        autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
+        autoCompleteTextView.setOnItemClickListener((parent, view, position,
+                                                     id) -> {
             autoCompleteTextView.clearFocus();
-            String selectedCourse = (String) parent.getItemAtPosition(position);
+            ICourse selectedCourse = courses.get(position);
             updateTutorList(selectedCourse);
         });
     }
 
-    private void populateTutors() {
-        tutorList = handler.getListOfTutors();
+    private
+    void populateTutors()
+    {
+        tutors = searchSortHandler.getTutors();
     }
 
-    private void updateTutorList(String selectedCourse) {
-        tutorList = handler.searchTutorByCourse(selectedCourse);
+    private
+    void updateTutorList(ICourse selectedCourse)
+    {
+        tutors = searchSortHandler.getTutorsByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private void setUpRecyclerView(RecyclerView recyclerView) {
-        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this, tutorList, this);
+    private
+    void setUpRecyclerView(RecyclerView recyclerView)
+    {
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this,
+                                                                  tutors,
+                                                                  this);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void setUpBackButtonHandler() {
-        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true /* enabled by default */) {
+    private
+    void setUpBackButtonHandler()
+    {
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(
+                true /* enabled by default */)
+        {
             @Override
-            public void handleOnBackPressed() {
+            public
+            void handleOnBackPressed()
+            {
                 backIsPressed();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private void sortTutors(SortCriteria sortCriteria) throws Exception {
+    private
+    void sortTutors(SortCriteria sortCriteria)
+    {
 
         switch (sortCriteria) {
             case HIGHEST_RATING:
-//                tutorList = handler.getTutorsByHighestRating();
+                tutors = searchSortHandler.getTutorsByRating();
                 break;
             case HOURLY_RATE_ASCENDING:
-//                tutorList = handler.getTutorsByHourlyRateAsc();
+                tutors = searchSortHandler.getTutorsByHourlyRateAsc();
                 break;
             case HOURLY_RATE_DESCENDING:
-//                tutorList = handler.getTutorsByHourlyRateDesc();
+                tutors = searchSortHandler.getTutorsByHourlyRateDesc();
                 break;
             default:
-                throw new Exception("Unable to handle sort critera: " + sortCriteria);
+                break;
         }
 
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
-
     }
 
     @Override
-    public void onTutorItemClick(int position) {
+    public
+    void onTutorItemClick(int position)
+    {
         Intent intent = new Intent(this, TutorProfileActivity.class);
-        intent.putExtra("TUTOR_EMAIL_KEY", tutorList.get(position).getEmail());
+        intent.putExtra("TUTOR_ID", tutors.get(position).getTutorID());
         startActivity(intent);
     }
 
     @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
+    public
+    boolean dispatchTouchEvent(MotionEvent event)
+    {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
             if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(),
+                                      (int) event.getRawY())) {
                     v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm
+                            =
+                            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 }
             }
@@ -156,26 +199,38 @@ public class SearchActivity extends AppCompatActivity implements ITutorRecyclerV
         return super.dispatchTouchEvent(event);
     }
 
-    public void openDialog() {
+    public
+    void openDialog()
+    {
         SortDialogFragment sortDialogFragment = new SortDialogFragment();
         sortDialogFragment.show(getSupportFragmentManager(), "Sort Dialog");
     }
 
     @Override
-    public void applySort(SortCriteria sortCriteria) {
+    public
+    void applySort(SortCriteria sortCriteria)
+    {
+        sortTutors(sortCriteria);
     }
 
-    private void backIsPressed() {
-        // Check if back button was pressed within a certain interval (e.g., 2 seconds)
+    private
+    void backIsPressed()
+    {
+        // Check if back button was pressed within a certain interval (e.g.,
+        // 2 seconds)
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             // If back button was pressed within the interval, exit the app
             finishAffinity();
         } else {
-            // Otherwise, display a toast message indicating to press back again to exit
-            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            // Otherwise, display a toast message indicating to press back
+            // again to exit
+            Toast
+                    .makeText(this,
+                              "Press back again to exit",
+                              Toast.LENGTH_SHORT)
+                    .show();
         }
         // Update the back press time
         backPressedTime = System.currentTimeMillis();
     }
-
 }

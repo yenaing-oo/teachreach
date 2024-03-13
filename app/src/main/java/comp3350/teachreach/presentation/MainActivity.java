@@ -20,45 +20,56 @@ import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.presentation.login.StudentLoginActivity;
 import comp3350.teachreach.presentation.login.TutorLoginActivity;
 
-public class MainActivity extends AppCompatActivity {
+public
+class MainActivity extends AppCompatActivity
+{
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
-        Button btnTutor = findViewById(R.id.btnTutor);
+        Button btnTutor   = findViewById(R.id.btnTutor);
 
-
-        btnStudent.setOnClickListener(new View.OnClickListener() {
+        btnStudent.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StudentLoginActivity.class);
-
+            public
+            void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this,
+                                           StudentLoginActivity.class);
 
                 startActivity(intent);
             }
         });
 
-// // Listener for the tutor button
+        // // Listener for the tutor button
 
-        btnTutor.setOnClickListener(new View.OnClickListener() {
+        btnTutor.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TutorLoginActivity.class);
+            public
+            void onClick(View v)
+            {
+                Intent intent = new Intent(MainActivity.this,
+                                           TutorLoginActivity.class);
                 startActivity(intent);
             }
         });
-
     }
 
-    private void copyDatabaseToDevice() {
+    private
+    void copyDatabaseToDevice()
+    {
         final String DB_PATH = "db";
 
         String[] assetNames;
-        Context context = getApplicationContext();
+        Context  context = getApplicationContext();
         File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
         AssetManager assetManager = getAssets();
 
@@ -71,30 +82,37 @@ public class MainActivity extends AppCompatActivity {
 
             copyAssetsToDirectory(assetNames, dataDirectory);
 
-            TRData.setDBPathName(dataDirectory.toString() + "/" + TRData.getDBPathName());
-
+            TRData.setDBPathName(
+                    dataDirectory.toString() + "/" + TRData.getDBPathName());
         } catch (final IOException ioe) {
-            Toast.makeText(
-                    this,
-                    "Unable to access application data: " + ioe.getMessage(),
-                    Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "Unable to access application data: " +
+                              ioe.getMessage(),
+                              Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
-    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException {
+    public
+    void copyAssetsToDirectory(String[] assets, File directory)
+            throws IOException
+    {
         AssetManager assetManager = getAssets();
 
         for (String asset : assets) {
             String[] components = asset.split("/");
-            String copyPath = directory.toString() + "/" + components[components.length - 1];
+            String copyPath = directory.toString() + "/" +
+                              components[components.length - 1];
 
             char[] buffer = new char[1024];
-            int count;
+            int    count;
 
             File outFile = new File(copyPath);
 
             if (!outFile.exists()) {
-                InputStreamReader in = new InputStreamReader(assetManager.open(asset));
+                InputStreamReader in = new InputStreamReader(assetManager.open(
+                        asset));
                 FileWriter out = new FileWriter(outFile);
 
                 count = in.read(buffer);

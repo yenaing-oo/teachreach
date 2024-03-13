@@ -6,98 +6,115 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
-import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SessionHSQLDB implements ISessionPersistence {
+public
+class SessionHSQLDB implements ISessionPersistence
+{
     private final String dbPath;
 
-    public SessionHSQLDB(final String dbPath) {
+    public
+    SessionHSQLDB(final String dbPath)
+    {
         this.dbPath = dbPath;
     }
 
-    private Connection connection() throws SQLException {
-        return DriverManager.getConnection(
-                "jdbc:hsqldb:file:" + dbPath + ";shutdown=true",
-                "SA", "");
+    private
+    Connection connection() throws SQLException
+    {
+        return DriverManager.getConnection(String.format(
+                "jdbc:hsqldb:file:%s;shutdown=true",
+                dbPath), "SA", "");
     }
 
-    private ISession fromResultSet(final ResultSet rs) throws SQLException {
-        return null;
-    }
-
-    private Optional<ISession> fromResultSetWithinRange(
-            final ResultSet rs, final TimeSlice range) throws SQLException {
-        ISession resultSession;
-        final Instant startTime = ((OffsetDateTime) rs
-                .getObject("start_date_time"))
-                .toInstant();
-        final Instant endTime = ((OffsetDateTime) rs
-                .getObject("end_date_time"))
-                .toInstant();
-        final TimeSlice sessionTime = new TimeSlice(
-                startTime, endTime
-        );
-        resultSession = range.canContain(sessionTime) ? fromResultSet(rs) : null;
-        return Optional.ofNullable(resultSession);
+    private
+    ISession fromResultSet(final ResultSet rs) throws SQLException
+    {
+        final int       studentID      = rs.getInt("student_id");
+        final int       tutorID        = rs.getInt("tutor_id");
+        final int       sessionID      = rs.getInt("session_id");
+        final boolean   acceptedStatus = rs.getBoolean("accepted");
+        final Timestamp startTimestamp = rs.getTimestamp("start_date_time");
+        final Timestamp endTimestamp   = rs.getTimestamp("end_time_stamp");
+        final String    location       = rs.getString("location");
+        ISession resultSession = new Session(sessionID,
+                                             studentID,
+                                             tutorID,
+                                             new TimeSlice(startTimestamp.toInstant(),
+                                                           endTimestamp.toInstant()),
+                                             location);
+        return acceptedStatus ? resultSession.approvedByTutor() : resultSession;
     }
 
     @Override
-    public ISession storeSession(
-            IStudent theStudent, ITutor theTutor,
-            TimeSlice sessionTime, String location) {
+    public
+    ISession storeSession(int studentID,
+                          int tutorID,
+                          TimeSlice sessionTime,
+                          String location)
+    {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO SESSION" +
-                            "(STUDENT_EMAIL, TUTOR_EMAIL, " +
-                            "START_DATE_TIME, END_DATE_TIME, " +
-                            "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
+                    "INSERT INTO SESSIONS(STUDENT_ID, TUTOR_ID, " +
+                    "START_DATE_TIME, END_DATE_TIME, " +
+                    "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setString(1, theStudent.getEmail());
-            pst.setString(2, theTutor.getEmail());
-            pst.setObject(3,
-                    OffsetDateTime.ofInstant(
-                            sessionTime.getStartTime(), ZoneId.systemDefault()));
-            pst.setObject(4,
-                    OffsetDateTime.ofInstant(
-                            sessionTime.getEndTime(), ZoneId.systemDefault()));
+            pst.setInt(1, studentID);
+            pst.setInt(2, tutorID);
+            pst.setTimestamp(3, sessionTime.getStartTimestamp());
+            pst.setTimestamp(4, sessionTime.getEndTimestamp());
             pst.setString(5, location);
             pst.setBoolean(6, false);
-            assert (pst.executeUpdate() == 1);
-
-            ResultSet generatedSessionID = pst.getGeneratedKeys();
-            pst.close();
-            if (generatedSessionID.next()) {
-                int sessionID = generatedSessionID.getInt(1);
-                generatedSessionID.close();
-                return new Session(
-                        theStudent, theTutor, sessionTime, location)
-                        .setSessionID(sessionID);
-            } else {
-                throw new SQLException("Failed while storing Session");
+            final boolean success = pst.executeUpdate() == 1;
+            if (!success) {
+                throw new PersistenceException(
+                        "New session mightn't be " + "stored!");
             }
-        } catch (final SQLException e) {
+            final ResultSet rs = pst.getGeneratedKeys();
+            pst.close();
+            if (rs.next()) {
+                int sessionID = rs.getInt(1);
+                rs.close();
+                return new Session(sessionID,
+                                   studentID,
+                                   tutorID,
+                                   sessionTime,
+                                   location);
+            } else {
+                rs.close();
+                c.close();
+                throw new PersistenceException("SessionID not generated!");
+            }
+        } catch (final Exception e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public boolean deleteSession(ISession session) {
+    public
+    ISession storeSession(ISession newSession)
+    {
+        return this.storeSession(newSession.getSessionStudentID(),
+                                 newSession.getSessionTutorID(),
+                                 newSession.getTime(),
+                                 newSession.getSessionLocation());
+    }
+
+    @Override
+    public
+    boolean deleteSession(int sessionID)
+    {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "DELETE FROM session WHERE session_id = ?");
-            pst.setInt(1, session.getSessionID());
+                    "DELETE FROM sessions WHERE SESSION_ID = ?");
+            pst.setInt(1, sessionID);
             boolean success = pst.executeUpdate() == 1;
             pst.close();
             return success;
@@ -107,88 +124,51 @@ public class SessionHSQLDB implements ISessionPersistence {
     }
 
     @Override
-    public boolean updateSession(ISession session) {
+    public
+    ISession updateSession(ISession session)
+    {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "UPDATE session " +
-                            "SET student_email = ?, tutor_email = ?, " +
-                            "start_date_time = ?, end_date_time = ?, " +
-                            "location = ?, accepted = ?" +
-                            "WHERE session_id = ?");
+                    "UPDATE sessions SET STUDENT_ID = ?, TUTOR_ID = ?, " +
+                    "start_date_time = ?, end_date_time = ?, location = ?, " +
+                    "accepted = ? WHERE session_id = ?");
             TimeSlice sessionTime = session.getTime();
-            pst.setString(1, session.getStudent().getEmail());
-            pst.setString(2, session.getTutor().getEmail());
-            pst.setObject(3, OffsetDateTime.ofInstant(
-                    sessionTime.getStartTime(), ZoneId.systemDefault()));
-            pst.setObject(4, OffsetDateTime.ofInstant(
-                    sessionTime.getEndTime(), ZoneId.systemDefault()));
-            pst.setString(5, session.getLocation());
-            pst.setBoolean(6, session.getStage());
+            pst.setInt(1, session.getSessionStudentID());
+            pst.setInt(2, session.getSessionTutorID());
+            pst.setObject(3, sessionTime.getStartTimestamp());
+            pst.setObject(4, sessionTime.getEndTimestamp());
+            pst.setString(5, session.getSessionLocation());
+            pst.setBoolean(6, session.getAcceptedStatus());
             pst.setInt(7, session.getSessionID());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
-            return success;
+            if (!success) {
+                c.close();
+                throw new PersistenceException("Session mightn't be updated!");
+            }
+            return session;
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public List<ISession> getSessionsByRangeForStudent(
-            String userEmail, TimeSlice range) {
-        final List<ISession> sessions = new ArrayList<>();
+    public
+    Map<Integer, ISession> getSessions()
+    {
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM session " +
-                            "WHERE student_email = ?");
-            final ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
-            }
-            pst.close();
-            rs.close();
-            return sessions;
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
+            final Statement st = c.createStatement();
+            final ResultSet rs = st.executeQuery("SELECT * FROM sessions");
 
-    @Override
-    public List<ISession> getSessionsByRangeForTutor(
-            String userEmail, TimeSlice range) {
-        final List<ISession> sessions = new ArrayList<>();
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM session WHERE tutor_email = ?");
-            final ResultSet rs = pst.executeQuery();
+            Map<Integer, ISession> resultMap = new HashMap<>();
             while (rs.next()) {
-                fromResultSetWithinRange(rs, range).ifPresent(sessions::add);
+                final ISession resultSession = fromResultSet(rs);
+                resultMap.put(resultSession.getSessionID(), resultSession);
             }
-            pst.close();
             rs.close();
-            return sessions;
-        } catch (final SQLException e) {
-            throw new PersistenceException(e);
-        }
-    }
-
-    @Override
-    public List<ISession> getPendingSessionRequests(String userEmail) {
-        final List<ISession> sessions = new ArrayList<>();
-        try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM session " +
-                            "WHERE tutor_email = ? AND accepted = ?");
-            pst.setString(1, userEmail);
-            pst.setBoolean(2, false);
-            final ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                sessions.add(fromResultSet(rs));
-            }
-            pst.close();
-            rs.close();
-            return sessions;
-        } catch (final SQLException e) {
+            st.close();
+            return resultMap;
+        } catch (final Exception e) {
             throw new PersistenceException(e);
         }
     }

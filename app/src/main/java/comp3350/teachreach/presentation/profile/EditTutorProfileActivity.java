@@ -9,56 +9,78 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.logic.interfaces.ITutorProfile;
-import comp3350.teachreach.logic.profile.TutorProfile;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 
-public class EditTutorProfileActivity extends AppCompatActivity {
+public
+class EditTutorProfileActivity extends AppCompatActivity
+{
 
     private EditText etPrice, etPreferredLocation;
     private Button btnSaveChanges;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_tutor_profile);
 
-        etPrice = findViewById(R.id.etPrice);
+        etPrice             = findViewById(R.id.etPrice);
         etPreferredLocation = findViewById(R.id.etPreferredLocation);
-        btnSaveChanges = findViewById(R.id.btnSaveChanges);
+        btnSaveChanges      = findViewById(R.id.btnSaveChanges);
 
-        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
-        ITutorProfile tutorProfile = new TutorProfile(tutorEmail);
+        int tutorID = getIntent().getIntExtra("TUTOR_EMAIL_KEY", -1);
+        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutorID);
 
         initializeFields(tutorProfile);
 
-        btnSaveChanges.setOnClickListener(view -> saveProfileChanges(tutorProfile));
+        btnSaveChanges.setOnClickListener(view -> saveProfileChanges(
+                tutorProfile));
     }
 
-    private void initializeFields(ITutorProfile tutorProfile) {
-        etPrice.setText(String.format("%.2f", tutorProfile.getHourlyRate()));
-        String preferredLocations = String.join(", ", tutorProfile.getPreferredLocations());
+    private
+    void initializeFields(ITutorProfileHandler tutorProfile)
+    {
+        etPrice.setText(String.format(Locale.US,
+                                      "%.2f",
+                                      tutorProfile.getHourlyRate()));
+        String preferredLocations = String.join(", ",
+                                                tutorProfile.getPreferredLocations());
         etPreferredLocation.setText(preferredLocations);
     }
 
-    private void saveProfileChanges(ITutorProfile tutorProfile) {
+    private
+    void saveProfileChanges(ITutorProfileHandler tutorProfile)
+    {
         try {
             double price = Double.parseDouble(etPrice.getText().toString());
             tutorProfile.setHourlyRate(price);
 
-            List<String> locations = Arrays.stream(etPreferredLocation.getText().toString().split("\\s*,\\s*"))
+            List<String> locations = Arrays
+                    .stream(etPreferredLocation
+                                    .getText()
+                                    .toString()
+                                    .split("\\s*,\\s*"))
                     .collect(Collectors.toList());
             tutorProfile.addPreferredLocations(locations);
 
-            tutorProfile.updateUserProfile();
+            tutorProfile.updateTutorProfile();
 
-            Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this,
+                              "Profile updated successfully",
+                              Toast.LENGTH_SHORT)
+                    .show();
             finish();
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid price format", Toast.LENGTH_SHORT).show();
+            Toast
+                    .makeText(this, "Invalid price format", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 }

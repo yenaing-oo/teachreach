@@ -13,37 +13,52 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.profile.TutorProfile;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
-public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder> {
+public
+class SearchRecyclerViewAdapter
+        extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder>
+{
 
     private final ITutorRecyclerView recyclerViewInterface;
-    Context context;
+    Context      context;
     List<ITutor> tutorList;
 
-    public SearchRecyclerViewAdapter(Context context,
-                                     List<ITutor> tutorList,
-                                     ITutorRecyclerView recyclerViewInterface
-    ) {
-        this.context = context;
-        this.tutorList = tutorList;
+    public
+    SearchRecyclerViewAdapter(Context context,
+                              List<ITutor> tutorList,
+                              ITutorRecyclerView recyclerViewInterface)
+    {
+        this.context               = context;
+        this.tutorList             = tutorList;
         this.recyclerViewInterface = recyclerViewInterface;
     }
 
     @NonNull
     @Override
-    public SearchRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public
+    SearchRecyclerViewAdapter.MyViewHolder onCreateViewHolder(
+            @NonNull ViewGroup parent, int viewType)
+    {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.search_result_recycler_view_row, parent, false);
+        View view = inflater.inflate(R.layout.search_result_recycler_view_row,
+                                     parent,
+                                     false);
 
-        return new SearchRecyclerViewAdapter.MyViewHolder(view, recyclerViewInterface);
+        return new SearchRecyclerViewAdapter.MyViewHolder(view,
+                                                          recyclerViewInterface);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchRecyclerViewAdapter.MyViewHolder holder, int position) {
-        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(new TutorProfile(tutorList.get(position)));
+    public
+    void onBindViewHolder(
+            @NonNull SearchRecyclerViewAdapter.MyViewHolder holder,
+            int position)
+    {
+        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
+                new TutorProfileHandler(tutorList.get(position)));
         holder.imageView.setImageResource(R.drawable.user_icon);
         holder.tvUserName.setText(tutorProfileFormatter.getName());
         holder.tvRating.setText(tutorProfileFormatter.getRating());
@@ -51,21 +66,27 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     }
 
     @Override
-    public int getItemCount() {
+    public
+    int getItemCount()
+    {
         return tutorList.size();
     }
 
-    static class MyViewHolder extends RecyclerView.ViewHolder {
-
+    static
+    class MyViewHolder extends RecyclerView.ViewHolder
+    {
         ImageView imageView;
-        TextView tvUserName, tvRating, tvHourlyRate;
+        TextView  tvUserName, tvRating, tvHourlyRate;
 
-        public MyViewHolder(@NonNull View itemView, ITutorRecyclerView recyclerViewInterface) {
+        public
+        MyViewHolder(@NonNull View itemView,
+                     ITutorRecyclerView recyclerViewInterface)
+        {
             super(itemView);
 
-            imageView = itemView.findViewById(R.id.tutorImage);
-            tvUserName = itemView.findViewById(R.id.timeSlotText);
-            tvRating = itemView.findViewById(R.id.tutorRating);
+            imageView    = itemView.findViewById(R.id.tutorImage);
+            tvUserName   = itemView.findViewById(R.id.timeSlotText);
+            tvRating     = itemView.findViewById(R.id.tutorRating);
             tvHourlyRate = itemView.findViewById(R.id.tutorHourlyRate);
 
             itemView.setOnClickListener(v -> {

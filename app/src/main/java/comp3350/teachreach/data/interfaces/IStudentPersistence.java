@@ -1,13 +1,15 @@
 package comp3350.teachreach.data.interfaces;
 
-import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.objects.interfaces.IStudent;
 
-public interface IStudentPersistence {
+public
+interface IStudentPersistence
+{
     IStudent storeStudent(IStudent newStudent);
 
-    IStudent updateStudent(IStudent newStudent);
+    IStudent storeStudent(int accountID);
 
-    List<IStudent> getStudents();
+    Map<Integer, IStudent> getStudents();
 }

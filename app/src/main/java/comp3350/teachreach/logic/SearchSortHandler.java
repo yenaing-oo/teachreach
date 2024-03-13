@@ -1,175 +1,196 @@
 package comp3350.teachreach.logic;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
+import comp3350.teachreach.logic.DAOs.AccessCourses;
+import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SearchSortHandler {
-    private final ITutorPersistence dataAccessTutor;
-    private final ICoursePersistence dataAccessCourse;
+public
+class SearchSortHandler implements ISearchSortHandler
+{
+    private final AccessTutoredCourses accessTutoredCourses;
+    private final AccessTutors         accessTutors;
+    private final AccessCourses        accessCourses;
 
-    public SearchSortHandler() {
-        dataAccessTutor = Server.getTutorDataAccess();
-        dataAccessCourse = Server.getCourseDataAccess();
+    public
+    SearchSortHandler()
+    {
+        accessTutoredCourses = new AccessTutoredCourses();
+        accessTutors         = new AccessTutors();
+        accessCourses        = new AccessCourses();
     }
 
-    public SearchSortHandler(ITutorPersistence tutorDataAccess,
-                             ICoursePersistence courseDataAccess) {
-        dataAccessTutor = tutorDataAccess;
-        dataAccessCourse = courseDataAccess;
+    public
+    SearchSortHandler(ITutoredCoursesPersistence tutoredCoursesDataAccess,
+                      ITutorPersistence tutorPersistence,
+                      ICoursePersistence coursePersistence)
+    {
+        accessTutoredCourses
+                      = new AccessTutoredCourses(tutoredCoursesDataAccess);
+        accessTutors  = new AccessTutors(tutorPersistence);
+        accessCourses = new AccessCourses(coursePersistence);
     }
 
-    public List<ITutor> getListOfTutors() {
-        return dataAccessTutor.getTutors();
+    @Override
+    public
+    List<ITutor> getTutors()
+    {
+        return new ArrayList<>(accessTutors.getTutors().values());
     }
 
-    public List<ICourse> getListOfCourses() {
-        return dataAccessCourse.getCourses();
+    @Override
+    public
+    List<ICourse> getCourses()
+    {
+        return new ArrayList<>(accessCourses.getCourses().values());
     }
 
-//    public ArrayList<Tutor> searchTutorClass(Course course) {
-//        ArrayList<Tutor> output = new ArrayList<Tutor>();
-//        boolean flag = false;
-//        for (int i = 0; i < dataAccessTutor.getTutors().size(); i++) {
-//            ArrayList<Course> tutored = dataAccessTutor.getTutors().get(i).getCourses();
-//            flag = false;
-//            for (int j = 0; j < tutored.size(); j++) {
-//                flag |= tutored.get(j).equals(course);
-//            }
-//            if (flag) {
-//                output.add(dataAccessTutor.getTutors().get(i));
-//            }
-//        }
-//
-//        return output;
-//    }
+    @Override
+    public
+    List<ITutor> getTutorsByCourse(ICourse course)
+    {
 
-//    public ArrayList<Tutor> sortByRating() {
-//        return ratingMergeSort(dataAccessTutor.getTutors());
-//    }
-//
-//    private ArrayList<Tutor> ratingMergeSort(ArrayList<Tutor> tutors) {
-//        if (tutors.size() <= 1) {
-//            return tutors;
-//        } else {
-//            int middle = (tutors.size() - 1) / 2;
-//            ArrayList<Tutor> left = ratingMergeSort((ArrayList<Tutor>) tutors.subList(0, middle));
-//            ArrayList<Tutor> right = ratingMergeSort((ArrayList<Tutor>) tutors.subList(middle + 1, tutors.size() - 1));
-//            return ratingMerge(left, right);
-//        }
-//    }
-//
-//    private ArrayList<Tutor> ratingMerge(ArrayList<Tutor> left, ArrayList<Tutor> right) {
-//        int leftCount = 0;
-//        int rightCount = 0;
-//        ArrayList<Tutor> out = new ArrayList<Tutor>();
-//
-//        while (leftCount < left.size() && rightCount < right.size()) {
-//            if (right.get(rightCount).getRating() > left.get(leftCount).getRating()) {
-//                out.add(right.get(rightCount));
-//                rightCount++;
-//            } else {
-//                out.add(left.get(leftCount));
-//                leftCount++;
-//            }
-//        }
-//        while (leftCount < left.size()) {
-//            out.add(left.get(leftCount));
-//            leftCount++;
-//        }
-//        while (rightCount < right.size()) {
-//            out.add(left.get(leftCount));
-//            rightCount++;
-//        }
-//
-//        return out;
-//    }
+        List<ITutor> allTutors = this.getTutors();
+        return allTutors
+                .stream()
+                .filter(t -> accessTutoredCourses
+                        .getTutoredCoursesByTutorID(t.getTutorID())
+                        .contains(course))
+                .collect(Collectors.toList());
 
-//    public ArrayList<Tutor> sortByPrice() {
-//        return priceMergeSort(dataAccessTutor.getTutors());
-//    }
+        //        for (ITutor tutor : allTutors) {
+        //            List<ICourse> tutoredCourses = .getCourses();
+        //            if (tutoredCourses.contains(course)) {
+        //                output.add(tutor);
+        //            }
+        //        }
+        //
+        //        return output;
+    }
 
-//    private ArrayList<Tutor> priceMergeSort(ArrayList<Tutor> tutors) {
-//        if (dataAccessTutor.getTutors().size() <= 1) {
-//            return dataAccessTutor.getTutors();
-//        } else {
-//            int middle = (dataAccessTutor.getTutors().size() - 1) / 2;
-//            ArrayList<Tutor> left = priceMergeSort((ArrayList<Tutor>) dataAccessTutor.getTutors().subList(0, middle));
-//            ArrayList<Tutor> right = priceMergeSort((ArrayList<Tutor>) dataAccessTutor.getTutors().subList(middle + 1, tutors.size() - 1));
-//            return priceMerge(left, right);
-//        }
-//    }
+    @Override
+    public
+    List<ITutor> getTutorsByRating()
+    {
+        return ratingMergeSort(this.getTutors());
+    }
 
-//    private ArrayList<Tutor> priceMerge(ArrayList<Tutor> left, ArrayList<Tutor> right) {
-//        int leftCount = 0;
-//        int rightCount = 0;
-//        ArrayList<Tutor> out = new ArrayList<Tutor>();
-//
-//        while (leftCount < left.size() && rightCount < right.size()) {
-//            if (right.get(rightCount).getHourlyRate() < left.get(leftCount).getHourlyRate()) {
-//                out.add(right.get(rightCount));
-//                rightCount++;
-//            } else {
-//                out.add(left.get(leftCount));
-//                leftCount++;
-//            }
-//        }
-//        while (leftCount < left.size()) {
-//            out.add(left.get(leftCount));
-//            leftCount++;
-//        }
-//        while (rightCount < right.size()) {
-//            out.add(left.get(leftCount));
-//            rightCount++;
-//        }
-//
-//        return out;
-//    }
+    @Override
+    public
+    List<ITutor> getTutorsByHourlyRateAsc()
+    {
+        return priceMergeSort(this.getTutors());
+    }
 
-//    public ArrayList<Tutor> tutorsByAvail(boolean[][] avail) {
-//        ArrayList<Tutor> out = new ArrayList<Tutor>();
-//        ArrayList<Tutor> copy = dataAccessTutor.getTutors();
-//        for (int i = 0; i < avail.length; i++) {
-//            for (int j = 0; j < avail[i].length; i++) {
-//                if (avail[i][j] && copy.size() > 0) {
-//                    for (int x = copy.size() - 1; x >= 0; x--) {
-//                        if (copy.get(x).getAvailability()[i][j]) {
-//                            out.add(copy.get(x));
-//                            copy.remove(x);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return out;
-//    }
+    @Override
+    public
+    List<ITutor> getTutorsByHourlyRateDesc()
+    {
+        List<ITutor> result = priceMergeSort(this.getTutors());
+        Collections.reverse(result);
+        return result;
+    }
 
-    public List<ITutor> searchTutorByCourse(String courseCode) {
-        return dataAccessTutor.getTutors().stream().filter(tutor ->
-                tutor.getCourses().contains(courseCode)).collect(Collectors.toList());
-//        ArrayList<ITutor> selectedTutor = new ArrayList<>();
-//        ArrayList<ITutor> tutors = dataAccessTutor.getTutors();
-//
-//        for (int i = 0; i < tutors.size(); i++) {
-//            List<ICourse> tutorCourses = tutors.get(i).getCourses();
-//            if (tutorCourses != null) {
-//                int j = 0;
-//                boolean found = false;
-//                while (!found && j < tutorCourses.size()) {
-//                    if (tutorCourses.get(j).getCourseCode().equals((courseCode))) {
-//                        selectedTutor.add(tutors.get(i));
-//                        found = true;
-//                    }
-//                    j++;
-//                }
-//            }
-//        }
-//        return selectedTutor;
+    private
+    List<ITutor> ratingMergeSort(List<ITutor> tutors)
+    {
+        if (tutors.size() <= 1) {
+            return tutors;
+        } else {
+            int          middle = tutors.size() / 2;
+            List<ITutor> left   = ratingMergeSort(tutors.subList(0, middle));
+            List<ITutor> right = ratingMergeSort(tutors.subList(middle,
+                                                                tutors.size()));
+            return ratingMerge(left, right);
+        }
+    }
+
+    private
+    List<ITutor> ratingMerge(List<ITutor> left, List<ITutor> right)
+    {
+        int          leftCount  = 0;
+        int          rightCount = 0;
+        List<ITutor> out        = new ArrayList<>();
+
+        while (leftCount < left.size() && rightCount < right.size()) {
+            ITutorProfileHandler rightTutor = new TutorProfileHandler(right.get(
+                    rightCount));
+            ITutorProfileHandler leftTutor = new TutorProfileHandler(right.get(
+                    leftCount));
+
+            if (rightTutor.getAvgReview() > leftTutor.getAvgReview()) {
+                out.add(right.get(rightCount));
+                rightCount++;
+            } else {
+                out.add(left.get(leftCount));
+                leftCount++;
+            }
+        }
+        while (leftCount < left.size()) {
+            out.add(left.get(leftCount));
+            leftCount++;
+        }
+        while (rightCount < right.size()) {
+            out.add(right.get(rightCount));
+            rightCount++;
+        }
+
+        return out;
+    }
+
+    private
+    List<ITutor> priceMergeSort(List<ITutor> tutors)
+    {
+        if (tutors.size() <= 1) {
+            return tutors;
+        } else {
+            int          middle = (tutors.size() - 1) / 2;
+            List<ITutor> left   = priceMergeSort(tutors.subList(0, middle));
+            List<ITutor> right = priceMergeSort(tutors.subList(middle + 1,
+                                                               tutors.size() -
+                                                               1));
+            return priceMerge(left, right);
+        }
+    }
+
+    private
+    List<ITutor> priceMerge(List<ITutor> left, List<ITutor> right)
+    {
+        int          leftCount  = 0;
+        int          rightCount = 0;
+        List<ITutor> out        = new ArrayList<>();
+
+        while (leftCount < left.size() && rightCount < right.size()) {
+            if (right.get(rightCount).getHourlyRate() <
+                left.get(leftCount).getHourlyRate()) {
+                out.add(right.get(rightCount));
+                rightCount++;
+            } else {
+                out.add(left.get(leftCount));
+                leftCount++;
+            }
+        }
+        while (leftCount < left.size()) {
+            out.add(left.get(leftCount));
+            leftCount++;
+        }
+        while (rightCount < right.size()) {
+            out.add(right.get(rightCount));
+            rightCount++;
+        }
+
+        return out;
     }
 }

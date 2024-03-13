@@ -1,19 +1,17 @@
 package comp3350.teachreach.objects.interfaces;
 
-import comp3350.teachreach.objects.Course;
+public
+interface ICourse
+{
+    String getCourseCode();
 
-public interface ICourse {
+    ICourse setCourseCode(String courseCode);
 
-    public String getCourseCode();
+    String getCourseName();
 
-    public void setCourseCode(String courseCode);
+    ICourse setCourseName(String courseName);
 
-    public String getCourseName();
+    boolean equals(ICourse otherCourse);
 
-    public void setCourseName(String courseName);
-
-    public boolean equals(Course otherCourse);
-
-    @Override
-    public String toString();
+    String toString();
 }

@@ -2,31 +2,30 @@ package comp3350.teachreach.objects.interfaces;
 
 import comp3350.teachreach.objects.TimeSlice;
 
-public interface ISession {
+public
+interface ISession
+{
+    int getSessionStudentID();
 
-    ISession acceptSession();
+    ISession setSessionStudentID(int studentID);
 
-    IStudent getStudent();
+    int getSessionTutorID();
 
-    ISession setStudent(IStudent newStudent);
-
-    ITutor getTutor();
-
-    ISession setTutor(ITutor newTutor);
+    void setSessionTutorID(int tutorID);
 
     int getSessionID();
 
-    ISession setSessionID(int id);
-
-    boolean getStage();
-
-    ISession setStage(boolean decision);
+    ISession setSessionID(int sessionID);
 
     TimeSlice getTime();
 
     ISession setTime(TimeSlice time);
 
-    String getLocation();
+    String getSessionLocation();
 
-    ISession setLocation(String location);
+    ISession setSessionLocation(String location);
+
+    boolean getAcceptedStatus();
+
+    ISession approvedByTutor();
 }
