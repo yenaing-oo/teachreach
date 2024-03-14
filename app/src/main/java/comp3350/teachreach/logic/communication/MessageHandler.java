@@ -13,7 +13,7 @@ import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class MessageHandler implements comp3350.teachreach.logic.interfaces.IMessageHandler {
+public class MessageHandler implements comp3350.teachreach.logic.interfaces.MessageHandler {
     private final AccessMessage accessMessage;
 
     private final AccessStudents accessStudents;
@@ -93,6 +93,7 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.IMes
     }
 
     //custom function1
+    @Override
     public Map<Integer, Map<java.sql.Timestamp, String>> chatHistoryOfGroupV1(int groupID){
         List<IMessage> messages = accessMessage.retrieveAllMessageByGroupID(groupID);
         Map<Integer, Map<java.sql.Timestamp, String>> chatHistory = new HashMap<>();
@@ -116,6 +117,7 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.IMes
     }
 
 
+    @Override
     public Map<java.sql.Timestamp, Map<Integer, String>> chatHistoryOfGroupV2(int groupID){
         List<IMessage> messages = accessMessage.retrieveAllMessageByGroupID(groupID);
         Map<java.sql.Timestamp, Map<Integer, String>> chatHistory = new TreeMap<>();
@@ -137,6 +139,7 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.IMes
 
 
     }
+    @Override
     public Map<Integer, Map<java.sql.Timestamp, String>> chatHistoryOfGroupV3(List<IMessage> messages){
         Map<Integer, Map<java.sql.Timestamp, String>> chatHistory = new HashMap<>();
 
@@ -156,6 +159,7 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.IMes
         return chatHistory;
     }
 
+    @Override
     public Map<java.sql.Timestamp, Map<Integer, String>> chatHistoryOfGroupV4(List<IMessage> messages){
         Map<java.sql.Timestamp, Map<Integer, String>> chatHistory = new TreeMap<>();
 
