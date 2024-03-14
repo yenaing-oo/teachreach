@@ -36,7 +36,7 @@ public class AccessMessage {
 
 
 
-    public IMessage storeMessage(int groupID, int senderAccountID, String message){
+    public int storeMessage(int groupID, int senderAccountID, String message){
         try{
             return messagePersistence.storeMessage(groupID,senderAccountID,message);
         }

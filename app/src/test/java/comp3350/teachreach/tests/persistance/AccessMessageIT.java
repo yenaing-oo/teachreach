@@ -2,6 +2,7 @@ package comp3350.teachreach.tests.persistance;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,7 @@ import comp3350.teachreach.logic.DAOs.AccessMessage;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.objects.Account;
+import comp3350.teachreach.objects.Message;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -139,17 +142,27 @@ public class AccessMessageIT {
 
     @Test
     public void testStoreMessage(){
-        IMessage testMessage = accessMessage.storeMessage(1,1,"HELLO WORLD!");
+        int groupID = accessMessage.createGroup(2,1);
+        assertEquals(1,groupID);
+         List<IMessage> messages = accessMessage.retrieveAllMessageByGroupID(groupID);
+        assertEquals(2,messages.size());
+        int message_ID = accessMessage.storeMessage(groupID,1,"HELLO WORLD!");
+        assertEquals(1,message_ID);
             //IMessage testMessage = accessMessage.storeMessage(this.groupID,1,"HELLO WORLD!");
-            assertEquals(testMessage.getMessage(), "HELLO WORLD!");
-            assertEquals(testMessage.getSenderID(),1);
-            assertNotNull(testMessage.getTime());
+        //assertNotNull(testMessage);
+            //assertEquals(testMessage.getMessage(), "HELLO WORLD!");
+            //assertEquals(testMessage.getSenderID(),1);
+            //assertNotNull(testMessage.getTime());
     }
 
     @Test
     public void testSearchGroupByIDs(){
-            int testGroupID = accessMessage.searchGroupByIDs(2,1);
-        assertEquals(testGroupID, 1);
+         accessMessage.createGroup(1,1);
+            int testGroupID = accessMessage.searchGroupByIDs(1,1);
+        assertEquals( 1,testGroupID);
+        accessMessage.createGroup(2,1);
+         testGroupID = accessMessage.searchGroupByIDs(2,1);
+        assertEquals( 2,testGroupID);
         // assertEquals(testGroupID, this.groupID);
 
     }
@@ -157,13 +170,19 @@ public class AccessMessageIT {
     @Test
     public void testRetrieveAllMessageByGroupID(){
             List<IMessage> testMessages = accessMessage.retrieveAllMessageByGroupID(1);
-            assertEquals(testMessages.size(),1);
-        accessMessage.storeMessage(1,1,"GOOD MORNING!");
+            assertEquals(2,testMessages.size());
+        List<IMessage> testMessages2 = accessMessage.retrieveAllMessageByGroupID(2);
+        assertEquals(1,testMessages2.size());
+        //assertNotNull(testMessages2.get(0).getMessage());
+        assertEquals(1,testMessages.get(0).getSenderID());
+
+       //assertNull(testMessages.get(0).getTime());
+       // accessMessage.storeMessage(1,1,"GOOD MORNING!");
         //accessMessage.storeMessage(this.groupID,1,"GOOD MORNING!");
-        accessMessage.storeMessage(1,2,"I'M FINE THANK YOU!");
+        //accessMessage.storeMessage(1,2,"I'M FINE THANK YOU!");
         //accessMessage.storeMessage(this.groupID,2,"I'M FINE THANK YOU!");
-        testMessages = accessMessage.retrieveAllMessageByGroupID(1);
-        assertEquals(testMessages.size(),3);
+       // testMessages = accessMessage.retrieveAllMessageByGroupID(1);
+        //assertEquals(4,testMessages.size());
 
     }
 

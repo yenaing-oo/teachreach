@@ -7,9 +7,9 @@ import comp3350.teachreach.objects.interfaces.IMessage;
 public interface IMessagePersistence {
     int createGroup(int studentID, int tutorID);
 
-    IMessage storeMessage(int groupID, int senderAccountID, String message);
+    int storeMessage(int groupID, int senderAccountID, String message);
 
-    int searchGroupByIDs(int studentAccountID, int tutorAccountID);
+    int searchGroupByIDs(int studentID, int tutorID);
 
     List<IMessage> retrieveAllMessageByGroupID(int groupID);
 

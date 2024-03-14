@@ -31,14 +31,24 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
     private IMessage fromResultSet(final ResultSet rs) throws SQLException
     {
-        final int       senderAccountID      = rs.getInt("SENDER_ID");
-        final Timestamp     time   = rs.getTimestamp("TIME_SENT");
+        final int senderAccountID = rs.getInt("SENDER_ID");
+        final Timestamp time = rs.getTimestamp("TIME_SENT");
+        //if (rs.wasNull()) {
+          //  throw new PersistenceException("Timestamp is null");
+        //}
+        final String message = rs.getString("MESSAGE");
 
+        return new Message(senderAccountID, time, message);
+        /*final int       senderAccountID      = rs.getInt("SENDER_ID");
+        final Timestamp     time   = rs.getTimestamp("TIME_SENT");
+       //if(time == null){
+         //   throw new PersistenceException("timeStamp not retrieved!");
+        //}
         final String    message      = rs.getString("MESSAGE");
 
         return  new Message(senderAccountID,
                 time,
-                message);
+                message);*/
     }
 
 
@@ -48,40 +58,58 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO CHAT_GROUPS (STUDENT_ID, TUTOR_ID) VALUES(?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setInt(1,  studentID);
+            pst.setInt(1, studentID);
             pst.setInt(2, tutorID);
             boolean success = pst.executeUpdate() == 1;
-            pst.close();
             if (!success) {
+                pst.close();
                 c.close();
                 throw new PersistenceException("Chat Group mightn't be stored!");
             }
+
             final ResultSet rs = pst.getGeneratedKeys();
-            return rs.getInt(1);
+            if (rs.next()) {
+                int generatedKey = rs.getInt(1);
+                pst.close();
+                rs.close();
+                return generatedKey;
+            } else {
+                pst.close();
+                rs.close();
+                throw new PersistenceException("No generated keys found");
+            }
+
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
     }
 
     @Override
-    public IMessage storeMessage(int groupID, int senderAccountID, String message){
+    public int storeMessage(int groupID, int senderAccountID, String message) {
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES (group_ID, sender_ID, message"+
-                    "VALUES()) VALUES(?,?,?) ");
+            final PreparedStatement pst = c.prepareStatement("INSERT INTO MESSAGES(GROUP_ID, SENDER_ID, MESSAGE) VALUES(?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
             pst.setInt(1, groupID);
             pst.setInt(2, senderAccountID);
             pst.setString(3, message);
+            final boolean success = pst.executeUpdate() == 1;
+            if (success) {
+                int messageID;
 
-            final ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                pst.close();
-                rs.close();
-                return fromResultSet(rs);
+                final ResultSet rs = pst.getGeneratedKeys();
+                if (rs.next()) {
+                    messageID =  rs.getInt(1);
+                    rs.close();
+                    pst.close();
+                    return messageID;
+                } else {
+                    rs.close();
+                    pst.close();
+                    throw new PersistenceException("Message mightn't be updated!");
             }
-            else {
-                rs.close();
-                c.close();
-                throw new PersistenceException("Message not generated!");
+            }else {
+                pst.close();
+                throw new PersistenceException("Failed to store message");
             }
 
         } catch (final SQLException e) {
@@ -92,14 +120,14 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
 
     @Override
-    public int searchGroupByIDs(int studentAccountID, int tutorAccountID){
+    public int searchGroupByIDs(int studentID, int tutorID){
         final int resultGroupID;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM PUBLIC.CHAT_GROUPS WHERE STUDENT_ACCOUNT_ID = ? AND TUTOR_ACCOUNT_ID = ?");
+                    "SELECT * FROM CHAT_GROUPS WHERE STUDENT_ID = ? AND TUTOR_ID = ?");
                     //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
-            pst.setInt(1, studentAccountID);
-            pst.setInt(2, tutorAccountID);
+            pst.setInt(1, studentID);
+            pst.setInt(2, tutorID);
             final ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 resultGroupID = rs.getInt("GROUP_ID");
@@ -120,8 +148,8 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
     public List<IMessage> retrieveAllMessageByGroupID(int groupID){
         List<IMessage> resultMessages = new ArrayList<>();
         try(final Connection c = connection()){
-            final PreparedStatement pst = c.prepareStatement(//"Select * from Accounts");
-                    "Select * from MESSAGE where group_id = ? ORDER BY MESSAGE_ID ASC");
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * FROM MESSAGES where group_id = ? ORDER BY MESSAGE_ID ASC");
             pst.setInt(1, groupID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
