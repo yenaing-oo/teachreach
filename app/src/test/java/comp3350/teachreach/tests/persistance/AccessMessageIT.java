@@ -169,6 +169,7 @@ public class AccessMessageIT {
 
     @Test
     public void testRetrieveAllMessageByGroupID(){
+        int groupID = accessMessage.createGroup(1,1);
             List<IMessage> testMessages = accessMessage.retrieveAllMessageByGroupID(1);
             assertEquals(2,testMessages.size());
         List<IMessage> testMessages2 = accessMessage.retrieveAllMessageByGroupID(2);
@@ -177,12 +178,12 @@ public class AccessMessageIT {
         assertEquals(1,testMessages.get(0).getSenderID());
 
        //assertNull(testMessages.get(0).getTime());
-       // accessMessage.storeMessage(1,1,"GOOD MORNING!");
+        accessMessage.storeMessage(1,1,"GOOD MORNING!");
         //accessMessage.storeMessage(this.groupID,1,"GOOD MORNING!");
-        //accessMessage.storeMessage(1,2,"I'M FINE THANK YOU!");
+        accessMessage.storeMessage(1,2,"I'M FINE THANK YOU!");
         //accessMessage.storeMessage(this.groupID,2,"I'M FINE THANK YOU!");
-       // testMessages = accessMessage.retrieveAllMessageByGroupID(1);
-        //assertEquals(4,testMessages.size());
+        testMessages = accessMessage.retrieveAllMessageByGroupID(1);
+        assertEquals(4,testMessages.size());
 
     }
 
