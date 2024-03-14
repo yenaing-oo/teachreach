@@ -4,6 +4,7 @@ import java.security.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
 
 import comp3350.teachreach.logic.DAOs.AccessMessage;
@@ -36,11 +37,14 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.Mess
         boolean valid = true;
         Map<String, Integer> resultIDs = new HashMap<>();
         resultIDs = accessMessage.searchIDsByGroupID(groupID);
+
         IStudent findStudent = accessStudents.getStudentByAccountID(senderAccountID);
         int findStudentID = findStudent.getStudentID();
+
         ITutor findTutor = accessTutors.getTutorByAccountID(senderAccountID);
         int findTutorID = findTutor.getTutorID();
-        if(resultIDs.get("StudentID").intValue() != findStudentID && resultIDs.get("TutorID").intValue() != findTutorID){
+
+        if(Objects.requireNonNull(resultIDs.get("StudentID")) != findStudentID && Objects.requireNonNull(resultIDs.get("TutorID")) != findTutorID){
             valid = false;
         }
         if(message == null){
