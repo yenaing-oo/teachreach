@@ -1,6 +1,7 @@
 package comp3350.teachreach.logic.DAOs;
 
 import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IMessagePersistence;
@@ -52,6 +53,16 @@ public class AccessMessage {
             throw new DataAccessException("Exception on searching Group By IDs!", e);
         }
     }
+
+    public  Map<String, Integer> searchIDsByGroupID(int groupID){
+        try{
+            return messagePersistence.searchIDsByGroupID(groupID);
+        }
+        catch (final Exception e) {
+            throw new DataAccessException("Exception on searching IDs By GroupID!", e);
+        }
+    }
+
 
     public List<IMessage> retrieveAllMessageByGroupID(int groupID){
         try{

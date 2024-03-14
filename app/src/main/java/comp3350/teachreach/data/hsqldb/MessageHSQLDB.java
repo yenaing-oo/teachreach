@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.objects.Message;
 import comp3350.teachreach.objects.interfaces.IMessage;
@@ -131,10 +133,10 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
             final ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 resultGroupID = rs.getInt("GROUP_ID");
-
             pst.close();
             rs.close();
-            return resultGroupID;}
+            return resultGroupID;
+            }
             else {
                 rs.close();
                 c.close();
@@ -144,6 +146,32 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         }
     }
 
+    public Map<String, Integer> searchIDsByGroupID(int groupID){
+        final Map<String, Integer>  resultIDs = new HashMap<>();
+        try (final Connection c = this.connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * FROM CHAT_GROUPS WHERE GROUP_ID = ?");
+            //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
+            pst.setInt(1, groupID);
+
+            final ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                int studentID = rs.getInt("STUDENT_ID");
+                int tutorID = rs.getInt("TUTOR_ID");
+                resultIDs.put("StudentID",studentID);
+                resultIDs.put("TutorID",tutorID);
+                pst.close();
+                rs.close();
+                return resultIDs;}
+            else {
+                rs.close();
+                c.close();
+                throw new PersistenceException("GroupID not generated!");
+            }} catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+
+    }
     @Override
     public List<IMessage> retrieveAllMessageByGroupID(int groupID){
         List<IMessage> resultMessages = new ArrayList<>();

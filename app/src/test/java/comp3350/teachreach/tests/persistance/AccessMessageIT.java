@@ -14,7 +14,9 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
@@ -164,6 +166,16 @@ public class AccessMessageIT {
          testGroupID = accessMessage.searchGroupByIDs(2,1);
         assertEquals( 2,testGroupID);
         // assertEquals(testGroupID, this.groupID);
+
+    }
+
+    @Test
+    public void testSearchIDsByGroupID(){
+        int groupID = accessMessage.createGroup(2,1);
+        Map<String, Integer> IDs = new HashMap<>();
+        IDs = accessMessage.searchIDsByGroupID(groupID);
+        assertEquals(2, IDs.get("StudentID").intValue());
+        assertEquals(1, IDs.get("TutorID").intValue());
 
     }
 
