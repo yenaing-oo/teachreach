@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 
-
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -165,5 +165,12 @@ public class AccessMessageIT {
         testMessages = accessMessage.retrieveAllMessageByGroupID(1);
         assertEquals(testMessages.size(),3);
 
+    }
+
+    @After
+    public
+    void tearDown()
+    {
+        this.tempDB.delete();
     }
 }

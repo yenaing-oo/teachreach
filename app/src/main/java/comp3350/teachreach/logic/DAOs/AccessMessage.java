@@ -26,12 +26,12 @@ public class AccessMessage {
     }
 
     public int createGroup(int studentID, int tutorID){
-        try{
+        //try{
              return messagePersistence.createGroup(studentID,tutorID);
-        }
-        catch (final Exception e) {
-            throw new DataAccessException("Group might've already exist!", e);
-        }
+        //}
+        //catch (final Exception e) {
+        //    throw new DataAccessException("Group might've already exist!", e);
+        //}
     }
 
 

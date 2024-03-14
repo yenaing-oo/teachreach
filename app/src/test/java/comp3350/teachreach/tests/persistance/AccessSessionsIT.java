@@ -1,6 +1,8 @@
 package comp3350.teachreach.tests.persistance;
 
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,6 +32,19 @@ class AccessSessionsIT
                                                                                   ""));
         this.accessSessions = new AccessSessions(persistence);
     }
+
+
+//    @Test
+//    public void testStoreSession(){
+//        accessSessions.storeSession();
+//    }
+    @After
+    public
+    void tearDown()
+    {
+        this.tempDB.delete();
+    }
+
 //    public
 //    boolean deleteSession(ISession session)
 
