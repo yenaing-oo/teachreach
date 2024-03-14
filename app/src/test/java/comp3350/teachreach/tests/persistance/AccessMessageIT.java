@@ -187,6 +187,18 @@ public class AccessMessageIT {
 
     }
 
+    @Test
+    public void testTimeStamp(){
+        int groupID = accessMessage.createGroup(1,1);
+        int newMessage = accessMessage.storeMessage(1,1,"GOOD MORNING!");
+        List<IMessage> testMessages = accessMessage.retrieveAllMessageByGroupID(1);
+        assertEquals(3,testMessages.size());
+        assertEquals("GOOD MORNING!",testMessages.get(2).getMessage());
+        Timestamp time = testMessages.get(2).getTime();
+        assertNotNull(time);
+
+    }
+
     @After
     public
     void tearDown()
