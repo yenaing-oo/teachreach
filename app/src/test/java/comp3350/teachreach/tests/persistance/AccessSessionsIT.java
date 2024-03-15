@@ -110,6 +110,17 @@ public class AccessSessionsIT
         assertEquals(2023, retrievedSession.getTime().getStartYear());
         assertEquals(12, retrievedSession.getTime().getStartMonth());
         assertEquals(21, retrievedSession.getTime().getStartDay());
+        assertEquals(10, retrievedSession.getTime().getStartHour());
+        assertEquals(30, retrievedSession.getTime().getStartMinute());
+        assertEquals(2023, retrievedSession.getTime().getEndYear());
+        assertEquals(12, retrievedSession.getTime().getEndMonth());
+        assertEquals(21, retrievedSession.getTime().getEndDay());
+        assertEquals(11, retrievedSession.getTime().getEndHour());
+        assertEquals(0, retrievedSession.getTime().getEndMinute());
+        assertEquals(testStudent.getStudentID(),
+                     retrievedSession.getSessionStudentID());
+        assertEquals(testTutor.getTutorID(),
+                     retrievedSession.getSessionTutorID());
     }
 
     @After
