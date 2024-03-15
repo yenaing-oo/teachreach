@@ -12,9 +12,14 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
 
 import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
 import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
@@ -223,6 +228,7 @@ public class MessageHandlerTest {
         assertEquals(4,messageHandler.retrieveAllMessageByGroupID(groupID).size());
         List<IMessage> messagesList = messageHandler.retrieveAllMessageByGroupID(groupID);
         Map<Timestamp,Map<Integer,String>> messagesMap = messageHandler.chatHistoryOfGroupV4(messagesList);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         assertNotNull(messagesMap);
         assertFalse(messagesMap.isEmpty());
@@ -235,8 +241,24 @@ public class MessageHandlerTest {
             assertNotNull(timestamp);
             assertFalse(senderMessages.isEmpty());
 
+            LocalDateTime localDateTime = null; // Initialize localDateTime to null
+
+            Instant instant = Instant.ofEpochMilli(timestamp.getTime());
+            localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
             //assertTrue(senderMessages.containsKey(2));
             //assertTrue(senderMessages.containsValue("HELLO WORLD"));
+            int year = localDateTime.getYear();
+            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
+            int day = localDateTime.getDayOfMonth();
+            int hour = localDateTime.getHour();
+            int DayOfMonth = localDateTime.getDayOfMonth();
+
+            // Print date, year, and hour
+            System.out.println("Date: " + year + "-" + month + "-" + day);
+            System.out.println("Year: " + year);
+            System.out.println("Hour: " + hour);
+            System.out.println("DayofMonth: " + DayOfMonth);
 
             for (Map.Entry<Integer, String> senderMessage : senderMessages.entrySet()) {
                 int senderID = senderMessage.getKey();
@@ -246,10 +268,16 @@ public class MessageHandlerTest {
                 System.out.println("TimeStamp: " + timestamp);
                 System.out.println("Sender ID: " + senderID);
                 System.out.println("Message: " + message);
+                System.out.println(timestamp.getTime());
+                System.out.println(timestamp.getNanos());
+                //String localDateTime = timestamp.toInstan
+                System.out.println(dateFormat.format(timestamp));
 
-                Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
-                long localDateTime = timestamp2.getTime();
-                System.out.println("Timestamp2: " + localDateTime);
+
+
+                //Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
+                //long localDateTime = timestamp2.getTime();
+                //System.out.println("Timestamp2: " + localDateTime);
             }
 
         }
@@ -257,6 +285,19 @@ public class MessageHandlerTest {
 
     }
 
+    @Test
+    public void testTimeStampConverter(){
+        Timestamp timestamp = Timestamp.valueOf("2022-01-01 12:00:00");
+
+        Map<String, Object> result = messageHandler.timeStampConverter(timestamp);
+        assertNotNull(result);
+        assertEquals(2022, result.get("year"));
+        assertEquals(1, result.get("month"));
+        assertEquals(1, result.get("dayOfMonth"));
+        assertEquals(12, result.get("hour"));
+        assertEquals(0, result.get("minute"));
+        assertEquals(0, result.get("second"));
+    }
 //    public void test6(){
 //        messageHandler.searchID
 //    }

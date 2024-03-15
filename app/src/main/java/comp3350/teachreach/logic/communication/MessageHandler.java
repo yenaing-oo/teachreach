@@ -1,6 +1,13 @@
 package comp3350.teachreach.logic.communication;
 
-import java.security.Timestamp;
+import androidx.annotation.NonNull;
+
+//import java.security.Timestamp;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -204,5 +211,34 @@ public class MessageHandler implements comp3350.teachreach.logic.interfaces.Mess
         return chatHistory;
 
 
+    }
+
+    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
+
+            Map<String, Object> result = new HashMap<>();
+
+        LocalDateTime localDateTime = null; // Initialize localDateTime to null
+
+        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
+             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+
+            // Extract various date-related components
+            int year = localDateTime.getYear();
+            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
+            int dayOfMonth = localDateTime.getDayOfMonth();
+            int hour = localDateTime.getHour();
+            int minute = localDateTime.getMinute();
+            int second = localDateTime.getSecond();
+
+            // Store the components and value in the result map
+            result.put("year", year);
+            result.put("month", month);
+            result.put("dayOfMonth", dayOfMonth);
+            result.put("hour", hour);
+            result.put("minute", minute);
+            result.put("second", second);
+
+
+            return result;
     }
 }
