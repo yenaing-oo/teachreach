@@ -1,5 +1,8 @@
 package comp3350.teachreach.logic.account;
 
+import android.util.Log;
+
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
@@ -42,7 +45,7 @@ public class AccountCreator implements IAccountCreator {
                                           String password,
                                           String name,
                                           String pronouns,
-                                          String major) throws AccountCreatorException, InvalidEmailException, InvalidPasswordException, InvalidNameException {
+                                          String major) throws AccountCreatorException, InvalidEmailException, InvalidPasswordException, InvalidNameException, DuplicateEmailException {
         try {
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
@@ -51,10 +54,12 @@ public class AccountCreator implements IAccountCreator {
             IAccount newAccount = new Account(email, PasswordManager.encryptPassword(password), name, pronouns, major);
             newAccount = accessAccounts.insertAccount(newAccount);
             return newAccount;
+        } catch (DuplicateEmailException e) {
+            throw new DuplicateEmailException("Email already in use");
         } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException e) {
             throw e;
         } catch (final Exception e) {
-            throw new AccountCreatorException("Account with associated email might already exist!", e);
+            throw new AccountCreatorException("Failed to created new account", e);
         }
     }
 
@@ -63,7 +68,7 @@ public class AccountCreator implements IAccountCreator {
                                          String password,
                                          String name,
                                          String pronouns,
-                                         String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException {
+                                         String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException {
         try {
             IStudent newStudent;
             synchronized (lock) {
@@ -72,9 +77,11 @@ public class AccountCreator implements IAccountCreator {
                 newStudent = accessStudents.insertStudent(newStudent);
             }
             return newStudent;
-        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException e) {
+        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException |
+                 DuplicateEmailException e) {
             throw e;
         } catch (final Exception e) {
+            Log.d("AccountCreator", "Failed to make new student :(", e);
             throw new AccountCreatorException("Failed to make new student :(", e);
         }
     }
@@ -84,7 +91,7 @@ public class AccountCreator implements IAccountCreator {
                                      String password,
                                      String name,
                                      String pronouns,
-                                     String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException {
+                                     String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException {
         try {
             ITutor newTutor;
             synchronized (lock) {
@@ -93,7 +100,8 @@ public class AccountCreator implements IAccountCreator {
                 newTutor = accessTutors.insertTutor(newTutor);
             }
             return newTutor;
-        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException e) {
+        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException |
+                 DuplicateEmailException e) {
             throw e;
         } catch (final Exception e) {
             throw new AccountCreatorException("Failed to make new tutor :(", e);

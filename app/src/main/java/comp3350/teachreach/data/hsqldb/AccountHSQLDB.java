@@ -5,10 +5,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -51,13 +53,11 @@ class AccountHSQLDB implements IAccountPersistence
     }
 
     @Override
-    public
-    IAccount storeAccount(IAccount newAccount)
-    {
+    public IAccount storeAccount(IAccount newAccount) throws DuplicateEmailException {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO ACCOUNTS(EMAIL, PASSWORD, NAME, PRONOUNS, " +
-                    "MAJOR) VALUES(?, ?, ?, ?, ?)",
+                            "MAJOR) VALUES(?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             pst.setString(1, newAccount.getAccountEmail());
             pst.setString(2, newAccount.getAccountPassword());
@@ -77,6 +77,8 @@ class AccountHSQLDB implements IAccountPersistence
             pst.close();
             rs.close();
             return newAccount;
+        } catch (final SQLIntegrityConstraintViolationException e) {
+            throw new DuplicateEmailException("Cannot create account with duplicate email");
         } catch (final Exception e) {
             throw new PersistenceException(e);
         }

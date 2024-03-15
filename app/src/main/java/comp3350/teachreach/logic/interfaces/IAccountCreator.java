@@ -1,5 +1,6 @@
 package comp3350.teachreach.logic.interfaces;
 
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.logic.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
@@ -13,11 +14,11 @@ interface IAccountCreator {
                                   String password,
                                   String name,
                                   String pronouns,
-                                  String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException;
+                                  String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException;
 
     ITutor createTutorAccount(String email,
                               String password,
                               String name,
                               String pronouns,
-                              String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException;
+                              String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException;
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
@@ -18,14 +19,14 @@ class AccessAccounts
     AccessAccounts()
     {
         accountPersistence = Server.getAccountDataAccess();
-//        accounts           = accountPersistence.getAccounts();
+        accounts           = accountPersistence.getAccounts();
     }
 
     public
     AccessAccounts(final IAccountPersistence accountPersistence)
     {
         AccessAccounts.accountPersistence = accountPersistence;
-//        accounts                          = accountPersistence.getAccounts();
+        accounts                          = accountPersistence.getAccounts();
     }
 
     public
@@ -58,13 +59,13 @@ class AccessAccounts
         }
     }
 
-    public
-    IAccount insertAccount(IAccount newAccount)
-    {
+    public IAccount insertAccount(IAccount newAccount) throws DuplicateEmailException {
         try {
             newAccount = accountPersistence.storeAccount(newAccount);
-       //     accounts   = accountPersistence.getAccounts();
+            accounts = accountPersistence.getAccounts();
             return newAccount;
+        } catch (DuplicateEmailException e) {
+            throw e;
         } catch (final Exception e) {
             throw new DataAccessException("Error storing new Account", e);
         }
