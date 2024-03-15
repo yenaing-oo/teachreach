@@ -18,14 +18,14 @@ class AccessStudents
     AccessStudents()
     {
         studentPersistence = Server.getStudentDataAccess();
-        students           = studentPersistence.getStudents();
+//        students           = studentPersistence.getStudents();
     }
 
     public
     AccessStudents(final IStudentPersistence studentPersistence)
     {
         AccessStudents.studentPersistence = studentPersistence;
-        students                          = studentPersistence.getStudents();
+//        students                          = studentPersistence.getStudents();
     }
 
     public

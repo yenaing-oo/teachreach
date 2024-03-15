@@ -18,14 +18,14 @@ class AccessTutors
     AccessTutors()
     {
         tutorPersistence = Server.getTutorDataAccess();
-        tutors           = tutorPersistence.getTutors();
+//        tutors           = tutorPersistence.getTutors();
     }
 
     public
     AccessTutors(final ITutorPersistence tutorPersistence)
     {
         AccessTutors.tutorPersistence = tutorPersistence;
-        AccessTutors.tutors           = tutorPersistence.getTutors();
+//        AccessTutors.tutors           = tutorPersistence.getTutors();
     }
 
     public
