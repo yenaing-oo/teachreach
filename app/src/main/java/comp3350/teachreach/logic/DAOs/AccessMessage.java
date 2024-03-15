@@ -46,12 +46,7 @@ public class AccessMessage {
         }
     }
     public int searchGroupByIDs(int studentAccountID, int tutorAccountID){
-        try{
             return messagePersistence.searchGroupByIDs(studentAccountID,  tutorAccountID);
-        }
-        catch (final Exception e) {
-            throw new DataAccessException("Exception on searching Group By IDs!", e);
-        }
     }
 
     public  Map<String, Integer> searchIDsByGroupID(int groupID){

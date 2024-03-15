@@ -1,6 +1,7 @@
 package comp3350.teachreach.tests.persistance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
@@ -165,6 +167,10 @@ public class AccessMessageIT {
         accessMessage.createGroup(2,1);
          testGroupID = accessMessage.searchGroupByIDs(2,1);
         assertEquals( 2,testGroupID);
+        assertTrue(testGroupID>0);
+        testGroupID = accessMessage.searchGroupByIDs(3,4);
+        assertFalse(testGroupID>0);
+        assertEquals(-1,testGroupID);
         // assertEquals(testGroupID, this.groupID);
 
     }
@@ -174,8 +180,8 @@ public class AccessMessageIT {
         int groupID = accessMessage.createGroup(2,1);
         Map<String, Integer> IDs = new HashMap<>();
         IDs = accessMessage.searchIDsByGroupID(groupID);
-        assertEquals(2, IDs.get("StudentID").intValue());
-        assertEquals(1, IDs.get("TutorID").intValue());
+        assertEquals(2, Objects.requireNonNull(IDs.get("StudentID")).intValue());
+        assertEquals(1, Objects.requireNonNull(IDs.get("TutorID")).intValue());
 
     }
 

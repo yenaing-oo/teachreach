@@ -140,7 +140,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
             else {
                 rs.close();
                 c.close();
-                throw new PersistenceException("GroupID not generated!");
+                return -1;
         }} catch (SQLException e) {
             throw new PersistenceException(e);
         }
