@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
@@ -68,7 +69,7 @@ class AccessAccountsIT
 
     @Test
     public
-    void testStoreAccount()
+    void testStoreAccount() throws DuplicateEmailException
     {
         final IAccount a = new Account("guderr@myumanitoba.ca",
                 "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI",

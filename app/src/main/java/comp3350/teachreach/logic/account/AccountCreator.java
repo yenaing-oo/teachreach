@@ -21,45 +21,62 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class AccountCreator implements IAccountCreator {
-    private static final Object lock = new Object();
-    private static AccessAccounts accessAccounts = null;
-    private static AccessStudents accessStudents = null;
-    private static AccessTutors accessTutors = null;
+public class AccountCreator implements IAccountCreator
+{
+    private static final Object         lock           = new Object();
+    private static       AccessAccounts accessAccounts = null;
+    private static       AccessStudents accessStudents = null;
+    private static       AccessTutors   accessTutors   = null;
 
-    public AccountCreator() {
+    public AccountCreator()
+    {
         accessAccounts = new AccessAccounts();
         accessStudents = new AccessStudents();
-        accessTutors = new AccessTutors();
+        accessTutors   = new AccessTutors();
     }
 
     public AccountCreator(IAccountPersistence accounts,
                           IStudentPersistence students,
-                          ITutorPersistence tutors) {
+                          ITutorPersistence tutors)
+    {
         accessAccounts = new AccessAccounts(accounts);
         accessStudents = new AccessStudents(students);
-        accessTutors = new AccessTutors(tutors);
+        accessTutors   = new AccessTutors(tutors);
     }
 
     private static IAccount createAccount(String email,
                                           String password,
                                           String name,
                                           String pronouns,
-                                          String major) throws AccountCreatorException, InvalidEmailException, InvalidPasswordException, InvalidNameException, DuplicateEmailException {
+                                          String major) throws
+                                                        AccountCreatorException,
+                                                        InvalidEmailException,
+                                                        InvalidPasswordException,
+                                                        InvalidNameException,
+                                                        DuplicateEmailException
+    {
         try {
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
             InputValidator.validateName(name);
 
-            IAccount newAccount = new Account(email, PasswordManager.encryptPassword(password), name, pronouns, major);
+            IAccount newAccount = new Account(email,
+                                              PasswordManager.encryptPassword(
+                                                      password),
+                                              name,
+                                              pronouns,
+                                              major);
             newAccount = accessAccounts.insertAccount(newAccount);
             return newAccount;
         } catch (DuplicateEmailException e) {
             throw new DuplicateEmailException("Email already in use");
-        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException e) {
+        } catch (InvalidEmailException |
+                 InvalidPasswordException |
+                 InvalidNameException e) {
             throw e;
         } catch (final Exception e) {
-            throw new AccountCreatorException("Failed to created new account", e);
+            throw new AccountCreatorException("Failed to created new account",
+                                              e);
         }
     }
 
@@ -68,21 +85,34 @@ public class AccountCreator implements IAccountCreator {
                                          String password,
                                          String name,
                                          String pronouns,
-                                         String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException {
+                                         String major) throws
+                                                       AccountCreatorException,
+                                                       InvalidNameException,
+                                                       InvalidPasswordException,
+                                                       InvalidEmailException,
+                                                       DuplicateEmailException
+    {
         try {
             IStudent newStudent;
             synchronized (lock) {
-                IAccount newAccount = createAccount(email, password, name, pronouns, major);
+                IAccount newAccount = createAccount(email,
+                                                    password,
+                                                    name,
+                                                    pronouns,
+                                                    major);
                 newStudent = new Student(newAccount.getAccountID());
                 newStudent = accessStudents.insertStudent(newStudent);
             }
             return newStudent;
-        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException |
+        } catch (InvalidEmailException |
+                 InvalidPasswordException |
+                 InvalidNameException |
                  DuplicateEmailException e) {
             throw e;
         } catch (final Exception e) {
             Log.d("AccountCreator", "Failed to make new student :(", e);
-            throw new AccountCreatorException("Failed to make new student :(", e);
+            throw new AccountCreatorException("Failed to make new student :(",
+                                              e);
         }
     }
 
@@ -91,22 +121,33 @@ public class AccountCreator implements IAccountCreator {
                                      String password,
                                      String name,
                                      String pronouns,
-                                     String major) throws AccountCreatorException, InvalidNameException, InvalidPasswordException, InvalidEmailException, DuplicateEmailException {
+                                     String major) throws
+                                                   AccountCreatorException,
+                                                   InvalidNameException,
+                                                   InvalidPasswordException,
+                                                   InvalidEmailException,
+                                                   DuplicateEmailException
+    {
         try {
             ITutor newTutor;
             synchronized (lock) {
-                IAccount newAccount = createAccount(email, password, name, pronouns, major);
+                IAccount newAccount = createAccount(email,
+                                                    password,
+                                                    name,
+                                                    pronouns,
+                                                    major);
                 newTutor = new Tutor(newAccount.getAccountID());
                 newTutor = accessTutors.insertTutor(newTutor);
             }
             return newTutor;
-        } catch (InvalidEmailException | InvalidPasswordException | InvalidNameException |
+        } catch (InvalidEmailException |
+                 InvalidPasswordException |
+                 InvalidNameException |
                  DuplicateEmailException e) {
             throw e;
         } catch (final Exception e) {
             throw new AccountCreatorException("Failed to make new tutor :(", e);
         }
     }
-
 }
 

@@ -10,8 +10,7 @@ import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 
-public
-class AccessSessions
+public class AccessSessions
 {
     private static ISessionPersistence    sessionPersistence;
     private static Map<Integer, ISession> sessions       = null;
@@ -19,22 +18,19 @@ class AccessSessions
         return !s.getAcceptedStatus();
     };
 
-    public
-    AccessSessions()
+    public AccessSessions()
     {
         AccessSessions.sessionPersistence = Server.getSessionDataAccess();
         AccessSessions.sessions           = sessionPersistence.getSessions();
     }
 
-    public
-    AccessSessions(ISessionPersistence sessionDataAccess)
+    public AccessSessions(ISessionPersistence sessionDataAccess)
     {
         AccessSessions.sessionPersistence = sessionDataAccess;
         AccessSessions.sessions           = sessionDataAccess.getSessions();
     }
 
-    public
-    boolean deleteSession(ISession session)
+    public boolean deleteSession(ISession session)
     {
         try {
             boolean result
@@ -48,11 +44,10 @@ class AccessSessions
         }
     }
 
-    public
-    ISession storeSession(int studentID,
-                          int tutorID,
-                          TimeSlice sessionTime,
-                          String location)
+    public ISession storeSession(int studentID,
+                                 int tutorID,
+                                 TimeSlice sessionTime,
+                                 String location)
     {
         try {
             ISession newSession = sessionPersistence.storeSession(studentID,
@@ -66,8 +61,15 @@ class AccessSessions
         }
     }
 
-    public
-    ISession updateSession(ISession session)
+    public Map<Integer, ISession> getSessions()
+    {
+        if (sessions == null) {
+            sessions = sessionPersistence.getSessions();
+        }
+        return sessions;
+    }
+
+    public ISession updateSession(ISession session)
     {
         try {
             session  = sessionPersistence.updateSession(session);
@@ -78,8 +80,7 @@ class AccessSessions
         }
     }
 
-    public
-    List<ISession> getSessionsByTutorID(int tutorID)
+    public List<ISession> getSessionsByTutorID(int tutorID)
     {
         try {
             return AccessSessions.sessions
@@ -93,8 +94,7 @@ class AccessSessions
         }
     }
 
-    public
-    List<ISession> getPendingSessionsByTutorID(int tutorID)
+    public List<ISession> getPendingSessionsByTutorID(int tutorID)
     {
         try {
             Predicate<ISession> tutorIDMatch = s -> {
@@ -112,13 +112,11 @@ class AccessSessions
         }
     }
 
-    public
-    List<ISession> getPendingSessionsByStudentID(int studentID)
+    public List<ISession> getPendingSessionsByStudentID(int studentID)
     {
         try {
-            Predicate<ISession> studentIDMatch = s -> {
-                return s.getSessionStudentID() == studentID;
-            };
+            Predicate<ISession> studentIDMatch = s -> s.getSessionStudentID() ==
+                                                      studentID;
             return AccessSessions.sessions
                     .values()
                     .stream()
@@ -131,8 +129,7 @@ class AccessSessions
         }
     }
 
-    public
-    List<ISession> getSessionsByStudentID(int studentID)
+    public List<ISession> getSessionsByStudentID(int studentID)
     {
         try {
             return AccessSessions.sessions
