@@ -30,11 +30,24 @@ public class AccessSessions
         AccessSessions.sessions           = sessionDataAccess.getSessions();
     }
 
-    public boolean deleteSession(ISession session)
+    public boolean deleteSession(ISession session) throws DataAccessException
     {
         try {
             boolean result
                     = sessionPersistence.deleteSession(session.getSessionID());
+            if (result) {
+                sessions = sessionPersistence.getSessions();
+            }
+            return result;
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to delete session", e);
+        }
+    }
+
+    public boolean deleteSession(int sessionID) throws DataAccessException
+    {
+        try {
+            boolean result = sessionPersistence.deleteSession(sessionID);
             if (result) {
                 sessions = sessionPersistence.getSessions();
             }

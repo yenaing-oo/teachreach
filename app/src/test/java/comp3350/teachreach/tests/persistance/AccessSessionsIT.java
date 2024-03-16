@@ -1,7 +1,10 @@
 package comp3350.teachreach.tests.persistance;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,11 +44,18 @@ public class AccessSessionsIT
     private AccessAccounts  accessAccounts;
     private AccessStudents  accessStudents;
     private AccessTutors    accessTutors;
-    private IAccountCreator accountCreator;
+    private IStudent        testStudent;
+    private ITutor          testTutor;
     private File            tempDB;
 
     @Before
-    public void setUp() throws IOException
+    public void setUp() throws
+                        IOException,
+                        InvalidNameException,
+                        DuplicateEmailException,
+                        InvalidPasswordException,
+                        InvalidEmailException,
+                        AccountCreatorException
     {
         this.tempDB = TestUtils.copyDB();
         final IAccountPersistence accountPersistence
@@ -69,29 +79,24 @@ public class AccessSessionsIT
         this.accessSessions = new AccessSessions(sessionPersistence);
         this.accessTutors   = new AccessTutors(tutorPersistence);
         this.accessStudents = new AccessStudents(studentPersistence);
-        this.accountCreator = new AccountCreator(accountPersistence,
-                                                 studentPersistence,
-                                                 tutorPersistence);
+        IAccountCreator accountCreator = new AccountCreator(accountPersistence,
+                                                            studentPersistence,
+                                                            tutorPersistence);
+        testStudent         = accountCreator.createStudentAccount("asit@s.s",
+                                                                  "pwd",
+                                                                  "aStudent",
+                                                                  "it",
+                                                                  "CS");
+        testTutor           = accountCreator.createTutorAccount("asit@t.t",
+                                                                "pwd",
+                                                                "aTutor",
+                                                                "it",
+                                                                "CS");
     }
 
     @Test
-    public void testStoreSession() throws
-                                   InvalidNameException,
-                                   DuplicateEmailException,
-                                   InvalidPasswordException,
-                                   InvalidEmailException,
-                                   AccountCreatorException
+    public void testStoreAccessSession()
     {
-        IStudent testStudent = accountCreator.createStudentAccount("asit@s.s",
-                                                                   "pwd",
-                                                                   "aStudent",
-                                                                   "it",
-                                                                   "CS");
-        ITutor testTutor = accountCreator.createTutorAccount("asit@t.t",
-                                                             "pwd",
-                                                             "aTutor",
-                                                             "it",
-                                                             "CS");
         TimeSlice sessionTime = TimeSlice.ofHalfAnHourFrom(2023,
                                                            12,
                                                            21,
@@ -121,6 +126,75 @@ public class AccessSessionsIT
                      retrievedSession.getSessionStudentID());
         assertEquals(testTutor.getTutorID(),
                      retrievedSession.getSessionTutorID());
+    }
+
+    @Test
+    public void testDeleteSession()
+    {
+        TimeSlice sessionTime = TimeSlice.ofHalfAnHourFrom(2023,
+                                                           12,
+                                                           21,
+                                                           10,
+                                                           30);
+        String sessionLocation = "420 Feltcher Argue";
+        ISession storedSession
+                = accessSessions.storeSession(testStudent.getStudentID(),
+                                              testTutor.getTutorID(),
+                                              sessionTime,
+                                              sessionLocation);
+        ISession retrievedSession = accessSessions
+                .getSessions()
+                .get(storedSession.getSessionID());
+        assertNotNull(retrievedSession);
+        assertTrue(accessSessions.deleteSession(retrievedSession));
+        assertFalse(accessSessions.deleteSession(retrievedSession.getSessionID()));
+        retrievedSession = accessSessions
+                .getSessions()
+                .get(storedSession.getSessionID());
+        assertNull(retrievedSession);
+    }
+
+    @Test
+    public void testUpdateSession()
+    {
+        TimeSlice sessionTime = TimeSlice.ofHalfAnHourFrom(2023,
+                                                           12,
+                                                           21,
+                                                           10,
+                                                           30);
+        TimeSlice newSessionTime = TimeSlice.ofHalfAnHourFrom(2023,
+                                                              12,
+                                                              31,
+                                                              23,
+                                                              30);
+        String sessionLocation    = "420 Feltcher Argue";
+        String newSessionLocation = "469 Feltcher Argue";
+        ISession storedSession
+                = accessSessions.storeSession(testStudent.getStudentID(),
+                                              testTutor.getTutorID(),
+                                              sessionTime,
+                                              sessionLocation);
+        ISession retrievedSession = accessSessions
+                .getSessions()
+                .get(storedSession.getSessionID());
+        assertNotNull(retrievedSession);
+        retrievedSession.setSessionLocation(newSessionLocation);
+        retrievedSession.approvedByTutor();
+        retrievedSession.setTime(newSessionTime);
+        retrievedSession = accessSessions.updateSession(retrievedSession);
+        assertNotNull(retrievedSession);
+        assertEquals(2023, retrievedSession.getTime().getStartYear());
+        assertEquals(12, retrievedSession.getTime().getStartMonth());
+        assertEquals(31, retrievedSession.getTime().getStartDay());
+        assertEquals(23, retrievedSession.getTime().getStartHour());
+        assertEquals(30, retrievedSession.getTime().getStartMinute());
+        assertEquals(2024, retrievedSession.getTime().getEndYear());
+        assertEquals(1, retrievedSession.getTime().getEndMonth());
+        assertEquals(1, retrievedSession.getTime().getEndDay());
+        assertEquals(0, retrievedSession.getTime().getEndHour());
+        assertEquals(0, retrievedSession.getTime().getEndMinute());
+        assertEquals(newSessionLocation, retrievedSession.getSessionLocation());
+        assertTrue(retrievedSession.getAcceptedStatus());
     }
 
     @After
