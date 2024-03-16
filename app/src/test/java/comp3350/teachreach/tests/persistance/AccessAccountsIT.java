@@ -10,7 +10,6 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -22,15 +21,13 @@ import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.tests.utils.TestUtils;
 
-public
-class AccessAccountsIT
+public class AccessAccountsIT
 {
     private AccessAccounts accessAccounts;
     private File           tempDB;
 
     @Before
-    public
-    void setUp() throws IOException
+    public void setUp() throws IOException
     {
         this.tempDB = TestUtils.copyDB();
         final IAccountPersistence persistence = new AccountHSQLDB(this.tempDB
@@ -42,16 +39,14 @@ class AccessAccountsIT
     }
 
     @Test
-    public
-    void testGetAccounts()
+    public void testGetAccounts()
     {
-        final Map<Integer,IAccount> accounts = accessAccounts.getAccounts();
+        final Map<Integer, IAccount> accounts = accessAccounts.getAccounts();
         assertEquals(2, accounts.size());
     }
 
     @Test
-    public
-    void testGetAccountByEmail()
+    public void testGetAccountByEmail()
     {//NO EMAIL ANYMORE
         final Optional<IAccount> account = accessAccounts.getAccountByEmail(
                 "pankratz25@myumanitoba.ca");
@@ -59,8 +54,7 @@ class AccessAccountsIT
     }
 
     @Test
-    public
-    void testGetAccountByEmailBad()
+    public void testGetAccountByEmailBad()
     {
         final Optional<IAccount> account = accessAccounts.getAccountByEmail(
                 "a@myumanitoba.ca");
@@ -68,14 +62,13 @@ class AccessAccountsIT
     }
 
     @Test
-    public
-    void testStoreAccount() throws DuplicateEmailException
+    public void testStoreAccount() throws DuplicateEmailException
     {
         final IAccount a = new Account("guderr@myumanitoba.ca",
-                "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI",
-                "Robert Guderian",
-                "He/Him",
-                "Computer Science");
+                                       "$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI",
+                                       "Robert Guderian",
+                                       "He/Him",
+                                       "Computer Science");
         accessAccounts.insertAccount(a);
         assertEquals(3,
                      accessAccounts
@@ -106,8 +99,7 @@ class AccessAccountsIT
  */
 
     @After
-    public
-    void tearDown()
+    public void tearDown()
     {
         this.tempDB.delete();
     }
