@@ -96,15 +96,6 @@ public class SessionHSQLDB implements ISessionPersistence
     }
 
     @Override
-    public ISession storeSession(ISession newSession)
-    {
-        return this.storeSession(newSession.getSessionStudentID(),
-                                 newSession.getSessionTutorID(),
-                                 newSession.getTime(),
-                                 newSession.getSessionLocation());
-    }
-
-    @Override
     public boolean deleteSession(int sessionID)
     {
         try (final Connection c = connection()) {

@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
@@ -22,10 +23,7 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
-import comp3350.teachreach.logic.DAOs.AccessStudents;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
@@ -40,13 +38,10 @@ import comp3350.teachreach.tests.utils.TestUtils;
 
 public class AccessSessionsIT
 {
-    private AccessSessions  accessSessions;
-    private AccessAccounts  accessAccounts;
-    private AccessStudents  accessStudents;
-    private AccessTutors    accessTutors;
-    private IStudent        testStudent;
-    private ITutor          testTutor;
-    private File            tempDB;
+    private AccessSessions accessSessions;
+    private IStudent       testStudent;
+    private ITutor         testTutor;
+    private File           tempDB;
 
     @Before
     public void setUp() throws
@@ -75,23 +70,20 @@ public class AccessSessionsIT
                                                                            .replace(
                                                                                    ".script",
                                                                                    ""));
-        this.accessAccounts = new AccessAccounts(accountPersistence);
         this.accessSessions = new AccessSessions(sessionPersistence);
-        this.accessTutors   = new AccessTutors(tutorPersistence);
-        this.accessStudents = new AccessStudents(studentPersistence);
         IAccountCreator accountCreator = new AccountCreator(accountPersistence,
                                                             studentPersistence,
                                                             tutorPersistence);
-        testStudent         = accountCreator.createStudentAccount("asit@s.s",
-                                                                  "pwd",
-                                                                  "aStudent",
-                                                                  "it",
-                                                                  "CS");
-        testTutor           = accountCreator.createTutorAccount("asit@t.t",
-                                                                "pwd",
-                                                                "aTutor",
-                                                                "it",
-                                                                "CS");
+        testStudent = accountCreator.createStudentAccount("asit@s.s",
+                                                          "pwd",
+                                                          "aStudent",
+                                                          "it",
+                                                          "CS");
+        testTutor   = accountCreator.createTutorAccount("asit@t.t",
+                                                        "pwd",
+                                                        "aTutor",
+                                                        "it",
+                                                        "CS");
     }
 
     @Test
@@ -195,6 +187,72 @@ public class AccessSessionsIT
         assertEquals(0, retrievedSession.getTime().getEndMinute());
         assertEquals(newSessionLocation, retrievedSession.getSessionLocation());
         assertTrue(retrievedSession.getAcceptedStatus());
+    }
+
+    @Test
+    public void testGetPendingSessionsByID()
+    {
+        List<ISession> studentPendingSessionsList
+                =
+                accessSessions.getPendingSessionsByStudentID(testStudent.getStudentID());
+        List<ISession> tutorPendingSessionList
+                =
+                accessSessions.getPendingSessionsByTutorID(testTutor.getTutorID());
+        assertEquals(0, studentPendingSessionsList.size());
+        assertEquals(0, tutorPendingSessionList.size());
+
+        TimeSlice sessionTime = TimeSlice.ofHalfAnHourFrom(2023,
+                                                           12,
+                                                           21,
+                                                           10,
+                                                           30);
+        String sessionLocation = "420 Feltcher Argue";
+        ISession storedSession
+                = accessSessions.storeSession(testStudent.getStudentID(),
+                                              testTutor.getTutorID(),
+                                              sessionTime,
+                                              sessionLocation);
+        studentPendingSessionsList
+                                = accessSessions.getPendingSessionsByStudentID(
+                testStudent.getStudentID());
+        tutorPendingSessionList = accessSessions.getPendingSessionsByTutorID(
+                testTutor.getTutorID());
+        assertEquals(1, studentPendingSessionsList.size());
+        assertEquals(1, tutorPendingSessionList.size());
+        assertFalse(studentPendingSessionsList.get(0).getAcceptedStatus());
+        assertFalse(tutorPendingSessionList.get(0).getAcceptedStatus());
+    }
+
+    @Test
+    public void testGetSessionsByID()
+    {
+        List<ISession> studentSessionsList
+                =
+                accessSessions.getSessionsByStudentID(testStudent.getStudentID());
+        List<ISession> tutorSessionList = accessSessions.getSessionsByTutorID(
+                testTutor.getTutorID());
+        assertEquals(0, studentSessionsList.size());
+        assertEquals(0, tutorSessionList.size());
+
+        TimeSlice sessionTime = TimeSlice.ofHalfAnHourFrom(2023,
+                                                           12,
+                                                           21,
+                                                           10,
+                                                           30);
+        String sessionLocation = "420 Feltcher Argue";
+        ISession storedSession
+                = accessSessions.storeSession(testStudent.getStudentID(),
+                                              testTutor.getTutorID(),
+                                              sessionTime,
+                                              sessionLocation);
+        studentSessionsList
+                         =
+                accessSessions.getSessionsByStudentID(testStudent.getStudentID());
+        tutorSessionList
+                         =
+                accessSessions.getSessionsByTutorID(testTutor.getTutorID());
+        assertEquals(1, studentSessionsList.size());
+        assertEquals(1, tutorSessionList.size());
     }
 
     @After

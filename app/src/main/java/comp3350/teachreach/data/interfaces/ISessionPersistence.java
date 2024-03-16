@@ -5,15 +5,12 @@ import java.util.Map;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 
-public
-interface ISessionPersistence
+public interface ISessionPersistence
 {
     ISession storeSession(int studentID,
                           int tutorID,
                           TimeSlice sessionTime,
                           String location);
-
-    ISession storeSession(ISession newSession);
 
     boolean deleteSession(int sessionID);
 

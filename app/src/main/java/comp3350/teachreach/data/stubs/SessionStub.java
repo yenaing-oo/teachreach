@@ -9,14 +9,12 @@ import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 
-public
-class SessionStub implements ISessionPersistence
+public class SessionStub implements ISessionPersistence
 {
     private static Map<Integer, ISession> sessions;
     private static int                    sessionCount = 1;
 
-    public
-    SessionStub()
+    public SessionStub()
     {
         if (sessions == null) {
             SessionStub.sessions = new HashMap<>();
@@ -31,11 +29,10 @@ class SessionStub implements ISessionPersistence
      * @return the new session stored with an assigned sessionID
      */
     @Override
-    public
-    ISession storeSession(int studentID,
-                          int tutorID,
-                          TimeSlice sessionTime,
-                          String location)
+    public ISession storeSession(int studentID,
+                                 int tutorID,
+                                 TimeSlice sessionTime,
+                                 String location)
     {
         ISession newSession = sessions.put(sessionCount,
                                            new Session(sessionCount,
@@ -48,26 +45,11 @@ class SessionStub implements ISessionPersistence
     }
 
     /**
-     * @param newSession a new ISession object to be inserted
-     * @return the newSession stored with an assigned sessionID
-     */
-    @Override
-    public
-    ISession storeSession(ISession newSession)
-    {
-        return storeSession(newSession.getSessionStudentID(),
-                            newSession.getSessionTutorID(),
-                            newSession.getTime(),
-                            newSession.getSessionLocation());
-    }
-
-    /**
      * @param sessionID ID of session to be deleted
      * @return if deletion is successful
      */
     @Override
-    public
-    boolean deleteSession(int sessionID)
+    public boolean deleteSession(int sessionID)
     {
         return false;
     }
@@ -77,8 +59,7 @@ class SessionStub implements ISessionPersistence
      * @return the updated session object
      */
     @Override
-    public
-    ISession updateSession(ISession existingSession)
+    public ISession updateSession(ISession existingSession)
     {
         if (SessionStub.sessions.containsKey(existingSession.getSessionID())) {
             return SessionStub.sessions.put(existingSession.getSessionID(),
@@ -92,8 +73,7 @@ class SessionStub implements ISessionPersistence
      * @return a Map of Integer sessionID -> ISession objects
      */
     @Override
-    public
-    Map<Integer, ISession> getSessions()
+    public Map<Integer, ISession> getSessions()
     {
         return SessionStub.sessions;
     }
