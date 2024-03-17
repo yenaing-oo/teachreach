@@ -15,7 +15,8 @@ import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
-import comp3350.teachreach.presentation.search.SearchActivity;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.presentation.StudentHomeActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
 public class StudentLoginActivity extends AppCompatActivity
@@ -58,17 +59,19 @@ public class StudentLoginActivity extends AppCompatActivity
             tilStudentPassword.setError(null);
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            authenticationHandler.authenticateStudent(email, password);
+            IStudent student = authenticationHandler.authenticateStudent(email,
+                                                                         password);
             Intent intent = new Intent(StudentLoginActivity.this,
-                                       SearchActivity.class);
+                                       StudentHomeActivity.class);
+            intent.putExtra("ACCOUNT_ID", student.getAccountID());
             startActivity(intent);
             finish();
         } catch (final InvalidEmailException e) {
             tilStudentEmail.setError(e.getMessage());
         } catch (final InvalidPasswordException e) {
             tilStudentPassword.setError(e.getMessage());
-        } catch (Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (final Exception e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

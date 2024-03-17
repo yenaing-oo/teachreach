@@ -2,86 +2,91 @@ package comp3350.teachreach.presentation.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.navigation.NavigationBarView;
+
+import java.util.NoSuchElementException;
+
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.search.SearchActivity;
 
-public
-class StudentProfileActivity extends AppCompatActivity
+public class StudentProfileActivity extends AppCompatActivity
 {
-
-    private static final int EDIT_PROFILE_REQUEST = 1;
-    // Request code for editing profile
-
-    private TextView tvName, tvPronoun, tvMajor;
-    private Button btnGoToSearch, btnEditProfile;
+    private static final int      EDIT_PROFILE_REQUEST = 1;
+    private              TextView tvName, tvPronoun, tvMajor;
+    private NavigationBarView   navigationMenu;
+    private Button              btnEditProfile;
+    private AccessAccounts      accessAccounts;
     private IUserProfileHandler userProfile;
+    private int                 accountID;
 
-    private
-    void initializeViews()
+    private void initializeViews()
     {
         tvName         = findViewById(R.id.tvName);
-        tvPronoun      = findViewById(R.id.tvPronoun);
+        tvPronoun      = findViewById(R.id.tvPronouns);
         tvMajor        = findViewById(R.id.tvMajor);
-        btnGoToSearch  = findViewById(R.id.btnGoToSearch);
-        btnEditProfile = findViewById(R.id.btnEditProfile);
+        btnEditProfile = findViewById(R.id.fabEditProfile);
     }
 
-    private
-    void extractDataFromIntent()
+    private void extractDataFromIntent()
     {
         Intent intent = getIntent();
-        if (intent != null) {
-            String name    = intent.getStringExtra("STUDENT_NAME");
-            String pronoun = intent.getStringExtra("STUDENT_PRONOUN");
-            String major   = intent.getStringExtra("STUDENT_MAJOR");
-            updateProfileViews(name, pronoun, major);
+        if (intent == null) {
+            throw new NullPointerException();
         }
+
+        accountID = intent.getIntExtra("ACCOUNT_ID", -1);
+        IAccount account = accessAccounts.getAccounts().get(accountID);
+
+        if (account == null) {
+            throw new NoSuchElementException();
+        }
+
+        updateProfileViews(account.getUserName(),
+                           account.getUserPronouns(),
+                           account.getUserMajor());
     }
 
-    private
-    void updateProfileViews(String name, String pronoun, String major)
+    private void updateProfileViews(String name, String pronoun, String major)
     {
         tvName.setText(name != null ? name : "Name not provided");
         tvPronoun.setText(pronoun != null ? pronoun : "Pronoun not provided");
         tvMajor.setText(major != null ? major : "Major not provided");
     }
 
-    private
-    void setupGoToSearchButton()
-    {
-        btnGoToSearch.setOnClickListener(v -> navigateToSearch());
-    }
-
-    private
-    void navigateToSearch()
+    private void navigateToSearch()
     {
         Intent searchIntent = new Intent(StudentProfileActivity.this,
                                          SearchActivity.class);
         startActivity(searchIntent);
     }
 
-    private
-    void setupEditProfileButton()
+    private void setupEditProfileButton()
     {
         btnEditProfile.setOnClickListener(v -> startEditProfileActivity());
     }
 
-    private
-    void startEditProfileActivity()
+    private void startEditProfileActivity()
     {
         Intent editIntent = new Intent(this, EditUserProfileActivity.class);
+        editIntent.putExtra("ACCOUNT_ID", accountID);
         startActivityForResult(editIntent, EDIT_PROFILE_REQUEST);
     }
 
     @Override
-    protected
-    void onActivityResult(int requestCode, int resultCode, Intent data)
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT_PROFILE_REQUEST && resultCode == RESULT_OK &&
@@ -94,15 +99,31 @@ class StudentProfileActivity extends AppCompatActivity
     }
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_profile);
 
+        accessAccounts = new AccessAccounts();
+
         initializeViews();
         extractDataFromIntent();
-        setupGoToSearchButton();
         setupEditProfileButton();
+        BottomNavigationView bottomNavigationView
+                = findViewById(R.id.navigation_menu);
+        ExtendedFloatingActionButton extendedFab
+                = findViewById(R.id.fabEditProfile);
+
+        final int bottomNavHeight = bottomNavigationView.getHeight();
+        final ViewGroup.MarginLayoutParams layoutParams
+                = (ViewGroup.MarginLayoutParams) extendedFab.getLayoutParams();
+        layoutParams.setMargins(layoutParams.leftMargin,
+                                layoutParams.topMargin,
+                                layoutParams.rightMargin,
+                                bottomNavHeight +
+                                getResources().getDimensionPixelSize(R.dimen.fab_margin)
+                                // Adjust this value based on your needs
+                               );
+        extendedFab.setLayoutParams(layoutParams);
     }
 }

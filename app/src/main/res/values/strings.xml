@@ -30,4 +30,12 @@
     <string name="NavBarStudentProfile">Profile</string>
     <string name="NavBarStudentSessions">Sessions</string>
     <string name="tvTutorLoginTopBar">Tutor Login</string>
+    <string name="tvStudentProfileTopBar">My Profile</string>
+    <string name="tvName">Name</string>
+    <string name="tvPronouns">Pronouns</string>
+    <string name="tvMajor">Major</string>
+    <string name="fabEditProfile">Edit Profile</string>
+    <string name="searchHint">Course ID (e.g. COMP 2150)</string>
+    <string name="topBarDefault">Teach Reach</string>
+    <string name="NavBarChats">Chats</string>
 </resources>
