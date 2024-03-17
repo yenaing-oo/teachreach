@@ -7,10 +7,10 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/tvStudentSignupTitle"
+        android:id="@+id/tvTutorSignupTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/tvStudentSignupTitle"
+        android:text="@string/tvTutorSignupTitle"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2" />
+        app:layout_constraintVertical_bias="0.1" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupName"
@@ -31,10 +31,10 @@
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/tvStudentSignupTitle"
-        app:layout_constraintRight_toRightOf="@+id/tvStudentSignupTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvStudentSignupTitle"
-        app:layout_constraintVertical_bias="0.1">
+        app:layout_constraintLeft_toLeftOf="@+id/tvTutorSignupTitle"
+        app:layout_constraintRight_toRightOf="@+id/tvTutorSignupTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTutorSignupTitle"
+        app:layout_constraintVertical_bias="0.08">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="256dp"
@@ -125,14 +125,26 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/btnUploadTranscript"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnUploadTranscript"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupPassword"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupPassword"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <Button
         android:id="@+id/btnCreateProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnCreateProfile"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/tilSignupPassword"
-        app:layout_constraintRight_toRightOf="@+id/tilSignupPassword"
-        app:layout_constraintTop_toBottomOf="@+id/tilSignupPassword"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintLeft_toLeftOf="@+id/btnUploadTranscript"
+        app:layout_constraintRight_toRightOf="@+id/btnUploadTranscript"
+        app:layout_constraintTop_toBottomOf="@+id/btnUploadTranscript"
+        app:layout_constraintVertical_bias="0.05" />
 </androidx.constraintlayout.widget.ConstraintLayout>

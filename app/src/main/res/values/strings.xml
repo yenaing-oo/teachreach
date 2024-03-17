@@ -24,4 +24,6 @@
     <string name="tilSignupPasswordHint">Password</string>
     <string name="tilSignupEmailHint">Email</string>
     <string name="btnCreateProfile">Create Profile</string>
+    <string name="tvTutorSignupTitle">Signup as a Tutor</string>
+    <string name="btnUploadTranscript">Upload Transcript</string>
 </resources>
