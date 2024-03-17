@@ -8,28 +8,24 @@ import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public
-class AccessTutors
+public class AccessTutors
 {
     private static ITutorPersistence    tutorPersistence;
     private static Map<Integer, ITutor> tutors = null;
 
-    public
-    AccessTutors()
+    public AccessTutors()
     {
         tutorPersistence = Server.getTutorDataAccess();
-//        tutors           = tutorPersistence.getTutors();
+        tutors           = tutorPersistence.getTutors();
     }
 
-    public
-    AccessTutors(final ITutorPersistence tutorPersistence)
+    public AccessTutors(final ITutorPersistence tutorPersistence)
     {
         AccessTutors.tutorPersistence = tutorPersistence;
-//        AccessTutors.tutors           = tutorPersistence.getTutors();
+        AccessTutors.tutors           = tutorPersistence.getTutors();
     }
 
-    public
-    Map<Integer, ITutor> getTutors()
+    public Map<Integer, ITutor> getTutors()
     {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
@@ -37,7 +33,8 @@ class AccessTutors
         return Collections.unmodifiableMap(tutors);
     }
 
-    public ITutor getTutorByAccountID(int accountID) throws DataAccessException {
+    public ITutor getTutorByAccountID(int accountID) throws DataAccessException
+    {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
         }
@@ -51,8 +48,7 @@ class AccessTutors
                         new NoSuchElementException()));
     }
 
-    public
-    ITutor getTutorByTutorID(int tutorID)
+    public ITutor getTutorByTutorID(int tutorID)
     {
         if (tutors == null) {
             tutors = tutorPersistence.getTutors();
@@ -60,8 +56,7 @@ class AccessTutors
         return tutors.get(tutorID);
     }
 
-    public
-    ITutor insertTutor(ITutor newTutor)
+    public ITutor insertTutor(ITutor newTutor)
     {
         try {
             newTutor = tutorPersistence.storeTutor(newTutor);
@@ -72,8 +67,7 @@ class AccessTutors
         }
     }
 
-    public
-    ITutor updateTutor(ITutor existingTutor)
+    public ITutor updateTutor(ITutor existingTutor)
     {
         try {
             existingTutor = tutorPersistence.updateTutor(existingTutor);
