@@ -18,23 +18,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationBarView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
+import comp3350.teachreach.presentation.profile.StudentProfileActivity;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
-public
-class SearchActivity extends AppCompatActivity
+public class SearchActivity extends AppCompatActivity
         implements ITutorRecyclerView, SortDialogFragment.SortDialogListener
 {
-
+    private NavigationBarView         navigationMenu;
     private ISearchSortHandler        searchSortHandler;
     private List<ITutor>              tutors;
     private List<ICourse>             courses;
@@ -42,25 +44,26 @@ class SearchActivity extends AppCompatActivity
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
     private AutoCompleteTextView      autoCompleteTextView;
     private long                      backPressedTime;
+    private int                       accountID;
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        accountID = getIntent().getIntExtra("ACCOUNT_ID", -1);
         RecyclerView recyclerView = findViewById(R.id.searchResultRecyclerView);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         Button sortButton = findViewById(R.id.sortButton);
+        navigationMenu = findViewById(R.id.navigation_menu);
+        AccessTutors accessTutors = new AccessTutors();
 
         searchSortHandler = new SearchSortHandler();
-        tutors            = new ArrayList<>(Server
-                                                    .getTutorDataAccess()
-                                                    .getTutors()
-                                                    .values());
+        tutors            = new ArrayList<>(accessTutors.getTutors().values());
         courseStringList  = new ArrayList<>();
 
+        setUpNavigationMenu();
         setUpCourseList();
         setUpAutoCompleteTextView();
         sortButton.setOnClickListener(v -> openDialog());
@@ -69,11 +72,10 @@ class SearchActivity extends AppCompatActivity
         setUpBackButtonHandler();
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(
-                true /* enabled by default */)
+                true)
         {
             @Override
-            public
-            void handleOnBackPressed()
+            public void handleOnBackPressed()
             {
                 backIsPressed();
             }
@@ -81,8 +83,7 @@ class SearchActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private
-    void setUpCourseList()
+    private void setUpCourseList()
     {
         courses = searchSortHandler.getCourses();
         for (int i = 0; i < courses.size(); i++) {
@@ -90,8 +91,26 @@ class SearchActivity extends AppCompatActivity
         }
     }
 
-    private
-    void setUpAutoCompleteTextView()
+    private void setUpNavigationMenu()
+    {
+        navigationMenu.setSelectedItemId(R.id.NavBarSearch);
+        navigationMenu.setOnItemSelectedListener(i -> {
+            int itemId = i.getItemId();
+            if (itemId == R.id.NavBarSessions) {
+                return true;
+            } else if (itemId == R.id.NavBarSearch) {
+                return true;
+            } else if (itemId == R.id.NavBarProfile) {
+                Intent intent = new Intent(this, StudentProfileActivity.class);
+                intent.putExtra("ACCOUNT_ID", accountID);
+                startActivity(intent);
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void setUpAutoCompleteTextView()
     {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
                                                                android.R.layout.simple_list_item_1,
@@ -106,22 +125,19 @@ class SearchActivity extends AppCompatActivity
         });
     }
 
-    private
-    void populateTutors()
+    private void populateTutors()
     {
         tutors = searchSortHandler.getTutors();
     }
 
-    private
-    void updateTutorList(ICourse selectedCourse)
+    private void updateTutorList(ICourse selectedCourse)
     {
         tutors = searchSortHandler.getTutorsByCourse(selectedCourse);
         // needs to use DIffUtil to improve efficiency
         searchRecyclerViewAdapter.notifyDataSetChanged();
     }
 
-    private
-    void setUpRecyclerView(RecyclerView recyclerView)
+    private void setUpRecyclerView(RecyclerView recyclerView)
     {
         searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(this,
                                                                   tutors,
@@ -130,15 +146,13 @@ class SearchActivity extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private
-    void setUpBackButtonHandler()
+    private void setUpBackButtonHandler()
     {
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(
                 true /* enabled by default */)
         {
             @Override
-            public
-            void handleOnBackPressed()
+            public void handleOnBackPressed()
             {
                 backIsPressed();
             }
@@ -146,8 +160,7 @@ class SearchActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private
-    void sortTutors(SortCriteria sortCriteria)
+    private void sortTutors(SortCriteria sortCriteria)
     {
 
         switch (sortCriteria) {
@@ -169,8 +182,7 @@ class SearchActivity extends AppCompatActivity
     }
 
     @Override
-    public
-    void onTutorItemClick(int position)
+    public void onTutorItemClick(int position)
     {
         Intent intent = new Intent(this, TutorProfileActivity.class);
         intent.putExtra("TUTOR_ID", tutors.get(position).getTutorID());
@@ -178,8 +190,7 @@ class SearchActivity extends AppCompatActivity
     }
 
     @Override
-    public
-    boolean dispatchTouchEvent(MotionEvent event)
+    public boolean dispatchTouchEvent(MotionEvent event)
     {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
@@ -199,22 +210,19 @@ class SearchActivity extends AppCompatActivity
         return super.dispatchTouchEvent(event);
     }
 
-    public
-    void openDialog()
+    public void openDialog()
     {
         SortDialogFragment sortDialogFragment = new SortDialogFragment();
         sortDialogFragment.show(getSupportFragmentManager(), "Sort Dialog");
     }
 
     @Override
-    public
-    void applySort(SortCriteria sortCriteria)
+    public void applySort(SortCriteria sortCriteria)
     {
         sortTutors(sortCriteria);
     }
 
-    private
-    void backIsPressed()
+    private void backIsPressed()
     {
         // Check if back button was pressed within a certain interval (e.g.,
         // 2 seconds)
