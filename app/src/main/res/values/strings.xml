@@ -26,4 +26,8 @@
     <string name="btnCreateProfile">Create Profile</string>
     <string name="tvTutorSignupTitle">Signup as a Tutor</string>
     <string name="btnUploadTranscript">Upload Transcript</string>
+    <string name="NavBarStudentSearch">Search</string>
+    <string name="NavBarStudentProfile">Profile</string>
+    <string name="NavBarStudentSessions">Sessions</string>
+    <string name="tvTutorLoginTopBar">Tutor Login</string>
 </resources>

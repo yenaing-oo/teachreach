@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
@@ -31,22 +32,21 @@ public class TutorLoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_login);
 
+        Button          btnLogin  = findViewById(R.id.btnLoginAsTutor);
+        Button          btnSignUp = findViewById(R.id.btnSignupAsTutor);
+        MaterialToolbar mtTopBar  = findViewById(R.id.topAppBar);
         tilTutorEmail    = findViewById(R.id.tilTutorLoginEmail);
         tilTutorPassword = findViewById(R.id.tilTutorLoginPassword);
         etTutorEmail     = tilTutorEmail.getEditText();
         etTutorPassword  = tilTutorPassword.getEditText();
-        Button btnLogin  = findViewById(R.id.btnLoginAsTutor);
-        Button btnSignUp = findViewById(R.id.btnSignupAsTutor);
 
         authenticationHandler = new AuthenticationHandler();
 
+        mtTopBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         btnLogin.setOnClickListener(v -> login());
-
-        btnSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(TutorLoginActivity.this,
-                                       TutorSignUpActivity.class);
-            startActivity(intent);
-        });
+        btnSignUp.setOnClickListener(v -> startActivity(new Intent(
+                TutorLoginActivity.this,
+                TutorSignUpActivity.class)));
     }
 
     private void login()
