@@ -9,23 +9,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.profile.EditTutorProfileActivity;
 
-public class TutorHomeActivity extends AppCompatActivity {
+public class TutorHomeActivity extends AppCompatActivity
+{
     private Button editProfileButton;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
 
-        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
+        int tutorId = getIntent().getIntExtra("TUTOR_ID", -1);
 
         editProfileButton = findViewById(R.id.edit_profile_button);
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditTutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", tutorEmail);
+            intent.putExtra("TUTOR_ID", tutorId);
             startActivity(intent);
         });
     }
-
-
 }

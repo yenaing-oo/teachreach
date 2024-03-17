@@ -13,8 +13,8 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public
-class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
+public class TutorProfileHandler
+        implements ITutorProfileHandler, IUserProfileHandler
 {
     private final AccessAccounts accessAccounts;
     private final AccessTutors   accessTutors;
@@ -22,8 +22,7 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     private       IAccount       parentAccount;
     //    private       AvailabilityManager availabilityManager;
 
-    public
-    TutorProfileHandler(ITutor theTutor)
+    public TutorProfileHandler(ITutor theTutor)
     {
         accessAccounts     = new AccessAccounts();
         accessTutors       = new AccessTutors();
@@ -34,8 +33,7 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
         //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
-    public
-    TutorProfileHandler(int tutorID)
+    public TutorProfileHandler(int tutorID)
     {
         accessAccounts     = new AccessAccounts();
         accessTutors       = new AccessTutors();
@@ -47,58 +45,50 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     }
 
     @Override
-    public
-    String getUserEmail()
+    public String getUserEmail()
     {
         return this.parentAccount.getAccountEmail();
     }
 
     @Override
-    public
-    String getUserName()
+    public String getUserName()
     {
         return this.parentAccount.getUserName();
     }
 
     @Override
-    public
-    String getUserPronouns()
+    public String getUserPronouns()
     {
         return this.parentAccount.getUserPronouns();
     }
 
     @Override
-    public
-    String getUserMajor()
+    public String getUserMajor()
     {
         return this.parentAccount.getUserMajor();
     }
 
     @Override
-    public
-    IAccount getUserAccount()
+    public IAccount getUserAccount()
     {
         return parentAccount;
     }
 
     @Override
-    public
-    double getHourlyRate()
+    public double getHourlyRate()
     {
         return theTutor.getHourlyRate();
     }
 
     @Override
-    public
-    ITutorProfileHandler setHourlyRate(double hourlyRate)
+    public ITutorProfileHandler setHourlyRate(double hourlyRate)
     {
         this.theTutor.setHourlyRate(hourlyRate);
         return this;
     }
 
     @Override
-    public
-    double getAvgReview()
+    public double getAvgReview()
     {
         return theTutor.getReviewCount() > 0 ?
                ((double) theTutor.getReviewSum() /
@@ -107,53 +97,47 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     }
 
     @Override
-    public
-    int getReviewCount()
+    public int getReviewCount()
     {
         return this.theTutor.getReviewCount();
     }
 
     @Override
-    public
-    int getReviewSum()
+    public int getReviewSum()
     {
         return this.theTutor.getReviewSum();
     }
 
     @Override
-    public
-    List<ICourse> getCourses()
+    public List<ICourse> getCourses()
     {
         return new ArrayList<>();
     }
 
     @Override
-    public
-    List<String> getPreferredLocations()
+    public List<String> getPreferredLocations()
     {
         return new ArrayList<>();
     }
 
     @Override
-    public
-    List<List<TimeSlice>> getPreferredAvailability()
+    public List<List<TimeSlice>> getPreferredAvailability()
     {
         return null;
         //        return this.availabilityManager.getWeeklyAvailability();
     }
 
     @Override
-    public
-    List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
-                                                int startMonth,
-                                                int startDay,
-                                                int startHour,
-                                                int startMinute,
-                                                int endYear,
-                                                int endMonth,
-                                                int endDay,
-                                                int endHour,
-                                                int endMinute)
+    public List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
+                                                       int startMonth,
+                                                       int startDay,
+                                                       int startHour,
+                                                       int startMinute,
+                                                       int endYear,
+                                                       int endMonth,
+                                                       int endDay,
+                                                       int endHour,
+                                                       int endMinute)
     {
         return new ArrayList<>();
 
@@ -171,62 +155,55 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     }
 
     @Override
-    public
-    ITutorProfileHandler addReview(int score)
+    public ITutorProfileHandler addReview(int score)
     {
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler addCourse(String courseCode, String courseName)
+    public ITutorProfileHandler addCourse(String courseCode, String courseName)
     {
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler removeCourse(String courseCode)
+    public ITutorProfileHandler removeCourse(String courseCode)
     {
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler addPreferredLocation(String preferredLocation)
+    public ITutorProfileHandler addPreferredLocation(String preferredLocation)
     {
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler addPreferredLocations(List<String> preferredLocations)
+    public ITutorProfileHandler addPreferredLocations(List<String> preferredLocations)
     {
         preferredLocations.forEach(this::addPreferredLocation);
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler resetPreferredAvailability()
+    public ITutorProfileHandler resetPreferredAvailability()
     {
         //        this.availabilityManager.clearWeeklyAvailability();
         return this;
     }
 
     @Override
-    public
-    ITutorProfileHandler setPreferredAvailability(int startYear,
-                                                  int startMonth,
-                                                  int startDay,
-                                                  int startHour,
-                                                  int startMinute,
-                                                  int endYear,
-                                                  int endMonth,
-                                                  int endDay,
-                                                  int endHour,
-                                                  int endMinute,
-                                                  List<DayOfWeek> daysOfWeek)
+    public ITutorProfileHandler setPreferredAvailability(int startYear,
+                                                         int startMonth,
+                                                         int startDay,
+                                                         int startHour,
+                                                         int startMinute,
+                                                         int endYear,
+                                                         int endMonth,
+                                                         int endDay,
+                                                         int endHour,
+                                                         int endMinute,
+                                                         List<DayOfWeek> daysOfWeek)
     {
         //        this.availabilityManager.addWeeklyAvailability(startYear,
         //                                                       startMonth,
@@ -243,8 +220,7 @@ class TutorProfileHandler implements ITutorProfileHandler, IUserProfileHandler
     }
 
     @Override
-    public
-    ITutor updateTutorProfile()
+    public ITutor updateTutorProfile()
     {
         theTutor = accessTutors.updateTutor(theTutor);
         return theTutor;

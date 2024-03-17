@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -20,61 +19,49 @@ import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.presentation.login.StudentLoginActivity;
 import comp3350.teachreach.presentation.login.TutorLoginActivity;
 
-public
-class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
 {
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
-        Button btnTutor   = findViewById(R.id.btnTutor);
+        Button btnTutor   = findViewById(R.id.btnTutorLogin);
 
-        btnStudent.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public
-            void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this,
-                                           StudentLoginActivity.class);
+        CharSequence charStudent = "Student";
+        CharSequence charTutor   = "Tutor";
+        btnStudent.setText(charStudent);
+        btnTutor.setText(charTutor);
 
-                startActivity(intent);
-            }
+        btnStudent.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                                       StudentLoginActivity.class);
+
+            startActivity(intent);
         });
 
-        // // Listener for the tutor button
-
-        btnTutor.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public
-            void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this,
-                                           TutorLoginActivity.class);
-                startActivity(intent);
-            }
+        btnTutor.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                                       TutorLoginActivity.class);
+            startActivity(intent);
         });
     }
 
-    private
-    void copyDatabaseToDevice()
+    private void copyDatabaseToDevice()
     {
         final String DB_PATH = "db";
 
-        String[] assetNames;
-        Context  context = getApplicationContext();
-        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
-        AssetManager assetManager = getAssets();
+        String[]     assetNames;
+        Context      context       = getApplicationContext();
+        File         dataDirectory = context.getDir(DB_PATH,
+                                                    Context.MODE_PRIVATE);
+        AssetManager assetManager  = getAssets();
 
         try {
-
             assetNames = assetManager.list(DB_PATH);
             for (int i = 0; i < assetNames.length; i++) {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
@@ -94,8 +81,7 @@ class MainActivity extends AppCompatActivity
         }
     }
 
-    public
-    void copyAssetsToDirectory(String[] assets, File directory)
+    public void copyAssetsToDirectory(String[] assets, File directory)
             throws IOException
     {
         AssetManager assetManager = getAssets();
