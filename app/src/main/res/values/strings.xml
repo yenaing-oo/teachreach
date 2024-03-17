@@ -8,9 +8,13 @@
     <string name="confirm_booking">Confirm Booking</string>
     <string name="btnStudentLogin">btnStudentLoginLabel</string>
     <string name="btnTutorLogin">btnTutorLoginLabel</string>
-    <string name="tilTutorLoginEmailHint">Your email</string>
-    <string name="tilTutorLoginPasswordHint">Your password</string>
     <string name="btnSignupAsTutor">Not a tutor? Signup here!</string>
     <string name="btnLoginAsTutor">Login</string>
     <string name="tvTutorLoginTitle">Login as a Tutor</string>
+    <string name="tutor_email_input_helper" />
+    <string name="tvStudentLoginTitle">Login as a Student</string>
+    <string name="tilLoginEmailHint">Email</string>
+    <string name="tilLoginPasswordHint">Password</string>
+    <string name="btnLoginAsStudent">Login</string>
+    <string name="btnSignupAsStudent">Not a Student? Signup here!</string>
 </resources>
