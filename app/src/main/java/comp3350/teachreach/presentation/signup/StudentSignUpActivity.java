@@ -8,27 +8,42 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import comp3350.teachreach.R;
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.logic.account.AccountCreator;
+import comp3350.teachreach.logic.exceptions.InvalidNameException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.presentation.search.SearchActivity;
 
-public
-class StudentSignUpActivity extends AppCompatActivity {
-
-    private EditText etUsername, etPassword, etEmail, etMajor, etPronoun;
+public class StudentSignUpActivity extends AppCompatActivity
+{
+    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail,
+            tilPassword;
+    private EditText etUsername, etMajor, etPassword, etEmail, etPronouns;
     private IAccountCreator accountCreator;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_sign_up);
 
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        etEmail = findViewById(R.id.etEmail);
-        etMajor = findViewById(R.id.etMajor);
-        etPronoun = findViewById(R.id.etPronoun);
+        tilUsername = findViewById(R.id.tilSignupName);
+        tilMajor    = findViewById(R.id.tilSignupMajor);
+        tilPronouns = findViewById(R.id.tilSignupPronouns);
+        tilEmail    = findViewById(R.id.tilSignupEmail);
+        tilPassword = findViewById(R.id.tilSignupPassword);
+
+        etUsername = tilUsername.getEditText();
+        etPassword = tilPassword.getEditText();
+        etEmail    = tilEmail.getEditText();
+        etMajor    = tilMajor.getEditText();
+        etPronouns = tilPronouns.getEditText();
+
         Button btnCreateProfile = findViewById(R.id.btnCreateProfile);
 
         accountCreator = new AccountCreator();
@@ -36,32 +51,43 @@ class StudentSignUpActivity extends AppCompatActivity {
         btnCreateProfile.setOnClickListener(v -> createProfile());
     }
 
-    private void createProfile() {
+    private void createProfile()
+    {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();
-        String major = etMajor.getText().toString().trim();
-        String pronoun = etPronoun.getText().toString().trim();
+        String email    = etEmail.getText().toString().trim();
+        String major    = etMajor.getText().toString().trim();
+        String pronoun  = etPronouns.getText().toString().trim();
 
         try {
-            accountCreator.createStudentAccount(email, password, username, pronoun, major);
+            tilEmail.setError(null);
+            tilPassword.setError(null);
+            tilUsername.setError(null);
+            accountCreator.createStudentAccount(email,
+                                                password,
+                                                username,
+                                                pronoun,
+                                                major);
             Toast
-                    .makeText(
-                            StudentSignUpActivity.this,
-                            "Account Created Successfully!",
-                            Toast.LENGTH_SHORT
-                    )
+                    .makeText(StudentSignUpActivity.this,
+                              "Account Created Successfully!",
+                              Toast.LENGTH_SHORT)
                     .show();
-            Intent intent = new Intent(StudentSignUpActivity.this, SearchActivity.class);
+            Intent intent = new Intent(StudentSignUpActivity.this,
+                                       SearchActivity.class);
             startActivity(intent);
             finish();
-        } catch (Exception e) {
+        } catch (final InvalidNameException e) {
+            tilUsername.setError(e.getMessage());
+        } catch (final InvalidPasswordException e) {
+            tilPassword.setError(e.getMessage());
+        }catch (final InvalidEmailException | DuplicateEmailException e) {
+            tilEmail.setError(e.getMessage());
+        } catch (final Exception e) {
             Toast
-                    .makeText(
-                            StudentSignUpActivity.this,
-                            e.getMessage(),
-                            Toast.LENGTH_LONG
-                    )
+                    .makeText(StudentSignUpActivity.this,
+                              e.getMessage(),
+                              Toast.LENGTH_LONG)
                     .show();
         }
     }

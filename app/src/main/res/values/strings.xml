@@ -17,4 +17,11 @@
     <string name="tilLoginPasswordHint">Password</string>
     <string name="btnLoginAsStudent">Login</string>
     <string name="btnSignupAsStudent">Not a Student? Signup here!</string>
+    <string name="tvStudentSignupTitle">Signup as a Student</string>
+    <string name="tilSignupNameHint">Name</string>
+    <string name="tilSignupMajorHint">Major (Optional)</string>
+    <string name="tilSignupPronounsHint">Pronouns (Optional)</string>
+    <string name="tilSignupPasswordHint">Password</string>
+    <string name="tilSignupEmailHint">Email</string>
+    <string name="btnCreateProfile">Create Profile</string>
 </resources>
