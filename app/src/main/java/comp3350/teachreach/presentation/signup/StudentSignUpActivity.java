@@ -81,7 +81,7 @@ public class StudentSignUpActivity extends AppCompatActivity
             tilUsername.setError(e.getMessage());
         } catch (final InvalidPasswordException e) {
             tilPassword.setError(e.getMessage());
-        }catch (final InvalidEmailException | DuplicateEmailException e) {
+        } catch (final InvalidEmailException | DuplicateEmailException e) {
             tilEmail.setError(e.getMessage());
         } catch (final Exception e) {
             Toast
