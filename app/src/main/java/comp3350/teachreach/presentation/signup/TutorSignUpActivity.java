@@ -43,6 +43,9 @@ public class TutorSignUpActivity extends AppCompatActivity
         String pronoun  = etPronouns.getText().toString();
 
         try {
+            tilEmail.setError(null);
+            tilPassword.setError(null);
+            tilUsername.setError(null);
             ITutor newTutor = accountCreator.createTutorAccount(email,
                                                                 password,
                                                                 username,
