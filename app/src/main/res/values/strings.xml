@@ -6,4 +6,11 @@
     <string name="date_display">Date Display</string>
     <string name="shr_button_review">Review booking</string>
     <string name="confirm_booking">Confirm Booking</string>
+    <string name="btnStudentLogin">btnStudentLoginLabel</string>
+    <string name="btnTutorLogin">btnTutorLoginLabel</string>
+    <string name="tilTutorLoginEmailHint">Your email</string>
+    <string name="tilTutorLoginPasswordHint">Your password</string>
+    <string name="btnSignupAsTutor">Not a tutor? Signup here!</string>
+    <string name="btnLoginAsTutor">Login</string>
+    <string name="tvTutorLoginTitle">Login as a Tutor</string>
 </resources>

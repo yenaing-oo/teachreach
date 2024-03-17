@@ -14,6 +14,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +25,7 @@
         style="?attr/textInputFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="@+id/tvTutorLogin"
@@ -34,8 +36,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:hint="@string/tilTutorLoginEmailHint"
-            android:inputType="textEmailAddress" />
+            android:hint="@string/tilTutorLoginEmailHint" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -43,31 +44,19 @@
         style="?attr/textInputFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintLeft_toLeftOf="@+id/tilTutorLoginEmail"
+        app:layout_constraintRight_toRightOf="@+id/tilTutorLoginEmail"
         app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginEmail"
         app:layout_constraintVertical_bias="0.1">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:hint="@string/tilTutorLoginPasswordHint"
-            android:inputType="textPassword" />
+            android:hint="@string/tilTutorLoginPasswordHint" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/btnLoginAsTutor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btnLoginAsTutor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/tilTutorLoginPassword"
-        app:layout_constraintRight_toRightOf="@+id/tilTutorLoginPassword"
-        app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginPassword"
-        app:layout_constraintVertical_bias="0.1" />
 
     <Button
         android:id="@+id/btnSignupAsTutor"
@@ -77,10 +66,20 @@
         android:text="@string/btnSignupAsTutor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="@+id/btnLoginAsTutor"
-        app:layout_constraintRight_toRightOf="@+id/btnLoginAsTutor"
-        app:layout_constraintTop_toBottomOf="@+id/btnLoginAsTutor"
+        app:layout_constraintLeft_toLeftOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintRight_toRightOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginPassword"
         app:layout_constraintVertical_bias="0.1" />
 
-
+    <Button
+        android:id="@+id/btnLoginAsTutor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btnLoginAsTutor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toRightOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginEmail"
+        app:layout_constraintVertical_bias="0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
