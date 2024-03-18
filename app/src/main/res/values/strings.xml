@@ -58,4 +58,8 @@
     <string name="tilCurrentName">Current Name:</string>
     <string name="tilCurrentMajor">Current Major:</string>
     <string name="tilCurrentPronouns">Current Pronouns:</string>
+    <string name="tvStudentLoginTopBar">Student Login</string>
+    <string name="tbAccountSettings">Account Settings</string>
+    <string name="tbcdAccountSettings">Change Email or Password</string>
+    <string name="NavBarStudentRequests">Requests</string>
 </resources>

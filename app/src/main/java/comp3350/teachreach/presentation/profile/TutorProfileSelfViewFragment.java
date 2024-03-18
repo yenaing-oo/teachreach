@@ -12,11 +12,14 @@ import androidx.fragment.app.FragmentManager;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class StudentProfileSelfViewFragment extends Fragment
+public class TutorProfileSelfViewFragment extends Fragment
 {
     private static final String ARG_ACCOUNT_ID = "ACCOUNT_ID";
+    private static final String ARG_TUTOR_ID   = "TUTOR_ID";
 
     private static FragmentManager fragmentManager;
     private static Fragment        previousTopBarFragment = null;
@@ -26,26 +29,33 @@ public class StudentProfileSelfViewFragment extends Fragment
     private TextView tvName, tvMajor, tvPronouns;
     private Button btnEditProfile;
 
-    private int            accountID = -1;
-    private IAccount       account   = null;
-    private AccessAccounts accessAccounts;
+    private int accountID = -1;
+    private int tutorID   = -1;
 
-    public StudentProfileSelfViewFragment()
+    private IAccount account = null;
+    private ITutor   tutor   = null;
+
+    private AccessAccounts accessAccounts;
+    private AccessTutors   accessTutors;
+
+    public TutorProfileSelfViewFragment()
     {
     }
 
-    public static StudentProfileSelfViewFragment newInstance(FragmentManager fragmentManager,
-                                                             Fragment topBarFragment,
-                                                             int accountID)
+    public static TutorProfileSelfViewFragment newInstance(FragmentManager fragmentManager,
+                                                           Fragment topBarFragment,
+                                                           int accountID,
+                                                           int tutorID)
     {
-        StudentProfileSelfViewFragment fragment
-                = new StudentProfileSelfViewFragment();
-        StudentProfileSelfViewFragment.fragmentManager = fragmentManager;
+        TutorProfileSelfViewFragment fragment
+                = new TutorProfileSelfViewFragment();
+        TutorProfileSelfViewFragment.fragmentManager = fragmentManager;
         Bundle args = new Bundle();
         args.putInt(ARG_ACCOUNT_ID, accountID);
+        args.putInt(ARG_TUTOR_ID, tutorID);
         fragment.setArguments(args);
-        StudentProfileSelfViewFragment.previousTopBarFragment = topBarFragment;
-        StudentProfileSelfViewFragment.previousFragment       = fragment;
+        TutorProfileSelfViewFragment.previousTopBarFragment = topBarFragment;
+        TutorProfileSelfViewFragment.previousFragment       = fragment;
         return fragment;
     }
 
@@ -98,7 +108,7 @@ public class StudentProfileSelfViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_student_profile_self_view,
+        rootView = inflater.inflate(R.layout.fragment_tutor_profile_self_view,
                                     container,
                                     false);
         fillUpProfileDetails(rootView);

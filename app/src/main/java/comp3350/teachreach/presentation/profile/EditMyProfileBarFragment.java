@@ -28,9 +28,9 @@ public class EditMyProfileBarFragment extends Fragment
     }
 
     public static EditMyProfileBarFragment newInstance(FragmentManager fragmentManager,
-                                                       int accountID,
                                                        Fragment prevTopBar,
-                                                       Fragment prevFragment)
+                                                       Fragment prevFragment,
+                                                       int accountID)
     {
         EditMyProfileBarFragment fragment = new EditMyProfileBarFragment();
         Bundle                   args     = new Bundle();

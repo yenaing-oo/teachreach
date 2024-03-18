@@ -17,6 +17,8 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="8dp"
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_back_24"
                 app:title="@string/tvTutorLoginTopBar" />

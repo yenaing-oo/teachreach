@@ -15,7 +15,12 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
             android:minHeight="?attr/actionBarSize"
+            app:forceDefaultNavigationOnClickListener="true"
+            app:menu="@menu/top_app_bar_profile"
+            app:navigationIcon="@drawable/ic_profile_24"
             app:title="@string/myProfileBarTitle" />
     </com.google.android.material.appbar.AppBarLayout>
 

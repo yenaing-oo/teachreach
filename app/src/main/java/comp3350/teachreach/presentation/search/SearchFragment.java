@@ -2,10 +2,13 @@ package comp3350.teachreach.presentation.search;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +44,8 @@ public class SearchFragment extends Fragment
     private View                      rootView;
     private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
 
+    private Parcelable recyclerViewState;
+
     public SearchFragment()
     {
     }
@@ -64,6 +69,7 @@ public class SearchFragment extends Fragment
         accessTutors      = new AccessTutors();
         accessCourses     = new AccessCourses();
         searchSortHandler = new SearchSortHandler();
+        retrieveData();
     }
 
     @Override
@@ -72,10 +78,39 @@ public class SearchFragment extends Fragment
                              Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
-        retrieveData();
-        setUpRecyclerView(recyclerView);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (savedInstanceState != null) {
+            recyclerViewState = savedInstanceState.getParcelable(
+                    "recyclerViewState");
+        }
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
+        if (recyclerViewState != null) {
+            recyclerView
+                    .getLayoutManager()
+                    .onRestoreInstanceState(recyclerViewState);
+        } else {
+            setUpRecyclerView(recyclerView);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle state)
+    {
+        super.onSaveInstanceState(state);
+        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
+        recyclerViewState = recyclerView
+                .getLayoutManager()
+                .onSaveInstanceState();
+        state.putParcelable("recyclerViewState", recyclerViewState);
     }
 
     private void retrieveData()

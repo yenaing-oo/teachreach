@@ -17,7 +17,7 @@ import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.TutorHomeActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
 public class TutorLoginActivity extends AppCompatActivity
@@ -62,8 +62,9 @@ public class TutorLoginActivity extends AppCompatActivity
                                                                    password);
 
             Intent intent = new Intent(TutorLoginActivity.this,
-                                       TutorProfileActivity.class);
+                                       TutorHomeActivity.class);
             intent.putExtra("TUTOR_ID", tutor.getTutorID());
+            intent.putExtra("ACCOUNT_ID", tutor.getAccountID());
             startActivity(intent);
             finish();
         } catch (final InvalidEmailException e) {

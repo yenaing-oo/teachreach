@@ -19,20 +19,25 @@ import comp3350.teachreach.presentation.search.SearchFragment;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
-    private static final int                   BACK_DELAY      = 2000;
-    private              NavigationBarView     navigationMenu;
-    private              Fragment              topBarFragment  = null;
-    private              Fragment              currentFragment = null;
-    private              OnBackPressedCallback onBackPressedCallback;
-    private              FragmentManager       fragmentManager;
-    private              int                   accountID;
-    private              long                  backPressedTime;
+    private static final int  BACK_DELAY = 2000;
+    private              long backPressedTime;
+
+    private NavigationBarView navigationMenu;
+
+    private FragmentManager fragmentManager;
+    private Fragment        topBarFragment  = null;
+    private Fragment        currentFragment = null;
+    private Fragment        searchFragment  = null;
+
+    private OnBackPressedCallback onBackPressedCallback;
+
+    private int accountID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
+        setContentView(R.layout.activity_navigation_student);
         navigationMenu  = findViewById(R.id.navigation_menu);
         accountID       = getIntent().getIntExtra("ACCOUNT_ID", -1);
         fragmentManager = getSupportFragmentManager();
@@ -54,14 +59,17 @@ public class StudentHomeActivity extends AppCompatActivity
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {
             } else if (itemId == R.id.NavBarSearch) {
+                searchFragment  = searchFragment == null ?
+                                  SearchFragment.newInstance(accountID) :
+                                  searchFragment;
                 topBarFragment  = SearchBarFragment.newInstance();
-                currentFragment = SearchFragment.newInstance(accountID);
+                currentFragment = searchFragment;
             } else if (itemId == R.id.NavBarProfile) {
                 topBarFragment  = MyProfileBarFragment.newInstance(accountID);
                 currentFragment = StudentProfileSelfViewFragment.newInstance(
                         fragmentManager,
-                        accountID,
-                        topBarFragment);
+                        topBarFragment,
+                        accountID);
             } else if (itemId == R.id.NavBarChats) {
             }
             setNewFragment();

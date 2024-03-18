@@ -121,9 +121,7 @@ public class StudentProfileActivity extends AppCompatActivity
                                 layoutParams.topMargin,
                                 layoutParams.rightMargin,
                                 bottomNavHeight +
-                                getResources().getDimensionPixelSize(R.dimen.fab_margin)
-                                // Adjust this value based on your needs
-                               );
+                                getResources().getDimensionPixelSize(R.dimen.fab_margin));
         extendedFab.setLayoutParams(layoutParams);
     }
 }
