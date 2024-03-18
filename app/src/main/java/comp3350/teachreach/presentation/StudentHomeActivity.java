@@ -65,7 +65,12 @@ public class StudentHomeActivity extends AppCompatActivity
                 topBarFragment  = SearchBarFragment.newInstance();
                 currentFragment = searchFragment;
             } else if (itemId == R.id.NavBarProfile) {
-                topBarFragment  = MyProfileBarFragment.newInstance(accountID);
+                topBarFragment  = MyProfileBarFragment.newInstance(
+                        fragmentManager,
+                        topBarFragment,
+                        currentFragment,
+                        "My Profile",
+                        accountID);
                 currentFragment = StudentProfileSelfViewFragment.newInstance(
                         fragmentManager,
                         topBarFragment,

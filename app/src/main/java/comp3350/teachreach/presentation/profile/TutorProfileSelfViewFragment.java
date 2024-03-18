@@ -80,12 +80,14 @@ public class TutorProfileSelfViewFragment extends Fragment
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.abTop,
-                         EditMyProfileBarFragment.newInstance(fragmentManager,
-                                                              previousTopBarFragment,
-                                                              previousFragment,
-                                                              accountID))
+                         TopBarFragment.newInstance(fragmentManager,
+                                                    previousTopBarFragment,
+                                                    previousFragment,
+                                                    "Edit Profile",
+                                                    accountID))
                 .replace(R.id.navFrameLayout,
                          EditStudentProfileFragment.newInstance(fragmentManager,
+                                                                previousTopBarFragment,
                                                                 accountID))
                 .commit();
     }

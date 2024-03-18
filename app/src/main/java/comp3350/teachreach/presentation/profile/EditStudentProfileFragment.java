@@ -28,6 +28,7 @@ public class EditStudentProfileFragment extends Fragment
     private static final String ARG_ACCOUNT_ID = "ACCOUNT_ID";
 
     private static FragmentManager fragmentManager;
+    private static Fragment        previousTopBarFragment = null;
 
     private int             accountID = -1;
     private IAccount        account   = null;
@@ -44,10 +45,12 @@ public class EditStudentProfileFragment extends Fragment
     }
 
     public static EditStudentProfileFragment newInstance(FragmentManager fragmentManager,
+                                                         Fragment prevTopBar,
                                                          int accountID)
     {
         EditStudentProfileFragment fragment = new EditStudentProfileFragment();
         Bundle                     args     = new Bundle();
+        previousTopBarFragment = prevTopBar;
         args.putInt(ARG_ACCOUNT_ID, accountID);
         fragment.setArguments(args);
         EditStudentProfileFragment.fragmentManager = fragmentManager;
@@ -90,14 +93,13 @@ public class EditStudentProfileFragment extends Fragment
 
     private void goBack()
     {
-        Fragment topBarFragment = MyProfileBarFragment.newInstance(accountID);
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.abTop, topBarFragment)
+                .replace(R.id.abTop, previousTopBarFragment)
                 .replace(R.id.navFrameLayout,
                          StudentProfileSelfViewFragment.newInstance(
                                  fragmentManager,
-                                 topBarFragment,
+                                 previousTopBarFragment,
                                  accountID))
                 .commit();
     }

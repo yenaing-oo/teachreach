@@ -63,4 +63,9 @@
     <string name="NavBarStudentRequests">Requests</string>
     <string name="tvStudentProfileCardTitle">Student</string>
     <string name="tvTutorProfileCardTitle">Tutor</string>
+    <string name="tbBackTitle">Teach Reach</string>
+    <string name="btnChangeEmail">Change Email</string>
+    <string name="btnChangePassword">Change Password</string>
+    <string name="tvEmail">"Current Email: "</string>
+    <string name="tvEmailField">dummy@example.com</string>
 </resources>

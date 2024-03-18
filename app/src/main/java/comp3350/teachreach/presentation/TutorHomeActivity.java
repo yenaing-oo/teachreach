@@ -58,7 +58,12 @@ public class TutorHomeActivity extends AppCompatActivity
             if (itemId == R.id.NavBarSessions) {
             } else if (itemId == R.id.NavBarRequests) {
             } else if (itemId == R.id.NavBarProfile) {
-                topBarFragment  = MyProfileBarFragment.newInstance(accountID);
+                topBarFragment  = MyProfileBarFragment.newInstance(
+                        fragmentManager,
+                        topBarFragment,
+                        currentFragment,
+                        "My Profile",
+                        accountID);
                 currentFragment = TutorProfileSelfViewFragment.newInstance(
                         fragmentManager,
                         topBarFragment,
