@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Teach Reach</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="choose_a_date_and_time">Choose a date and time</string>
     <string name="date_display">Date Display</string>
@@ -31,15 +30,15 @@
     <string name="NavBarStudentSessions">Sessions</string>
     <string name="tvTutorLoginTopBar">Tutor Login</string>
     <string name="tvStudentProfileTopBar">My Profile</string>
-    <string name="tvName">Name</string>
-    <string name="tvPronouns">Pronouns</string>
-    <string name="tvMajor">Major</string>
+    <string name="tvName">Name: </string>
+    <string name="tvPronouns">Pronouns: </string>
+    <string name="tvMajor">Major: </string>
     <string name="fabEditProfile">Edit Profile</string>
     <string name="searchHint">Course ID (e.g. COMP 2150)</string>
     <string name="topBarDefault">Teach Reach</string>
     <string name="NavBarChats">Chats</string>
-    <string name="tvWhoAreYou">I am...</string>
-    <string name="tvLoginAs">I want to login as...</string>
+    <string name="tvWhoAreYou">I am…</string>
+    <string name="tvLoginAs">I want to login as…</string>
     <string name="myProfileBarTitle">My Profile</string>
     <string name="tvNameField">Name field</string>
     <string name="tvPronounsField">Pronouns field</string>
@@ -62,4 +61,6 @@
     <string name="tbAccountSettings">Account Settings</string>
     <string name="tbcdAccountSettings">Change Email or Password</string>
     <string name="NavBarStudentRequests">Requests</string>
+    <string name="tvStudentProfileCardTitle">Student</string>
+    <string name="tvTutorProfileCardTitle">Tutor</string>
 </resources>
