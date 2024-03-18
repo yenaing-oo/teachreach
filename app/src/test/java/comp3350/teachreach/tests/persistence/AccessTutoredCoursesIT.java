@@ -1,16 +1,14 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import comp3350.teachreach.data.hsqldb.TutoredCoursesHSQLDB;
 import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
-import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public class AccessTutoredCoursesIT {

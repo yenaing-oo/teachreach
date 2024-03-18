@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -31,6 +33,7 @@ class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
+        AndroidThreeTen.init(this);
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
         Button btnTutor   = findViewById(R.id.btnTutor);
@@ -48,7 +51,6 @@ class MainActivity extends AppCompatActivity
             }
         });
 
-        // // Listener for the tutor button
 
         btnTutor.setOnClickListener(new View.OnClickListener()
         {

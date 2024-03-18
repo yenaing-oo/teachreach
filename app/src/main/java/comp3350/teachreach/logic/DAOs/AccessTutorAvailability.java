@@ -1,11 +1,11 @@
 package comp3350.teachreach.logic.DAOs;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AccessTutorAvailability {
     private static ITutorAvailabilityPersistence TutorAvailabilityPersistence;
@@ -19,25 +19,25 @@ public class AccessTutorAvailability {
         AccessTutorAvailability.TutorAvailabilityPersistence = tutorAvailabilityAccess;
     }
 
-    public List<TimeSlice> getTutorTimeSliceByTutorID(int tutorID){
-        try{
-            return TutorAvailabilityPersistence.getTutorTimeSliceByTutorID(tutorID);
-        }
-        catch (final Exception e) {
+    public List<TimeSlice> getAvailability(ITutor tutor) {
+        try {
+            return TutorAvailabilityPersistence.getAvailability(tutor);
+        } catch (final Exception e) {
             throw new DataAccessException(
                     "Failed to get time slice by tutor's " + "id", e);
         }
     }
 
-   // List<TimeSlice> getTutorTimeSliceByTutorID(int tutor_id);
-    public boolean storeTutorTimeSlice(int tutorID, Timestamp startTime, Timestamp endTime){
-        try{
+    public void addAvailability(ITutor tutor, TimeSlice timeSlice) {
+        try {
 
-            return TutorAvailabilityPersistence.storeTutorTimeSlice(tutorID,startTime,endTime);
+            TutorAvailabilityPersistence.addAvailability(tutor, timeSlice);
 
-    } catch (final Exception e) {
-        throw new DataAccessException("Failed to store tutor time slice!", e);
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to store tutor time slice!", e);
+        }
     }
+
+    public void removeAvailability(ITutor tutor, TimeSlice timeSlice) {
     }
-    //boolean storeTutorTimeSlice(int tutor_id, Timestamp start_time, Timestamp end_Time);
 }

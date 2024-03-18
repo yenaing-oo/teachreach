@@ -9,6 +9,8 @@ import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class AccessSessions
@@ -38,7 +40,7 @@ class AccessSessions
     {
         try {
             boolean result
-                    = sessionPersistence.deleteSession(session.getSessionID());
+                    = sessionPersistence.deleteSession(session);
             if (result) {
                 sessions = sessionPersistence.getSessions();
             }
@@ -48,17 +50,15 @@ class AccessSessions
         }
     }
 
-    public
-    ISession storeSession(int studentID,
-                          int tutorID,
-                          TimeSlice sessionTime,
-                          String location)
-    {
+    public ISession storeSession(IStudent student,
+                                 ITutor tutor,
+                                 TimeSlice sessionTime,
+                                 String location) {
         try {
-            ISession newSession = sessionPersistence.storeSession(studentID,
-                                                                  tutorID,
-                                                                  sessionTime,
-                                                                  location);
+            ISession newSession = sessionPersistence.storeSession(student,
+                    tutor,
+                    sessionTime,
+                    location);
             sessions = sessionPersistence.getSessions();
             return newSession;
         } catch (final Exception e) {

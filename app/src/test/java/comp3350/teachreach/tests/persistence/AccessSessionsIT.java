@@ -1,17 +1,14 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import comp3350.teachreach.data.hsqldb.SessionHSQLDB;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
-import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public

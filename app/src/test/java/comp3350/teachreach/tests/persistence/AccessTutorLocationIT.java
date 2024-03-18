@@ -1,4 +1,4 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import org.junit.Before;
 import org.junit.Test;

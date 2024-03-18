@@ -1,172 +1,87 @@
 package comp3350.teachreach.objects;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoField;
+import org.threeten.bp.Duration;
+import org.threeten.bp.LocalDateTime;
 
-public
-class TimeSlice
-{
-    private Instant  startTime;
-    private Instant  endTime;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+
+public class TimeSlice implements ITimeSlice {
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private Duration duration;
 
-    public
-    TimeSlice(Instant startTime, Instant endTime)
-    {
+    public TimeSlice(LocalDateTime startTime, LocalDateTime endTime) {
         this.startTime = startTime;
-        this.endTime   = endTime;
-        this.duration  = Duration.between(startTime, endTime);
+        this.endTime = endTime;
+        this.duration = Duration.between(startTime, endTime);
     }
 
-    public static
-    TimeSlice ofHalfAnHourFrom(int year,
-                               int month,
-                               int dayOfMonth,
-                               int hour,
-                               int minute)
-    {
-        Instant start = LocalDateTime
-                .of(year, month, dayOfMonth, hour, minute)
-                .atZone(ZoneId.systemDefault())
-                .toInstant();
-        return new TimeSlice(start, start.plus(Duration.ofMinutes(30)));
+    public static TimeSlice ofHalfAnHourFrom(int year, int month, int dayOfMonth, int hour, int minute) {
+        LocalDateTime start = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
+        return new TimeSlice(start, start.plusMinutes(30));
     }
 
-    public static
-    TimeSlice of(int startYear,
-                 int startMonth,
-                 int startDay,
-                 int startHour,
-                 int startMinute,
-                 int endYear,
-                 int endMonth,
-                 int endDay,
-                 int endHour,
-                 int endMinute)
-    {
-        Instant start = LocalDateTime
-                .of(startYear, startMonth, startDay, startHour, startMinute)
-                .atZone(ZoneId.systemDefault())
-                .toInstant();
-        Instant end = LocalDateTime
-                .of(endYear, endMonth, endDay, endHour, endMinute)
-                .atZone(ZoneId.systemDefault())
-                .toInstant();
-        return new TimeSlice(start, end);
-    }
-
-    public
-    Instant getStartTime()
-    {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public
-    Timestamp getStartTimestamp()
-    {
-        return (Timestamp) Date.from(startTime);
+    public int getStartYear() {
+        return startTime.getYear();
     }
 
-    public
-    Timestamp getEndTimestamp()
-    {
-        return (Timestamp) Date.from(endTime);
+    public int getStartMonth() {
+        return startTime.getMonthValue();
     }
 
-    public
-    int getStartYear()
-    {
-        return startTime.get(ChronoField.YEAR);
+    public int getStartDay() {
+        return startTime.getDayOfMonth();
     }
 
-    public
-    int getStartMonth()
-    {
-        return startTime.get(ChronoField.MONTH_OF_YEAR);
+    public int getStartHour() {
+        return startTime.getHour();
     }
 
-    public
-    int getStartDay()
-    {
-        return startTime.get(ChronoField.DAY_OF_MONTH);
+    public int getStartMinute() {
+        return startTime.getMinute();
     }
 
-    public
-    int getStartHour()
-    {
-        return startTime.get(ChronoField.HOUR_OF_DAY);
-    }
-
-    public
-    int getStartMinute()
-    {
-        return endTime.get(ChronoField.MINUTE_OF_HOUR);
-    }
-
-    public
-    int getEndYear()
-    {
-        return endTime.get(ChronoField.YEAR);
-    }
-
-    public
-    int getEndMonth()
-    {
-        return endTime.get(ChronoField.MONTH_OF_YEAR);
-    }
-
-    public
-    int getEndDay()
-    {
-        return endTime.get(ChronoField.DAY_OF_MONTH);
-    }
-
-    public
-    int getEndHour()
-    {
-        return endTime.get(ChronoField.HOUR_OF_DAY);
-    }
-
-    public
-    int getEndMinute()
-    {
-        return endTime.get(ChronoField.MINUTE_OF_HOUR);
-    }
-
-    public
-    Instant getEndTime()
-    {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
-    public
-    Duration getDuration()
-    {
+    public int getEndYear() {
+        return endTime.getYear();
+    }
+
+    public int getEndMonth() {
+        return endTime.getMonthValue();
+    }
+
+    public int getEndDay() {
+        return endTime.getDayOfMonth();
+    }
+
+    public int getEndHour() {
+        return endTime.getHour();
+    }
+
+    public int getEndMinute() {
+        return endTime.getMinute();
+    }
+
+    public Duration getDuration() {
         return duration;
     }
 
-    public
-    boolean conflictsWith(TimeSlice that)
-    {
-        return that.endTime.isAfter(this.startTime) ||
-               that.startTime.isBefore(this.endTime);
+    public boolean conflictsWith(ITimeSlice that) {
+        return that.endTime.isAfter(this.startTime) && that.startTime.isBefore(this.endTime);
     }
 
-    public
-    boolean canContain(TimeSlice that)
-    {
-        return this.startTime.isBefore(that.startTime) &&
-               this.endTime.isAfter(that.endTime);
+    public boolean canContain(ITimeSlice that) {
+        return this.startTime.isBefore(that.startTime) && this.endTime.isAfter(that.endTime);
     }
 
-    public
-    TimeSlice mergeWith(TimeSlice that)
-    {
+    public TimeSlice mergeWith(ITimeSlice that) {
         if (this.startTime.isAfter(that.startTime)) {
             this.startTime = that.startTime;
         }
@@ -175,5 +90,14 @@ class TimeSlice
         }
         this.duration = Duration.between(this.startTime, this.endTime);
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TimeSlice) {
+            TimeSlice that = (TimeSlice) obj;
+            return this.startTime.equals(that.startTime) && this.endTime.equals(that.endTime);
+        }
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -14,7 +14,7 @@ import java.util.Map;
 
 import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.logic.DAOs.AccessStudents ;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.tests.utils.TestUtils;

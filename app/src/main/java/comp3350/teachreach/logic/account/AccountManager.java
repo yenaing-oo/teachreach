@@ -26,7 +26,7 @@ class AccountManager implements IAccountManager {
 
     public AccountManager(IAccount theAccount, IAccountPersistence accountPersistence) {
         accessAccounts = new AccessAccounts(accountPersistence);
-        this.authenticationHandler = new AuthenticationHandler();
+        this.authenticationHandler = new AuthenticationHandler(accountPersistence);
         this.theAccount = theAccount;
     }
 

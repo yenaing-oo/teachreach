@@ -6,8 +6,10 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class SessionStub implements ISessionPersistence
@@ -24,25 +26,23 @@ class SessionStub implements ISessionPersistence
     }
 
     /**
-     * @param studentID   the student's id
-     * @param tutorID     the tutor's id
-     * @param sessionTime a TimeSlice consist of start and end Instant
-     * @param location    location set for this session
+     * @param student   the student's id
+     * @param tutor     the tutor's id
+     * @param timeRange a TimeSlice consist of start and end Instant
+     * @param location  location set for this session
      * @return the new session stored with an assigned sessionID
      */
     @Override
-    public
-    ISession storeSession(int studentID,
-                          int tutorID,
-                          TimeSlice sessionTime,
-                          String location)
-    {
+    public ISession storeSession(IStudent student,
+                                 ITutor tutor,
+                                 ITimeSlice timeRange,
+                                 String location) {
         ISession newSession = sessions.put(sessionCount,
-                                           new Session(sessionCount,
-                                                       studentID,
-                                                       tutorID,
-                                                       sessionTime,
-                                                       location));
+                new Session(sessionCount,
+                        student,
+                        tutor,
+                        timeRange,
+                        location));
         sessionCount++;
         return newSession;
     }
@@ -62,13 +62,11 @@ class SessionStub implements ISessionPersistence
     }
 
     /**
-     * @param sessionID ID of session to be deleted
+     * @param session ID of session to be deleted
      * @return if deletion is successful
      */
     @Override
-    public
-    boolean deleteSession(int sessionID)
-    {
+    public boolean deleteSession(ISession session) {
         return false;
     }
 
