@@ -1,141 +1,118 @@
 package comp3350.teachreach.objects;
 
 import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 
-public
-class Session implements ISession
-{
-    private int       sessionID;
-    private int       studentID;
-    private int       tutorID;
-    private TimeSlice atTime;
-    private boolean   approvedByTutor = false;
-    private String    atLocation;
 
-    public
-    Session(int sessionID,
-            int studentID,
-            int tutorID,
-            int year,
-            int month,
-            int day,
-            int hour,
-            boolean halfPastHour,
-            String atLocation)
-    {
+public class Session implements ISession {
+    private int sessionID;
+    private int studentID;
+    private int tutorID;
+    private ITimeSlice timeRange;
+    private int status;
+    private String atLocation;
+
+    public Session(int sessionID,
+                   int studentID,
+                   int tutorID,
+                   ITimeSlice timeRange,
+                   String atLocation) {
         this.sessionID = sessionID;
         this.studentID = studentID;
-        this.tutorID   = tutorID;
-        this.atTime    = TimeSlice.ofHalfAnHourFrom(year,
-                                                    month,
-                                                    day,
-                                                    hour,
-                                                    halfPastHour ? 30 : 0);
-
+        this.tutorID = tutorID;
+        this.timeRange = timeRange;
         this.atLocation = atLocation;
+        this.status = SessionStatus.PENDING;
     }
 
-    public
-    Session(int sessionID,
-            int studentID,
-            int tutorID,
-            TimeSlice sessionTime,
-            String atLocation)
-    {
-        this.sessionID       = sessionID;
-        this.studentID       = studentID;
-        this.tutorID         = tutorID;
-        this.atTime          = sessionTime;
-        this.approvedByTutor = false;
-        this.atLocation      = atLocation;
+    public Session(int sessionID,
+                   int studentID,
+                   int tutorID,
+                   ITimeSlice timeRange,
+                   String atLocation,
+                   int status) {
+        this.sessionID = sessionID;
+        this.studentID = studentID;
+        this.tutorID = tutorID;
+        this.timeRange = timeRange;
+        this.atLocation = atLocation;
+        this.status = status;
     }
 
     @Override
-    public
-    int getSessionStudentID()
-    {
+    public int getSessionStudentID() {
         return this.studentID;
     }
 
     @Override
-    public
-    Session setSessionStudentID(int studentID)
-    {
+    public Session setSessionStudentID(int studentID) {
         this.studentID = studentID;
         return this;
     }
 
     @Override
-    public
-    int getSessionTutorID()
-    {
+    public int getSessionTutorID() {
         return tutorID;
     }
 
     @Override
-    public
-    void setSessionTutorID(int tutorID)
-    {
+    public void setSessionTutorID(int tutorID) {
         this.tutorID = tutorID;
     }
 
     @Override
-    public
-    int getSessionID()
-    {
+    public int getSessionID() {
         return this.sessionID;
     }
 
     @Override
-    public
-    Session setSessionID(int sessionID)
-    {
+    public Session setSessionID(int sessionID) {
         this.sessionID = sessionID;
         return this;
     }
 
     @Override
-    public
-    TimeSlice getTime()
-    {
-        return this.atTime;
+    public ITimeSlice getTime() {
+        return this.timeRange;
     }
 
     @Override
-    public
-    Session setTime(TimeSlice time)
-    {
-        atTime = time;
+    public Session setTime(TimeSlice time) {
+        timeRange = time;
         return this;
     }
 
     @Override
-    public
-    String getSessionLocation()
-    {
+    public String getSessionLocation() {
         return this.atLocation;
     }
 
     @Override
-    public
-    Session setSessionLocation(String location)
-    {
+    public Session setSessionLocation(String location) {
         this.atLocation = location;
         return this;
     }
 
     @Override
-    public
-    boolean getAcceptedStatus()
-    {
-        return this.approvedByTutor;
+    public int getStatus() {
+        return this.status;
     }
 
     @Override
-    public
-    Session approvedByTutor()
-    {
-        this.approvedByTutor = true;
+    public Session approve() {
+        this.status = SessionStatus.ACCEPTED;
+        return this;
+    }
+
+    @Override
+    public Session reject() {
+        this.status = SessionStatus.REJECTED;
+        return this;
+    }
+
+    @Override
+    public Session pend() {
+        this.status = SessionStatus.PENDING;
         return this;
     }
 }

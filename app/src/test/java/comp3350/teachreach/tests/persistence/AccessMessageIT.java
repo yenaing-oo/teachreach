@@ -1,11 +1,9 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,34 +12,22 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
-import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
-import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IMessagePersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessMessage;
-import comp3350.teachreach.logic.DAOs.AccessStudents;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.objects.Account;
-import comp3350.teachreach.objects.Message;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.tests.utils.TestUtils;
-import comp3350.teachreach.application.Server;
 
 public class AccessMessageIT {
         private Server server;

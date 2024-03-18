@@ -1,74 +1,107 @@
-//package comp3350.teachreach.tests.logic;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertNotNull;
-//import static org.junit.Assert.assertThrows;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import comp3350.teachreach.data.stubs.AccountStub;
-//import comp3350.teachreach.data.interfaces.IAccountPersistence;
-//import comp3350.teachreach.data.interfaces.IStudentPersistence;
-//import comp3350.teachreach.data.interfaces.ITutorPersistence;
-//import comp3350.teachreach.data.stubs.StudentStub;
-//import comp3350.teachreach.data.stubs.TutorStub;
-//import comp3350.teachreach.logic.account.AccountCreator;
-//import comp3350.teachreach.logic.account.exceptions.AccountCreatorException;
-//import comp3350.teachreach.logic.account.CredentialHandler;
-//import comp3350.teachreach.logic.interfaces.IAccountCreator;
-//import comp3350.teachreach.logic.interfaces.ICredentialHandler;
-//import comp3350.teachreach.objects.interfaces.IAccount;
-//
-//public class AccountCreatorTest {
-//    private IAccountCreator accountCreator;
-//
-//    @Before
-//    public void setUp() {
-//        System.out.println("Starting a new test for AccountCreator");
-//        IAccountPersistence accountsDataAccess = new AccountStub();
-//        IStudentPersistence studentsDataAccess = new StudentStub(accountsDataAccess);
-//        ITutorPersistence tutorsDataAccess = new TutorStub(accountsDataAccess);
-//        ICredentialHandler credentialHandler = new CredentialHandler(accountsDataAccess);
-//
-//
-//        accountCreator = new AccountCreator(
-//                accountsDataAccess,
-//                studentsDataAccess,
-//                tutorsDataAccess,
-//                credentialHandler);
-//    }
-//
-//    @Test
-//    public void testCreateAccountBad() {
-//        assertThrows(AccountCreatorException.class, () ->
-//                accountCreator.createAccount(
-//                        "rms.gnu.org",
-//                        "defenestrate"));
-//        assertThrows(AccountCreatorException.class, () ->
-//                accountCreator.createAccount(
-//                        "rms@gnu.org",
-//                        ""));
-//        assertThrows(AccountCreatorException.class, () ->
-//                accountCreator.createAccount(
-//                        "",
-//                        "defenestrate"));
-//    }
-//
-//    @Test
-//    public void testCreateAccountGood() throws AccountCreatorException {
-//        IAccount testAccount = accountCreator.createAccount(
-//                        "r@google.com",
-//                        "herpolhode")
-//                .setStudentProfile(
-//                        "Rob", "CS", "he")
-//                .setTutorProfile(
-//                        "Rob", "CS", "he")
-//                .buildAccount();
-//
-//        assertNotNull(testAccount);
-//        assertNotNull(testAccount.getStudentProfile());
-//        assertNotNull(testAccount.getTutorProfile());
-//        assertEquals("r@google.com", testAccount.getEmail());
-//    }
-//}
+package comp3350.teachreach.tests.logic;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.File;
+import java.io.IOException;
+
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
+import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
+import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
+import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
+import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.logic.account.AccountCreator;
+import comp3350.teachreach.logic.exceptions.AccountCreatorException;
+import comp3350.teachreach.logic.exceptions.InvalidNameException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
+import comp3350.teachreach.logic.interfaces.IAccountCreator;
+import comp3350.teachreach.tests.utils.TestUtils;
+
+public class AccountCreatorTest {
+    private File tempDB;
+    private IAccountCreator accountCreator;
+    private String validStudentEmail;
+    private String validPassword;
+    private String validName;
+    private String validMajor;
+    private String validPronouns;
+    private String validTutorEmail;
+
+    @Before
+    public void setUp() throws IOException {
+        System.out.println("Starting a new test for AccountCreator");
+        this.tempDB = TestUtils.copyDB();
+        String tempDBPath = this.tempDB.getAbsolutePath().replace(".script", "");
+        IAccountPersistence accountsDataAccess = new AccountHSQLDB(tempDBPath);
+        IStudentPersistence studentsDataAccess = new StudentHSQLDB(tempDBPath);
+        ITutorPersistence tutorsDataAccess = new TutorHSQLDB(tempDBPath);
+
+        this.validStudentEmail = "johndoe@email.com";
+        this.validTutorEmail = "johndoe2@email.com";
+        this.validPassword = "password";
+        this.validName = "John Doe";
+        this.validMajor = "Computer Science";
+        this.validPronouns = "he/him";
+
+        accountCreator = new AccountCreator(
+                accountsDataAccess,
+                studentsDataAccess,
+                tutorsDataAccess);
+    }
+
+    @Test
+    public void testCreateTutorValid() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test
+    public void testCreateStudentValid() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidNameException.class)
+    public void testCreateStudentAccountInvalidName() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createStudentAccount(validStudentEmail, validPassword, "  ", validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidEmailException.class)
+    public void testCreateStudentInvalidEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createStudentAccount("user123", validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = DuplicateEmailException.class)
+    public void testCreateStudentDuplicateEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
+        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidPasswordException.class)
+    public void testCreateStudentInvalidPassword() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createStudentAccount(validStudentEmail, "  ", validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidNameException.class)
+    public void testCreateTutorAccountInvalidName() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createTutorAccount(validTutorEmail, validPassword, "  ", validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidEmailException.class)
+    public void testCreateTutorInvalidEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createTutorAccount("user123", validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = DuplicateEmailException.class)
+    public void testCreateTutorDuplicateEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
+        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
+    }
+
+    @Test(expected = InvalidPasswordException.class)
+    public void testCreateTutorInvalidPassword() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
+        accountCreator.createTutorAccount(validTutorEmail, "  ", validName, validPronouns, validMajor);
+    }
+}

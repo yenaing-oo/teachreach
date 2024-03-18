@@ -4,16 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.TRData;
@@ -31,35 +33,25 @@ class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
+        TRData.loadEnums(this);
+        AndroidThreeTen.init(this);
+
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
-        Button btnTutor   = findViewById(R.id.btnTutor);
+        Button btnTutor = findViewById(R.id.btnTutor);
 
-        btnStudent.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public
-            void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this,
-                                           StudentLoginActivity.class);
+        btnStudent.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                    StudentLoginActivity.class);
 
-                startActivity(intent);
-            }
+            startActivity(intent);
         });
 
-        // // Listener for the tutor button
 
-        btnTutor.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public
-            void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this,
-                                           TutorLoginActivity.class);
-                startActivity(intent);
-            }
+        btnTutor.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this,
+                    TutorLoginActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -76,7 +68,7 @@ class MainActivity extends AppCompatActivity
         try {
 
             assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < assetNames.length; i++) {
+            for (int i = 0; i < Objects.requireNonNull(assetNames).length; i++) {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
             }
 

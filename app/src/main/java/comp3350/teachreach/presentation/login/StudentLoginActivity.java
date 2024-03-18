@@ -10,8 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
+import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.presentation.search.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
@@ -53,7 +55,8 @@ class StudentLoginActivity extends AppCompatActivity
         try {
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            authenticationHandler.authenticateStudent(email, password);
+            IStudent student = authenticationHandler.authenticateStudent(email, password);
+            TRData.setCurrentStudentID(student.getStudentID());
             Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
             startActivity(intent);
             finish();

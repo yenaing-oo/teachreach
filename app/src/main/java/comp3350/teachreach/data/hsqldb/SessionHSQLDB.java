@@ -1,12 +1,14 @@
 package comp3350.teachreach.data.hsqldb;
 
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.LocalDateTime;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,64 +16,51 @@ import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.objects.Session;
 import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 
-public
-class SessionHSQLDB implements ISessionPersistence
-{
+public class SessionHSQLDB implements ISessionPersistence {
     private final String dbPath;
 
-    public
-    SessionHSQLDB(final String dbPath)
-    {
+    public SessionHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
     }
 
-    private
-    Connection connection() throws SQLException
-    {
+    private Connection connection() throws SQLException {
         return DriverManager.getConnection(String.format(
                 "jdbc:hsqldb:file:%s;shutdown=true",
                 dbPath), "SA", "");
     }
 
-    private
-    ISession fromResultSet(final ResultSet rs) throws SQLException
-    {
-        final int       studentID      = rs.getInt("student_id");
-        final int       tutorID        = rs.getInt("tutor_id");
-        final int       sessionID      = rs.getInt("session_id");
-        final boolean   acceptedStatus = rs.getBoolean("accepted");
-        final Timestamp startTimestamp = rs.getTimestamp("start_date_time");
-        final Timestamp endTimestamp   = rs.getTimestamp("end_time_stamp");
-        final String    location       = rs.getString("location");
-        ISession resultSession = new Session(sessionID,
-                                             studentID,
-                                             tutorID,
-                                             new TimeSlice(startTimestamp.toInstant(),
-                                                           endTimestamp.toInstant()),
-                                             location);
-        return acceptedStatus ? resultSession.approvedByTutor() : resultSession;
+    private ISession fromResultSet(final ResultSet rs) throws SQLException {
+        final int studentID = rs.getInt("student_id");
+        final int tutorID = rs.getInt("tutor_id");
+        final int sessionID = rs.getInt("session_id");
+        final int sessionStatus = rs.getInt("status");
+        final LocalDateTime startTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("start_date_time"));
+        final LocalDateTime endTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("end_time_stamp"));
+        final String location = rs.getString("location");
+        return new Session(sessionID,
+                studentID,
+                tutorID,
+                new TimeSlice(startTime, endTime),
+                location,
+                sessionStatus);
     }
 
     @Override
-    public
-    ISession storeSession(int studentID,
-                          int tutorID,
-                          TimeSlice sessionTime,
-                          String location)
-    {
+    public ISession storeSession(ISession session) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO SESSIONS(STUDENT_ID, TUTOR_ID, " +
-                    "START_DATE_TIME, END_DATE_TIME, " +
-                    "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
+                            "START_DATE_TIME, END_DATE_TIME, " +
+                            "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
-            pst.setInt(1, studentID);
-            pst.setInt(2, tutorID);
-            pst.setTimestamp(3, sessionTime.getStartTimestamp());
-            pst.setTimestamp(4, sessionTime.getEndTimestamp());
-            pst.setString(5, location);
-            pst.setBoolean(6, false);
+            pst.setInt(1, session.getSessionStudentID());
+            pst.setInt(2, session.getSessionTutorID());
+            pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(session.getTime().getStartTime()));
+            pst.setTimestamp(4, DateTimeUtils.toSqlTimestamp(session.getTime().getEndTime()));
+            pst.setString(5, session.getSessionLocation());
+            pst.setInt(6, session.getStatus());
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 throw new PersistenceException(
@@ -82,11 +71,7 @@ class SessionHSQLDB implements ISessionPersistence
             if (rs.next()) {
                 int sessionID = rs.getInt(1);
                 rs.close();
-                return new Session(sessionID,
-                                   studentID,
-                                   tutorID,
-                                   sessionTime,
-                                   location);
+                return session.setSessionID(sessionID);
             } else {
                 rs.close();
                 c.close();
@@ -98,23 +83,11 @@ class SessionHSQLDB implements ISessionPersistence
     }
 
     @Override
-    public
-    ISession storeSession(ISession newSession)
-    {
-        return this.storeSession(newSession.getSessionStudentID(),
-                                 newSession.getSessionTutorID(),
-                                 newSession.getTime(),
-                                 newSession.getSessionLocation());
-    }
-
-    @Override
-    public
-    boolean deleteSession(int sessionID)
-    {
+    public boolean deleteSession(ISession session) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "DELETE FROM sessions WHERE SESSION_ID = ?");
-            pst.setInt(1, sessionID);
+            pst.setInt(1, session.getSessionID());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
             return success;
@@ -124,21 +97,19 @@ class SessionHSQLDB implements ISessionPersistence
     }
 
     @Override
-    public
-    ISession updateSession(ISession session)
-    {
+    public ISession updateSession(ISession session) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "UPDATE sessions SET STUDENT_ID = ?, TUTOR_ID = ?, " +
-                    "start_date_time = ?, end_date_time = ?, location = ?, " +
-                    "accepted = ? WHERE session_id = ?");
-            TimeSlice sessionTime = session.getTime();
+                            "start_date_time = ?, end_date_time = ?, location = ?, " +
+                            "accepted = ? WHERE session_id = ?");
+            ITimeSlice sessionTime = session.getTime();
             pst.setInt(1, session.getSessionStudentID());
             pst.setInt(2, session.getSessionTutorID());
-            pst.setObject(3, sessionTime.getStartTimestamp());
-            pst.setObject(4, sessionTime.getEndTimestamp());
+            pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(sessionTime.getStartTime()));
+            pst.setTimestamp(4, DateTimeUtils.toSqlTimestamp(sessionTime.getEndTime()));
             pst.setString(5, session.getSessionLocation());
-            pst.setBoolean(6, session.getAcceptedStatus());
+            pst.setInt(6, session.getStatus());
             pst.setInt(7, session.getSessionID());
             boolean success = pst.executeUpdate() == 1;
             pst.close();
@@ -153,9 +124,7 @@ class SessionHSQLDB implements ISessionPersistence
     }
 
     @Override
-    public
-    Map<Integer, ISession> getSessions()
-    {
+    public Map<Integer, ISession> getSessions() {
         try (final Connection c = connection()) {
             final Statement st = c.createStatement();
             final ResultSet rs = st.executeQuery("SELECT * FROM sessions");

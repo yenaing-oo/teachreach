@@ -17,12 +17,10 @@ public class TutorHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
 
-        String tutorEmail = getIntent().getStringExtra("TUTOR_EMAIL_KEY");
 
         editProfileButton = findViewById(R.id.edit_profile_button);
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditTutorProfileActivity.class);
-            intent.putExtra("TUTOR_EMAIL_KEY", tutorEmail);
             startActivity(intent);
         });
     }

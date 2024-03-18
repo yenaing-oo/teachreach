@@ -29,8 +29,6 @@ class AccountStub implements IAccountPersistence
                                       "He/Him",
                                       "Computer Science"));
         // accountID should be 1, password should be "veryStrongPassword"
-        // assert (git) gud err == nil xx
-        // no one should care enough to read this xx - KT
 
         //        this.storeTutor(new Tutor("Camryn Mcmillan", "She/Her",
         //        "Computer Science",
