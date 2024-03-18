@@ -25,7 +25,11 @@ interface ISession
 
     ISession setSessionLocation(String location);
 
-    boolean getAcceptedStatus();
+    int getStatus();
 
     ISession approve();
+
+    ISession reject();
+
+    ISession pend();
 }

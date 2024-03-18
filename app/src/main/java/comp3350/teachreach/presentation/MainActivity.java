@@ -33,7 +33,9 @@ class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
+        TRData.loadEnums(this);
         AndroidThreeTen.init(this);
+
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
         Button btnTutor   = findViewById(R.id.btnTutor);

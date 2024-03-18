@@ -6,7 +6,6 @@ import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
-import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
@@ -45,7 +44,7 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager {
 
     @Override
     public void removeAvailability(ITutor tutor, ITimeSlice timeRange) {
-        List<TimeSlice> tutorAvailability = getAvailabilty(tutor);
+        List<ITimeSlice> tutorAvailability = getAvailabilty(tutor);
         if (tutorAvailability.contains(timeRange)) {
             accessTutorAvailability.removeAvailability(tutor, timeRange);
         }

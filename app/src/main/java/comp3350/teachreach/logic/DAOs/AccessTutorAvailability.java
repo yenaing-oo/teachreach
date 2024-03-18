@@ -5,21 +5,21 @@ import java.util.List;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AccessTutorAvailability {
     private static ITutorAvailabilityPersistence TutorAvailabilityPersistence;
-    public
-    AccessTutorAvailability()
-    {
+
+    public AccessTutorAvailability() {
         TutorAvailabilityPersistence = Server.getTutorAvailabilityAccess();
     }
-    public AccessTutorAvailability(ITutorAvailabilityPersistence tutorAvailabilityAccess)
-    {
+
+    public AccessTutorAvailability(ITutorAvailabilityPersistence tutorAvailabilityAccess) {
         AccessTutorAvailability.TutorAvailabilityPersistence = tutorAvailabilityAccess;
     }
 
-    public List<TimeSlice> getAvailability(ITutor tutor) {
+    public List<ITimeSlice> getAvailability(ITutor tutor) {
         try {
             return TutorAvailabilityPersistence.getAvailability(tutor);
         } catch (final Exception e) {
@@ -39,5 +39,10 @@ public class AccessTutorAvailability {
     }
 
     public void removeAvailability(ITutor tutor, TimeSlice timeSlice) {
+        try {
+            TutorAvailabilityPersistence.removeAvailability(tutor, timeSlice);
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to remove tutor time slice!", e);
+        }
     }
 }

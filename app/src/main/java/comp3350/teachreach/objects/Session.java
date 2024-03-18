@@ -3,13 +3,13 @@ package comp3350.teachreach.objects;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 
-public
-class Session implements ISession {
+
+public class Session implements ISession {
     private int sessionID;
     private int studentID;
     private int tutorID;
     private ITimeSlice timeRange;
-    private boolean approved;
+    private int status;
     private String atLocation;
 
     public Session(int sessionID,
@@ -22,22 +22,21 @@ class Session implements ISession {
         this.tutorID = tutorID;
         this.timeRange = timeRange;
         this.atLocation = atLocation;
-        this.approved = false;
+        this.status = SessionStatus.PENDING;
     }
 
     public Session(int sessionID,
                    int studentID,
                    int tutorID,
-                   TimeSlice timeRange,
+                   ITimeSlice timeRange,
                    String atLocation,
-                   boolean approved) {
+                   int status) {
         this.sessionID = sessionID;
         this.studentID = studentID;
         this.tutorID = tutorID;
         this.timeRange = timeRange;
-        this.approved = false;
         this.atLocation = atLocation;
-        this.approved = approved;
+        this.status = status;
     }
 
     @Override
@@ -95,13 +94,25 @@ class Session implements ISession {
     }
 
     @Override
-    public boolean getAcceptedStatus() {
-        return this.approved;
+    public int getStatus() {
+        return this.status;
     }
 
     @Override
     public Session approve() {
-        this.approved = true;
+        this.status = SessionStatus.ACCEPTED;
+        return this;
+    }
+
+    @Override
+    public Session reject() {
+        this.status = SessionStatus.REJECTED;
+        return this;
+    }
+
+    @Override
+    public Session pend() {
+        this.status = SessionStatus.PENDING;
         return this;
     }
 }

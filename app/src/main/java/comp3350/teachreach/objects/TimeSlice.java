@@ -16,11 +16,6 @@ public class TimeSlice implements ITimeSlice {
         this.duration = Duration.between(startTime, endTime);
     }
 
-    public static TimeSlice ofHalfAnHourFrom(int year, int month, int dayOfMonth, int hour, int minute) {
-        LocalDateTime start = LocalDateTime.of(year, month, dayOfMonth, hour, minute);
-        return new TimeSlice(start, start.plusMinutes(30));
-    }
-
     public LocalDateTime getStartTime() {
         return startTime;
     }
@@ -74,19 +69,19 @@ public class TimeSlice implements ITimeSlice {
     }
 
     public boolean conflictsWith(ITimeSlice that) {
-        return that.endTime.isAfter(this.startTime) && that.startTime.isBefore(this.endTime);
+        return that.getEndTime().isAfter(this.startTime) && that.getStartTime().isBefore(this.endTime);
     }
 
     public boolean canContain(ITimeSlice that) {
-        return this.startTime.isBefore(that.startTime) && this.endTime.isAfter(that.endTime);
+        return this.startTime.isBefore(that.getStartTime()) && this.endTime.isAfter(that.getEndTime());
     }
 
     public TimeSlice mergeWith(ITimeSlice that) {
-        if (this.startTime.isAfter(that.startTime)) {
-            this.startTime = that.startTime;
+        if (this.startTime.isAfter(that.getStartTime())) {
+            this.startTime = that.getStartTime();
         }
-        if (this.endTime.isBefore(that.endTime)) {
-            this.endTime = that.endTime;
+        if (this.endTime.isBefore(that.getEndTime())) {
+            this.endTime = that.getEndTime();
         }
         this.duration = Duration.between(this.startTime, this.endTime);
         return this;
