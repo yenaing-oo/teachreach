@@ -67,10 +67,15 @@ public class EditStudentProfileFragment extends Fragment
         etName      = tilName.getEditText();
         etPronouns  = tilPronouns.getEditText();
         etMajor     = tilMajor.getEditText();
-        tilName.setHelperText("Current Name: " + account.getUserName());
-        tilPronouns.setHelperText(
-                "Current Pronouns: " + account.getUserPronouns());
-        tilMajor.setHelperText("Current Major: " + account.getUserMajor());
+        etName.setText(account.getUserName());
+        String currentPronouns = account.getUserPronouns();
+        if (currentPronouns != null && !currentPronouns.isEmpty()) {
+            etPronouns.setText(currentPronouns);
+        }
+        String currentMajor = account.getUserMajor();
+        if (currentMajor != null && !currentMajor.isEmpty()) {
+            etMajor.setText(currentMajor);
+        }
     }
 
     private void setUpApplyButton(View v)
