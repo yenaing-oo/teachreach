@@ -69,7 +69,7 @@ class SearchActivity extends AppCompatActivity
         setUpBackButtonHandler();
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(
-                true /* enabled by default */)
+                true)
         {
             @Override
             public

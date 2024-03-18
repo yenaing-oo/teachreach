@@ -16,6 +16,9 @@ public
 class TRData {
     private static String dbName = "TR";
     private static Map<String, Integer> SessionStatus;
+    private static int currentStudentID = -1;
+    private static int currentTutorID = -1;
+
 
     public static String getDBPathName() {
         return dbName;
@@ -60,6 +63,22 @@ class TRData {
             throw new IllegalArgumentException("No value found for key: " + key);
         }
         return value;
+    }
+
+    public static int getCurrentStudentID() {
+        return currentStudentID;
+    }
+
+    public static void setCurrentStudentID(int studentID) {
+        currentStudentID = studentID;
+    }
+
+    public static int getCurrentTutorID() {
+        return currentTutorID;
+    }
+
+    public static void setCurrentTutorID(int tutorID) {
+        currentTutorID = tutorID;
     }
 
 }

@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 
@@ -34,8 +35,7 @@ class EditTutorProfileActivity extends AppCompatActivity
         etPreferredLocation = findViewById(R.id.etPreferredLocation);
         btnSaveChanges      = findViewById(R.id.btnSaveChanges);
 
-        int tutorID = getIntent().getIntExtra("TUTOR_EMAIL_KEY", -1);
-        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutorID);
+        ITutorProfileHandler tutorProfile = new TutorProfileHandler(TRData.getCurrentTutorID());
 
         initializeFields(tutorProfile);
 
