@@ -56,7 +56,6 @@ public class SearchActivity extends AppCompatActivity
         RecyclerView recyclerView = findViewById(R.id.searchResultRecyclerView);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
         Button sortButton = findViewById(R.id.sortButton);
-        navigationMenu = findViewById(R.id.navigation_menu);
         AccessTutors accessTutors = new AccessTutors();
 
         searchSortHandler = new SearchSortHandler();
