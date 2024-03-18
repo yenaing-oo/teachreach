@@ -7,21 +7,26 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationBarView;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.presentation.profile.MyProfileBarFragment;
+import comp3350.teachreach.presentation.profile.StudentProfileSelfViewFragment;
+import comp3350.teachreach.presentation.search.SearchBarFragment;
 import comp3350.teachreach.presentation.search.SearchFragment;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
     private static final int                   BACK_DELAY      = 2000;
     private              NavigationBarView     navigationMenu;
+    private              Fragment              topBarFragment  = null;
+    private              Fragment              currentFragment = null;
     private              OnBackPressedCallback onBackPressedCallback;
     private              FragmentManager       fragmentManager;
     private              int                   accountID;
     private              long                  backPressedTime;
-    private              Fragment              currentFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,10 +42,9 @@ public class StudentHomeActivity extends AppCompatActivity
         setUpDefaultFragment(R.id.NavBarSearch);
     }
 
-    private void setUpDefaultFragment(int id)
+    private void setUpDefaultFragment(int resourceID)
     {
-        currentFragment = SearchFragment.newInstance(accountID);
-        navigationMenu.setSelectedItemId(id);
+        navigationMenu.setSelectedItemId(resourceID);
         setNewFragment();
     }
 
@@ -50,8 +54,14 @@ public class StudentHomeActivity extends AppCompatActivity
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {
             } else if (itemId == R.id.NavBarSearch) {
+                topBarFragment  = SearchBarFragment.newInstance();
                 currentFragment = SearchFragment.newInstance(accountID);
             } else if (itemId == R.id.NavBarProfile) {
+                topBarFragment  = MyProfileBarFragment.newInstance(accountID);
+                currentFragment = StudentProfileSelfViewFragment.newInstance(
+                        fragmentManager,
+                        accountID,
+                        topBarFragment);
             } else if (itemId == R.id.NavBarChats) {
             }
             setNewFragment();
@@ -61,12 +71,14 @@ public class StudentHomeActivity extends AppCompatActivity
 
     private void setNewFragment()
     {
-        if (currentFragment != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.navFrameLayout, currentFragment)
-                    .commit();
+        FragmentTransaction newTransaction = fragmentManager.beginTransaction();
+        if (topBarFragment != null) {
+            newTransaction.replace(R.id.abTop, topBarFragment);
         }
+        if (currentFragment != null) {
+            newTransaction.replace(R.id.navFrameLayout, currentFragment);
+        }
+        newTransaction.commit();
     }
 
     private void setUpBackButtonHandler()

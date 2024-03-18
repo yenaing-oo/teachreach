@@ -38,4 +38,24 @@
     <string name="searchHint">Course ID (e.g. COMP 2150)</string>
     <string name="topBarDefault">Teach Reach</string>
     <string name="NavBarChats">Chats</string>
+    <string name="tvWhoAreYou">I am...</string>
+    <string name="tvLoginAs">I want to login as...</string>
+    <string name="myProfileBarTitle">My Profile</string>
+    <string name="tvNameField">Name field</string>
+    <string name="tvPronounsField">Pronouns field</string>
+    <string name="tvMajorField">Major field</string>
+    <string name="title_activity_edit_student_profile">
+        EditStudentProfileActivity
+    </string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="tvEditProfileTitle">Edit Profile</string>
+    <string name="fabApply">Apply Changes</string>
+    <string name="tilEditNameHint">New Name</string>
+    <string name="tilEditPronounsHint">New Pronouns (Optional)</string>
+    <string name="tilEditMajorHint">New Major (Optional)</string>
+    <string name="editMyProfileBarTitle">Edit Profile</string>
+    <string name="tilCurrentName">Current Name:</string>
+    <string name="tilCurrentMajor">Current Major:</string>
+    <string name="tilCurrentPronouns">Current Pronouns:</string>
 </resources>

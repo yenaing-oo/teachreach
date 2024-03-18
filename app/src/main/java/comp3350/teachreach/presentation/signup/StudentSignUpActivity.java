@@ -17,7 +17,8 @@ import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
-import comp3350.teachreach.presentation.search.SearchActivity;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.presentation.StudentHomeActivity;
 
 public class StudentSignUpActivity extends AppCompatActivity
 {
@@ -63,18 +64,19 @@ public class StudentSignUpActivity extends AppCompatActivity
             tilEmail.setError(null);
             tilPassword.setError(null);
             tilUsername.setError(null);
-            accountCreator.createStudentAccount(email,
-                                                password,
-                                                username,
-                                                pronoun,
-                                                major);
+            IStudent student = accountCreator.createStudentAccount(email,
+                                                                   password,
+                                                                   username,
+                                                                   pronoun,
+                                                                   major);
             Toast
                     .makeText(StudentSignUpActivity.this,
                               "Account Created Successfully!",
                               Toast.LENGTH_SHORT)
                     .show();
             Intent intent = new Intent(StudentSignUpActivity.this,
-                                       SearchActivity.class);
+                                       StudentHomeActivity.class);
+            intent.putExtra("ACCOUNT_ID", student.getAccountID());
             startActivity(intent);
             finish();
         } catch (final InvalidNameException e) {

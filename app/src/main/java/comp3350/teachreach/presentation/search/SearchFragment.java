@@ -23,23 +23,23 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.profile.TutorProfileActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchFragment extends Fragment
 {
-    private static String                    ARG_ACCOUNT_ID = "ACCOUNT_ID";
-    private        AccessTutors              accessTutors;
-    private        AccessCourses             accessCourses;
-    private        View                      rootView;
-    private        int                       accountID      = -1;
-    private        ISearchSortHandler        searchSortHandler;
-    private        SearchRecyclerViewAdapter searchRecyclerViewAdapter;
-    private        List<ITutor>              tutors;
-    private        List<ICourse>             courses;
-    private        List<String>              courseStringList;
+    private static final String ARG_ACCOUNT_ID = "ACCOUNT_ID";
+    private static final String ARG_TUTOR_ID   = "TUTOR_ID";
+
+    private AccessTutors       accessTutors;
+    private AccessCourses      accessCourses;
+    private ISearchSortHandler searchSortHandler;
+
+    private List<ITutor>  tutors;
+    private List<ICourse> courses;
+    private List<String>  courseStringList;
+
+    private int accountID = -1;
+
+    private View                      rootView;
+    private SearchRecyclerViewAdapter searchRecyclerViewAdapter;
 
     public SearchFragment()
     {
@@ -72,8 +72,7 @@ public class SearchFragment extends Fragment
                              Bundle savedInstanceState)
     {
         rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        RecyclerView recyclerView
-                = rootView.findViewById(R.id.searchResultRecyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
         retrieveData();
         setUpRecyclerView(recyclerView);
         return rootView;
@@ -91,10 +90,9 @@ public class SearchFragment extends Fragment
 
     private void setUpRecyclerView(RecyclerView recyclerView)
     {
-        searchRecyclerViewAdapter
-                = new SearchRecyclerViewAdapter(recyclerView.getContext(),
-                                                tutors,
-                                                this::onTutorItemClick);
+        searchRecyclerViewAdapter = new SearchRecyclerViewAdapter(getContext(),
+                                                                  tutors,
+                                                                  this::onTutorItemClick);
         recyclerView.setAdapter(searchRecyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
@@ -102,7 +100,8 @@ public class SearchFragment extends Fragment
     public void onTutorItemClick(int position)
     {
         Intent intent = new Intent(getContext(), TutorProfileActivity.class);
-        intent.putExtra("TUTOR_ID", tutors.get(position).getTutorID());
+        intent.putExtra(ARG_ACCOUNT_ID, accountID);
+        intent.putExtra(ARG_TUTOR_ID, tutors.get(position).getTutorID());
         startActivity(intent);
     }
 }

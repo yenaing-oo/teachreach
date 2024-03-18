@@ -20,6 +20,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
+    <TextView
+        android:id="@+id/tvWhoAreYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvWhoAreYou"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tilSignupName"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/tilSignupName"
+        app:layout_constraintRight_toRightOf="@id/tilSignupName"
+        app:layout_constraintTop_toBottomOf="@id/tvTutorSignupTitle"
+        app:layout_constraintVertical_bias="1" />
+
+    <TextView
+        android:id="@+id/tvLoginAs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvLoginAs"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tilSignupEmail"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/tilSignupEmail"
+        app:layout_constraintRight_toRightOf="@id/tilSignupEmail"
+        app:layout_constraintTop_toBottomOf="@id/tilSignupPronouns"
+        app:layout_constraintVertical_bias="1" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupName"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -94,7 +122,7 @@
         app:layout_constraintLeft_toLeftOf="@+id/tilSignupPronouns"
         app:layout_constraintRight_toRightOf="@+id/tilSignupPronouns"
         app:layout_constraintTop_toBottomOf="@+id/tilSignupPronouns"
-        app:layout_constraintVertical_bias="0.1">
+        app:layout_constraintVertical_bias="0.175">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="256dp"
@@ -126,6 +154,7 @@
 
     <Button
         android:id="@+id/btnUploadTranscript"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnUploadTranscript"

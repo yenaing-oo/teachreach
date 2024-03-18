@@ -29,6 +29,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_9
         targetCompatibility = JavaVersion.VERSION_1_9
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
