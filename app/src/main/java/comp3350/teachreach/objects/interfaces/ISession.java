@@ -17,7 +17,7 @@ interface ISession
 
     ISession setSessionID(int sessionID);
 
-    TimeSlice getTime();
+    ITimeSlice getTime();
 
     ISession setTime(TimeSlice time);
 
@@ -25,7 +25,11 @@ interface ISession
 
     ISession setSessionLocation(String location);
 
-    boolean getAcceptedStatus();
+    int getStatus();
 
-    ISession approvedByTutor();
+    ISession approve();
+
+    ISession reject();
+
+    ISession pend();
 }

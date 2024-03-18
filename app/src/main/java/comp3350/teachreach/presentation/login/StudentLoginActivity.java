@@ -12,12 +12,13 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.presentation.StudentHomeActivity;
+import comp3350.teachreach.presentation.search.SearchActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
 public class StudentLoginActivity extends AppCompatActivity
@@ -61,11 +62,9 @@ public class StudentLoginActivity extends AppCompatActivity
             tilStudentPassword.setError(null);
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            IStudent student = authenticationHandler.authenticateStudent(email,
-                                                                         password);
-            Intent intent = new Intent(StudentLoginActivity.this,
-                                       StudentHomeActivity.class);
-            intent.putExtra("ACCOUNT_ID", student.getAccountID());
+            IStudent student = authenticationHandler.authenticateStudent(email, password);
+            TRData.setCurrentStudentID(student.getStudentID());
+            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
             startActivity(intent);
             finish();
         } catch (final InvalidEmailException e) {

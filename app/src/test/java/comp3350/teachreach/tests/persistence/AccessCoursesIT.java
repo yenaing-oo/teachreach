@@ -1,4 +1,4 @@
-package comp3350.teachreach.tests.persistance;
+package comp3350.teachreach.tests.persistence;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

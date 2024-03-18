@@ -1,11 +1,14 @@
 package comp3350.teachreach.data.interfaces;
 
-import java.sql.Timestamp;
 import java.util.List;
 
-import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ITutorAvailabilityPersistence {
-    List<TimeSlice> getTutorTimeSliceByTutorID(int tutorID);
-    boolean storeTutorTimeSlice(int tutorID, Timestamp start_time, Timestamp end_Time);
+    List<ITimeSlice> getAvailability(ITutor tutor);
+
+    void addAvailability(ITutor tutor, ITimeSlice timeRange);
+
+    void removeAvailability(ITutor tutor, ITimeSlice timeRange);
 }

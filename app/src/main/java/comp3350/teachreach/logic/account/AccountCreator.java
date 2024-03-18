@@ -1,7 +1,5 @@
 package comp3350.teachreach.logic.account;
 
-import android.util.Log;
-
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
@@ -110,9 +108,7 @@ public class AccountCreator implements IAccountCreator
                  DuplicateEmailException e) {
             throw e;
         } catch (final Exception e) {
-            Log.d("AccountCreator", "Failed to make new student :(", e);
-            throw new AccountCreatorException("Failed to make new student :(",
-                                              e);
+            throw new AccountCreatorException("Failed to make new student :(", e);
         }
     }
 

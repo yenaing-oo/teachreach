@@ -9,10 +9,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.TRData;
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
+        TRData.loadEnums(this);
+        AndroidThreeTen.init(this);
+
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
         Button btnTutor   = findViewById(R.id.btnTutorLogin);
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 
         try {
             assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < assetNames.length; i++) {
+            for (int i = 0; i < Objects.requireNonNull(assetNames).length; i++) {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
             }
 

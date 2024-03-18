@@ -12,6 +12,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
@@ -58,13 +59,12 @@ public class TutorLoginActivity extends AppCompatActivity
             tilTutorPassword.setError(null);
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            ITutor tutor = authenticationHandler.authenticateTutor(email,
-                                                                   password);
+            ITutor tutor = authenticationHandler.authenticateTutor(email, password);
+            TRData.setCurrentTutorID(tutor.getTutorID());
 
             Intent intent = new Intent(TutorLoginActivity.this,
-                                       TutorHomeActivity.class);
-            intent.putExtra("TUTOR_ID", tutor.getTutorID());
-            intent.putExtra("ACCOUNT_ID", tutor.getAccountID());
+                    TutorHomeActivity.class);
+
             startActivity(intent);
             finish();
         } catch (final InvalidEmailException e) {

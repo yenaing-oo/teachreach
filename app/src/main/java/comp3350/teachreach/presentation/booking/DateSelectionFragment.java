@@ -18,7 +18,6 @@ import comp3350.teachreach.R;
 public
 class DateSelectionFragment extends Fragment
 {
-    private static final String               EMAIL = "EMAIL";
     private              View                 fragmentView;
     private              OnDateChangeListener dateChangeListener;
 
@@ -32,18 +31,11 @@ class DateSelectionFragment extends Fragment
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param email Tutor email
      * @return A new instance of fragment DateSelectionFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static
-    DateSelectionFragment newInstance(String email)
-    {
-        DateSelectionFragment fragment = new DateSelectionFragment();
-        Bundle                args     = new Bundle();
-        args.putString(EMAIL, email);
-        fragment.setArguments(args);
-        return fragment;
+    public static DateSelectionFragment newInstance() {
+        return new DateSelectionFragment();
     }
 
     @Override
@@ -51,12 +43,6 @@ class DateSelectionFragment extends Fragment
     void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            // TODO: Rename and change types of parameters
-            String mParam1 = getArguments().getString(EMAIL);
-            // fetch available dates for tutor associated with email
-        }
     }
 
     @Override

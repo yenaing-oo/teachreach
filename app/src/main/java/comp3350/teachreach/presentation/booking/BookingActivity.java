@@ -19,7 +19,6 @@ class BookingActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private TextView        dateDisplay;
 
-    private String timeSlot;
 
     @Override
     protected
@@ -41,8 +40,7 @@ class BookingActivity extends AppCompatActivity
     private
     void addDateSelectionFragment()
     {
-        DateSelectionFragment fragment = DateSelectionFragment.newInstance(
-                "email");
+        DateSelectionFragment fragment = DateSelectionFragment.newInstance();
         fragment.setOnDateChangeListener(this);
         fragmentManager
                 .beginTransaction()
