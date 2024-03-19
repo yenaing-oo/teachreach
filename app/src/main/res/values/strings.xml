@@ -72,4 +72,5 @@
     <string name="tvHourlyRate">Hourly Rate: </string>
     <string name="tvRatingsField">Ratings Field</string>
     <string name="tvHourlyRateField">Hourly Rate Field</string>
+    <string name="tvPlaceHolder">Select tutor to start booking</string>
 </resources>

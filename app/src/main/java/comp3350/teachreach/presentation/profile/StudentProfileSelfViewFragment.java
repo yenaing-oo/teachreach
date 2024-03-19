@@ -7,104 +7,98 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.databinding.FragmentStudentProfileSelfViewBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.presentation.TRViewModel;
 
 public class StudentProfileSelfViewFragment extends Fragment
 {
-    private static final String ARG_ACCOUNT_ID = "ACCOUNT_ID";
+    private FragmentStudentProfileSelfViewBinding binding;
 
-    private static FragmentManager fragmentManager;
-    private static Fragment        previousTopBarFragment = null;
-    private static Fragment        previousFragment       = null;
+    private TRViewModel vm;
 
-    private View     rootView;
     private TextView tvName, tvMajor, tvPronouns;
     private Button btnEditProfile;
 
-    private int            accountID = -1;
-    private IAccount       account   = null;
-    private AccessAccounts accessAccounts;
+    private IAccount account;
 
     public StudentProfileSelfViewFragment()
     {
     }
 
-    public static StudentProfileSelfViewFragment newInstance(FragmentManager fragmentManager,
-                                                             Fragment topBarFragment,
-                                                             int accountID)
+    private void fillUpProfileDetails()
     {
-        StudentProfileSelfViewFragment fragment
-                = new StudentProfileSelfViewFragment();
-        StudentProfileSelfViewFragment.fragmentManager = fragmentManager;
-        Bundle args = new Bundle();
-        args.putInt(ARG_ACCOUNT_ID, accountID);
-        fragment.setArguments(args);
-        StudentProfileSelfViewFragment.previousTopBarFragment = topBarFragment;
-        StudentProfileSelfViewFragment.previousFragment       = fragment;
-        return fragment;
-    }
-
-    private void fillUpProfileDetails(View v)
-    {
+        View v = binding.getRoot();
         tvName     = v.findViewById(R.id.tvNameField);
         tvPronouns = v.findViewById(R.id.tvPronounsField);
         tvMajor    = v.findViewById(R.id.tvMajorField);
+
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
         tvMajor.setText(account.getUserMajor());
     }
 
-    private void setUpEditProfileButton(View v)
+    private void setUpEditProfileButton()
     {
+        View v = binding.getRoot();
         btnEditProfile = v.findViewById(R.id.fabEditProfile);
         btnEditProfile.setOnClickListener(view -> startEditProfileActivity());
     }
 
     private void startEditProfileActivity()
     {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.abTop,
-                         TopBarFragment.newInstance(fragmentManager,
-                                                    previousTopBarFragment,
-                                                    this,
-                                                    "Edit Profile",
-                                                    accountID))
-                .replace(R.id.navFrameLayout,
-                         EditStudentProfileFragment.newInstance(fragmentManager,
-                                                                previousTopBarFragment,
-                                                                accountID))
-                .commit();
+        getChildFragmentManager().beginTransaction().commit();
+    }
+
+    private void setUpTopBarMenu()
+    {
+        MaterialToolbar mtTopBar = binding
+                .getRoot()
+                .findViewById(R.id.topAppBar);
+        mtTopBar.setOnMenuItemClickListener(i -> {
+            int itemId = i.getItemId();
+            if (itemId == R.id.tbAccountSettings) {
+                NavController navController = NavHostFragment.findNavController(
+                        this);
+                navController.navigate(R.id.actionToAccountSettingsFragment);
+            }
+            return true;
+        });
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        accessAccounts = new AccessAccounts();
-        if (getArguments() != null) {
-            accountID = getArguments().getInt(ARG_ACCOUNT_ID);
-        }
-        if (account == null) {
-            account = accessAccounts.getAccounts().get(accountID);
-        }
+        vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+
+        account = Server
+                .getAccountDataAccess()
+                .getAccounts()
+                .get(vm.getAccountId().getValue());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_student_profile_self_view,
-                                    container,
-                                    false);
-        fillUpProfileDetails(rootView);
-        setUpEditProfileButton(rootView);
-        return rootView;
+        binding = FragmentStudentProfileSelfViewBinding.inflate(inflater,
+                                                                container,
+                                                                false);
+        fillUpProfileDetails();
+        setUpEditProfileButton();
+        setUpTopBarMenu();
+        return binding.getRoot();
     }
 }

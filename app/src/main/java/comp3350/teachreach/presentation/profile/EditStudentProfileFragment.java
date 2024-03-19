@@ -97,10 +97,7 @@ public class EditStudentProfileFragment extends Fragment
                 .beginTransaction()
                 .replace(R.id.abTop, previousTopBarFragment)
                 .replace(R.id.navFrameLayout,
-                         StudentProfileSelfViewFragment.newInstance(
-                                 fragmentManager,
-                                 previousTopBarFragment,
-                                 accountID))
+                         new StudentProfileSelfViewFragment())
                 .commit();
     }
 

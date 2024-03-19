@@ -5,8 +5,6 @@ import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -28,9 +26,6 @@ public class StudentHomeActivity extends AppCompatActivity
 
     private TRViewModel vm;
 
-    private FragmentManager fragmentManager;
-    private Fragment        currentFragment = null;
-
     private OnBackPressedCallback onBackPressedCallback;
 
     @Override
@@ -38,14 +33,16 @@ public class StudentHomeActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_student);
-        navigationMenu  = findViewById(R.id.navigation_menu);
-        fragmentManager = getSupportFragmentManager();
+        navigationMenu = findViewById(R.id.navigation_menu);
         NavHostFragment navHostFragment
                 =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(
                 R.id.nav_host_fragment_student);
         navController = navHostFragment.getNavController();
-        vm            = new ViewModelProvider(this).get(TRViewModel.class);
+
+        vm = new ViewModelProvider(this).get(TRViewModel.class);
+        vm.setAccountId(getIntent().getIntExtra("ACCOUNT_ID", -1));
+        vm.setStudentId(getIntent().getIntExtra("STUDENT_ID", -1));
         vm.setAccounts(new ArrayList<>(Server
                                                .getAccountDataAccess()
                                                .getAccounts()
@@ -64,12 +61,14 @@ public class StudentHomeActivity extends AppCompatActivity
 
     private void setUpNavigationMenu()
     {
+        navigationMenu.setSelectedItemId(R.id.NavBarSearch);
         navigationMenu.setOnItemSelectedListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {
             } else if (itemId == R.id.NavBarSearch) {
                 navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.NavBarProfile) {
+                navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
             }
             return true;

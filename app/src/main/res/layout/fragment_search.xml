@@ -28,7 +28,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/tutorProfileViewFragment"
-        android:name="comp3350.teachreach.presentation.profile.TutorProfileSelfViewFragment"
+        android:name="comp3350.teachreach.presentation.PlaceHolderFragment"
         android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

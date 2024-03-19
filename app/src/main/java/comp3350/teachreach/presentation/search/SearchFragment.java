@@ -9,28 +9,29 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Objects;
+
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.DAOs.AccessCourses;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchFragment extends Fragment
 {
-    private AccessTutors       accessTutors;
-    private AccessCourses      accessCourses;
     private ISearchSortHandler searchSortHandler;
 
     private TRViewModel vm;
 
-    private View                       rootView;
     private SearchTutorRecyclerAdapter adapter;
+    private FragmentSearchBinding      binding;
 
     private Parcelable recyclerViewState;
 
@@ -42,20 +43,18 @@ public class SearchFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        accessTutors      = new AccessTutors();
-        accessCourses     = new AccessCourses();
         searchSortHandler = new SearchSortHandler();
-        vm                = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
+
+        vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
+    public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        return rootView;
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -69,10 +68,12 @@ public class SearchFragment extends Fragment
                     "recyclerViewState");
         }
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
+        RecyclerView recyclerView = binding
+                .getRoot()
+                .findViewById(R.id.rvSearchResult);
         if (recyclerViewState != null) {
-            recyclerView
-                    .getLayoutManager()
+            Objects
+                    .requireNonNull(recyclerView.getLayoutManager())
                     .onRestoreInstanceState(recyclerViewState);
         } else {
             setUpRecyclerView(recyclerView);
@@ -83,7 +84,9 @@ public class SearchFragment extends Fragment
     public void onSaveInstanceState(@NonNull Bundle state)
     {
         super.onSaveInstanceState(state);
-        RecyclerView recyclerView = rootView.findViewById(R.id.rvSearchResult);
+        RecyclerView recyclerView = binding
+                .getRoot()
+                .findViewById(R.id.rvSearchResult);
         recyclerViewState = recyclerView
                 .getLayoutManager()
                 .onSaveInstanceState();
@@ -92,18 +95,22 @@ public class SearchFragment extends Fragment
 
     private void setUpRecyclerView(RecyclerView recyclerView)
     {
-        adapter = new SearchTutorRecyclerAdapter(vm.getTutors().getValue());
+        adapter = new SearchTutorRecyclerAdapter(vm.getTutors().getValue(),
+                                                 this::openDetails);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    public void onTutorItemClick(int position)
+    void openDetails(ITutor t)
     {
-        getChildFragmentManager()
+        vm.setTutorId(t.getTutorID());
+        FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction()
+                .setReorderingAllowed(true)
                 .replace(R.id.tutorProfileViewFragment,
                          new TutorProfileViewFragment())
-                .commit();
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
 }

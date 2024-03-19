@@ -19,11 +19,13 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class SearchTutorRecyclerAdapter
         extends RecyclerView.Adapter<SearchTutorRecyclerAdapter.ViewHolder>
 {
-    List<ITutor> tutorList;
+    static List<ITutor>          tutorList;
+    static IOnTutorClickListener listener;
 
-    public SearchTutorRecyclerAdapter(List<ITutor> tutors)
+    public SearchTutorRecyclerAdapter(List<ITutor> tutors, IOnTutorClickListener listener)
     {
-        tutorList = tutors;
+        tutorList                           = tutors;
+        SearchTutorRecyclerAdapter.listener = listener;
     }
 
     @NonNull
@@ -73,7 +75,14 @@ public class SearchTutorRecyclerAdapter
         public ViewHolder(View view)
         {
             super(view);
-            cardView     = view.findViewById(R.id.cardTutor);
+            cardView = view.findViewById(R.id.cardTutor);
+            cardView.setOnClickListener(v -> {
+                int pos = getAdapterPosition();
+
+                if (pos != RecyclerView.NO_POSITION) {
+                    listener.onTutorClick(tutorList.get(pos));
+                }
+            });
             tvName       = view.findViewById(R.id.tvNameField);
             tvMajor      = view.findViewById(R.id.tvMajorField);
             tvRatings    = view.findViewById(R.id.tvRatingsField);
