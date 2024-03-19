@@ -10,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import comp3350.teachreach.R;
 import java.util.Calendar;
 
+import comp3350.teachreach.logic.exceptions.payment.*;
+import comp3350.teachreach.logic.paymentValidation.PaymentValidator;
+
+
 public class PaymentActivity extends AppCompatActivity {
 
     private EditText cardNumberEditText;
@@ -54,38 +58,28 @@ public class PaymentActivity extends AppCompatActivity {
     }
 
     private void confirmPayment() {
-        if (!validateCard()) {
-            Toast.makeText(this, "Please check the card details", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
-
-        }
-    }
-// will be removed once payment logic is implemented Validator needs to be in LOGIC
-    //**
-// NEED TO BE REAPPLIED FROM THIS PART ONCE LOGIC IMPLEMENDTED
-    //**
-    private boolean validateCard() {
         String cardNumber = cardNumberEditText.getText().toString().trim();
         String expDate = expDateEditText.getText().toString().trim();
         String cvc = cvcEditText.getText().toString().trim();
+        boolean valid = false;
 
-        if (cardNumber.length() != 16) {
-            Toast.makeText(this, "Invalid card number", Toast.LENGTH_SHORT).show();
-            return false;
+        try {
+            valid = PaymentValidator.validatePaymentInfo(cardNumber, expDate, cvc);
+        } catch (InvalidCardNumberException cardErr) {
+            Toast.makeText(this, cardErr.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (InvalidCVCException cvcErr) {
+            Toast.makeText(this, cvcErr.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (InvalidExpiryDateException expErr1) {
+            Toast.makeText(this, expErr1.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (ExpiredCardExcpetion expErr2) {
+            Toast.makeText(this, expErr2.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (PaymentException unknownErr) {
+            Toast.makeText(this, "Issue with payment info, please review", Toast.LENGTH_SHORT).show();
         }
 
-        if (cvc.length() != 3) {
-            Toast.makeText(this, "Invalid CVC", Toast.LENGTH_SHORT).show();
-            return false;
+        if(valid) {
+            Toast.makeText(this, "Payment successful", Toast.LENGTH_SHORT).show();
         }
-
-        if (!isValidExpDate(expDate)) {
-            Toast.makeText(this, "Invalid expiry date", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
     }
 
     private boolean isValidExpDate(String expDate) {

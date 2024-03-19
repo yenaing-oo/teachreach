@@ -10,7 +10,7 @@ import comp3350.teachreach.logic.exceptions.payment.PaymentException;
 
 public class PaymentValidator {
 
-    public boolean validatePaymentInfo(String cardNum, String expiryDate, String cvc) throws PaymentException {
+    public static boolean validatePaymentInfo(String cardNum, String expiryDate, String cvc) throws PaymentException {
         boolean numValid = true;
         boolean cvcValid = true;
         boolean expiryValid = true;
