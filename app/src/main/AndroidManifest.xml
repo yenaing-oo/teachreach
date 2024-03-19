@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeachReach">
         <activity
+            android:name=".presentation.booking.PaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".presentation.booking.Payment"
+            android:exported="false" />
+        <activity
             android:name=".presentation.TutorHomeActivity"
             android:exported="false" />
         <activity
