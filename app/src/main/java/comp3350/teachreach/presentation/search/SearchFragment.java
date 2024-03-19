@@ -107,7 +107,6 @@ public class SearchFragment extends Fragment
         vm.setTutorId(t.getTutorID());
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction()
-                .setReorderingAllowed(true)
                 .replace(R.id.tutorProfileViewFragment,
                          new TutorProfileViewFragment())
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

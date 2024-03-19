@@ -20,8 +20,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
             )
         }
     }
@@ -39,6 +39,9 @@ dependencies {
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.slidingpanelayout:slidingpanelayout:1.2.0")
+    implementation("androidx.compose.material3.adaptive:adaptive:1.0.0-alpha08")
+    implementation("androidx.compose.material3.adaptive:adaptive-layout:1.0.0-alpha08")
+    implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.0.0-alpha08")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
