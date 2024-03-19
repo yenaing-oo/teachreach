@@ -57,7 +57,8 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private void startEditProfileActivity()
     {
-        getChildFragmentManager().beginTransaction().commit();
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.navigate(R.id.actionToEditStudentProfileFragment);
     }
 
     private void setUpTopBarMenu()
@@ -68,9 +69,9 @@ public class StudentProfileSelfViewFragment extends Fragment
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {
-                NavController navController = NavHostFragment.findNavController(
-                        this);
-                navController.navigate(R.id.actionToAccountSettingsFragment);
+                NavHostFragment
+                        .findNavController(this)
+                        .navigate(R.id.actionToAccountSettingsFragment);
             }
             return true;
         });

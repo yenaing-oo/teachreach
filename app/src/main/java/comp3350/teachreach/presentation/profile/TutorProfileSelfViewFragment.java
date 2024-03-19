@@ -88,10 +88,7 @@ public class TutorProfileSelfViewFragment extends Fragment
                                                     previousFragment,
                                                     "Edit Profile",
                                                     accountID))
-                .replace(R.id.navFrameLayout,
-                         EditStudentProfileFragment.newInstance(fragmentManager,
-                                                                previousTopBarFragment,
-                                                                accountID))
+                .replace(R.id.navFrameLayout, this)
                 .commit();
     }
 

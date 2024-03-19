@@ -10,60 +10,43 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.application.Server;
+import comp3350.teachreach.databinding.FragmentEditStudentProfileBinding;
 import comp3350.teachreach.logic.account.AccountManager;
 import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.presentation.TRViewModel;
 
 public class EditStudentProfileFragment extends Fragment
 {
-    private static final String ARG_ACCOUNT_ID = "ACCOUNT_ID";
+    private FragmentEditStudentProfileBinding binding;
+    private TRViewModel                       vm;
 
-    private static FragmentManager fragmentManager;
-    private static Fragment        previousTopBarFragment = null;
-
-    private int             accountID = -1;
-    private IAccount        account   = null;
-    private AccessAccounts  accessAccounts;
-    private IAccountManager accountManager;
-
-    private View            rootView;
     private TextInputLayout tilName, tilMajor, tilPronouns;
     private EditText etName, etMajor, etPronouns;
     private Button btnApply;
+
+    private IAccount        account;
+    private IAccountManager accountManager;
 
     public EditStudentProfileFragment()
     {
     }
 
-    public static EditStudentProfileFragment newInstance(FragmentManager fragmentManager,
-                                                         Fragment prevTopBar,
-                                                         int accountID)
+    private void setUpInputBoxes()
     {
-        EditStudentProfileFragment fragment = new EditStudentProfileFragment();
-        Bundle                     args     = new Bundle();
-        previousTopBarFragment = prevTopBar;
-        args.putInt(ARG_ACCOUNT_ID, accountID);
-        fragment.setArguments(args);
-        EditStudentProfileFragment.fragmentManager = fragmentManager;
-        return fragment;
-    }
-
-    private void getAccount()
-    {
-        account = accessAccounts.getAccounts().get(accountID);
-    }
-
-    private void setUpInputBoxes(View v)
-    {
+        View v = binding.getRoot();
         tilName     = v.findViewById(R.id.tilEditName);
         tilMajor    = v.findViewById(R.id.tilEditMajor);
         tilPronouns = v.findViewById(R.id.tilEditPronouns);
@@ -81,9 +64,21 @@ public class EditStudentProfileFragment extends Fragment
         }
     }
 
-    private void setUpApplyButton(View v)
+    protected void setUpTopBar()
     {
-        btnApply = v.findViewById(R.id.fabApply);
+        MaterialToolbar mtTopBar = binding
+                .getRoot()
+                .findViewById(R.id.topAppBar);
+        mtTopBar.setNavigationOnClickListener(view -> {
+            NavController navController
+                    = NavHostFragment.findNavController(this);
+            navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
+        });
+    }
+
+    private void setUpApplyButton()
+    {
+        btnApply = binding.getRoot().findViewById(R.id.fabApply);
         btnApply.setOnClickListener(view -> {
             if (applyChanges()) {
                 goBack();
@@ -93,12 +88,9 @@ public class EditStudentProfileFragment extends Fragment
 
     private void goBack()
     {
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.abTop, previousTopBarFragment)
-                .replace(R.id.navFrameLayout,
-                         new StudentProfileSelfViewFragment())
-                .commit();
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToStudentProfileSelfViewFragment);
     }
 
     private boolean applyChanges()
@@ -128,11 +120,13 @@ public class EditStudentProfileFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        accessAccounts = new AccessAccounts();
-        if (getArguments() != null) {
-            accountID = getArguments().getInt(ARG_ACCOUNT_ID);
-            getAccount();
-        }
+        vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+
+        account = Server
+                .getAccountDataAccess()
+                .getAccounts()
+                .get(vm.getAccountId().getValue());
+
         accountManager = new AccountManager(account);
     }
 
@@ -141,14 +135,12 @@ public class EditStudentProfileFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        if (account == null) {
-            getAccount();
-        }
-        rootView = inflater.inflate(R.layout.fragment_edit_student_profile,
-                                    container,
-                                    false);
-        setUpInputBoxes(rootView);
-        setUpApplyButton(rootView);
-        return rootView;
+        binding = FragmentEditStudentProfileBinding.inflate(inflater,
+                                                            container,
+                                                            false);
+        setUpInputBoxes();
+        setUpApplyButton();
+        setUpTopBar();
+        return binding.getRoot();
     }
 }
