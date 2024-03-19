@@ -7,15 +7,16 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.util.ArrayList;
+
 import comp3350.teachreach.R;
-import comp3350.teachreach.presentation.profile.MyProfileBarFragment;
-import comp3350.teachreach.presentation.profile.StudentProfileSelfViewFragment;
-import comp3350.teachreach.presentation.search.SearchBarFragment;
-import comp3350.teachreach.presentation.search.SearchFragment;
+import comp3350.teachreach.application.Server;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
@@ -23,15 +24,14 @@ public class StudentHomeActivity extends AppCompatActivity
     private              long backPressedTime;
 
     private NavigationBarView navigationMenu;
+    private NavController     navController;
+
+    private TRViewModel vm;
 
     private FragmentManager fragmentManager;
-    private Fragment        topBarFragment  = null;
     private Fragment        currentFragment = null;
-    private Fragment        searchFragment  = null;
 
     private OnBackPressedCallback onBackPressedCallback;
-
-    private int accountID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,18 +39,27 @@ public class StudentHomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_student);
         navigationMenu  = findViewById(R.id.navigation_menu);
-        accountID       = getIntent().getIntExtra("ACCOUNT_ID", -1);
         fragmentManager = getSupportFragmentManager();
-
+        NavHostFragment navHostFragment
+                =
+                (NavHostFragment) getSupportFragmentManager().findFragmentById(
+                R.id.nav_host_fragment_student);
+        navController = navHostFragment.getNavController();
+        vm            = new ViewModelProvider(this).get(TRViewModel.class);
+        vm.setAccounts(new ArrayList<>(Server
+                                               .getAccountDataAccess()
+                                               .getAccounts()
+                                               .values()));
+        vm.setCourses(new ArrayList<>(Server
+                                              .getCourseDataAccess()
+                                              .getCourses()
+                                              .values()));
+        vm.setTutors(new ArrayList<>(Server
+                                             .getTutorDataAccess()
+                                             .getTutors()
+                                             .values()));
         setUpNavigationMenu();
         setUpBackButtonHandler();
-        setUpDefaultFragment(R.id.NavBarSearch);
-    }
-
-    private void setUpDefaultFragment(int resourceID)
-    {
-        navigationMenu.setSelectedItemId(resourceID);
-        setNewFragment();
     }
 
     private void setUpNavigationMenu()
@@ -59,39 +68,12 @@ public class StudentHomeActivity extends AppCompatActivity
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {
             } else if (itemId == R.id.NavBarSearch) {
-                searchFragment  = searchFragment == null ?
-                                  SearchFragment.newInstance(accountID) :
-                                  searchFragment;
-                topBarFragment  = SearchBarFragment.newInstance();
-                currentFragment = searchFragment;
+                navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.NavBarProfile) {
-                topBarFragment  = MyProfileBarFragment.newInstance(
-                        fragmentManager,
-                        topBarFragment,
-                        currentFragment,
-                        "My Profile",
-                        accountID);
-                currentFragment = StudentProfileSelfViewFragment.newInstance(
-                        fragmentManager,
-                        topBarFragment,
-                        accountID);
             } else if (itemId == R.id.NavBarChats) {
             }
-            setNewFragment();
             return true;
         });
-    }
-
-    private void setNewFragment()
-    {
-        FragmentTransaction newTransaction = fragmentManager.beginTransaction();
-        if (topBarFragment != null) {
-            newTransaction.replace(R.id.abTop, topBarFragment);
-        }
-        if (currentFragment != null) {
-            newTransaction.replace(R.id.navFrameLayout, currentFragment);
-        }
-        newTransaction.commit();
     }
 
     private void setUpBackButtonHandler()

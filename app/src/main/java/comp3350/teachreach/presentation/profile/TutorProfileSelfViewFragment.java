@@ -61,6 +61,9 @@ public class TutorProfileSelfViewFragment extends Fragment
 
     private void fillUpProfileDetails(View v)
     {
+        if (account == null) {
+            return;
+        }
         tvName     = v.findViewById(R.id.tvNameField);
         tvPronouns = v.findViewById(R.id.tvPronounsField);
         tvMajor    = v.findViewById(R.id.tvMajorField);

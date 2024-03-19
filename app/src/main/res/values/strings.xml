@@ -68,4 +68,8 @@
     <string name="btnChangePassword">Change Password</string>
     <string name="tvEmail">"Current Email: "</string>
     <string name="tvEmailField">dummy@example.com</string>
+    <string name="tvRatings">"Ratings: "</string>
+    <string name="tvHourlyRate">Hourly Rate: </string>
+    <string name="tvRatingsField">Ratings Field</string>
+    <string name="tvHourlyRateField">Hourly Rate Field</string>
 </resources>

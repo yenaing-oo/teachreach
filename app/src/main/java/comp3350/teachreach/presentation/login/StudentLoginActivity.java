@@ -7,18 +7,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.presentation.search.SearchActivity;
+import comp3350.teachreach.presentation.StudentHomeActivity;
+import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
 public class StudentLoginActivity extends AppCompatActivity
@@ -26,6 +27,7 @@ public class StudentLoginActivity extends AppCompatActivity
     private TextInputLayout tilStudentEmail, tilStudentPassword;
     private EditText etStudentEmail, etStudentPassword;
     private AuthenticationHandler authenticationHandler;
+    private TRViewModel           vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,6 +52,8 @@ public class StudentLoginActivity extends AppCompatActivity
                                        StudentSignUpActivity.class);
             startActivity(intent);
         });
+
+        vm = new ViewModelProvider(this).get(TRViewModel.class);
     }
 
     private void login()
@@ -62,9 +66,12 @@ public class StudentLoginActivity extends AppCompatActivity
             tilStudentPassword.setError(null);
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            IStudent student = authenticationHandler.authenticateStudent(email, password);
-            TRData.setCurrentStudentID(student.getStudentID());
-            Intent intent = new Intent(StudentLoginActivity.this, SearchActivity.class);
+            IStudent student = authenticationHandler.authenticateStudent(email,
+                                                                         password);
+            vm.setAccountId(student.getAccountID());
+            vm.setStudentId(student.getStudentID());
+            Intent intent = new Intent(StudentLoginActivity.this,
+                                       StudentHomeActivity.class);
             startActivity(intent);
             finish();
         } catch (final InvalidEmailException e) {

@@ -31,7 +31,7 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.StudentProfileActivity;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchActivity extends AppCompatActivity
         implements ITutorRecyclerView, SortDialogFragment.SortDialogListener
@@ -183,7 +183,7 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onTutorItemClick(int position)
     {
-        Intent intent = new Intent(this, TutorProfileActivity.class);
+        Intent intent = new Intent(this, TutorProfileViewFragment.class);
         intent.putExtra("TUTOR_ID", tutors.get(position).getTutorID());
         startActivity(intent);
     }

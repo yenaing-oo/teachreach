@@ -20,7 +20,7 @@ import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class TutorSignUpActivity extends AppCompatActivity
 {
@@ -58,7 +58,7 @@ public class TutorSignUpActivity extends AppCompatActivity
                               Toast.LENGTH_SHORT)
                     .show();
             Intent intent = new Intent(TutorSignUpActivity.this,
-                                       TutorProfileActivity.class);
+                                       TutorProfileViewFragment.class);
             intent.putExtra("TUTOR_ID", newTutor.getTutorID());
 
             startActivity(intent);
