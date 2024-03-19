@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -50,15 +49,10 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private void setUpEditProfileButton()
     {
-        View v = binding.getRoot();
-        btnEditProfile = v.findViewById(R.id.fabEditProfile);
-        btnEditProfile.setOnClickListener(view -> startEditProfileActivity());
-    }
-
-    private void startEditProfileActivity()
-    {
-        NavController navController = NavHostFragment.findNavController(this);
-        navController.navigate(R.id.actionToEditStudentProfileFragment);
+        btnEditProfile = binding.getRoot().findViewById(R.id.fabEditProfile);
+        btnEditProfile.setOnClickListener(view -> NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToEditStudentProfileFragment));
     }
 
     private void setUpTopBarMenu()
