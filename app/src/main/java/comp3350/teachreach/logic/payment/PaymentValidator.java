@@ -1,4 +1,4 @@
-package comp3350.teachreach.logic.paymentValidation;
+package comp3350.teachreach.logic.payment;
 
 import java.time.LocalDate;
 

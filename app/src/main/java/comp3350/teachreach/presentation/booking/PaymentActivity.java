@@ -11,7 +11,7 @@ import comp3350.teachreach.R;
 import java.util.Calendar;
 
 import comp3350.teachreach.logic.exceptions.payment.*;
-import comp3350.teachreach.logic.paymentValidation.PaymentValidator;
+import comp3350.teachreach.logic.payment.PaymentValidator;
 
 
 public class PaymentActivity extends AppCompatActivity {
