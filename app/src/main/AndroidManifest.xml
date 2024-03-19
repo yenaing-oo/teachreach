@@ -15,6 +15,9 @@
             android:name=".presentation.StudentHomeActivity"
             android:exported="false" />
         <activity
+            android:name=".presentation.booking.PaymentActivity"
+            android:exported="false" />
+        <activity
             android:name=".presentation.TutorHomeActivity"
             android:exported="false" />
         <activity
@@ -31,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.signup.TutorSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.profile.TutorProfileViewFragment"
             android:exported="false" />
         <activity
             android:name=".presentation.profile.EditTutorProfileActivity"
