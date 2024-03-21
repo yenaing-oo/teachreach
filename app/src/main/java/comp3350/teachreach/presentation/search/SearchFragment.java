@@ -1,12 +1,9 @@
 package comp3350.teachreach.presentation.search;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,13 +13,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Objects;
-
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
-import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
@@ -36,7 +30,7 @@ public class SearchFragment extends Fragment
     private SearchTutorRecyclerAdapter adapter;
     private FragmentSearchBinding      binding;
 
-    private Parcelable recyclerViewState;
+    private Fragment tutorProfileView;
 
     public SearchFragment()
     {
@@ -57,6 +51,11 @@ public class SearchFragment extends Fragment
                              Bundle savedInstanceState)
     {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
+
+        tutorProfileView
+                = getChildFragmentManager().findFragmentById(R.id.rightSide);
+        assert tutorProfileView != null;
+        hideDetails();
         return binding.getRoot();
     }
 
@@ -65,54 +64,11 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-
-        if (savedInstanceState != null) {
-            recyclerViewState = savedInstanceState.getParcelable(
-                    "recyclerViewState");
-        }
-
         RecyclerView recyclerView = binding
                 .getRoot()
                 .findViewById(R.id.rvSearchResult);
-        if (recyclerViewState != null) {
-            Objects
-                    .requireNonNull(recyclerView.getLayoutManager())
-                    .onRestoreInstanceState(recyclerViewState);
-        } else {
-            setUpRecyclerView(recyclerView);
-        }
 
-        AutoCompleteTextView autoCompleteTextView = binding
-                .getRoot()
-                .findViewById(R.id.searchField);
-        setUpAutoCompleteTextView(autoCompleteTextView);
-    }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle state)
-    {
-        super.onSaveInstanceState(state);
-        RecyclerView recyclerView = binding
-                .getRoot()
-                .findViewById(R.id.rvSearchResult);
-        recyclerViewState = Objects
-                .requireNonNull(recyclerView.getLayoutManager())
-                .onSaveInstanceState();
-        state.putParcelable("recyclerViewState", recyclerViewState);
-    }
-
-    private void setUpAutoCompleteTextView(AutoCompleteTextView a)
-    {
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
-                                                               android.R.layout.simple_list_item_1,
-                                                               courseStringList);
-        a.setAdapter(arrayAdapter);
-        a.setThreshold(2);
-        a.setOnItemClickListener((parent, view, position, id) -> {
-            a.clearFocus();
-            ICourse selectedCourse = courses.get(position);
-            updateTutorList(selectedCourse);
-        });
+        setUpRecyclerView(recyclerView);
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView)
@@ -127,11 +83,21 @@ public class SearchFragment extends Fragment
     void openDetails(ITutor t)
     {
         vm.setTutorId(t.getTutorID());
+
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.tutorProfileViewFragment,
-                         new TutorProfileViewFragment())
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                .replace(R.id.rightSide, new TutorProfileViewFragment())
+                .show(tutorProfileView)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.commit();
+    }
+
+    void hideDetails()
+    {
+        FragmentTransaction ft = getChildFragmentManager()
+                .beginTransaction()
+                .hide(tutorProfileView)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
         ft.commit();
     }
 }
