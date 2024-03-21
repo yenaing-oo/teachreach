@@ -55,4 +55,7 @@ dependencies {
     testImplementation("com.google.guava:guava:25.1-jre")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    testImplementation("org.mockito:mockito-inline:4.0.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+
 }
