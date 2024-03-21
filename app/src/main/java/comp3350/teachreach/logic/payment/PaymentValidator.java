@@ -2,7 +2,7 @@ package comp3350.teachreach.logic.payment;
 
 import java.time.LocalDate;
 
-import comp3350.teachreach.logic.exceptions.payment.ExpiredCardExcpetion;
+import comp3350.teachreach.logic.exceptions.payment.ExpiredCardException;
 import comp3350.teachreach.logic.exceptions.payment.InvalidCVCException;
 import comp3350.teachreach.logic.exceptions.payment.InvalidCardNumberException;
 import comp3350.teachreach.logic.exceptions.payment.InvalidExpiryDateException;
@@ -53,9 +53,11 @@ public class PaymentValidator {
             throw (new InvalidExpiryDateException("Invalid Expiry Date"));
         }
         else if(!notExpired) {
-            throw (new ExpiredCardExcpetion("Card Is Expired"));
+            throw (new ExpiredCardException("Card Is Expired"));
         }
 
         return numValid && cvcValid && expiryValid && notExpired;
     }
+
+
 }
