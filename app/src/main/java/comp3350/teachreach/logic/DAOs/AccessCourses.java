@@ -1,49 +1,58 @@
 package comp3350.teachreach.logic.DAOs;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
-public
-class AccessCourses
+public class AccessCourses
 {
     private static ICoursePersistence   coursePersistence;
-    private static Map<String, ICourse> courses = null;
+    private static Map<String, ICourse> coursesMap = null;
 
-    public
-    AccessCourses()
+    public AccessCourses()
     {
         AccessCourses.coursePersistence = Server.getCourseDataAccess();
-        AccessCourses.courses           = coursePersistence.getCourses();
+        AccessCourses.coursesMap        = coursePersistence.getCourses();
     }
 
-    public
-    AccessCourses(ICoursePersistence courseDataAccess)
+    public AccessCourses(ICoursePersistence courseDataAccess)
     {
         AccessCourses.coursePersistence = courseDataAccess;
-        AccessCourses.courses           = coursePersistence.getCourses();
+        AccessCourses.coursesMap        = coursePersistence.getCourses();
     }
 
-    public
-    Map<String, ICourse> getCourses()
+    public Map<String, ICourse> getCourses()
     {
         try {
-            if (AccessCourses.courses == null) {
-                AccessCourses.courses = coursePersistence.getCourses();
+            if (AccessCourses.coursesMap == null) {
+                AccessCourses.coursesMap = coursePersistence.getCourses();
             }
-            return Collections.unmodifiableMap(courses);
+            return Collections.unmodifiableMap(coursesMap);
         } catch (final Exception e) {
             throw new DataAccessException("Failed to get all courses!", e);
         }
     }
 
-    public
-    ICourse getCourseByCode(String courseCode)
+    public List<ICourse> getCourseList()
+    {
+        try {
+            if (AccessCourses.coursesMap == null) {
+                AccessCourses.coursesMap = coursePersistence.getCourses();
+            }
+            return Collections.unmodifiableList(new ArrayList<>(coursesMap.values()));
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get all courses!", e);
+        }
+    }
+
+    public ICourse getCourseByCode(String courseCode)
     {
         return coursePersistence
                 .getCourseByCourseCode(courseCode)
@@ -51,8 +60,26 @@ class AccessCourses
                                                            new NoSuchElementException()));
     }
 
-    public
-    List<ICourse> getCoursesByName(String courseName)
+    public List<ICourse> getCoursesByCode(String courseCode)
+    {
+        try {
+            if (AccessCourses.coursesMap == null) {
+                AccessCourses.coursesMap = coursePersistence.getCourses();
+            }
+            return Collections.unmodifiableList(coursesMap
+                                                        .keySet()
+                                                        .stream()
+                                                        .filter(s -> s.contains(
+                                                                courseCode))
+                                                        .map(s -> coursesMap.get(
+                                                                s))
+                                                        .collect(Collectors.toList()));
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get all courses!", e);
+        }
+    }
+
+    public List<ICourse> getCoursesByName(String courseName)
     {
         try {
             return coursePersistence.getCoursesByName(courseName);
@@ -61,13 +88,12 @@ class AccessCourses
         }
     }
 
-    public
-    ICourse insertCourse(ICourse newCourse) throws DataAccessException
+    public ICourse insertCourse(ICourse newCourse) throws DataAccessException
     {
         try {
-            newCourse = coursePersistence.addCourse(newCourse.getCourseCode(),
-                                                    newCourse.getCourseName());
-            courses   = coursePersistence.getCourses();
+            newCourse  = coursePersistence.addCourse(newCourse.getCourseCode(),
+                                                     newCourse.getCourseName());
+            coursesMap = coursePersistence.getCourses();
             return newCourse;
         } catch (final Exception e) {
             throw new DataAccessException("Course might've already exist!", e);

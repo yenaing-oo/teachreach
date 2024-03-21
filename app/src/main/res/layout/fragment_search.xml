@@ -25,4 +25,12 @@
             android:layout_height="match_parent" />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/tutorProfileViewFragment"
+        android:name="comp3350.teachreach.presentation.PlaceHolderFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#00eeeeee" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

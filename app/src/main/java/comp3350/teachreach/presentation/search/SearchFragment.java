@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +22,7 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
+import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
@@ -78,6 +81,11 @@ public class SearchFragment extends Fragment
         } else {
             setUpRecyclerView(recyclerView);
         }
+
+        AutoCompleteTextView autoCompleteTextView = binding
+                .getRoot()
+                .findViewById(R.id.searchField);
+        setUpAutoCompleteTextView(autoCompleteTextView);
     }
 
     @Override
@@ -87,10 +95,24 @@ public class SearchFragment extends Fragment
         RecyclerView recyclerView = binding
                 .getRoot()
                 .findViewById(R.id.rvSearchResult);
-        recyclerViewState = recyclerView
-                .getLayoutManager()
+        recyclerViewState = Objects
+                .requireNonNull(recyclerView.getLayoutManager())
                 .onSaveInstanceState();
         state.putParcelable("recyclerViewState", recyclerViewState);
+    }
+
+    private void setUpAutoCompleteTextView(AutoCompleteTextView a)
+    {
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,
+                                                               android.R.layout.simple_list_item_1,
+                                                               courseStringList);
+        a.setAdapter(arrayAdapter);
+        a.setThreshold(2);
+        a.setOnItemClickListener((parent, view, position, id) -> {
+            a.clearFocus();
+            ICourse selectedCourse = courses.get(position);
+            updateTutorList(selectedCourse);
+        });
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView)
