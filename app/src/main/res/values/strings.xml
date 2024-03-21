@@ -73,4 +73,14 @@
     <string name="tvRatingsField">Ratings Field</string>
     <string name="tvHourlyRateField">Hourly Rate Field</string>
     <string name="tvPlaceHolder">Select tutor to start booking</string>
+    <string name="topAppBarTitle">Title</string>
+    <string name="fabBook">Book a Session</string>
+    <string name="fabMsg">Send a Message</string>
+    <string name="tbcdClose">Close</string>
+    <string name="tvReviews">Reviews: </string>
+    <string name="tvReviewsField">★</string>
+    <string name="tvTutoredCourses">Tutored Courses</string>
+    <string name="tvRating">"Price: "</string>
+    <string name="tvRatingField">$0.00</string>
+    <string name="tvTutorCalendar">Select a Date to Book</string>
 </resources>

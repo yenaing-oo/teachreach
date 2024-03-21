@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/design_default_color_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -14,9 +15,9 @@
             android:id="@+id/tvCourses"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:text="Courses:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingBottom="8dp"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!-- Placeholder for dynamically populated courses -->
 
@@ -24,9 +25,9 @@
             android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:text="Price:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingBottom="8dp"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!-- Placeholder for dynamically populated price -->
 
@@ -34,9 +35,9 @@
             android:id="@+id/tvRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:text="Rating:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingBottom="8dp"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!-- Placeholder for dynamically populated rating -->
 
@@ -44,9 +45,9 @@
             android:id="@+id/tvPreferredCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             android:text="Preferred Course:"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:paddingBottom="8dp"/>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <!-- Placeholder for dynamically populated preferred courses -->
 

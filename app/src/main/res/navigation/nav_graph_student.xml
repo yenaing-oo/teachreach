@@ -17,6 +17,9 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToTutorProfileViewFragment"
+            app:destination="@id/tutorProfileViewFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentProfileSelfViewFragment"
@@ -77,5 +80,26 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeHolderFragment"
+        android:name="comp3350.teachreach.presentation.PlaceHolderFragment"
+        android:label="fragment_place_holder"
+        tools:layout="@layout/fragment_place_holder">
+        <action
+            android:id="@+id/actionToTutorProfileViewFragment"
+            app:destination="@id/tutorProfileViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/tutorProfileViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.TutorProfileViewFragment"
+        android:label="fragment_tutor_profile"
+        tools:layout="@layout/fragment_tutor_profile">
+        <action
+            android:id="@+id/actionToPlaceHolderFragment"
+            app:destination="@id/placeHolderFragment" />
+        <action
+            android:id="@+id/actionToTutorProfileViewFragment"
+            app:destination="@id/tutorProfileViewFragment" />
     </fragment>
 </navigation>

@@ -1,22 +1,18 @@
 package comp3350.teachreach.presentation.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.presentation.TRViewModel;
-import comp3350.teachreach.presentation.booking.BookingActivity;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
 public class TutorProfileViewFragment extends Fragment
@@ -36,7 +32,7 @@ public class TutorProfileViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        view = inflater.inflate(R.layout.activity_tutor_profile,
+        view = inflater.inflate(R.layout.fragment_tutor_profile,
                                 container,
                                 false);
         setUpProfile(view);
@@ -45,22 +41,15 @@ public class TutorProfileViewFragment extends Fragment
 
     private void setUpProfile(View v)
     {
-        TextView tvCourses      = v.findViewById(R.id.tvCourses);
-        TextView tvPrice        = v.findViewById(R.id.tvPrice);
-        TextView tvRating       = v.findViewById(R.id.tvRating);
-        Button   btnBookSession = v.findViewById(R.id.btnBookSession);
-        ITutorProfileHandler tutorProfile
-                = new TutorProfileHandler(vm.getTutorId().getValue());
+        TextView tvPrice  = v.findViewById(R.id.tvRating);
+        TextView tvRating = v.findViewById(R.id.tvReviews);
+        ITutorProfileHandler tutorProfile = new TutorProfileHandler(vm
+                                                                            .getTutorId()
+                                                                            .getValue());
         TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
                 tutorProfile);
 
-        tvCourses.setText(tutorProfileFormatter.getCourses());
         tvPrice.setText(String.valueOf(tutorProfileFormatter.getHourlyRate()));
         tvRating.setText(String.valueOf(tutorProfileFormatter.getRating()));
-
-        btnBookSession.setOnClickListener(view -> {
-            Intent intent = new Intent(getContext(), BookingActivity.class);
-            startActivity(intent);
-        });
     }
 }
