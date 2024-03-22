@@ -5,29 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/abTop"
-        android:layout_width="match_parent"
-        android:layout_height="80dp">
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <FrameLayout
-        android:id="@+id/navFrameLayout"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment_tutor"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="80dp"
-        android:orientation="vertical">
-
-    </FrameLayout>
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph_tutor" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/navigation_menu_tutor" />
+        app:menu="@menu/navigation_menu_tutor"
+        app:menuGravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
