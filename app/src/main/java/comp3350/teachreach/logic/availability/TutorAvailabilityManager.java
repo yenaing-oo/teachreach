@@ -1,5 +1,7 @@
 package comp3350.teachreach.logic.availability;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +33,13 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager {
     }
 
     @Override
-    public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor) {
-        List<ITimeSlice> availability = getAvailability(tutor);
+    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date) {
+        return accessTutorAvailability.getAvailabilityOnDay(tutor, date);
+    }
+
+    @Override
+    public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor, LocalDate date) {
+        List<ITimeSlice> availability = getAvailabilityOnDay(tutor, date);
         List<ITimeSlice> timeSlots = new ArrayList<>();
 
         for (ITimeSlice timeRange : availability) {

@@ -1,5 +1,7 @@
 package comp3350.teachreach.logic.DAOs;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 import comp3350.teachreach.application.Server;
@@ -25,7 +27,16 @@ public class AccessTutorAvailability {
             return TutorAvailabilityPersistence.getAvailability(tutor);
         } catch (final Exception e) {
             throw new DataAccessException(
-                    "Failed to get time slice by tutor's " + "id", e);
+                    "Failed to get tutor's availability ", e);
+        }
+    }
+
+    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date) {
+        try {
+            return TutorAvailabilityPersistence.getAvailabilityOnDay(tutor, date);
+        } catch (final Exception e) {
+            throw new DataAccessException(
+                    "Failed to get tutor's day availability ", e);
         }
     }
 
@@ -35,7 +46,7 @@ public class AccessTutorAvailability {
             TutorAvailabilityPersistence.addAvailability(tutor, timeSlice);
 
         } catch (final Exception e) {
-            throw new DataAccessException("Failed to store tutor time slice!", e);
+            throw new DataAccessException("Failed to store availability ", e);
         }
     }
 
@@ -43,7 +54,7 @@ public class AccessTutorAvailability {
         try {
             TutorAvailabilityPersistence.removeAvailability(tutor, timeSlice);
         } catch (final Exception e) {
-            throw new DataAccessException("Failed to remove tutor time slice!", e);
+            throw new DataAccessException("Failed to remove tutor availability ", e);
         }
     }
 }
