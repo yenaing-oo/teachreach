@@ -6,11 +6,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AppCompatActivity;
-import comp3350.teachreach.R;
-import java.util.Calendar;
 
-import comp3350.teachreach.logic.exceptions.payment.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+import comp3350.teachreach.R;
+import comp3350.teachreach.logic.exceptions.payment.ExpiredCardException;
+import comp3350.teachreach.logic.exceptions.payment.InvalidCVCException;
+import comp3350.teachreach.logic.exceptions.payment.InvalidCardNumberException;
+import comp3350.teachreach.logic.exceptions.payment.InvalidExpiryDateException;
+import comp3350.teachreach.logic.exceptions.payment.PaymentException;
 import comp3350.teachreach.logic.payment.PaymentValidator;
 
 
@@ -65,14 +69,9 @@ public class PaymentActivity extends AppCompatActivity {
 
         try {
             valid = PaymentValidator.validatePaymentInfo(cardNumber, expDate, cvc);
-        } catch (InvalidCardNumberException cardErr) {
+        } catch (InvalidCardNumberException | InvalidCVCException | InvalidExpiryDateException |
+                 ExpiredCardException cardErr) {
             Toast.makeText(this, cardErr.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (InvalidCVCException cvcErr) {
-            Toast.makeText(this, cvcErr.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (InvalidExpiryDateException expErr1) {
-            Toast.makeText(this, expErr1.getMessage(), Toast.LENGTH_SHORT).show();
-        } catch (ExpiredCardExcpetion expErr2) {
-            Toast.makeText(this, expErr2.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (PaymentException unknownErr) {
             Toast.makeText(this, "Issue with payment info, please review", Toast.LENGTH_SHORT).show();
         }
@@ -82,28 +81,4 @@ public class PaymentActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isValidExpDate(String expDate) {
-        String[] parts = expDate.split("/");
-        if (parts.length != 2) return false;
-
-        try {
-            int month = Integer.parseInt(parts[0]);
-            int year = Integer.parseInt(parts[1]);
-
-            if (month < 1 || month > 12) return false;
-
-            Calendar now = Calendar.getInstance();
-            int currentYear = now.get(Calendar.YEAR) % 100;
-            int currentMonth = now.get(Calendar.MONTH) + 1;
-
-            if (year < currentYear || (year == currentYear && month < currentMonth)) {
-                return false;
-            }
-
-        } catch (NumberFormatException e) {
-            return false;
-        }
-
-        return true;
-    }
 }

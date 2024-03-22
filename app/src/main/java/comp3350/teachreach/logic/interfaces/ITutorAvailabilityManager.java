@@ -7,11 +7,13 @@ import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ITutorAvailabilityManager {
-    List<ITimeSlice> getAvailabilty(ITutor tutor);
+    List<ITimeSlice> getAvailability(ITutor tutor);
 
-    boolean isAvailableAt(ITutor tutor, ITimeSlice timeRange);
+    List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor);
+
+    ITimeSlice isAvailableAt(ITutor tutor, ITimeSlice timeRange);
 
     void addAvailability(ITutor tutor, ITimeSlice timeRange) throws TutorAvailabilityManagerException;
 
-    void removeAvailability(ITutor tutor, ITimeSlice timeRange);
+    void removeAvailability(ITutor tutor, ITimeSlice timeRange) throws TutorAvailabilityManagerException;
 }

@@ -17,7 +17,7 @@ interface ISession
 
     ISession setSessionID(int sessionID);
 
-    ITimeSlice getTime();
+    ITimeSlice getTimeRange();
 
     ISession setTime(TimeSlice time);
 

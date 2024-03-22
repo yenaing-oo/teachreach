@@ -1,42 +1,50 @@
-package comp3350.teachreach.logic.booking;
+package comp3350.teachreach.logic.session;
 
 import java.util.List;
 
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
+import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-class SessionHandler {
+class SessionHandler implements ISessionHandler {
     private final ITutorAvailabilityManager tutorAvailabilityManager;
     private final AccessSessions accessSessions;
     private final AccessTutors accessTutors;
 
 
-    public SessionHandler() {
+    public SessionHandler(ITutorAvailabilityManager tutorAvailabilityManager) {
         this.accessSessions = new AccessSessions();
         this.accessTutors = new AccessTutors();
-        this.tutorAvailabilityManager = new TutorAvailabilityManager();
+        this.tutorAvailabilityManager = tutorAvailabilityManager;
     }
 
-    public SessionHandler(ISessionPersistence sessions,
-                          ITutorPersistence tutors,
-                          ITutorAvailabilityPersistence tutorAvailability) {
+    public SessionHandler(ITutorAvailabilityManager tutorAvailabilityManager,
+                          ISessionPersistence sessions,
+                          ITutorPersistence tutors
+    ) {
         this.accessSessions = new AccessSessions(sessions);
         this.accessTutors = new AccessTutors(tutors);
-        this.tutorAvailabilityManager = new TutorAvailabilityManager(tutorAvailability);
+        this.tutorAvailabilityManager = tutorAvailabilityManager;
     }
 
-    public ISession bookSession(ISession session) {
+    public ISession bookSession(ISession session) throws TutorAvailabilityManagerException {
         ITutor tutor = accessTutors.getTutorByTutorID(session.getSessionTutorID());
-        if (tutorAvailabilityManager.isAvailableAt(tutor, session.getTime())) {
+        ITimeSlice availableTimeRange = tutorAvailabilityManager.isAvailableAt(tutor, session.getTimeRange());
+        ITimeSlice sessionTimeRange = session.getTimeRange();
+        if (availableTimeRange != null) {
+            tutorAvailabilityManager.removeAvailability(tutor, availableTimeRange);
+            tutorAvailabilityManager.addAvailability(tutor, new TimeSlice(availableTimeRange.getStartTime(), sessionTimeRange.getStartTime()));
+            tutorAvailabilityManager.addAvailability(tutor, new TimeSlice(sessionTimeRange.getEndTime(), availableTimeRange.getEndTime()));
             ISession resultSession = accessSessions.storeSession(session);
             assert (resultSession != null);
             return resultSession;

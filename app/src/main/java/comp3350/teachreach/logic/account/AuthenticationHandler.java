@@ -6,7 +6,7 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.InvalidCredentialException;
 import comp3350.teachreach.logic.interfaces.IAuthenticationHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;

@@ -43,6 +43,7 @@ class TutorProfileActivity extends AppCompatActivity
         btnBookSession.setOnClickListener(v -> {
             Intent intent = new Intent(TutorProfileActivity.this,
                                        BookingActivity.class);
+            intent.putExtra("TUTOR_ID", getIntent().getIntExtra("TUTOR_ID", -1));
             startActivity(intent);
         });
     }
