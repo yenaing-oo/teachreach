@@ -1,13 +1,11 @@
-package comp3350.teachreach.logic.booking;
+package comp3350.teachreach.logic.session;
 
 import java.util.List;
 
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
 import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
@@ -24,18 +22,19 @@ class SessionHandler implements ISessionHandler {
     private final AccessTutors accessTutors;
 
 
-    public SessionHandler() {
+    public SessionHandler(ITutorAvailabilityManager tutorAvailabilityManager) {
         this.accessSessions = new AccessSessions();
         this.accessTutors = new AccessTutors();
-        this.tutorAvailabilityManager = new TutorAvailabilityManager();
+        this.tutorAvailabilityManager = tutorAvailabilityManager;
     }
 
-    public SessionHandler(ISessionPersistence sessions,
-                          ITutorPersistence tutors,
-                          ITutorAvailabilityPersistence tutorAvailability) {
+    public SessionHandler(ITutorAvailabilityManager tutorAvailabilityManager,
+                          ISessionPersistence sessions,
+                          ITutorPersistence tutors
+    ) {
         this.accessSessions = new AccessSessions(sessions);
         this.accessTutors = new AccessTutors(tutors);
-        this.tutorAvailabilityManager = new TutorAvailabilityManager(tutorAvailability, tutors, sessions);
+        this.tutorAvailabilityManager = tutorAvailabilityManager;
     }
 
     public ISession bookSession(ISession session) throws TutorAvailabilityManagerException {

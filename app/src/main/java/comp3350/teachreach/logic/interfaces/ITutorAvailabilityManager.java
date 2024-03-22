@@ -9,7 +9,7 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public interface ITutorAvailabilityManager {
     List<ITimeSlice> getAvailability(ITutor tutor);
 
-    List<ITimeSlice> getAvailabilityForSlots(ITutor tutor);
+    List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor);
 
     ITimeSlice isAvailableAt(ITutor tutor, ITimeSlice timeRange);
 

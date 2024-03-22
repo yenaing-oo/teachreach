@@ -7,9 +7,7 @@ import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
 import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.booking.SessionHandler;
 import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
-import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -17,16 +15,13 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class TutorAvailabilityManager implements ITutorAvailabilityManager {
 
     private final ITutorAvailabilityPersistence accessTutorAvailability;
-    private final ISessionHandler sessionHandler;
 
     public TutorAvailabilityManager() {
         this.accessTutorAvailability = Server.getTutorAvailabilityAccess();
-        this.sessionHandler = new SessionHandler();
     }
 
     public TutorAvailabilityManager(ITutorAvailabilityPersistence tutorAvailabilityPersistence, ITutorPersistence tutorPersistence, ISessionPersistence sessionPersistence) {
         this.accessTutorAvailability = tutorAvailabilityPersistence;
-        this.sessionHandler = new SessionHandler(sessionPersistence, tutorPersistence, tutorAvailabilityPersistence);
     }
 
 
@@ -36,7 +31,7 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager {
     }
 
     @Override
-    public List<ITimeSlice> getAvailabilityForSlots(ITutor tutor) {
+    public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor) {
         List<ITimeSlice> availability = getAvailability(tutor);
         List<ITimeSlice> timeSlots = new ArrayList<>();
 

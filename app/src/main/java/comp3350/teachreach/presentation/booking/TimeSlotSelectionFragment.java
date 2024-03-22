@@ -12,10 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 
 /**
@@ -25,16 +28,23 @@ import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
  */
 public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecyclerView {
     private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
-    private List<String> timeSlotList;
+    private static final String ARG_ID = "TUTOR_ID";
     private OnTimeSlotSelectedListener timeSlotSelectedListener;
+    private List<ITimeSlice> timeSlots;
+    private int tutorID;
+    private TutorAvailabilityManager tutorAvailabilityManager;
+    private AccessTutors accessTutors;
 
     public TimeSlotSelectionFragment() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static TimeSlotSelectionFragment newInstance() {
+    public static TimeSlotSelectionFragment newInstance(int tutorID) {
         TimeSlotSelectionFragment fragment = new TimeSlotSelectionFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_ID, tutorID);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -53,12 +63,15 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        timeSlotList = new ArrayList<>();
-        timeSlotList.add("10:30 AM");
-        timeSlotList.add("11:00 AM");
-        timeSlotList.add("11:30 AM");
-        timeSlotList.add("12:00 PM");
-        timeSlotList.add("12:30 PM");
+        tutorAvailabilityManager = new TutorAvailabilityManager();
+        accessTutors = new AccessTutors();
+        Bundle args = getArguments();
+        if (args != null) {
+            // Extract the ID from arguments
+            this.tutorID = args.getInt(ARG_ID, -1); // -1 is the default value if the argument is not found
+        }
+        ITutor tutor = accessTutors.getTutorByTutorID(this.tutorID);
+        this.timeSlots = tutorAvailabilityManager.getAvailabilityAsSlots(tutor);
     }
 
     @Override
@@ -74,7 +87,7 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
 
         RecyclerView recyclerView = view.findViewById(R.id.timeSlotRecyclerView);
 
-        timeSlotRecyclerViewAdapter = new TimeSlotRecyclerViewAdapter(getContext(), timeSlotList, this);
+        timeSlotRecyclerViewAdapter = new TimeSlotRecyclerViewAdapter(getContext(), timeSlots, this);
         recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
@@ -83,9 +96,7 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
 
     @Override
     public void onTimeSlotItemClick(int position) {
-        // Retrieve the clicked time slot
-        String selectedTimeSlot = timeSlotList.get(position);
-        // Pass the time slot back to the activity
+        ITimeSlice selectedTimeSlot = timeSlots.get(position);
         timeSlotSelectedListener.onTimeSlotSelected(selectedTimeSlot);
     }
 
