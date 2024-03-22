@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeachReach">
         <activity
-            android:name=".presentation.booking.PaymentActivity"
+            android:name=".presentation.StudentHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.booking.Payment"
+            android:name=".presentation.booking.PaymentActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.TutorHomeActivity"
@@ -34,9 +34,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.signup.TutorSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.profile.TutorProfileActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.profile.EditTutorProfileActivity"

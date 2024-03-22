@@ -10,28 +10,24 @@ import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
-public
-class AccessAccounts
+public class AccessAccounts
 {
     private static IAccountPersistence    accountPersistence;
     private static Map<Integer, IAccount> accounts = null;
 
-    public
-    AccessAccounts()
+    public AccessAccounts()
     {
         accountPersistence = Server.getAccountDataAccess();
         accounts           = accountPersistence.getAccounts();
     }
 
-    public
-    AccessAccounts(final IAccountPersistence accountPersistence)
+    public AccessAccounts(final IAccountPersistence accountPersistence)
     {
         AccessAccounts.accountPersistence = accountPersistence;
         accounts                          = accountPersistence.getAccounts();
     }
 
-    public
-    Map<Integer, IAccount> getAccounts()
+    public Map<Integer, IAccount> getAccounts()
     {
         try {
             if (accounts == null) {
@@ -43,8 +39,7 @@ class AccessAccounts
         }
     }
 
-    public
-    Optional<IAccount> getAccountByEmail(String email)
+    public Optional<IAccount> getAccountByEmail(String email)
     {
         try {
             if (accounts == null) {
@@ -60,10 +55,12 @@ class AccessAccounts
         }
     }
 
-    public IAccount insertAccount(IAccount newAccount) throws DuplicateEmailException {
+    public IAccount insertAccount(IAccount newAccount)
+            throws DuplicateEmailException
+    {
         try {
             newAccount = accountPersistence.storeAccount(newAccount);
-            accounts = accountPersistence.getAccounts();
+            accounts   = accountPersistence.getAccounts();
             return newAccount;
         } catch (DuplicateEmailException e) {
             throw e;
@@ -72,8 +69,7 @@ class AccessAccounts
         }
     }
 
-    public
-    IAccount updateAccount(IAccount existingAccount)
+    public IAccount updateAccount(IAccount existingAccount)
     {
         try {
             existingAccount = accountPersistence.updateAccount(existingAccount);

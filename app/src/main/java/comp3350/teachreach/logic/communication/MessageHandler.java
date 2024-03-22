@@ -17,11 +17,13 @@ import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.MessageHandleException;
+import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class MessageHandler implements comp3350.teachreach.logic.interfaces.MessageHandler {
+public class MessageHandler implements IMessageHandler
+{
     private final AccessMessage accessMessage;
 
     private final AccessStudents accessStudents;

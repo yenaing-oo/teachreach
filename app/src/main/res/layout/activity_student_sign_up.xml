@@ -1,60 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:gravity="center">
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:id="@+id/tvStudentSignupTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="Sign up as a Student"
+        android:text="@string/tvStudentSignupTitle"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.125" />
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Username"
-        android:inputType="text" />
+    <TextView
+        android:id="@+id/tvWhoAreYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvWhoAreYou"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tilSignupName"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/tilSignupName"
+        app:layout_constraintRight_toRightOf="@id/tilSignupName"
+        app:layout_constraintTop_toBottomOf="@id/tvStudentSignupTitle"
+        app:layout_constraintVertical_bias="1" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Password"
-        android:inputType="textPassword" />
+    <TextView
+        android:id="@+id/tvLoginAs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tvLoginAs"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tilSignupEmail"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintLeft_toLeftOf="@id/tilSignupEmail"
+        app:layout_constraintRight_toRightOf="@id/tilSignupEmail"
+        app:layout_constraintTop_toBottomOf="@id/tilSignupPronouns"
+        app:layout_constraintVertical_bias="1" />
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSignupName"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="32"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tvStudentSignupTitle"
+        app:layout_constraintRight_toRightOf="@+id/tvStudentSignupTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvStudentSignupTitle"
+        app:layout_constraintVertical_bias="0.1">
 
-    <EditText
-        android:id="@+id/etMajor"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Major (Optional)"
-        android:inputType="text" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilSignupNameHint" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/etPronoun"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Pronoun (Optional)"
-        android:inputType="text" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSignupMajor"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="64"
+        app:endIconMode="clear_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupName"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupName"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupName"
+        app:layout_constraintVertical_bias="0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilSignupMajorHint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSignupPronouns"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupMajor"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupMajor"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupMajor"
+        app:layout_constraintVertical_bias="0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilSignupPronounsHint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSignupEmail"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupPronouns"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupPronouns"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupPronouns"
+        app:layout_constraintVertical_bias="0.125">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilSignupEmailHint"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilSignupPassword"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupEmail"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupEmail"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupEmail"
+        app:layout_constraintVertical_bias="0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilSignupPasswordHint"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnCreateProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Create Profile"
-        android:textSize="16sp" />
-</LinearLayout>
+        android:text="@string/btnCreateProfile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilSignupPassword"
+        app:layout_constraintRight_toRightOf="@+id/tilSignupPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilSignupPassword"
+        app:layout_constraintVertical_bias="0.1" />
+</androidx.constraintlayout.widget.ConstraintLayout>

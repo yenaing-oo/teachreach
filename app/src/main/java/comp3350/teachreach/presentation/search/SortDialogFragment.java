@@ -2,7 +2,6 @@ package comp3350.teachreach.presentation.search;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +16,13 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 
-public
-class SortDialogFragment extends AppCompatDialogFragment
+public class SortDialogFragment extends AppCompatDialogFragment
 {
     private SortDialogListener listener;
 
     @NonNull
     @Override
-    public
-    Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(requireActivity());
@@ -35,41 +32,20 @@ class SortDialogFragment extends AppCompatDialogFragment
 
         RadioGroup radioGroup = view.findViewById(R.id.radioGroup);
 
-        builder
-                .setView(view)
-                .setNegativeButton("Cancel",
-                                   new DialogInterface.OnClickListener()
-                                   {
-                                       @Override
-                                       public
-                                       void onClick(DialogInterface dialog,
-                                                    int which)
-                                       {
-                                       }
-                                   })
-                .setPositiveButton("Apply",
-                                   new DialogInterface.OnClickListener()
-                                   {
-                                       @Override
-                                       public
-                                       void onClick(DialogInterface dialog,
-                                                    int which)
-                                       {
-                                           RadioButton selectedRadioButton
-                                                   = view.findViewById(
-                                                   radioGroup.getCheckedRadioButtonId());
-                                           SortCriteria sortCriteria
-                                                   = (SortCriteria) selectedRadioButton.getTag();
-                                           listener.applySort(sortCriteria);
-                                       }
-                                   });
+        builder.setView(view).setNegativeButton("Cancel", (dialog, which) -> {
+        }).setPositiveButton("Apply", (dialog, which) -> {
+            RadioButton selectedRadioButton
+                    = view.findViewById(radioGroup.getCheckedRadioButtonId());
+            SortCriteria sortCriteria
+                    = (SortCriteria) selectedRadioButton.getTag();
+            listener.applySort(sortCriteria);
+        });
 
         return builder.create();
     }
 
     @Override
-    public
-    void onAttach(@NonNull Context context)
+    public void onAttach(@NonNull Context context)
     {
         super.onAttach(context);
 
@@ -81,8 +57,7 @@ class SortDialogFragment extends AppCompatDialogFragment
         }
     }
 
-    public
-    interface SortDialogListener
+    public interface SortDialogListener
     {
         void applySort(SortCriteria sortCriteria);
     }

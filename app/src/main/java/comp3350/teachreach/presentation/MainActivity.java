@@ -22,13 +22,11 @@ import comp3350.teachreach.application.TRData;
 import comp3350.teachreach.presentation.login.StudentLoginActivity;
 import comp3350.teachreach.presentation.login.TutorLoginActivity;
 
-public
-class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
 {
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -38,35 +36,38 @@ class MainActivity extends AppCompatActivity
 
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
-        Button btnTutor = findViewById(R.id.btnTutor);
+        Button btnTutor   = findViewById(R.id.btnTutorLogin);
+
+        CharSequence charStudent = "Student";
+        CharSequence charTutor   = "Tutor";
+        btnStudent.setText(charStudent);
+        btnTutor.setText(charTutor);
 
         btnStudent.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this,
-                    StudentLoginActivity.class);
+                                       StudentLoginActivity.class);
 
             startActivity(intent);
         });
 
-
         btnTutor.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this,
-                    TutorLoginActivity.class);
+                                       TutorLoginActivity.class);
             startActivity(intent);
         });
     }
 
-    private
-    void copyDatabaseToDevice()
+    private void copyDatabaseToDevice()
     {
         final String DB_PATH = "db";
 
-        String[] assetNames;
-        Context  context = getApplicationContext();
-        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
-        AssetManager assetManager = getAssets();
+        String[]     assetNames;
+        Context      context       = getApplicationContext();
+        File         dataDirectory = context.getDir(DB_PATH,
+                                                    Context.MODE_PRIVATE);
+        AssetManager assetManager  = getAssets();
 
         try {
-
             assetNames = assetManager.list(DB_PATH);
             for (int i = 0; i < Objects.requireNonNull(assetNames).length; i++) {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
@@ -86,8 +87,7 @@ class MainActivity extends AppCompatActivity
         }
     }
 
-    public
-    void copyAssetsToDirectory(String[] assets, File directory)
+    public void copyAssetsToDirectory(String[] assets, File directory)
             throws IOException
     {
         AssetManager assetManager = getAssets();

@@ -1,48 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actStudentLogin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView2"
+
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="Student Login"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/etStudentEmail"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginHorizontal="8dp"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back_24"
+            app:title="@string/tvStudentLoginTopBar" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Email"
-        android:inputType="text" />
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/etStudentPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btnStudentLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login" />
+            <TextView
+                android:id="@+id/tvStudentLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginVertical="64dp"
+                android:text="@string/tvStudentLoginTitle"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvStudentSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Not a member? Sign up"
-        android:textColor="#0000FF"
-        android:paddingTop="16dp"
-        android:gravity="center_horizontal" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStudentLoginEmail"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:hint="@string/tilLoginEmailHint"
+                app:endIconMode="clear_text"
+                app:errorEnabled="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintLeft_toLeftOf="@+id/tvStudentLogin"
+                app:layout_constraintRight_toRightOf="@+id/tvStudentLogin"
+                app:layout_constraintTop_toBottomOf="@+id/tvStudentLogin"
+                app:layout_constraintVertical_bias="0.1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="256dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilStudentLoginPassword"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="16dp"
+                android:hint="@string/tilLoginPasswordHint"
+                app:endIconMode="password_toggle"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="256dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btnSignupAsStudent"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="8dp"
+                android:text="@string/btnSignupAsStudent" />
+
+            <Button
+                android:id="@+id/btnLoginAsStudent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:text="@string/btnLoginAsStudent" />
+
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

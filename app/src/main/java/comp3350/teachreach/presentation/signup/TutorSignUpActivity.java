@@ -3,34 +3,38 @@ package comp3350.teachreach.presentation.signup;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import comp3350.teachreach.R;
+import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.logic.account.AccountCreator;
+import comp3350.teachreach.logic.exceptions.InvalidNameException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.profile.TutorProfileActivity;
+import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
-public
-class TutorSignUpActivity extends AppCompatActivity
+public class TutorSignUpActivity extends AppCompatActivity
 {
-
     private static final int REQUEST_CODE_PICK_FILE = 1;
+
+    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail,
+            tilPassword;
 
     private EditText etTutorUsername, etTutorPassword, etTutorEmail,
             etTutorMajor, etPronouns;
-    // Uri of the selected transcript file
+
     private IAccountCreator accountCreator;
 
-    private
-    void createTutorProfile()
+    private void createTutorProfile()
     {
         String username = etTutorUsername.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
@@ -39,7 +43,14 @@ class TutorSignUpActivity extends AppCompatActivity
         String pronoun  = etPronouns.getText().toString();
 
         try {
-            ITutor newTutor = accountCreator.createTutorAccount(email, password, username, major, pronoun);
+            tilEmail.setError(null);
+            tilPassword.setError(null);
+            tilUsername.setError(null);
+            ITutor newTutor = accountCreator.createTutorAccount(email,
+                                                                password,
+                                                                username,
+                                                                major,
+                                                                pronoun);
 
             Toast
                     .makeText(TutorSignUpActivity.this,
@@ -47,38 +58,30 @@ class TutorSignUpActivity extends AppCompatActivity
                               Toast.LENGTH_SHORT)
                     .show();
             Intent intent = new Intent(TutorSignUpActivity.this,
-                                       TutorProfileActivity.class);
+                                       TutorProfileViewFragment.class);
             intent.putExtra("TUTOR_ID", newTutor.getTutorID());
 
             startActivity(intent);
             finish();
-        } catch (Exception e) {
+        } catch (final InvalidNameException e) {
+            tilUsername.setError(e.getMessage());
+        } catch (final InvalidPasswordException e) {
+            tilPassword.setError(e.getMessage());
+        } catch (final InvalidEmailException | DuplicateEmailException e) {
+            tilEmail.setError(e.getMessage());
+        } catch (final Exception e) {
             Toast
                     .makeText(TutorSignUpActivity.this,
                               e.getMessage(),
                               Toast.LENGTH_LONG)
                     .show();
         }
-
-        //        if (newTutor != null) {
-        //            Toast.makeText(TutorSignUpActivity.this, "Tutor Account
-        //            Created Successfully!", Toast.LENGTH_SHORT).show();
-        //            Intent intent = new Intent(TutorSignUpActivity.this,
-        //            TutorProfileActivity.class);
-        //            startActivity(intent);
-        //            finish(); // To prevent returning to the signup screen
-        //        } else {
-        //            Toast.makeText(TutorSignUpActivity.this, "Signup failed
-        //            . Please check your inputs and try again.", Toast
-        //            .LENGTH_LONG).show();
-        //        }
     }
 
-    private
-    void openFilePicker()
+    private void openFilePicker()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*"); // Allow any file type.
+        intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
             startActivityForResult(Intent.createChooser(intent,
@@ -95,10 +98,9 @@ class TutorSignUpActivity extends AppCompatActivity
     }
 
     @Override
-    protected
-    void onActivityResult(int requestCode,
-                          int resultCode,
-                          @Nullable Intent data)
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
@@ -110,37 +112,28 @@ class TutorSignUpActivity extends AppCompatActivity
     }
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_sign_up);
 
-        etTutorUsername = findViewById(R.id.etTutorUsername);
-        etTutorPassword = findViewById(R.id.etTutorPassword);
-        etTutorEmail = findViewById(R.id.etTutorEmail);
-        etTutorMajor = findViewById(R.id.etTutorMajor);
-        etPronouns = findViewById(R.id.etPronouns);
+        tilUsername = findViewById(R.id.tilSignupName);
+        tilMajor    = findViewById(R.id.tilSignupMajor);
+        tilPronouns = findViewById(R.id.tilSignupPronouns);
+        tilEmail    = findViewById(R.id.tilSignupEmail);
+        tilPassword = findViewById(R.id.tilSignupPassword);
+
+        etTutorUsername = tilUsername.getEditText();
+        etTutorPassword = tilPassword.getEditText();
+        etTutorEmail    = tilEmail.getEditText();
+        etTutorMajor    = tilMajor.getEditText();
+        etPronouns      = tilPronouns.getEditText();
+
         Button btnUploadTranscript = findViewById(R.id.btnUploadTranscript);
-        Button btnTutorSubmit = findViewById(R.id.btnTutorSubmit);
-        TextView tvVerificationOutput = findViewById(R.id.tvVerificationOutput);
+        Button btnCreateProfile    = findViewById(R.id.btnCreateProfile);
 
         accountCreator = new AccountCreator();
-
-        btnUploadTranscript.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openFilePicker();
-            }
-        });
-
-        btnTutorSubmit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public
-            void onClick(View v)
-            {
-                createTutorProfile();
-            }
-        });
+        btnUploadTranscript.setOnClickListener(v -> openFilePicker());
+        btnCreateProfile.setOnClickListener(v -> createTutorProfile());
     }
 }

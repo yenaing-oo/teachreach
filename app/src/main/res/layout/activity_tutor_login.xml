@@ -1,50 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:gravity="center">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="8dp"
+                android:minHeight="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_back_24"
+                app:title="@string/tvTutorLoginTopBar" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
+        android:id="@+id/tvTutorLogin"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:text="Tutor Login"
+        android:text="@string/tvTutorLoginTitle"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
 
-    <EditText
-        android:id="@+id/etTutorEmail"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTutorLoginEmail"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tvTutorLogin"
+        app:layout_constraintRight_toRightOf="@+id/tvTutorLogin"
+        app:layout_constraintTop_toBottomOf="@+id/tvTutorLogin"
+        app:layout_constraintVertical_bias="0.1">
 
-    <EditText
-        android:id="@+id/etTutorPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilLoginEmailHint"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTutorLoginPassword"
+        style="?attr/textInputFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginEmail"
+        app:layout_constraintVertical_bias="0.05">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/tilLoginPasswordHint"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/btnTutorLogin"
+        android:id="@+id/btnLoginAsTutor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Login"
-        android:textSize="16sp" />
+        android:text="@string/btnLoginAsTutor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintRight_toRightOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilTutorLoginPassword"
+        app:layout_constraintVertical_bias="0" />
 
-    <TextView
-        android:id="@+id/tvTutorSignUp"
+    <Button
+        android:id="@+id/btnSignupAsTutor"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="16dp"
-        android:text="Not a tutor? Sign up"
-        android:textColor="#0000FF"
-        android:textSize="14sp" />
+        android:text="@string/btnSignupAsTutor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="@+id/btnLoginAsTutor"
+        app:layout_constraintRight_toRightOf="@+id/btnLoginAsTutor"
+        app:layout_constraintTop_toBottomOf="@+id/btnLoginAsTutor"
+        app:layout_constraintVertical_bias="0.05" />
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

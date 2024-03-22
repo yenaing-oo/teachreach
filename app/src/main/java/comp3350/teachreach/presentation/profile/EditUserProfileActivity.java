@@ -16,18 +16,15 @@ import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.StudentProfileHandler;
 
-public
-class EditUserProfileActivity extends AppCompatActivity
+public class EditUserProfileActivity extends AppCompatActivity
 {
-
     private EditText etName, etPronoun, etMajor;
-    private Button              btnSaveProfile;
-    private AccessAccounts      accessAccounts;
-    private AccessStudents      accessStudents;
+    private Button         btnSaveProfile;
+    private AccessAccounts accessAccounts;
+    private AccessStudents accessStudents;
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
+    protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
@@ -38,8 +35,7 @@ class EditUserProfileActivity extends AppCompatActivity
         btnSaveProfile.setOnClickListener(v -> saveUserProfile());
     }
 
-    private
-    void initializeViews()
+    private void initializeViews()
     {
         etName         = findViewById(R.id.etName);
         etPronoun      = findViewById(R.id.etPronoun);
@@ -47,15 +43,13 @@ class EditUserProfileActivity extends AppCompatActivity
         btnSaveProfile = findViewById(R.id.btnSaveProfile);
     }
 
-    private
-    void loadUserProfile()
+    private void loadUserProfile()
     {
-        // Retrieve the email from intent or another source
-        int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
+        int accountID = getIntent().getIntExtra("ACCOUNT_ID", -1);
 
         try {
-            IUserProfileHandler userProfileHandler = new StudentProfileHandler(accessStudents.getStudentByStudentID(
-                    studentID));
+            IUserProfileHandler userProfileHandler = new StudentProfileHandler(
+                    accessStudents.getStudentByAccountID(accountID));
 
             etName.setText(userProfileHandler.getUserName());
             etPronoun.setText(userProfileHandler.getUserPronouns());
@@ -70,20 +64,16 @@ class EditUserProfileActivity extends AppCompatActivity
         }
     }
 
-    private
-    void saveUserProfile()
+    private void saveUserProfile()
     {
-        int studentID = getIntent().getIntExtra("STUDENT_ID", -1);
+        int accountID = getIntent().getIntExtra("ACCOUNT_ID", -1);
         try {
             IAccountManager accountManager = new AccountManager(accessAccounts
-                    .getAccounts()
-                    .get(accessStudents
-                            .getStudentByStudentID(
-                                    studentID)
-                            .getAccountID()));
-            String name = etName.getText().toString();
+                                                                        .getAccounts()
+                                                                        .get(accountID));
+            String name    = etName.getText().toString();
             String pronoun = etPronoun.getText().toString();
-            String major = etMajor.getText().toString();
+            String major   = etMajor.getText().toString();
 
             accountManager
                     .updateAccountUsername(name)
@@ -101,7 +91,7 @@ class EditUserProfileActivity extends AppCompatActivity
                               "Profile updated successfully!",
                               Toast.LENGTH_SHORT)
                     .show();
-            finish(); // Close activity and return
+            finish();
         } catch (final Exception e) {
             Toast
                     .makeText(this,

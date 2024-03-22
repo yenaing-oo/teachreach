@@ -12,40 +12,45 @@ import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.IAuthenticationHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
-public
-class AccountManager implements IAccountManager {
-    private final AccessAccounts accessAccounts;
+public class AccountManager implements IAccountManager
+{
+    private final AccessAccounts         accessAccounts;
     private final IAuthenticationHandler authenticationHandler;
-    private IAccount theAccount;
+    private       IAccount               theAccount;
 
-    public AccountManager(IAccount theAccount) {
-        accessAccounts = new AccessAccounts();
+    public AccountManager(IAccount theAccount)
+    {
+        accessAccounts             = new AccessAccounts();
         this.authenticationHandler = new AuthenticationHandler();
-        this.theAccount = theAccount;
+        this.theAccount            = theAccount;
     }
 
-    public AccountManager(IAccount theAccount, IAccountPersistence accountPersistence) {
-        accessAccounts = new AccessAccounts(accountPersistence);
-        this.authenticationHandler = new AuthenticationHandler(accountPersistence);
-        this.theAccount = theAccount;
+    public AccountManager(IAccount theAccount,
+                          IAccountPersistence accountPersistence)
+    {
+        accessAccounts             = new AccessAccounts(accountPersistence);
+        this.authenticationHandler = new AuthenticationHandler();
+        this.theAccount            = theAccount;
     }
 
     @Override
     public IAccountManager updateAccountUsername(String newName)
-            throws AccountManagerException {
+            throws AccountManagerException
+    {
         try {
             theAccount = accessAccounts.updateAccount(theAccount.setUserName(
                     newName));
             return this;
         } catch (final Exception e) {
             throw new AccountManagerException("Failed to update user name :(",
-                    e);
+                                              e);
         }
     }
 
     @Override
     public IAccountManager updateAccountUserPronouns(String pronouns)
-            throws AccountManagerException {
+            throws AccountManagerException
+    {
         try {
             theAccount
                     = accessAccounts.updateAccount(theAccount.setUserPronouns(
@@ -60,32 +65,48 @@ class AccountManager implements IAccountManager {
 
     @Override
     public IAccountManager updateAccountUserMajor(String major)
-            throws AccountManagerException {
-        return null;
+            throws AccountManagerException
+    {
+        try {
+            theAccount = accessAccounts.updateAccount(theAccount.setUserMajor(
+                    major));
+            return this;
+        } catch (final Exception e) {
+            throw new AccountManagerException(
+                    "Failed to update user pronouns :(",
+                    e);
+        }
     }
 
     @Override
     public IAccountManager updatePassword(String oldPlainPassword,
-                                          String newPlainPassword)
-            throws InvalidCredentialException, InvalidPasswordException, AccountManagerException {
+                                          String newPlainPassword) throws
+                                                                   InvalidCredentialException,
+                                                                   InvalidPasswordException,
+                                                                   AccountManagerException
+    {
         try {
             InputValidator.validatePassword(oldPlainPassword);
             InputValidator.validatePassword(newPlainPassword);
 
             if (newPlainPassword.equals(oldPlainPassword)) {
-                throw new InvalidPasswordException("New password is the same as current password");
+                throw new InvalidPasswordException(
+                        "New password is the same as current password");
             }
 
-            authenticationHandler.authenticateUser(theAccount.getAccountEmail(), oldPlainPassword);
+            authenticationHandler.authenticateUser(theAccount.getAccountEmail(),
+                                                   oldPlainPassword);
 
-            theAccount.setAccountPassword(PasswordManager.encryptPassword(newPlainPassword));
+            theAccount.setAccountPassword(PasswordManager.encryptPassword(
+                    newPlainPassword));
             theAccount = accessAccounts.updateAccount(theAccount);
 
             return this;
         } catch (InvalidPasswordException e) {
             throw e;
         } catch (InvalidCredentialException e) {
-            throw new InvalidCredentialException("Entered current password is incorrect");
+            throw new InvalidCredentialException(
+                    "Entered current password is incorrect");
         } catch (Exception e) {
             Log.e("ACCMNG", "Unexpected error while updating password", e);
             throw new AccountManagerException("Failed to update password");
@@ -93,21 +114,31 @@ class AccountManager implements IAccountManager {
     }
 
     @Override
-    public IAccountManager updateEmail(String currentPlainPassword, String newEmail)
-            throws AccountManagerException, InvalidCredentialException, InvalidPasswordException, InvalidEmailException {
+    public IAccountManager updateEmail(String currentPlainPassword,
+                                       String newEmail) throws
+                                                        AccountManagerException,
+                                                        InvalidCredentialException,
+                                                        InvalidPasswordException,
+                                                        InvalidEmailException
+    {
         try {
             InputValidator.validateEmail(newEmail);
             InputValidator.validatePassword(currentPlainPassword);
-            authenticationHandler.authenticateUser(theAccount.getAccountEmail(), currentPlainPassword);
-            theAccount = accessAccounts.updateAccount(theAccount.setAccountEmail(newEmail));
+            authenticationHandler.authenticateUser(theAccount.getAccountEmail(),
+                                                   currentPlainPassword);
+            theAccount
+                    = accessAccounts.updateAccount(theAccount.setAccountEmail(
+                    newEmail));
             return this;
         } catch (InvalidEmailException | InvalidPasswordException e) {
             throw e;
         } catch (InvalidCredentialException e) {
-            throw new InvalidCredentialException("Entered password is incorrect");
+            throw new InvalidCredentialException("Entered password is " +
+                                                 "incorrect");
         } catch (Exception e) {
             Log.e("ACCMNG", "Unexpected error while updating email", e);
-            throw new AccountManagerException("Failed to update account email", e);
+            throw new AccountManagerException("Failed to update account email",
+                                              e);
         }
     }
 }

@@ -17,8 +17,7 @@ import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
-public
-class SearchRecyclerViewAdapter
+public class SearchRecyclerViewAdapter
         extends RecyclerView.Adapter<SearchRecyclerViewAdapter.MyViewHolder>
 {
 
@@ -26,10 +25,9 @@ class SearchRecyclerViewAdapter
     Context      context;
     List<ITutor> tutorList;
 
-    public
-    SearchRecyclerViewAdapter(Context context,
-                              List<ITutor> tutorList,
-                              ITutorRecyclerView recyclerViewInterface)
+    public SearchRecyclerViewAdapter(Context context,
+                                     List<ITutor> tutorList,
+                                     ITutorRecyclerView recyclerViewInterface)
     {
         this.context               = context;
         this.tutorList             = tutorList;
@@ -38,8 +36,7 @@ class SearchRecyclerViewAdapter
 
     @NonNull
     @Override
-    public
-    SearchRecyclerViewAdapter.MyViewHolder onCreateViewHolder(
+    public SearchRecyclerViewAdapter.MyViewHolder onCreateViewHolder(
             @NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -52,8 +49,7 @@ class SearchRecyclerViewAdapter
     }
 
     @Override
-    public
-    void onBindViewHolder(
+    public void onBindViewHolder(
             @NonNull SearchRecyclerViewAdapter.MyViewHolder holder,
             int position)
     {
@@ -66,21 +62,18 @@ class SearchRecyclerViewAdapter
     }
 
     @Override
-    public
-    int getItemCount()
+    public int getItemCount()
     {
         return tutorList.size();
     }
 
-    static
-    class MyViewHolder extends RecyclerView.ViewHolder
+    static class MyViewHolder extends RecyclerView.ViewHolder
     {
         ImageView imageView;
         TextView  tvUserName, tvRating, tvHourlyRate;
 
-        public
-        MyViewHolder(@NonNull View itemView,
-                     ITutorRecyclerView recyclerViewInterface)
+        public MyViewHolder(@NonNull View itemView,
+                            ITutorRecyclerView recyclerViewInterface)
         {
             super(itemView);
 
