@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.SessionStatus;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;

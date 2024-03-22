@@ -7,6 +7,7 @@ import java.util.Optional;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public

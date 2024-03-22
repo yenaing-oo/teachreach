@@ -5,6 +5,7 @@ import java.util.Map;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IMessagePersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.IMessage;
 
 public class AccessMessage {

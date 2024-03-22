@@ -72,7 +72,7 @@ public class Session implements ISession {
     }
 
     @Override
-    public ITimeSlice getTime() {
+    public ITimeSlice getTimeRange() {
         return this.timeRange;
     }
 

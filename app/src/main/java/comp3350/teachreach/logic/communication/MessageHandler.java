@@ -2,25 +2,20 @@ package comp3350.teachreach.logic.communication;
 
 import androidx.annotation.NonNull;
 
-//import java.security.Timestamp;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import comp3350.teachreach.data.interfaces.IMessagePersistence;
-import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessMessage;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.MessageHandleException;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;

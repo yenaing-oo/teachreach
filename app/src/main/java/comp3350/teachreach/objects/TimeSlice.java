@@ -73,7 +73,7 @@ public class TimeSlice implements ITimeSlice {
     }
 
     public boolean canContain(ITimeSlice that) {
-        return this.startTime.isBefore(that.getStartTime()) && this.endTime.isAfter(that.getEndTime());
+        return this.equals(that) || (this.startTime.isBefore(that.getStartTime()) && this.endTime.isAfter(that.getEndTime()));
     }
 
     public TimeSlice mergeWith(ITimeSlice that) {

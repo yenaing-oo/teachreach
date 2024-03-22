@@ -57,8 +57,8 @@ public class SessionHSQLDB implements ISessionPersistence {
                     Statement.RETURN_GENERATED_KEYS);
             pst.setInt(1, session.getSessionStudentID());
             pst.setInt(2, session.getSessionTutorID());
-            pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(session.getTime().getStartTime()));
-            pst.setTimestamp(4, DateTimeUtils.toSqlTimestamp(session.getTime().getEndTime()));
+            pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(session.getTimeRange().getStartTime()));
+            pst.setTimestamp(4, DateTimeUtils.toSqlTimestamp(session.getTimeRange().getEndTime()));
             pst.setString(5, session.getSessionLocation());
             pst.setInt(6, session.getStatus());
             final boolean success = pst.executeUpdate() == 1;
@@ -103,7 +103,7 @@ public class SessionHSQLDB implements ISessionPersistence {
                     "UPDATE sessions SET STUDENT_ID = ?, TUTOR_ID = ?, " +
                             "start_date_time = ?, end_date_time = ?, location = ?, " +
                             "accepted = ? WHERE session_id = ?");
-            ITimeSlice sessionTime = session.getTime();
+            ITimeSlice sessionTime = session.getTimeRange();
             pst.setInt(1, session.getSessionStudentID());
             pst.setInt(2, session.getSessionTutorID());
             pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(sessionTime.getStartTime()));

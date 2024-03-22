@@ -8,13 +8,17 @@ import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
+import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
+import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
-class SessionHandler {
+class SessionHandler implements ISessionHandler {
     private final ITutorAvailabilityManager tutorAvailabilityManager;
     private final AccessSessions accessSessions;
     private final AccessTutors accessTutors;
@@ -31,12 +35,17 @@ class SessionHandler {
                           ITutorAvailabilityPersistence tutorAvailability) {
         this.accessSessions = new AccessSessions(sessions);
         this.accessTutors = new AccessTutors(tutors);
-        this.tutorAvailabilityManager = new TutorAvailabilityManager(tutorAvailability);
+        this.tutorAvailabilityManager = new TutorAvailabilityManager(tutorAvailability, tutors, sessions);
     }
 
-    public ISession bookSession(ISession session) {
+    public ISession bookSession(ISession session) throws TutorAvailabilityManagerException {
         ITutor tutor = accessTutors.getTutorByTutorID(session.getSessionTutorID());
-        if (tutorAvailabilityManager.isAvailableAt(tutor, session.getTime())) {
+        ITimeSlice availableTimeRange = tutorAvailabilityManager.isAvailableAt(tutor, session.getTimeRange());
+        ITimeSlice sessionTimeRange = session.getTimeRange();
+        if (availableTimeRange != null) {
+            tutorAvailabilityManager.removeAvailability(tutor, availableTimeRange);
+            tutorAvailabilityManager.addAvailability(tutor, new TimeSlice(availableTimeRange.getStartTime(), sessionTimeRange.getStartTime()));
+            tutorAvailabilityManager.addAvailability(tutor, new TimeSlice(sessionTimeRange.getEndTime(), availableTimeRange.getEndTime()));
             ISession resultSession = accessSessions.storeSession(session);
             assert (resultSession != null);
             return resultSession;
