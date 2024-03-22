@@ -3,10 +3,15 @@ package comp3350.teachreach.logic.interfaces;
 import java.util.List;
 import java.util.function.Function;
 
+import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ITutorFilter
 {
+    TutorFilter New();
+
+    TutorFilter setMinimumAvgRating(double minimumAvgRating);
+
     ITutorFilter setMinimumHourlyRate(double desiredHourlyRate);
 
     ITutorFilter setMaximumHourlyRate(double desiredHourlyRate);
