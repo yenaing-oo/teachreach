@@ -19,12 +19,14 @@ SET WRITE_DELAY 20
 SET FILES SCALE 32
 SET SCHEMA PUBLIC
 GRANT ALL PRIVILEGES ON SCHEMA TO public;
-INSERT INTO ACCOUNTS VALUES(1,'guderr@myumanitoba.ca','$2a$12$xeTxmBShbtIWsT/kdxVD8.k2LI','Robert Guderian","He/Him','Computer Science')
-INSERT INTO ACCOUNTS VALUES(2,'mcmill5@myumanitoba.ca','$2a$12$LMXSy2E2SRxXOyUzT2hwuOV.','Camryn Mcmillan","She/Her','Computer Science')
-INSERT INTO ACCOUNTS VALUES(3,'mcmill4@myumanitoba.ca','$2a$12$LfXSy2E2SRxXOyUzT2hwuOV.','Camryn Mcmillan","They/Them','Computer Science')
+INSERT INTO ACCOUNTS VALUES(1,'guderr@myumanitoba.ca','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Robert Guderian",'He/Him','Computer Science')
+INSERT INTO ACCOUNTS VALUES(2,'mcmill5@myumanitoba.ca','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Camryn Mcmillan', 'She/Her','Computer Science')
+INSERT INTO ACCOUNTS VALUES(3,'student@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','John Doe','They/Them','Computer Science')
+INSERT INTO ACCOUNTS VALUES(4,'tutor@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Jane Doe','She/Her','Computer Science')
 INSERT INTO STUDENTS VALUES (1,1)
+INSERT INTO STUDENTS VALUES (2,3)
 INSERT INTO TUTORS VALUES(1,2)
-INSERT INTO STUDENTS VALUES(2,3)
+INSERT INTO TUTORS VALUES(2,4)
 INSERT INTO TUTOR_AVAILABILITY VALUES(1,'2024-03-25 08:51:00','2024-03-25 10:05:00')
 INSERT INTO MESSAGES VALUES (DEFAULT, 1, 1, 'This is a sample message1', CURRENT_TIMESTAMP)
 INSERT INTO MESSAGES VALUES (DEFAULT, 1, 2, 'This is a sample message2', DEFAULT)
