@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +19,7 @@ import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchFragment extends Fragment
 {
@@ -83,13 +83,10 @@ public class SearchFragment extends Fragment
     void openDetails(ITutor t)
     {
         vm.setTutorId(t.getTutorID());
-
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToTutorProfileViewFragment);
-
+        tutorProfileView = new TutorProfileViewFragment();
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction()
+                .replace(R.id.rightSide, tutorProfileView)
                 .show(tutorProfileView)
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.commit();

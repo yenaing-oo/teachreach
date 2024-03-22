@@ -38,6 +38,7 @@ public class StudentHomeActivity extends AppCompatActivity
                 =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(
                 R.id.nav_host_fragment_student);
+        assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
         vm = new ViewModelProvider(this).get(TRViewModel.class);

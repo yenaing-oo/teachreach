@@ -20,6 +20,10 @@ public class TutorProfileViewFragment extends Fragment
     private TRViewModel vm;
     private View        view;
 
+    public TutorProfileViewFragment()
+    {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
