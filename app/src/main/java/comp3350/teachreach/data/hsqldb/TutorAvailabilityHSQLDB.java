@@ -1,9 +1,11 @@
 package comp3350.teachreach.data.hsqldb;
 
 import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,6 +61,30 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
             throw new PersistenceException(e);
         }
 
+    }
+
+    @Override
+    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date) {
+        final List<ITimeSlice> availability = new ArrayList<>();
+        try (final Connection c = connection()) {
+            Date sqlDate = DateTimeUtils.toSqlDate(date);
+            final PreparedStatement pst = c.prepareStatement("SELECT *\n" +
+                    "FROM TUTOR_AVAILABILITY\n" +
+                    "WHERE TUTOR_ID = ?\n" +
+                    "  AND CAST(START_DATE_TIME AS DATE) = ?;");
+            pst.setInt(1, tutor.getTutorID());
+            pst.setDate(2, sqlDate);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                final TimeSlice theTimeSlice = fromResultSet(rs);
+                availability.add(theTimeSlice);
+            }
+            pst.close();
+            rs.close();
+            return availability;
+        } catch (final SQLException e) {
+            throw new PersistenceException(e);
+        }
     }
 
     public void addAvailability(ITutor tutor, ITimeSlice timeRange) {

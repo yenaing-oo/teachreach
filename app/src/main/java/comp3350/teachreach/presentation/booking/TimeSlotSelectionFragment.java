@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 import comp3350.teachreach.R;
@@ -28,22 +30,28 @@ import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
  */
 public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecyclerView {
     private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
-    private static final String ARG_ID = "TUTOR_ID";
+
+    private static final String TUTOR_ID = "TUTOR_ID";
+    private static final String YEAR_ID = "YEAR_ID";
+    private static final String MONTH_ID = "MONTH_ID";
+    private static final String DAY_ID = "DAY_ID";
     private OnTimeSlotSelectedListener timeSlotSelectedListener;
     private List<ITimeSlice> timeSlots;
     private int tutorID;
+    private LocalDate selectedDate;
     private TutorAvailabilityManager tutorAvailabilityManager;
     private AccessTutors accessTutors;
 
     public TimeSlotSelectionFragment() {
-        // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static TimeSlotSelectionFragment newInstance(int tutorID) {
+    public static TimeSlotSelectionFragment newInstance(int tutorID, int year, int month, int dayOfMonth) {
         TimeSlotSelectionFragment fragment = new TimeSlotSelectionFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_ID, tutorID);
+        args.putInt(TUTOR_ID, tutorID);
+        args.putInt(YEAR_ID, year);
+        args.putInt(MONTH_ID, month);
+        args.putInt(DAY_ID, dayOfMonth);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +63,7 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
         if (context instanceof OnTimeSlotSelectedListener) {
             timeSlotSelectedListener = (OnTimeSlotSelectedListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new RuntimeException(context
                     + " must implement OnTimeSlotSelectedListener");
         }
     }
@@ -67,11 +75,11 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
         accessTutors = new AccessTutors();
         Bundle args = getArguments();
         if (args != null) {
-            // Extract the ID from arguments
-            this.tutorID = args.getInt(ARG_ID, -1); // -1 is the default value if the argument is not found
+            this.tutorID = args.getInt(TUTOR_ID, -1);
+            this.selectedDate = LocalDate.of(args.getInt(YEAR_ID), args.getInt(MONTH_ID), args.getInt(DAY_ID));
         }
         ITutor tutor = accessTutors.getTutorByTutorID(this.tutorID);
-        this.timeSlots = tutorAvailabilityManager.getAvailabilityAsSlots(tutor);
+        this.timeSlots = tutorAvailabilityManager.getAvailabilityAsSlots(tutor, selectedDate);
     }
 
     @Override

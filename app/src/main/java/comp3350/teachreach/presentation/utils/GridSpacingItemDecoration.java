@@ -6,12 +6,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * Created by Android Studio
- * User: Ailurus(ailurus@foxmail.com)
- * Date: 2015-10-28
- * Time: 15:20
- */
 public
 class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 {
@@ -41,32 +35,28 @@ class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
                         @NonNull RecyclerView.State state)
     {
         int position = parent.getChildAdapterPosition(view) -
-                       headerNum; // item position
+                headerNum;
 
         if (position >= 0) {
             int column = position % spanCount; // item column
 
             if (includeEdge) {
                 outRect.left = spacing - column * spacing /
-                                         spanCount; // spacing - column * (
-                // (1f / spanCount) * spacing)
+                        spanCount;
                 outRect.right = (column + 1) * spacing /
-                                spanCount; // (column + 1) * ((1f /
-                // spanCount) * spacing)
+                        spanCount;
 
-                if (position < spanCount) { // top edge
+                if (position < spanCount) {
                     outRect.top = spacing;
                 }
-                outRect.bottom = spacing; // item bottom
+                outRect.bottom = spacing;
             } else {
                 outRect.left = column * spacing /
-                               spanCount; // column * ((1f / spanCount) *
-                // spacing)
+                        spanCount;
                 outRect.right = spacing - (column + 1) * spacing /
-                                          spanCount; // spacing - (column +
-                // 1) * ((1f /    spanCount) * spacing)
+                        spanCount;
                 if (position >= spanCount) {
-                    outRect.top = spacing; // item top
+                    outRect.top = spacing;
                 }
             }
         } else {

@@ -19,6 +19,7 @@ class BookingActivity extends AppCompatActivity
     private FragmentManager fragmentManager;
     private TextView dateDisplay;
     private int tutorID;
+    private ITimeSlice selectedTimeSlot;
 
 
     @Override
@@ -46,11 +47,11 @@ class BookingActivity extends AppCompatActivity
                 .commit();
     }
 
-    private void addTimeSlotSelectionFragment() {
+    private void addTimeSlotSelectionFragment(int year, int month, int dayOfMonth) {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.timeSlotPickerFragmentView,
-                        TimeSlotSelectionFragment.newInstance(tutorID),
+                        TimeSlotSelectionFragment.newInstance(this.tutorID, year, month, dayOfMonth),
                         "fragment")
                 .commit();
     }
@@ -59,11 +60,11 @@ class BookingActivity extends AppCompatActivity
     public void onDateSelected(int year, int month, int dayOfMonth) {
         dateDisplay.setText(DateUtils.formatDate(year, month, dayOfMonth));
         dateDisplay.setVisibility(View.VISIBLE);
-        addTimeSlotSelectionFragment();
+        addTimeSlotSelectionFragment(year, month + 1, dayOfMonth);
     }
 
     @Override
     public void onTimeSlotSelected(ITimeSlice timeSlot) {
-
+        this.selectedTimeSlot = timeSlot;
     }
 }
