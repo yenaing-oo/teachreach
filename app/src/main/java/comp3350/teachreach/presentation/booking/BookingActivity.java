@@ -10,22 +10,22 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.button.MaterialButton;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.presentation.utils.DateUtils;
 
 public
 class BookingActivity extends AppCompatActivity
-        implements OnDateChangeListener, OnTimeSlotSelectedListener
-{
+        implements OnDateChangeListener, OnTimeSlotSelectedListener {
     private FragmentManager fragmentManager;
-    private TextView        dateDisplay;
+    private TextView dateDisplay;
+    private int tutorID;
 
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+        tutorID = getIntent().getIntExtra("TUTOR_ID", -1);
 
         dateDisplay = findViewById(R.id.dateDisplayTextView);
         MaterialButton reviewBookingButton = findViewById(R.id.review_booking_button);
@@ -37,9 +37,7 @@ class BookingActivity extends AppCompatActivity
         addDateSelectionFragment();
     }
 
-    private
-    void addDateSelectionFragment()
-    {
+    private void addDateSelectionFragment() {
         DateSelectionFragment fragment = DateSelectionFragment.newInstance();
         fragment.setOnDateChangeListener(this);
         fragmentManager
@@ -48,30 +46,24 @@ class BookingActivity extends AppCompatActivity
                 .commit();
     }
 
-    private
-    void addTimeSlotSelectionFragment()
-    {
+    private void addTimeSlotSelectionFragment() {
         fragmentManager
                 .beginTransaction()
                 .replace(R.id.timeSlotPickerFragmentView,
-                         TimeSlotSelectionFragment.newInstance(),
-                         "fragment")
+                        TimeSlotSelectionFragment.newInstance(tutorID),
+                        "fragment")
                 .commit();
     }
 
     @Override
-    public
-    void onDateSelected(int year, int month, int dayOfMonth)
-    {
+    public void onDateSelected(int year, int month, int dayOfMonth) {
         dateDisplay.setText(DateUtils.formatDate(year, month, dayOfMonth));
         dateDisplay.setVisibility(View.VISIBLE);
         addTimeSlotSelectionFragment();
     }
 
     @Override
-    public
-    void onTimeSlotSelected(String timeSlot)
-    {
+    public void onTimeSlotSelected(ITimeSlice timeSlot) {
 
     }
 }

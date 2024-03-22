@@ -14,20 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+import comp3350.teachreach.presentation.utils.TimeSliceFormatter;
 
 public
 class TimeSlotRecyclerViewAdapter
         extends RecyclerView.Adapter<TimeSlotRecyclerViewAdapter.MyViewHolder>
 {
     private final ITimeSlotRecyclerView recyclerViewInterface;
-    private final Context               context;
-    private final List<String>          timeSlotList;
-    private       int                   selectedPosition
+    private final Context context;
+    private final List<ITimeSlice> timeSlotList;
+    private int selectedPosition
             = RecyclerView.NO_POSITION;
 
     public
     TimeSlotRecyclerViewAdapter(Context context,
-                                List<String> timeSlotList,
+                                List<ITimeSlice> timeSlotList,
                                 ITimeSlotRecyclerView recyclerViewInterface)
     {
         this.context               = context;
@@ -80,7 +82,7 @@ class TimeSlotRecyclerViewAdapter
 
         void bind(int position)
         {
-            timeSlotTextView.setText(timeSlotList.get(position));
+            timeSlotTextView.setText(TimeSliceFormatter.format(timeSlotList.get(position)));
             // Update background color based on selection
             if (position == selectedPosition) {
                 timeSlotCardView.setCardBackgroundColor(ContextCompat.getColor(

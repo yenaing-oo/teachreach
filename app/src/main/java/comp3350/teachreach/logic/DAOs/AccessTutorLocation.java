@@ -4,6 +4,7 @@ import java.util.List;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 
 public class AccessTutorLocation {
     private static ITutorLocationPersistence TutorLocationPersistence;

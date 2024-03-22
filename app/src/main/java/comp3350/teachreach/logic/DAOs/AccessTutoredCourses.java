@@ -4,6 +4,7 @@ import java.util.List;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
 public class AccessTutoredCourses

@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.IStudent;
 
 public class AccessStudents

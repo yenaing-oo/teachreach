@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
 public class AccessCourses

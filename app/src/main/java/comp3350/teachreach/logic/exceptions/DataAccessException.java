@@ -1,4 +1,4 @@
-package comp3350.teachreach.logic.DAOs;
+package comp3350.teachreach.logic.exceptions;
 
 public
 class DataAccessException extends RuntimeException
