@@ -89,4 +89,6 @@
     <string name="fabChangingEmail">Changing Email</string>
     <string name="tilPasswordHint">Your Password</string>
     <string name="tilNewEmailHint">New Email</string>
+    <string name="courseFilterHint">Filter by Course</string>
+    <string name="majorFilterHint">Filter by Major</string>
 </resources>

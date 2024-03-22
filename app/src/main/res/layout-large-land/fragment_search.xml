@@ -13,30 +13,46 @@
         android:layout_width="384dp"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textField"
-            style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:layout_marginVertical="8dp"
-            android:hint="@string/searchHint"
-            android:labelFor="@id/searchField"
-            app:endIconDrawable="@drawable/ic_filter_list_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
-            app:startIconDrawable="@drawable/ic_search_24">
+            android:layout_height="match_parent">
 
-            <AutoCompleteTextView
-                android:id="@+id/searchField"
+            <LinearLayout
+                android:id="@+id/filterSideSheet"
+                style="@style/Widget.Material3.SideSheet"
+                android:layout_width="256dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_behavior="com.google.android.material.sidesheet.SideSheetBehavior">
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textField"
+                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginVertical="8dp"
+                android:hint="@string/searchHint"
+                android:labelFor="@id/searchField"
+                app:endIconDrawable="@drawable/ic_filter_list_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0"
+                app:startIconDrawable="@drawable/ic_search_24">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/searchField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvSearchResult"

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/searchFragment"
@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".presentation.search.SearchFragment">
+
+    <LinearLayout
+        android:id="@+id/filterSideSheet"
+        style="@style/Widget.Material3.SideSheet"
+        android:layout_width="384dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_behavior="com.google.android.material.sidesheet.SideSheetBehavior">
+
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/leftSide"
@@ -56,4 +66,4 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="80dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

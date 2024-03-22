@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +15,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.sidesheet.SideSheetBehavior;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.List;
+import java.util.function.Function;
+
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.SearchSortHandler;
+import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
@@ -23,14 +32,11 @@ import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchFragment extends Fragment
 {
-    private ISearchSortHandler searchSortHandler;
-
-    private TRViewModel vm;
-
-    private SearchTutorRecyclerAdapter adapter;
-    private FragmentSearchBinding      binding;
-
-    private Fragment tutorProfileView;
+    Function<List<ITutor>, List<ITutor>> tutorFilter;
+    private ISearchSortHandler    searchSortHandler;
+    private TRViewModel           vm;
+    private FragmentSearchBinding binding;
+    private Fragment              tutorProfileView;
 
     public SearchFragment()
     {
@@ -54,8 +60,10 @@ public class SearchFragment extends Fragment
 
         tutorProfileView
                 = getChildFragmentManager().findFragmentById(R.id.rightSide);
+
         assert tutorProfileView != null;
         hideDetails();
+        setUpFilterSheet();
         return binding.getRoot();
     }
 
@@ -64,17 +72,35 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        setUpRecyclerView();
+    }
+
+    private void setUpFilterSheet()
+    {
+        FrameLayout filterSheet = binding
+                .getRoot()
+                .findViewById(R.id.filterSheet);
+        SideSheetBehavior<FrameLayout> behavior = SideSheetBehavior.from(
+                filterSheet);
+        behavior.setState(SideSheetBehavior.STATE_HIDDEN);
+    }
+
+    private void setUpSearchBar()
+    {
+        TextInputLayout til = binding.getRoot().findViewById(R.id.searchField);
+        EditText        et  = til.getEditText();
+        tutorFilter = TutorFilter.New().filterFunc();
+    }
+
+    private void setUpRecyclerView()
+    {
         RecyclerView recyclerView = binding
                 .getRoot()
                 .findViewById(R.id.rvSearchResult);
-
-        setUpRecyclerView(recyclerView);
-    }
-
-    private void setUpRecyclerView(RecyclerView recyclerView)
-    {
-        adapter = new SearchTutorRecyclerAdapter(vm.getTutors().getValue(),
-                                                 this::openDetails);
+        SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(vm
+                                                                                    .getTutors()
+                                                                                    .getValue(),
+                                                                            this::openDetails);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
