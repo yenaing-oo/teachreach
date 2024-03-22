@@ -61,7 +61,7 @@ public class AccountSettingsFragment extends Fragment
                 .findViewById(R.id.topAppBar);
         NavController navController = NavHostFragment.findNavController(this);
         View.OnClickListener listener = isTutor ?
-                                        v -> navController.navigate(R.id.actionToStudentProfileSelfViewFragment) :
+                                        v -> navController.navigate(R.id.actionToTutorProfileSelfViewFragment) :
                                         v -> navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
         materialToolbar.setNavigationOnClickListener(listener);
     }

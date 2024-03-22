@@ -44,5 +44,35 @@
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment" />
+        <action
+            android:id="@+id/actionToFragmentChangingEmail"
+            app:destination="@id/fragmentChangingEmail" />
+        <action
+            android:id="@+id/actionToFragmentChangingPassword"
+            app:destination="@id/fragmentChangingPassword" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingEmail"
+        android:name="comp3350.teachreach.presentation.profile.FragmentChangingEmail"
+        android:label="fragment_change_email"
+        tools:layout="@layout/fragment_change_email">
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment" />
+        <action
+            android:id="@+id/action_fragmentChangingEmail2_to_tutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingPassword"
+        android:name="comp3350.teachreach.presentation.profile.FragmentChangingPassword"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+        <action
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment" />
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment" />
     </fragment>
 </navigation>
