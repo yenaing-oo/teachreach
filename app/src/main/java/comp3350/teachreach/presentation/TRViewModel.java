@@ -13,9 +13,13 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TRViewModel extends ViewModel
 {
-    private final MutableLiveData<Integer> accountId = new MutableLiveData<>();
-    private final MutableLiveData<Integer> studentId = new MutableLiveData<>();
-    private final MutableLiveData<Integer> tutorId   = new MutableLiveData<>();
+    private final MutableLiveData<IAccount> account = new MutableLiveData<>();
+    private final MutableLiveData<IStudent> student = new MutableLiveData<>();
+    private final MutableLiveData<ITutor>   tutor   = new MutableLiveData<>();
+    private final MutableLiveData<Boolean>  isTutor
+                                                    =
+            new MutableLiveData<Boolean>(
+            false);
 
     private final MutableLiveData<List<ICourse>> courses
             = new MutableLiveData<>();
@@ -29,34 +33,34 @@ public class TRViewModel extends ViewModel
     private final MutableLiveData<List<ITutor>> tutors
             = new MutableLiveData<>();
 
-    public LiveData<Integer> getAccountId()
+    public LiveData<IAccount> getAccount()
     {
-        return accountId;
+        return account;
     }
 
-    public void setAccountId(int accountId)
+    public void setAccount(IAccount account)
     {
-        this.accountId.setValue(accountId);
+        this.account.setValue(account);
     }
 
-    public LiveData<Integer> getStudentId()
+    public LiveData<IStudent> getStudent()
     {
-        return studentId;
+        return student;
     }
 
-    public void setStudentId(int id)
+    public void setStudent(IStudent student)
     {
-        this.studentId.setValue(id);
+        this.student.setValue(student);
     }
 
-    public LiveData<Integer> getTutorId()
+    public LiveData<ITutor> getTutor()
     {
-        return tutorId;
+        return tutor;
     }
 
-    public void setTutorId(int id)
+    public void setTutor(ITutor tutor)
     {
-        this.tutorId.setValue(id);
+        this.tutor.setValue(tutor);
     }
 
     public LiveData<List<ICourse>> getCourses()
@@ -97,5 +101,15 @@ public class TRViewModel extends ViewModel
     public void setTutors(List<ITutor> tutors)
     {
         this.tutors.setValue(tutors);
+    }
+
+    public void setIsTutor()
+    {
+        this.isTutor.setValue(true);
+    }
+
+    public LiveData<Boolean> getIsTutor()
+    {
+        return isTutor;
     }
 }

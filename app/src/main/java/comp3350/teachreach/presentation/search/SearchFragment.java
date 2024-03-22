@@ -82,8 +82,8 @@ public class SearchFragment extends Fragment
 
     void openDetails(ITutor t)
     {
-        vm.setTutorId(t.getTutorID());
-        tutorProfileView = new TutorProfileViewFragment();
+        vm.setTutor(t);
+        tutorProfileView = new TutorProfileViewFragment(v -> hideDetails());
         FragmentTransaction ft = getChildFragmentManager()
                 .beginTransaction()
                 .replace(R.id.rightSide, tutorProfileView)

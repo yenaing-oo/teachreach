@@ -22,8 +22,6 @@
             android:layout_marginVertical="8dp"
             android:hint="@string/searchHint"
             android:labelFor="@id/searchField"
-            app:boxCornerRadiusTopEnd="20dp"
-            app:boxCornerRadiusTopStart="20dp"
             app:endIconDrawable="@drawable/ic_filter_list_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

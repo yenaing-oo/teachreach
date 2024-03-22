@@ -98,7 +98,7 @@ public class MyProfileBarFragment extends Fragment
                                                             "Account Settings",
                                                             accountID))
                         .replace(R.id.navFrameLayout,
-                                 AccountSettingsFragment.newInstance())
+                                 new AccountSettingsFragment())
                         .commit();
             }
             return true;

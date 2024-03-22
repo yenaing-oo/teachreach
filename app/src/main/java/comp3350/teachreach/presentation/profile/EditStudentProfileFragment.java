@@ -18,7 +18,6 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentEditStudentProfileBinding;
 import comp3350.teachreach.logic.account.AccountManager;
 import comp3350.teachreach.logic.account.InputValidator;
@@ -122,10 +121,7 @@ public class EditStudentProfileFragment extends Fragment
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        account = Server
-                .getAccountDataAccess()
-                .getAccounts()
-                .get(vm.getAccountId().getValue());
+        account = vm.getAccount().getValue();
 
         accountManager = new AccountManager(account);
     }

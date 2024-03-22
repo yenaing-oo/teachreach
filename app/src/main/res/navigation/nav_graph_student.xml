@@ -47,6 +47,9 @@
             app:exitAnim="@anim/nav_default_enter_anim"
             app:popEnterAnim="@anim/nav_default_exit_anim"
             app:popExitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/actionToSearchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/accountSettingsFragment"
@@ -67,6 +70,15 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToFragmentChangingEmail"
+            app:destination="@id/fragmentChangingEmail" />
+        <action
+            android:id="@+id/actionToFragmentChangingPassword"
+            app:destination="@id/fragmentChangingPassword" />
+        <action
+            android:id="@+id/actionToSearchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/editStudentProfileFragment"
@@ -101,5 +113,35 @@
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
             app:destination="@id/tutorProfileViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingEmail"
+        android:name="comp3350.teachreach.presentation.profile.FragmentChangingEmail"
+        android:label="fragment_change_email"
+        tools:layout="@layout/fragment_change_email">
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment" />
+        <action
+            android:id="@+id/actionToSearchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_fragmentChangingEmail_to_studentProfileSelfViewFragment"
+            app:destination="@id/studentProfileSelfViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingPassword"
+        android:name="comp3350.teachreach.presentation.profile.FragmentChangingPassword"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment" />
+        <action
+            android:id="@+id/actionToSearchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/actionToStudentProfileSelfViewFragment"
+            app:destination="@id/studentProfileSelfViewFragment" />
     </fragment>
 </navigation>

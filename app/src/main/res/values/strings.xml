@@ -83,4 +83,10 @@
     <string name="tvRating">"Price: "</string>
     <string name="tvRatingField">$0.00</string>
     <string name="tvTutorCalendar">Select a Date to Book</string>
+    <string name="fabChangingPassword">Changing Password</string>
+    <string name="tilNewPasswordHint">New Password</string>
+    <string name="tilCurrentPasswordHint">Current Password</string>
+    <string name="fabChangingEmail">Changing Email</string>
+    <string name="tilPasswordHint">Your Password</string>
+    <string name="tilNewEmailHint">New Email</string>
 </resources>

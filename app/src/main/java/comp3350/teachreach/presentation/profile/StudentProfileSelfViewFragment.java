@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentStudentProfileSelfViewBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.TRViewModel;
@@ -77,10 +76,7 @@ public class StudentProfileSelfViewFragment extends Fragment
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        account = Server
-                .getAccountDataAccess()
-                .getAccounts()
-                .get(vm.getAccountId().getValue());
+        account = vm.getAccount().getValue();
     }
 
     @Override

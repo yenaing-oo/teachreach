@@ -42,8 +42,16 @@ public class StudentHomeActivity extends AppCompatActivity
         navController = navHostFragment.getNavController();
 
         vm = new ViewModelProvider(this).get(TRViewModel.class);
-        vm.setAccountId(getIntent().getIntExtra("ACCOUNT_ID", -1));
-        vm.setStudentId(getIntent().getIntExtra("STUDENT_ID", -1));
+        int accountId = getIntent().getIntExtra("ACCOUNT_ID", -1);
+        int studentId = getIntent().getIntExtra("STUDENT_ID", -1);
+        vm.setAccount(Server
+                              .getAccountDataAccess()
+                              .getAccounts()
+                              .get(accountId));
+        vm.setStudent(Server
+                              .getStudentDataAccess()
+                              .getStudents()
+                              .get(studentId));
         vm.setAccounts(new ArrayList<>(Server
                                                .getAccountDataAccess()
                                                .getAccounts()
