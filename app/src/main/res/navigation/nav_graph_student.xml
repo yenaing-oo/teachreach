@@ -29,7 +29,7 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-            app:destination="@id/tutorProfileViewFragment" />
+
         <action
             android:id="@+id/actionToGroupFragment"
             app:destination="@id/groupFragment" />
@@ -45,7 +45,7 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment"
@@ -149,7 +149,6 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
-            app:destination="@id/tutorProfileViewFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
