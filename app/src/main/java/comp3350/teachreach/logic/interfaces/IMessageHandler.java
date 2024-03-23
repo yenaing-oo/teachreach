@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
 
 public interface IMessageHandler
@@ -28,4 +29,6 @@ public interface IMessageHandler
     List<Integer> retrieveAllGroupsByTutorID(int tutorID);
 
     List<Integer> retrieveAllGroupsByStudentID(int studentID);
+
+    List<IAccount> retrieveAllChatAccountsByAccountID(int accountID);
 }

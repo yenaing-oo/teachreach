@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph_student"
     app:startDestination="@id/searchFragment">
-
+    <fragment
+        android:id="@+id/groupFragment"
+        android:name="comp3350.teachreach.presentation.communication.Groups.GroupFragment"
+        android:label="Group Fragment">
+        <!-- Define any actions associated with this fragment -->
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="comp3350.teachreach.presentation.search.SearchFragment"
@@ -20,6 +25,9 @@
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
             app:destination="@id/tutorProfileViewFragment" />
+        <action
+            android:id="@+id/actionToGroupFragment"
+            app:destination="@id/groupFragment" />
     </fragment>
     <fragment
         android:id="@+id/studentProfileSelfViewFragment"

@@ -33,6 +33,19 @@ public class TRViewModel extends ViewModel
     private final MutableLiveData<List<ITutor>> tutors
             = new MutableLiveData<>();
 
+    private final MutableLiveData<List<IAccount>> users
+            = new MutableLiveData<>();
+
+    public LiveData<List<IAccount>> getUsers()
+    {
+        return users;
+    }
+
+    public void setUsers(List<IAccount> users)
+    {
+        this.users.setValue(users);
+    }
+
     public LiveData<IAccount> getAccount()
     {
         return account;

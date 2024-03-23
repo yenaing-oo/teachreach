@@ -12,9 +12,14 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.communication.MessageHandler;
+import comp3350.teachreach.logic.interfaces.IMessageHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
@@ -64,6 +69,11 @@ public class StudentHomeActivity extends AppCompatActivity
                                              .getTutorDataAccess()
                                              .getTutors()
                                              .values()));
+        IMessageHandler messageHandler = new MessageHandler();
+        //AtomicInteger accountID = new AtomicInteger();
+        //vm.getAccount().observe(this, account->{ accountID.set(account.getAccountID());});
+        List<IAccount> users = messageHandler.retrieveAllChatAccountsByAccountID(accountId);
+        vm.setUsers(users);
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }
@@ -79,6 +89,7 @@ public class StudentHomeActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarProfile) {
                 navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
+                navController.navigate(R.id.actionToGroupFragment);// i need it work
             }
             return true;
         });

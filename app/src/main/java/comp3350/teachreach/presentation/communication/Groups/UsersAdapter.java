@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.CardChatUserBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
     private List<IAccount> users;
+    private CardChatUserBinding binding;
 
     public UsersAdapter(List<IAccount> users){
         this.users = users;
@@ -21,7 +23,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         CardChatUserBinding cardChatUserBinding = CardChatUserBinding.inflate(
                 LayoutInflater.from(parent.getContext()),parent,false);
 
@@ -29,7 +31,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int i) {
+    public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int position) {
         userViewHolder.setUserData(users.get(position));
 
     }
@@ -40,7 +42,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         return users.size();
     }
 
-    CardChatUserBinding binding;
+
+
     class UserViewHolder extends RecyclerView.ViewHolder{
         UserViewHolder(CardChatUserBinding cardChatUserBinding){
             super(cardChatUserBinding.getRoot());
@@ -53,4 +56,5 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             binding.emailView.setText(user.getAccountEmail());
         }
     }
+
 }

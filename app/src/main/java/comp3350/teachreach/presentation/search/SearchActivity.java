@@ -29,6 +29,7 @@ import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.presentation.communication.Groups.GroupsActivity;
 import comp3350.teachreach.presentation.enums.SortCriteria;
 import comp3350.teachreach.presentation.profile.StudentProfileActivity;
 import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
@@ -101,6 +102,11 @@ public class SearchActivity extends AppCompatActivity
                 return true;
             } else if (itemId == R.id.NavBarProfile) {
                 Intent intent = new Intent(this, StudentProfileActivity.class);
+                intent.putExtra("ACCOUNT_ID", accountID);
+                startActivity(intent);
+                return true;
+            } else if (itemId == R.id.NavBarChats) {
+                Intent intent = new Intent(this, GroupsActivity.class);
                 intent.putExtra("ACCOUNT_ID", accountID);
                 startActivity(intent);
                 return true;
