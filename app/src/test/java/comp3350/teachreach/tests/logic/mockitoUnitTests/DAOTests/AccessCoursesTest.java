@@ -6,22 +6,17 @@ import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
-import comp3350.teachreach.data.stubs.CourseStub;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.logic.DAOs.DataAccessException;
-import comp3350.teachreach.objects.Account;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
 public class AccessCoursesTest {
