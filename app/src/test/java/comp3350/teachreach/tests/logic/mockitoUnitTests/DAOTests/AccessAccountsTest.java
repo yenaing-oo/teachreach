@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 
+import org.junit.Test;
 import org.mockito.*;
 import org.mockito.Mockito.*;
 
@@ -25,6 +26,7 @@ public class AccessAccountsTest {
     @InjectMocks
     AccessAccounts accessAccounts;
 
+    @Test
     public void getAccountsTest() {
         Map<Integer, IAccount> accounts = new HashMap<>();
         accounts.put(1, new Account("guderr@myumanitoba.ca",
@@ -63,6 +65,7 @@ public class AccessAccountsTest {
 
     }
 
+    @Test
     public void getAccountByEmailTest() {
         Map<Integer, IAccount> accounts = new HashMap<>();
         accounts.put(1, new Account("guderr@myumanitoba.ca",
@@ -86,6 +89,12 @@ public class AccessAccountsTest {
         when(accountPersistence.getAccounts()).thenReturn(accounts);
 
         Optional<IAccount> result = accessAccounts.getAccountByEmail("mcmill5@myumanitoba.ca");
+
+        assertTrue("Did not pull account correctly from getAccountByEmail", result.isPresent());
+        if(result.isPresent()) {
+            assertEquals("Incorrect result for getAccountByEmail", result.get().getAccountID(), 3);
+        }
+
 
     }
 }
