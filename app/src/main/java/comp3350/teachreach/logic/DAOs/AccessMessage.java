@@ -68,4 +68,22 @@ public class AccessMessage {
             throw new DataAccessException("Exception on searching Group By IDs!", e);
         }
     }
+
+    public List<Integer> retrieveAllGroupsByTutorID(int tutorID){
+        try{
+            return messagePersistence.retrieveAllGroupsByTutorID(tutorID);
+        }
+        catch (final Exception e) {
+            throw new DataAccessException("Exception on searching Group By tutor IDs!", e);
+        }
+    }
+
+    public List<Integer> retrieveAllGroupsByStudentID(int studentID){
+        try{
+            return messagePersistence.retrieveAllGroupsByTutorID(studentID);
+        }
+        catch (final Exception e) {
+            throw new DataAccessException("Exception on searching Group By student ID!", e);
+        }
+    }
 }

@@ -238,4 +238,14 @@ public class MessageHandler implements IMessageHandler
 
             return result;
     }
+
+    @Override
+    public List<Integer> retrieveAllGroupsByTutorID(int tutorID){
+        return accessMessage.retrieveAllGroupsByTutorID(tutorID);
+    }
+    @Override
+    public List<Integer> retrieveAllGroupsByStudentID(int studentID){
+        return accessMessage.retrieveAllGroupsByStudentID(studentID);
+    }
+
 }

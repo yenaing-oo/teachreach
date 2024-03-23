@@ -24,4 +24,8 @@ public interface IMessageHandler
     Map<Integer, Map<Timestamp, String>> chatHistoryOfGroupV3(List<IMessage> messages);
 
     Map<Timestamp, Map<Integer, String>> chatHistoryOfGroupV4(List<IMessage> messages);
+
+    List<Integer> retrieveAllGroupsByTutorID(int tutorID);
+
+    List<Integer> retrieveAllGroupsByStudentID(int studentID);
 }
