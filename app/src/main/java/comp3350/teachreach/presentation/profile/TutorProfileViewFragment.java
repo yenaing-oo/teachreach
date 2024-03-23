@@ -9,8 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+
+import java.util.Locale;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
@@ -20,11 +24,16 @@ import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
-import comp3350.teachreach.presentation.utils.TutorProfileFormatter;
 
 public class TutorProfileViewFragment extends Fragment
 {
     private final View.OnClickListener listener;
+
+    private TutorProfileViewModel tvm;
+    private TRViewModel           vm;
+
+    private ITutorProfileHandler tph;
+
     private ITutor   tutor;
     private IAccount tutorAccount;
 
@@ -37,9 +46,13 @@ public class TutorProfileViewFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        TRViewModel vm = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
-        tutor        = vm.getTutor().getValue();
+        vm  = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        tvm
+            = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
+
+        tutor = vm.getTutor().getValue();
+        assert tutor != null;
+        tph          = new TutorProfileHandler(tutor);
         tutorAccount = Server
                 .getAccountDataAccess()
                 .getAccounts()
@@ -58,7 +71,30 @@ public class TutorProfileViewFragment extends Fragment
         View v = binding.getRoot();
         setUpProfile(v);
         setUpTopBar(v);
+        setUpTutoredCourses(v);
+        setUpPreferredLocations(v);
         return v;
+    }
+
+    private void setUpTutoredCourses(View v)
+    {
+        RecyclerView r = v.findViewById(R.id.rvTutoredCourses);
+
+        tvm.setTutoredCoursesCode(tph.getCourseCodeList());
+
+        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
+                                                                    .getTutoredCoursesCode()
+                                                                    .getValue());
+
+        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
+                                                              3);
+
+        r.setAdapter(a);
+        r.setLayoutManager(lm);
+
+        tvm
+                .getTutoredCoursesCode()
+                .observe(getViewLifecycleOwner(), a::updateData);
     }
 
     private void setUpTopBar(View v)
@@ -70,13 +106,40 @@ public class TutorProfileViewFragment extends Fragment
 
     private void setUpProfile(View v)
     {
-        TextView             tvPrice      = v.findViewById(R.id.tvRating);
-        TextView             tvRating     = v.findViewById(R.id.tvReviews);
-        ITutorProfileHandler tutorProfile = new TutorProfileHandler(tutor);
-        TutorProfileFormatter tutorProfileFormatter = new TutorProfileFormatter(
-                tutorProfile);
+        TextView tvPronouns = v.findViewById(R.id.tvPronounsField);
+        TextView tvMajor    = v.findViewById(R.id.tvMajorField);
+        TextView tvPrice    = v.findViewById(R.id.tvRatingField);
+        TextView tvReviews  = v.findViewById(R.id.tvReviewsField);
 
-        tvPrice.setText(String.valueOf(tutorProfileFormatter.getHourlyRate()));
-        tvRating.setText(String.valueOf(tutorProfileFormatter.getRating()));
+        tvPronouns.setText(tutorAccount.getUserPronouns());
+        tvMajor.setText(tutorAccount.getUserMajor());
+        tvPrice.setText(String.format(Locale.US,
+                                      "$%.2f/h",
+                                      tutor.getHourlyRate()));
+        tvReviews.setText(String.format(Locale.US,
+                                        "%.1f ⭐(%d)",
+                                        tph.getAvgReview(),
+                                        tph.getReviewCount()));
+    }
+
+    private void setUpPreferredLocations(View v)
+    {
+        RecyclerView r = v.findViewById(R.id.rvPreferredLocations);
+
+        tvm.setPreferredLocations(tph.getPreferredLocations());
+
+        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
+                                                                    .getPreferredLocations()
+                                                                    .getValue());
+
+        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
+                                                              3);
+
+        r.setAdapter(a);
+        r.setLayoutManager(lm);
+
+        tvm
+                .getPreferredLocations()
+                .observe(getViewLifecycleOwner(), a::updateData);
     }
 }

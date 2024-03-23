@@ -1,7 +1,6 @@
 package comp3350.teachreach.presentation.profile;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -36,11 +35,9 @@ public class DialogueAddLocation extends AppCompatDialogFragment
         DialogAddLocationBinding binding
                 = DialogAddLocationBinding.inflate(a.getLayoutInflater());
 
-        TRViewModel vm = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
+        TRViewModel vm = new ViewModelProvider(a).get(TRViewModel.class);
 
-        TutorProfileViewModel tvm
-                = new ViewModelProvider(requireActivity()).get(
+        TutorProfileViewModel tvm = new ViewModelProvider(a).get(
                 TutorProfileViewModel.class);
 
         View root = binding.getRoot();
@@ -63,8 +60,13 @@ public class DialogueAddLocation extends AppCompatDialogFragment
                                 .trim();
 
                         tvm.addLocation(tutor, location);
-                    } catch (final AssertionError |
-                                   InvalidInputException |
+                    } catch (final AssertionError e) {
+                        Toast
+                                .makeText(requireContext(),
+                                          "Something went wrong :(",
+                                          Toast.LENGTH_LONG)
+                                .show();
+                    } catch (final InvalidInputException |
                                    DataAccessException e) {
                         Toast
                                 .makeText(requireContext(),
@@ -76,11 +78,5 @@ public class DialogueAddLocation extends AppCompatDialogFragment
                 .setNegativeButton("Cancel", null)
                 .setView(binding.getRoot())
                 .create();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context)
-    {
-        super.onAttach(context);
     }
 }

@@ -96,7 +96,9 @@ public class FragmentChangingPassword extends Fragment
                 accountManager.updatePassword(password, newPassword);
                 navController.navigate(R.id.actionToAccountSettingsFragment);
             } catch (final Throwable e) {
-                tvCurrentPassword.setError(e.getMessage());
+                String msg = ":( Invalid passwords )";
+                tvCurrentPassword.setError(msg);
+                tvNewPassword.setError(msg);
             }
         });
     }

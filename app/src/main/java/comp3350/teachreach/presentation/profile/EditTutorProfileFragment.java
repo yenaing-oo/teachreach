@@ -17,6 +17,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.Locale;
+
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentEditTutorProfileBinding;
 import comp3350.teachreach.logic.account.AccountManager;
@@ -24,7 +26,10 @@ import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 
 public class EditTutorProfileFragment extends Fragment
@@ -32,12 +37,14 @@ public class EditTutorProfileFragment extends Fragment
     private FragmentEditTutorProfileBinding binding;
     private TRViewModel                     vm;
 
-    private TextInputLayout tilName, tilMajor, tilPronouns;
-    private EditText etName, etMajor, etPronouns;
+    private TextInputLayout tilName, tilMajor, tilPronouns, tilPrice;
+    private EditText etName, etMajor, etPronouns, etPrice;
     private Button btnApply;
 
-    private IAccount        account;
-    private IAccountManager accountManager;
+    private IAccount             account;
+    private ITutor               tutor;
+    private IAccountManager      accountManager;
+    private ITutorProfileHandler tph;
 
     public EditTutorProfileFragment()
     {
@@ -49,10 +56,17 @@ public class EditTutorProfileFragment extends Fragment
         tilName     = v.findViewById(R.id.tilEditName);
         tilMajor    = v.findViewById(R.id.tilEditMajor);
         tilPronouns = v.findViewById(R.id.tilEditPronouns);
-        etName      = tilName.getEditText();
-        etPronouns  = tilPronouns.getEditText();
-        etMajor     = tilMajor.getEditText();
+        tilPrice    = v.findViewById(R.id.tilEditHourlyRate);
+
+        etName     = tilName.getEditText();
+        etPronouns = tilPronouns.getEditText();
+        etMajor    = tilMajor.getEditText();
+        etPrice    = tilPrice.getEditText();
         etName.setText(account.getUserName());
+
+        etPrice.setText(String.format(Locale.US,
+                                      "%.2f",
+                                      tutor.getHourlyRate()));
         String currentPronouns = account.getUserPronouns();
         if (currentPronouns != null && !currentPronouns.isEmpty()) {
             etPronouns.setText(currentPronouns);
@@ -97,6 +111,8 @@ public class EditTutorProfileFragment extends Fragment
         String newName     = etName.getText().toString().trim();
         String newMajor    = etMajor.getText().toString().trim();
         String newPronouns = etPronouns.getText().toString().trim();
+        String newPriceStr = etPrice.getText().toString().trim();
+        double newPrice    = Double.parseDouble(newPriceStr);
         try {
             tilName.setError(null);
             InputValidator.validateName(newName);
@@ -104,6 +120,7 @@ public class EditTutorProfileFragment extends Fragment
                     .updateAccountUsername(newName)
                     .updateAccountUserMajor(newMajor)
                     .updateAccountUserPronouns(newPronouns);
+            tph.setHourlyRate(newPrice).updateTutorProfile();
             return true;
         } catch (AccountManagerException e) {
             Toast
@@ -122,8 +139,10 @@ public class EditTutorProfileFragment extends Fragment
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
         account = vm.getAccount().getValue();
+        tutor   = vm.getTutor().getValue();
 
         accountManager = new AccountManager(account);
+        tph            = new TutorProfileHandler(tutor);
     }
 
     @Override

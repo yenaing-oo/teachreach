@@ -1,7 +1,6 @@
 package comp3350.teachreach.presentation.profile;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -25,11 +24,6 @@ import comp3350.teachreach.presentation.TRViewModel;
 
 public class DialogueAddCourse extends AppCompatDialogFragment
 {
-
-    public DialogueAddCourse()
-    {
-    }
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
@@ -41,11 +35,9 @@ public class DialogueAddCourse extends AppCompatDialogFragment
         DialogAddCourseBinding binding
                 = DialogAddCourseBinding.inflate(a.getLayoutInflater());
 
-        TRViewModel vm = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
+        TRViewModel vm = new ViewModelProvider(a).get(TRViewModel.class);
 
-        TutorProfileViewModel tvm
-                = new ViewModelProvider(requireActivity()).get(
+        TutorProfileViewModel tvm = new ViewModelProvider(a).get(
                 TutorProfileViewModel.class);
 
         View root = binding.getRoot();
@@ -77,8 +69,13 @@ public class DialogueAddCourse extends AppCompatDialogFragment
                                 .trim();
 
                         tvm.addCourse(tutor, courseCode, courseName);
-                    } catch (final AssertionError |
-                                   InvalidInputException |
+                    } catch (final AssertionError e) {
+                        Toast
+                                .makeText(requireContext(),
+                                          "Something went wrong :(",
+                                          Toast.LENGTH_LONG)
+                                .show();
+                    } catch (final InvalidInputException |
                                    DataAccessException e) {
                         Toast
                                 .makeText(requireContext(),
@@ -90,11 +87,5 @@ public class DialogueAddCourse extends AppCompatDialogFragment
                 .setNegativeButton("Cancel", null)
                 .setView(root)
                 .create();
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context)
-    {
-        super.onAttach(context);
     }
 }

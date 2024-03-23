@@ -101,7 +101,6 @@ public class SearchFragment extends Fragment
                                                                                     .getTutors()
                                                                                     .getValue(),
                                                                             this::openDetails);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
