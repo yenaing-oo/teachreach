@@ -1,5 +1,7 @@
 package comp3350.teachreach.logic.interfaces;
 
+import androidx.annotation.NonNull;
+
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -31,4 +33,6 @@ public interface IMessageHandler
     List<Integer> retrieveAllGroupsByStudentID(int studentID);
 
     List<IAccount> retrieveAllChatAccountsByAccountID(int accountID);
+
+    Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp);
 }

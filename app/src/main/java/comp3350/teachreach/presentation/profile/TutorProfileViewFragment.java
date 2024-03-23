@@ -100,6 +100,7 @@ public class TutorProfileViewFragment extends Fragment
         setUpTutoredCourses(view);
         setUpPreferredLocations(view);
         setUpCalendarView(view);
+        chatGroupIntent(view);
     }
 
     private void setUpTutoredCourses(View v)
@@ -185,5 +186,9 @@ public class TutorProfileViewFragment extends Fragment
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         });
+    }
+
+    private void chatGroupIntent(View v){
+
     }
 }

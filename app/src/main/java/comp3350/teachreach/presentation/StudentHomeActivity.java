@@ -74,6 +74,8 @@ public class StudentHomeActivity extends AppCompatActivity
         //vm.getAccount().observe(this, account->{ accountID.set(account.getAccountID());});
         List<IAccount> users = messageHandler.retrieveAllChatAccountsByAccountID(accountId);
         vm.setUsers(users);
+        //messageHandler.
+        //set up sender and received message!
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }

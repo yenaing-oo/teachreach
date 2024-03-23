@@ -8,6 +8,7 @@ import java.util.List;
 
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
+import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
@@ -35,6 +36,28 @@ public class TRViewModel extends ViewModel
 
     private final MutableLiveData<List<IAccount>> users
             = new MutableLiveData<>();
+
+    private  MutableLiveData<List<IMessage>> sentMessages
+            = new MutableLiveData<>();
+
+    private  MutableLiveData<List<IMessage>> receivedMessages
+            = new MutableLiveData<>();
+
+    public MutableLiveData<List<IMessage>> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(MutableLiveData<List<IMessage>> receivedMessages) {
+        this.receivedMessages = receivedMessages;
+    }
+
+    public MutableLiveData<List<IMessage>> getSentMessages() {
+        return sentMessages;
+    }
+
+    public void setSentMessages(MutableLiveData<List<IMessage>> sentMessages) {
+        this.sentMessages = sentMessages;
+    }
 
     public LiveData<List<IAccount>> getUsers()
     {
