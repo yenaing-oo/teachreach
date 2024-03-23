@@ -91,4 +91,5 @@
     <string name="tilNewEmailHint">New Email</string>
     <string name="courseFilterHint">Filter by Course</string>
     <string name="majorFilterHint">Filter by Major</string>
+    <string name="emailaddressview">EmailAddressView</string>
 </resources>

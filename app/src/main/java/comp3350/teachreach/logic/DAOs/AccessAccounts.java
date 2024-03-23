@@ -55,6 +55,22 @@ public class AccessAccounts
         }
     }
 
+    public Optional<IAccount> getAccountByAccountID(int accountID)
+    {
+        try {
+            if (accounts == null) {
+                AccessAccounts.accounts = accountPersistence.getAccounts();
+            }
+            return accounts
+                    .values()
+                    .stream()
+                    .filter(a -> a.getAccountID()==accountID)
+                    .findFirst();
+        } catch (final Exception e) {
+            throw new DataAccessException("Failed to get account by account ID", e);
+        }
+    }
+
     public IAccount insertAccount(IAccount newAccount)
             throws DuplicateEmailException
     {

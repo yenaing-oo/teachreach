@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeachReach">
         <activity
-            android:name=".presentation.communication.GroupsActivity"
+            android:name=".presentation.communication.Groups.GroupsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.StudentHomeActivity"

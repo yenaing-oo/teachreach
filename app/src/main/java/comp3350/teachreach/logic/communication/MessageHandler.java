@@ -6,18 +6,21 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessMessage;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.MessageHandleException;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -30,14 +33,26 @@ public class MessageHandler implements IMessageHandler
 
     private final AccessTutors accessTutors;
 
+    //need change for test
+    //implement method
+    private AccessAccounts accessAccounts = null;
+
     public MessageHandler(){
         accessMessage = new AccessMessage();
         accessStudents = new AccessStudents();
         accessTutors = new AccessTutors();
+        accessAccounts = new AccessAccounts();
 
     }
 
     public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors){
+        this.accessMessage =  accessMessage;
+        this.accessStudents = accessStudents;
+        this.accessTutors = accessTutors;
+
+    }
+
+    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts){
         this.accessMessage =  accessMessage;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
@@ -246,6 +261,58 @@ public class MessageHandler implements IMessageHandler
     @Override
     public List<Integer> retrieveAllGroupsByStudentID(int studentID){
         return accessMessage.retrieveAllGroupsByStudentID(studentID);
+    }
+
+    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID){
+        List<IAccount> users = new ArrayList<>();
+        List<Integer> groups = new ArrayList<>();
+
+        int findStudentID = -1;
+        int findTutorID = -1;
+        //find out the original account is a student/tutor
+        try {
+            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
+            findStudentID = findStudent.getStudentID();
+        }
+        catch(DataAccessException ignored){
+        }
+
+        try {
+            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
+            findTutorID = findTutor.getTutorID();
+        }
+        catch(DataAccessException ignored) {
+        }
+
+        //find all chat groups (Accounts)
+        if (findStudentID>0){
+            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
+
+            if(groups!= null){
+                for (int group: groups
+                ) {
+                    IAccount user = accessAccounts.getAccountByAccountID(group).orElse(null);
+                    users.add(user);
+
+                }
+            }
+
+        }
+        else if (findTutorID>0){
+            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
+
+            if(groups!= null){
+                for (int group: groups
+                ) {
+                    IAccount user = accessAccounts.getAccountByAccountID(group).orElse(null);
+                    users.add(user);
+
+                }
+            }
+        }
+
+        return users;
+
     }
 
 }
