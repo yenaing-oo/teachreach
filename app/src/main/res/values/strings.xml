@@ -91,4 +91,14 @@
     <string name="tilNewEmailHint">New Email</string>
     <string name="courseFilterHint">Filter by Course</string>
     <string name="majorFilterHint">Filter by Major</string>
+    <string name="tilEditHourlyRateHint">New Hourly Rate</string>
+    <string name="btnAddCourse">Add Course</string>
+    <string name="tvPreferredLocations">Preferred Locations</string>
+    <string name="btnIcon" />
+    <string name="tilCourseCodeHint">Course Code</string>
+    <string name="tilCourseNameHint">Course Description</string>
+    <string name="tvTutorImage">Tutor Icon Image</string>
+    <string name="tvCourseCodeField">COURSE 0000</string>
+    <string name="tilLocationHint">Location</string>
+    <string name="tvStringField">Dummy List Item</string>
 </resources>

@@ -19,7 +19,11 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
-            app:destination="@id/tutorProfileViewFragment" />
+            app:destination="@id/tutorProfileViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/studentProfileSelfViewFragment"
@@ -49,7 +53,11 @@
             app:popExitAnim="@anim/nav_default_exit_anim" />
         <action
             android:id="@+id/actionToSearchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/accountSettingsFragment"
@@ -72,13 +80,25 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToFragmentChangingEmail"
-            app:destination="@id/fragmentChangingEmail" />
+            app:destination="@id/fragmentChangingEmail"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToFragmentChangingPassword"
-            app:destination="@id/fragmentChangingPassword" />
+            app:destination="@id/fragmentChangingPassword"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToSearchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/editStudentProfileFragment"
@@ -100,7 +120,11 @@
         tools:layout="@layout/fragment_place_holder">
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
-            app:destination="@id/tutorProfileViewFragment" />
+            app:destination="@id/tutorProfileViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/tutorProfileViewFragment"
@@ -109,10 +133,18 @@
         tools:layout="@layout/fragment_tutor_profile">
         <action
             android:id="@+id/actionToPlaceHolderFragment"
-            app:destination="@id/placeHolderFragment" />
+            app:destination="@id/placeHolderFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTutorProfileViewFragment"
-            app:destination="@id/tutorProfileViewFragment" />
+            app:destination="@id/tutorProfileViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingEmail"
@@ -121,13 +153,25 @@
         tools:layout="@layout/fragment_change_email">
         <action
             android:id="@+id/actionToAccountSettingsFragment"
-            app:destination="@id/accountSettingsFragment" />
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToSearchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_fragmentChangingEmail_to_studentProfileSelfViewFragment"
-            app:destination="@id/studentProfileSelfViewFragment" />
+            app:destination="@id/studentProfileSelfViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingPassword"
@@ -136,12 +180,24 @@
         tools:layout="@layout/fragment_change_password">
         <action
             android:id="@+id/actionToAccountSettingsFragment"
-            app:destination="@id/accountSettingsFragment" />
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToSearchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToStudentProfileSelfViewFragment"
-            app:destination="@id/studentProfileSelfViewFragment" />
+            app:destination="@id/studentProfileSelfViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

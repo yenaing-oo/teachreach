@@ -11,33 +11,36 @@ public class AccessTutoredCourses
 {
     private static ITutoredCoursesPersistence TutoredCoursesPersistence;
 
-    public AccessTutoredCourses(){
+    public AccessTutoredCourses()
+    {
         TutoredCoursesPersistence = Server.getTutorCourseAccess();
     }
 
-    public AccessTutoredCourses(ITutoredCoursesPersistence tutorCourseAccess){
+    public AccessTutoredCourses(ITutoredCoursesPersistence tutorCourseAccess)
+    {
         AccessTutoredCourses.TutoredCoursesPersistence = tutorCourseAccess;
     }
 
-
-    public List<ICourse> getTutoredCoursesByTutorID(int tutorID){
+    public List<ICourse> getTutoredCoursesByTutorID(int tutorID)
+    {
         try {
             return TutoredCoursesPersistence.getTutorCourseByTutorID(tutorID);
-        }
-        catch (final Exception e) {
+        } catch (final Exception e) {
             throw new DataAccessException(
-                    "Failed to get tutor tutored courses by tutor's " + "id", e);
+                    "Failed to get tutor tutored courses by tutor's " + "id",
+                    e);
         }
     }
 
-    public boolean storeTutorCourse(int tutorID, int sessionID) {
-        try{
-            return TutoredCoursesPersistence.storeTutorCourse(tutorID, sessionID);
+    public boolean storeTutorCourse(int tutorID, String courseCode)
+    {
+        try {
+            return TutoredCoursesPersistence.storeTutorCourse(tutorID,
+                                                              courseCode);
+        } catch (final Exception e) {
+            throw new DataAccessException(
+                    "Failed to store tutor tutored course!",
+                    e);
         }
-        catch (final Exception e) {
-            throw new DataAccessException("Failed to store tutor tutored course!", e);
-        }
-
     }
-
 }

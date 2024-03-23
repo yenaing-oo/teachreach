@@ -2,9 +2,9 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tutorProfileSelfViewFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
     android:fillViewport="true"
     tools:context=".presentation.profile.TutorProfileSelfViewFragment">
 
@@ -187,31 +187,54 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
-                    app:layout_constraintBottom_toTopOf="@id/cardTutorCalendar"
+                    app:layout_constraintBottom_toTopOf="@id/cardPreferredLocations"
                     app:layout_constraintTop_toBottomOf="@id/cardTutor">
 
-                    <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/tvTutoredCourses"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top|center"
-                        android:layout_margin="16dp"
-                        android:text="@string/tvTutoredCourses"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvTutoredCourses"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom|center"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="48dp"
-                        android:layout_marginBottom="16dp" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center|top|end"
+                            android:layout_marginVertical="8dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvTutoredCourses"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|start"
+                                android:text="@string/tvTutoredCourses"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                            <Button
+                                android:id="@+id/btnAddCourse"
+                                style="@style/Widget.Material3.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|end"
+                                android:layout_marginHorizontal="16dp"
+                                android:text="@string/btnIcon"
+                                app:icon="@drawable/baseline_add_24" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvTutoredCourses"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp" />
+                    </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cardTutorCalendar"
+                    android:id="@+id/cardPreferredLocations"
                     style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -227,23 +250,44 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvTutorCalendar"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="top|center"
-                            android:layout_margin="16dp"
-                            android:text="@string/tvTutorCalendar"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                            android:layout_gravity="center|top|end"
+                            android:layout_marginVertical="8dp"
+                            android:orientation="horizontal">
 
-                        <CalendarView
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvPreferredLocations"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|start"
+                                android:text="@string/tvPreferredLocations"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+                            <Button
+                                android:id="@+id/btnAddLocation"
+                                style="@style/Widget.Material3.Button.IconButton.Filled"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center|end"
+                                android:layout_marginHorizontal="16dp"
+                                android:text="@string/btnIcon"
+                                app:icon="@drawable/baseline_add_24" />
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvPreferredLocations"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-
-                        </CalendarView>
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp" />
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>

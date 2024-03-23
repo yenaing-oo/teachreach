@@ -34,6 +34,7 @@ public class TutorHomeActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(this).get(TRViewModel.class);
+
         setContentView(R.layout.activity_navigation_tutor);
         navigationMenu = findViewById(R.id.navigation_menu);
         NavHostFragment navHostFragment
@@ -69,6 +70,7 @@ public class TutorHomeActivity extends AppCompatActivity
 
     private void setUpNavigationMenu()
     {
+        navigationMenu.setSelectedItemId(R.id.NavBarProfile);
         navigationMenu.setOnItemSelectedListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {

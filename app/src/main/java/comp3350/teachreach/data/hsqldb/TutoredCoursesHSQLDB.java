@@ -12,7 +12,8 @@ import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
-public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
+public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence
+{
     private final String dbPath;
 
     public TutoredCoursesHSQLDB(final String dbPath)
@@ -26,18 +27,22 @@ public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
                 "jdbc:hsqldb:file:%s;shutdown=true",
                 dbPath), "SA", "");
     }
+
     private ICourse fromResultSet(final ResultSet rs) throws SQLException
     {
-        //CREATE MEMORY TABLE PUBLIC.TUTOR_SESSIONS(TUTOR_ID INTEGER NOT NULL, SESSION_ID INTEGER NOT NULL, CONSTRAINT TS_PK PRIMARY KEY(TUTOR_ID, SESSION_ID), CONSTRAINT TS_FK_0 FOREIGN KEY(TUTOR_ID) REFERENCES PUBLIC.TUTORS(TUTOR_ID), CONSTRAINT TS_FK_1 FOREIGN KEY(SESSION_ID) REFERENCES PUBLIC.SESSIONS(SESSION_ID))
-        final String    courseID     = rs.getString("course_id");
-        final String  courseName     = rs.getString("course_Name");
-        return new Course(courseID,courseName);
+        final String courseID   = rs.getString("course_id");
+        final String courseName = rs.getString("course_name");
+        return new Course(courseID, courseName);
     }
 
-    public List<ICourse> getTutorCourseByTutorID(int tutorID) {
+    public List<ICourse> getTutorCourseByTutorID(int tutorID)
+    {
         final List<ICourse> tutoredCourse = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_courses WHERE tutor_id = ?");
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * FROM tutored_courses JOIN courses ON courses" +
+                    ".course_id = tutored_courses.course_id WHERE tutor_id = " +
+                    "?");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -50,17 +55,17 @@ public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-
     }
+
     @Override
-    public boolean storeTutorCourse(int tutorID, int sessionID){
+    public boolean storeTutorCourse(int tutorID, String courseID)
+    {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO tutored_courses VALUES(?, ?)"
-                     );
+                    "INSERT INTO tutored_courses VALUES(?, ?)");
 
             pst.setInt(1, tutorID);
-            pst.setDouble(2,sessionID);
+            pst.setString(2, courseID);
 
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
@@ -71,6 +76,5 @@ public class TutoredCoursesHSQLDB implements ITutoredCoursesPersistence {
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-
     }
 }

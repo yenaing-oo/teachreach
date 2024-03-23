@@ -5,12 +5,12 @@
     android:id="@+id/tutorProfileEditFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:fillViewport="true"
     tools:context=".presentation.profile.EditTutorProfileFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -33,9 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="96dp"
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -43,22 +44,17 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginVertical="8dp"
+                    android:hint="@string/tilEditNameHint"
                     app:counterEnabled="true"
                     app:counterMaxLength="32"
                     app:endIconMode="clear_text"
-                    app:errorEnabled="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0">
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="256dp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/tilEditNameHint" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -66,21 +62,16 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginVertical="8dp"
+                    android:hint="@string/tilEditMajorHint"
                     app:counterEnabled="true"
                     app:counterMaxLength="64"
-                    app:endIconMode="clear_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tilEditName"
-                    app:layout_constraintVertical_bias="0">
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="256dp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/tilEditMajorHint" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -88,21 +79,31 @@
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginVertical="8dp"
-                    app:endIconMode="clear_text"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tilEditMajor"
-                    app:layout_constraintVertical_bias="0">
+                    android:hint="@string/tilEditPronounsHint"
+                    app:endIconMode="clear_text">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="256dp"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/tilEditPronounsHint" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEditHourlyRate"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="8dp"
+                    android:hint="@string/tilEditHourlyRateHint"
+                    app:endIconMode="clear_text">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="256dp"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
