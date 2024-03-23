@@ -19,10 +19,11 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class SearchTutorRecyclerAdapter
         extends RecyclerView.Adapter<SearchTutorRecyclerAdapter.ViewHolder>
 {
-    static List<ITutor>          tutorList;
-    static IOnTutorClickListener listener;
+    private static List<ITutor>          tutorList;
+    private static IOnTutorClickListener listener;
 
-    public SearchTutorRecyclerAdapter(List<ITutor> tutors, IOnTutorClickListener listener)
+    public SearchTutorRecyclerAdapter(List<ITutor> tutors,
+                                      IOnTutorClickListener listener)
     {
         tutorList                           = tutors;
         SearchTutorRecyclerAdapter.listener = listener;
@@ -47,6 +48,11 @@ public class SearchTutorRecyclerAdapter
         ITutor              tutor = tutorList.get(position);
         TutorProfileHandler tph   = new TutorProfileHandler(tutor);
 
+        holder.getCardView().setOnClickListener(v -> {
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onTutorClick(tutor);
+            }
+        });
         holder.getTvName().setText(tph.getUserName());
         holder.getTvMajor().setText(tph.getUserMajor());
         holder
@@ -75,14 +81,7 @@ public class SearchTutorRecyclerAdapter
         public ViewHolder(View view)
         {
             super(view);
-            cardView = view.findViewById(R.id.cardTutor);
-            cardView.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener.onTutorClick(tutorList.get(pos));
-                }
-            });
+            cardView     = view.findViewById(R.id.cardTutor);
             tvName       = view.findViewById(R.id.tvNameField);
             tvMajor      = view.findViewById(R.id.tvMajorField);
             tvRatings    = view.findViewById(R.id.tvRatingsField);

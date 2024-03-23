@@ -78,7 +78,6 @@ public class MyProfileBarFragment extends Fragment
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.abTop, previousTopBarFragment)
-                    .replace(R.id.navFrameLayout, previousFragment)
                     .commit();
         });
     }
@@ -88,19 +87,6 @@ public class MyProfileBarFragment extends Fragment
         MaterialToolbar mtTopBar = fragView.findViewById(R.id.topAppBar);
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
-            if (itemId == R.id.tbAccountSettings) {
-                fragmentManager
-                        .beginTransaction()
-                        .replace(R.id.abTop,
-                                 TopBarFragment.newInstance(fragmentManager,
-                                                            previousTopBarFragment,
-                                                            previousFragment,
-                                                            "Account Settings",
-                                                            accountID))
-                        .replace(R.id.navFrameLayout,
-                                 new AccountSettingsFragment())
-                        .commit();
-            }
             return true;
         });
     }

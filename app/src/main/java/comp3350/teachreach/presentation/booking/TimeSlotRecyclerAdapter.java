@@ -1,0 +1,85 @@
+package comp3350.teachreach.presentation.booking;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.threeten.bp.format.DateTimeFormatter;
+
+import java.util.List;
+
+import comp3350.teachreach.R;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+
+public class TimeSlotRecyclerAdapter
+        extends RecyclerView.Adapter<TimeSlotRecyclerAdapter.ViewHolder>
+{
+    private static List<ITimeSlice>         timeSlots;
+    private static IOnTimeSlotClickListener listener;
+
+    public TimeSlotRecyclerAdapter(List<ITimeSlice> timeSlots,
+                                   IOnTimeSlotClickListener listener)
+    {
+        TimeSlotRecyclerAdapter.timeSlots = timeSlots;
+        TimeSlotRecyclerAdapter.listener  = listener;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                         int viewType)
+    {
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.time_slot_recycler_view_row, parent, false);
+
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    {
+        ITimeSlice ts = timeSlots.get(position);
+        holder.getCardView().setOnClickListener(v -> {
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onTimeSlotClick(ts);
+            }
+        });
+        String dateStr = ts.getStartTime().format(DateTimeFormatter.ISO_TIME);
+        holder.getTimeField().setText(dateStr);
+    }
+
+    @Override
+    public int getItemCount()
+    {
+        return timeSlots.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder
+    {
+        private final CardView cardView;
+        private final TextView timeField;
+
+        public ViewHolder(View view)
+        {
+            super(view);
+            cardView  = view.findViewById(R.id.timeSlotCard);
+            timeField = view.findViewById(R.id.timeSlotText);
+        }
+
+        public CardView getCardView()
+        {
+            return cardView;
+        }
+
+        public TextView getTimeField()
+        {
+            return timeField;
+        }
+    }
+}

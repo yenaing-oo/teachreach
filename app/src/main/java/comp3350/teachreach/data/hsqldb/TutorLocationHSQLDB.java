@@ -10,11 +10,11 @@ import java.util.List;
 
 import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 
-public class TutorLocationHSQLDB implements ITutorLocationPersistence {
+public class TutorLocationHSQLDB implements ITutorLocationPersistence
+{
     private final String dbPath;
 
-    public
-    TutorLocationHSQLDB(final String dbPath)
+    public TutorLocationHSQLDB(final String dbPath)
     {
         this.dbPath = dbPath;
     }
@@ -26,19 +26,24 @@ public class TutorLocationHSQLDB implements ITutorLocationPersistence {
                 dbPath), "SA", "");
     }
 
-    //TUTOR_ID INTEGER NOT NULL, LOCATION_NAME VARCHAR(32) NOT NULL, CONSTRAINT TL_PK PRIMARY KEY(TUTOR_ID, LOCATION_NAME), CONSTRAINT TL_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID) ON DELETE CASCADE)
+    //TUTOR_ID INTEGER NOT NULL, LOCATION_NAME VARCHAR(32) NOT NULL,
+    // CONSTRAINT TL_PK PRIMARY KEY(TUTOR_ID, LOCATION_NAME), CONSTRAINT
+    // TL_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID) ON DELETE
+    // CASCADE)
     private String fromResultSet(final ResultSet rs) throws SQLException
     {
-        final String    location     = rs.getString("location_name");
+        final String location = rs.getString("location_name");
 
         return location;
     }
 
     @Override
-    public List<String> getTutorLocationByTutorID(int tutorID){
+    public List<String> getTutorLocationByTutorID(int tutorID)
+    {
         final List<String> tutorLocation = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement("SELECT * FROM tutored_locations WHERE tutor_id = ?");
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * FROM tutor_locations WHERE tutor_id = ?");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -54,11 +59,11 @@ public class TutorLocationHSQLDB implements ITutorLocationPersistence {
     }
 
     @Override
-    public boolean storeTutorLocation(int tutorID, String location){
+    public boolean storeTutorLocation(int tutorID, String location)
+    {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO tutor_locations VALUES(?, ?)"
-            );
+                    "INSERT INTO tutor_locations VALUES(?, ?)");
 
             pst.setInt(1, tutorID);
             pst.setString(2, location);
@@ -73,6 +78,4 @@ public class TutorLocationHSQLDB implements ITutorLocationPersistence {
             throw new PersistenceException(e);
         }
     }
-
-
 }

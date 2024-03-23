@@ -54,7 +54,6 @@ public class TopBarFragment extends Fragment
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.abTop, previousTopBarFragment)
-                    .replace(R.id.navFrameLayout, previousFragment)
                     .commit();
         });
     }

@@ -32,6 +32,7 @@ public class StudentHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        vm = new ViewModelProvider(this).get(TRViewModel.class);
         setContentView(R.layout.activity_navigation_student);
         navigationMenu = findViewById(R.id.navigation_menu);
         NavHostFragment navHostFragment
@@ -41,7 +42,6 @@ public class StudentHomeActivity extends AppCompatActivity
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
-        vm = new ViewModelProvider(this).get(TRViewModel.class);
         int accountId = getIntent().getIntExtra("ACCOUNT_ID", -1);
         int studentId = getIntent().getIntExtra("STUDENT_ID", -1);
         vm.setAccount(Server

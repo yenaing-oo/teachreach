@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentChangeEmailBinding;
 import comp3350.teachreach.logic.account.AccountManager;
+import comp3350.teachreach.logic.exceptions.AccountManagerException;
+import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.TRViewModel;
@@ -95,6 +97,10 @@ public class FragmentChangingEmail extends Fragment
             try {
                 accountManager.updateEmail(password, newEmail);
                 navController.navigate(R.id.actionToAccountSettingsFragment);
+            } catch (final InvalidEmailException e) {
+                tvNewEmail.setError(e.getMessage());
+            } catch (final AccountManagerException e) {
+                tvNewEmail.setError(":( Email might've already been taken! )");
             } catch (final Throwable e) {
                 tvCurrentPassword.setError(e.getMessage());
             }
