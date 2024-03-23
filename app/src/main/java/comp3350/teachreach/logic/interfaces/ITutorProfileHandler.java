@@ -1,10 +1,8 @@
 package comp3350.teachreach.logic.interfaces;
 
-import java.time.DayOfWeek;
 import java.util.List;
 
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
-import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
@@ -28,19 +26,6 @@ public interface ITutorProfileHandler extends IUserProfileHandler
 
     List<String> getPreferredLocations();
 
-    List<List<TimeSlice>> getPreferredAvailability();
-
-    List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
-                                                int startMonth,
-                                                int startDay,
-                                                int startHour,
-                                                int startMinute,
-                                                int endYear,
-                                                int endMonth,
-                                                int endDay,
-                                                int endHour,
-                                                int endMinute);
-
     ITutorProfileHandler addReview(int score);
 
     ITutorProfileHandler addCourse(String courseCode, String courseName)
@@ -50,20 +35,6 @@ public interface ITutorProfileHandler extends IUserProfileHandler
 
     ITutorProfileHandler addPreferredLocation(String preferredLocation)
             throws InvalidInputException;
-
-    ITutorProfileHandler resetPreferredAvailability();
-
-    ITutorProfileHandler setPreferredAvailability(int startYear,
-                                                  int startMonth,
-                                                  int startDay,
-                                                  int startHour,
-                                                  int startMinute,
-                                                  int endYear,
-                                                  int endMonth,
-                                                  int endDay,
-                                                  int endHour,
-                                                  int endMinute,
-                                                  List<DayOfWeek> daysOfWeek);
 
     ITutor updateTutorProfile();
 }

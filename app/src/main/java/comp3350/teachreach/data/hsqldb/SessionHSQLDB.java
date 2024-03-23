@@ -38,11 +38,13 @@ public class SessionHSQLDB implements ISessionPersistence {
         final int sessionStatus = rs.getInt("status");
         final LocalDateTime startTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("start_date_time"));
         final LocalDateTime endTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("end_time_stamp"));
+        final double sessionCost = rs.getDouble("cost");
         final String location = rs.getString("location");
         return new Session(sessionID,
                 studentID,
                 tutorID,
                 new TimeSlice(startTime, endTime),
+                sessionCost,
                 location,
                 sessionStatus);
     }
@@ -53,14 +55,15 @@ public class SessionHSQLDB implements ISessionPersistence {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO SESSIONS(STUDENT_ID, TUTOR_ID, " +
                             "START_DATE_TIME, END_DATE_TIME, " +
-                            "LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?)",
+                            "COST, LOCATION, ACCEPTED) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     Statement.RETURN_GENERATED_KEYS);
             pst.setInt(1, session.getSessionStudentID());
             pst.setInt(2, session.getSessionTutorID());
             pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(session.getTimeRange().getStartTime()));
             pst.setTimestamp(4, DateTimeUtils.toSqlTimestamp(session.getTimeRange().getEndTime()));
-            pst.setString(5, session.getSessionLocation());
-            pst.setInt(6, session.getStatus());
+            pst.setDouble(5, session.getSessionCost());
+            pst.setString(6, session.getSessionLocation());
+            pst.setInt(7, session.getStatus());
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
                 throw new PersistenceException(

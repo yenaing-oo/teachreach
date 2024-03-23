@@ -1,6 +1,5 @@
 package comp3350.teachreach.logic.profile;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +15,6 @@ import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -31,7 +29,6 @@ public class TutorProfileHandler
     private final AccessCourses        accessCourses;
     private       ITutor               theTutor;
     private       IAccount             parentAccount;
-    //    private       AvailabilityManager availabilityManager;
 
     public TutorProfileHandler(ITutor theTutor)
     {
@@ -44,7 +41,6 @@ public class TutorProfileHandler
         this.parentAccount   = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public TutorProfileHandler(int tutorID)
@@ -58,7 +54,6 @@ public class TutorProfileHandler
         this.parentAccount   = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     @Override
@@ -158,40 +153,6 @@ public class TutorProfileHandler
     }
 
     @Override
-    public List<List<TimeSlice>> getPreferredAvailability()
-    {
-        return null;
-        //        return this.availabilityManager.getWeeklyAvailability();
-    }
-
-    @Override
-    public List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
-                                                       int startMonth,
-                                                       int startDay,
-                                                       int startHour,
-                                                       int startMinute,
-                                                       int endYear,
-                                                       int endMonth,
-                                                       int endDay,
-                                                       int endHour,
-                                                       int endMinute)
-    {
-        return new ArrayList<>();
-
-        //        return this.availabilityManager.getAvailableTimeSlotOfRange
-        //        (startYear,
-        //                                                                    startMonth,
-        //                                                                    startDay,
-        //                                                                    startHour,
-        //                                                                    startMinute,
-        //                                                                    endYear,
-        //                                                                    endMonth,
-        //                                                                    endDay,
-        //                                                                    endHour,
-        //                                                                    endMinute);
-    }
-
-    @Override
     public ITutorProfileHandler addReview(int score)
     {
         return this;
@@ -228,40 +189,6 @@ public class TutorProfileHandler
         accessTutorLocation.storeTutorLocation(theTutor.getTutorID(),
                                                preferredLocation);
 
-        return this;
-    }
-
-    @Override
-    public ITutorProfileHandler resetPreferredAvailability()
-    {
-        //        this.availabilityManager.clearWeeklyAvailability();
-        return this;
-    }
-
-    @Override
-    public ITutorProfileHandler setPreferredAvailability(int startYear,
-                                                         int startMonth,
-                                                         int startDay,
-                                                         int startHour,
-                                                         int startMinute,
-                                                         int endYear,
-                                                         int endMonth,
-                                                         int endDay,
-                                                         int endHour,
-                                                         int endMinute,
-                                                         List<DayOfWeek> daysOfWeek)
-    {
-        //        this.availabilityManager.addWeeklyAvailability(startYear,
-        //                                                       startMonth,
-        //                                                       startDay,
-        //                                                       startHour,
-        //                                                       startMinute,
-        //                                                       endYear,
-        //                                                       endMonth,
-        //                                                       endDay,
-        //                                                       endHour,
-        //                                                       endMinute,
-        //                                                       daysOfWeek);
         return this;
     }
 
