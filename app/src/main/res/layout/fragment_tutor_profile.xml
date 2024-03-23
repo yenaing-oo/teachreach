@@ -260,6 +260,7 @@
                             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                         <CalendarView
+                            android:id="@+id/cvCalendarBook"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
 

@@ -4,35 +4,46 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
+import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.booking.BookingViewModel;
+import comp3350.teachreach.presentation.booking.TimeSelectionFragment;
 
 public class TutorProfileViewFragment extends Fragment
 {
     private final View.OnClickListener listener;
 
-    private TutorProfileViewModel tvm;
-    private TRViewModel           vm;
+    private TutorProfileViewModel tutorProfileViewModel;
+    private TRViewModel           trViewModel;
+    private BookingViewModel      bookingViewModel;
 
-    private ITutorProfileHandler tph;
+    private ITutorProfileHandler      profileHandler;
+    private ITutorAvailabilityManager availabilityManager;
 
     private ITutor   tutor;
     private IAccount tutorAccount;
@@ -46,13 +57,22 @@ public class TutorProfileViewFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        vm  = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
-        tvm
-            = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
+        trViewModel
+                =
+                new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        tutor = vm.getTutor().getValue();
+        tutorProfileViewModel = new ViewModelProvider(requireActivity()).get(
+                TutorProfileViewModel.class);
+
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(
+                BookingViewModel.class);
+
+        tutor = trViewModel.getTutor().getValue();
         assert tutor != null;
-        tph          = new TutorProfileHandler(tutor);
+
+        profileHandler      = new TutorProfileHandler(tutor);
+        availabilityManager = new TutorAvailabilityManager();
+
         tutorAccount = Server
                 .getAccountDataAccess()
                 .getAccounts()
@@ -64,27 +84,31 @@ public class TutorProfileViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        FragmentTutorProfileBinding binding
-                = FragmentTutorProfileBinding.inflate(inflater,
-                                                      container,
-                                                      false);
-        View v = binding.getRoot();
-        setUpProfile(v);
-        setUpTopBar(v);
-        setUpTutoredCourses(v);
-        setUpPreferredLocations(v);
-        return v;
+        return FragmentTutorProfileBinding
+                .inflate(inflater, container, false)
+                .getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        setUpProfile(view);
+        setUpTopBar(view);
+        setUpTutoredCourses(view);
+        setUpPreferredLocations(view);
+        setUpCalendarView(view);
     }
 
     private void setUpTutoredCourses(View v)
     {
         RecyclerView r = v.findViewById(R.id.rvTutoredCourses);
 
-        tvm.setTutoredCoursesCode(tph.getCourseCodeList());
+        tutorProfileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
-        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
-                                                                    .getTutoredCoursesCode()
-                                                                    .getValue());
+        StringRecyclerAdapter a = new StringRecyclerAdapter(
+                tutorProfileViewModel.getTutoredCoursesCode().getValue());
 
         RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
                                                               3);
@@ -92,7 +116,7 @@ public class TutorProfileViewFragment extends Fragment
         r.setAdapter(a);
         r.setLayoutManager(lm);
 
-        tvm
+        tutorProfileViewModel
                 .getTutoredCoursesCode()
                 .observe(getViewLifecycleOwner(), a::updateData);
     }
@@ -118,28 +142,47 @@ public class TutorProfileViewFragment extends Fragment
                                       tutor.getHourlyRate()));
         tvReviews.setText(String.format(Locale.US,
                                         "%.1f ⭐(%d)",
-                                        tph.getAvgReview(),
-                                        tph.getReviewCount()));
+                                        profileHandler.getAvgReview(),
+                                        profileHandler.getReviewCount()));
     }
 
     private void setUpPreferredLocations(View v)
     {
-        RecyclerView r = v.findViewById(R.id.rvPreferredLocations);
+        RecyclerView recycler = v.findViewById(R.id.rvPreferredLocations);
 
-        tvm.setPreferredLocations(tph.getPreferredLocations());
+        tutorProfileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
-        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
-                                                                    .getPreferredLocations()
-                                                                    .getValue());
+        StringRecyclerAdapter adapter = new StringRecyclerAdapter(
+                tutorProfileViewModel.getPreferredLocations().getValue());
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              3);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                requireContext(),
+                3);
 
-        r.setAdapter(a);
-        r.setLayoutManager(lm);
+        recycler.setAdapter(adapter);
+        recycler.setLayoutManager(layoutManager);
 
-        tvm
+        tutorProfileViewModel
                 .getPreferredLocations()
-                .observe(getViewLifecycleOwner(), a::updateData);
+                .observe(getViewLifecycleOwner(), adapter::updateData);
+    }
+
+    private void setUpCalendarView(View v)
+    {
+        CalendarView calendarView = v.findViewById(R.id.cvCalendarBook);
+        calendarView.setOnDateChangeListener((view, y, m, d) -> {
+            bookingViewModel.setBookingDate(LocalDate.of(y, m + 1, d));
+            FragmentManager fm = getParentFragmentManager();
+            fm
+                    .beginTransaction()
+                    .replace(R.id.rightSide,
+                             new TimeSelectionFragment(viu -> fm
+                                     .beginTransaction()
+                                     .replace(R.id.rightSide, this)
+                                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                     .commit()))
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
+        });
     }
 }

@@ -101,4 +101,5 @@
     <string name="tvCourseCodeField">COURSE 0000</string>
     <string name="tilLocationHint">Location</string>
     <string name="tvStringField">Dummy List Item</string>
+    <string name="timeSelectionTitle">Selecting for -/-/-</string>
 </resources>
