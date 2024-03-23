@@ -19,34 +19,48 @@ import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
+public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
+{
 
     private final String dbPath;
 
-    public TutorAvailabilityHSQLDB(final String dbPath) {
+    public TutorAvailabilityHSQLDB(final String dbPath)
+    {
         this.dbPath = dbPath;
     }
 
-    private Connection connection() throws SQLException {
+    private Connection connection() throws SQLException
+    {
         return DriverManager.getConnection(String.format(
                 "jdbc:hsqldb:file:%s;shutdown=true",
                 dbPath), "SA", "");
     }
 
-    //TUTOR_ID INTEGER NOT NULL, START_DATE_TIME TIMESTAMP WITH TIME ZONE NOT NULL, END_DATE_TIME TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT TA_PK PRIMARY KEY(TUTOR_ID, START_DATE_TIME, END_DATE_TIME), CONSTRAINT TA_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID))
-    private TimeSlice fromResultSet(final ResultSet rs) throws SQLException {
-        final LocalDateTime startDateTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("START_DATE_TIME"));
-        final LocalDateTime endDateTime = DateTimeUtils.toLocalDateTime(rs.getTimestamp("END_DATE_TIME"));
+    //TUTOR_ID INTEGER NOT NULL, START_DATE_TIME TIMESTAMP WITH TIME ZONE NOT
+    // NULL, END_DATE_TIME TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT
+    // TA_PK PRIMARY KEY(TUTOR_ID, START_DATE_TIME, END_DATE_TIME),
+    // CONSTRAINT TA_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID))
+    private TimeSlice fromResultSet(final ResultSet rs) throws SQLException
+    {
+        final LocalDateTime startDateTime
+                                        =
+                DateTimeUtils.toLocalDateTime(rs.getTimestamp(
+                "START_DATE_TIME"));
+        final LocalDateTime endDateTime
+                                        =
+                DateTimeUtils.toLocalDateTime(rs.getTimestamp(
+                "END_DATE_TIME"));
 
         return new TimeSlice(startDateTime, endDateTime);
     }
 
-    public List<ITimeSlice> getAvailability(ITutor tutor) {
+    public List<ITimeSlice> getAvailability(ITutor tutor)
+    {
         final List<ITimeSlice> availability = new ArrayList<>();
         try (final Connection c = connection()) {
-            final PreparedStatement pst = c.prepareStatement("SELECT *\n" +
-                    "FROM TUTOR_AVAILABILITY\n" +
-                    "WHERE TUTOR_ID = ?\n" +
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * " + "FROM TUTOR_AVAILABILITY " +
+                    "WHERE TUTOR_ID = ? " +
                     "  AND START_DATE_TIME > CURRENT_TIMESTAMP;");
             pst.setInt(1, tutor.getTutorID());
             final ResultSet rs = pst.executeQuery();
@@ -60,17 +74,17 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-
     }
 
     @Override
-    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date) {
+    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date)
+    {
         final List<ITimeSlice> availability = new ArrayList<>();
         try (final Connection c = connection()) {
             Date sqlDate = DateTimeUtils.toSqlDate(date);
-            final PreparedStatement pst = c.prepareStatement("SELECT *\n" +
-                    "FROM TUTOR_AVAILABILITY\n" +
-                    "WHERE TUTOR_ID = ?\n" +
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT * " + "FROM TUTOR_AVAILABILITY " +
+                    "WHERE TUTOR_ID = ? " +
                     "  AND CAST(START_DATE_TIME AS DATE) = ?;");
             pst.setInt(1, tutor.getTutorID());
             pst.setDate(2, sqlDate);
@@ -87,15 +101,17 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
         }
     }
 
-    public void addAvailability(ITutor tutor, ITimeSlice timeRange) {
+    public void addAvailability(ITutor tutor, ITimeSlice timeRange)
+    {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "INSERT INTO TUTOR_AVAILABILITY VALUES(?, ?, ?)"
-            );
+                    "INSERT INTO TUTOR_AVAILABILITY VALUES(?, ?, ?)");
 
             pst.setInt(1, tutor.getTutorID());
-            pst.setTimestamp(2, DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
-            pst.setTimestamp(3, Timestamp.valueOf(String.valueOf(timeRange.getEndTime())));
+            pst.setTimestamp(2,
+                             DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
+            pst.setTimestamp(3,
+                             Timestamp.valueOf(String.valueOf(timeRange.getEndTime())));
 
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {
@@ -105,19 +121,21 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence {
         } catch (final SQLException e) {
             throw new PersistenceException(e);
         }
-
     }
 
     @Override
-    public void removeAvailability(ITutor tutor, ITimeSlice timeRange) {
+    public void removeAvailability(ITutor tutor, ITimeSlice timeRange)
+    {
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "DELETE FROM TUTOR_AVAILABILITY WHERE TUTOR_ID = ? AND START_DATE_TIME = ? AND END_DATE_TIME = ?"
-            );
+                    "DELETE FROM TUTOR_AVAILABILITY WHERE TUTOR_ID = ? AND " +
+                    "START_DATE_TIME = ? AND END_DATE_TIME = ?");
 
             pst.setInt(1, tutor.getTutorID());
-            pst.setTimestamp(2, DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
-            pst.setTimestamp(3, DateTimeUtils.toSqlTimestamp(timeRange.getEndTime()));
+            pst.setTimestamp(2,
+                             DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
+            pst.setTimestamp(3,
+                             DateTimeUtils.toSqlTimestamp(timeRange.getEndTime()));
 
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {

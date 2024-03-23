@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.time.LocalDate;
+import org.threeten.bp.LocalDate;
 
 public class BookingViewModel extends ViewModel
 {

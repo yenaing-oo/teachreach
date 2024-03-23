@@ -9,12 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
@@ -24,6 +25,7 @@ import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.profile.TutorProfileViewModel;
@@ -94,6 +96,16 @@ public class TimeSelectionFragment extends Fragment
     private void setUpTimeSlots(View v)
     {
         RecyclerView recyclerView = v.findViewById(R.id.timeSlotRecyclerView);
+
+        TimeSlotRecyclerAdapter adapter = new TimeSlotRecyclerAdapter(
+                availabilityManager.getAvailabilityAsSlots(tutor, date),
+                this::openDetails);
+
+        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
+                                                              2);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(lm);
     }
 
     private void setUpTopBar(View v)
@@ -102,5 +114,9 @@ public class TimeSelectionFragment extends Fragment
         materialToolbar.setTitle("Selecting for Date " +
                                  date.format(DateTimeFormatter.ISO_LOCAL_DATE));
         materialToolbar.setNavigationOnClickListener(listener);
+    }
+
+    void openDetails(ITimeSlice t)
+    {
     }
 }
