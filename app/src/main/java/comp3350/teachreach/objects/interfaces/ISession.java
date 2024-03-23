@@ -21,6 +21,10 @@ interface ISession
 
     ISession setTime(TimeSlice time);
 
+    double getSessionCost();
+
+    void setSessionCost(double cost);
+
     String getSessionLocation();
 
     ISession setSessionLocation(String location);

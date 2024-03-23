@@ -128,8 +128,6 @@
                 </LinearLayout>
             </FrameLayout>
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView

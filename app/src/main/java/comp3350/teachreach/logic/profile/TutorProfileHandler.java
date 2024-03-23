@@ -1,14 +1,20 @@
 package comp3350.teachreach.logic.profile;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessCourses;
+import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
+import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
+import comp3350.teachreach.logic.account.InputValidator;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
+import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
-import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -16,32 +22,38 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class TutorProfileHandler
         implements ITutorProfileHandler, IUserProfileHandler
 {
-    private final AccessAccounts accessAccounts;
-    private final AccessTutors   accessTutors;
-    private       ITutor         theTutor;
-    private       IAccount       parentAccount;
-    //    private       AvailabilityManager availabilityManager;
+    private final AccessAccounts       accessAccounts;
+    private final AccessTutors         accessTutors;
+    private final AccessTutoredCourses accessTutoredCourses;
+    private final AccessTutorLocation  accessTutorLocation;
+    private final AccessCourses        accessCourses;
+    private       ITutor               theTutor;
+    private       IAccount             parentAccount;
 
     public TutorProfileHandler(ITutor theTutor)
     {
-        accessAccounts     = new AccessAccounts();
-        accessTutors       = new AccessTutors();
-        this.theTutor      = theTutor;
-        this.parentAccount = accessAccounts
+        accessAccounts       = new AccessAccounts();
+        accessTutors         = new AccessTutors();
+        accessTutoredCourses = new AccessTutoredCourses();
+        accessCourses        = new AccessCourses();
+        accessTutorLocation  = new AccessTutorLocation();
+        this.theTutor        = theTutor;
+        this.parentAccount   = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     public TutorProfileHandler(int tutorID)
     {
-        accessAccounts     = new AccessAccounts();
-        accessTutors       = new AccessTutors();
-        this.theTutor      = accessTutors.getTutorByTutorID(tutorID);
-        this.parentAccount = accessAccounts
+        accessAccounts       = new AccessAccounts();
+        accessTutors         = new AccessTutors();
+        accessTutoredCourses = new AccessTutoredCourses();
+        accessTutorLocation  = new AccessTutorLocation();
+        accessCourses        = new AccessCourses();
+        this.theTutor        = accessTutors.getTutorByTutorID(tutorID);
+        this.parentAccount   = accessAccounts
                 .getAccounts()
                 .get(theTutor.getAccountID());
-        //        this.availabilityManager = new AvailabilityManager(theTutor);
     }
 
     @Override
@@ -111,47 +123,33 @@ public class TutorProfileHandler
     @Override
     public List<ICourse> getCourses()
     {
-        return new ArrayList<>();
+        return accessTutoredCourses.getTutoredCoursesByTutorID(theTutor.getTutorID());
+    }
+
+    @Override
+    public List<String> getCourseCodeList()
+    {
+        return accessTutoredCourses
+                .getTutoredCoursesByTutorID(theTutor.getTutorID())
+                .stream()
+                .map(ICourse::getCourseCode)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getCourseDescriptionList()
+    {
+        return accessTutoredCourses
+                .getTutoredCoursesByTutorID(theTutor.getTutorID())
+                .stream()
+                .map(ICourse::getCourseName)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<String> getPreferredLocations()
     {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<List<TimeSlice>> getPreferredAvailability()
-    {
-        return null;
-        //        return this.availabilityManager.getWeeklyAvailability();
-    }
-
-    @Override
-    public List<TimeSlice> getAvailableTimeSlotOfRange(int startYear,
-                                                       int startMonth,
-                                                       int startDay,
-                                                       int startHour,
-                                                       int startMinute,
-                                                       int endYear,
-                                                       int endMonth,
-                                                       int endDay,
-                                                       int endHour,
-                                                       int endMinute)
-    {
-        return new ArrayList<>();
-
-        //        return this.availabilityManager.getAvailableTimeSlotOfRange
-        //        (startYear,
-        //                                                                    startMonth,
-        //                                                                    startDay,
-        //                                                                    startHour,
-        //                                                                    startMinute,
-        //                                                                    endYear,
-        //                                                                    endMonth,
-        //                                                                    endDay,
-        //                                                                    endHour,
-        //                                                                    endMinute);
+        return accessTutorLocation.getTutorLocationByTutorID(theTutor.getTutorID());
     }
 
     @Override
@@ -162,7 +160,17 @@ public class TutorProfileHandler
 
     @Override
     public ITutorProfileHandler addCourse(String courseCode, String courseName)
+            throws InvalidInputException
     {
+        InputValidator.validateInput(courseCode);
+        InputValidator.validateInput(courseName);
+        try {
+            accessCourses.insertCourse(new Course(courseCode, courseName));
+        } catch (final DataAccessException ignored) {
+        } finally {
+            accessTutoredCourses.storeTutorCourse(theTutor.getTutorID(),
+                                                  courseCode);
+        }
         return this;
     }
 
@@ -174,48 +182,13 @@ public class TutorProfileHandler
 
     @Override
     public ITutorProfileHandler addPreferredLocation(String preferredLocation)
+            throws InvalidInputException
     {
-        return this;
-    }
+        InputValidator.validateInput(preferredLocation);
 
-    @Override
-    public ITutorProfileHandler addPreferredLocations(List<String> preferredLocations)
-    {
-        preferredLocations.forEach(this::addPreferredLocation);
-        return this;
-    }
+        accessTutorLocation.storeTutorLocation(theTutor.getTutorID(),
+                                               preferredLocation);
 
-    @Override
-    public ITutorProfileHandler resetPreferredAvailability()
-    {
-        //        this.availabilityManager.clearWeeklyAvailability();
-        return this;
-    }
-
-    @Override
-    public ITutorProfileHandler setPreferredAvailability(int startYear,
-                                                         int startMonth,
-                                                         int startDay,
-                                                         int startHour,
-                                                         int startMinute,
-                                                         int endYear,
-                                                         int endMonth,
-                                                         int endDay,
-                                                         int endHour,
-                                                         int endMinute,
-                                                         List<DayOfWeek> daysOfWeek)
-    {
-        //        this.availabilityManager.addWeeklyAvailability(startYear,
-        //                                                       startMonth,
-        //                                                       startDay,
-        //                                                       startHour,
-        //                                                       startMinute,
-        //                                                       endYear,
-        //                                                       endMonth,
-        //                                                       endDay,
-        //                                                       endHour,
-        //                                                       endMinute,
-        //                                                       daysOfWeek);
         return this;
     }
 

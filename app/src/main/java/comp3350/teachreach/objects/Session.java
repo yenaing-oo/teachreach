@@ -9,18 +9,20 @@ public class Session implements ISession {
     private int studentID;
     private int tutorID;
     private ITimeSlice timeRange;
+    private double sessionCost;
     private int status;
     private String atLocation;
 
-    public Session(int sessionID,
-                   int studentID,
+    public Session(int studentID,
                    int tutorID,
                    ITimeSlice timeRange,
+                   double sessionCost,
                    String atLocation) {
-        this.sessionID = sessionID;
+        this.sessionID = -1;
         this.studentID = studentID;
         this.tutorID = tutorID;
         this.timeRange = timeRange;
+        this.sessionCost = sessionCost;
         this.atLocation = atLocation;
         this.status = SessionStatus.PENDING;
     }
@@ -29,12 +31,14 @@ public class Session implements ISession {
                    int studentID,
                    int tutorID,
                    ITimeSlice timeRange,
+                   double sessionCost,
                    String atLocation,
                    int status) {
         this.sessionID = sessionID;
         this.studentID = studentID;
         this.tutorID = tutorID;
         this.timeRange = timeRange;
+        this.sessionCost = sessionCost;
         this.atLocation = atLocation;
         this.status = status;
     }
@@ -114,5 +118,15 @@ public class Session implements ISession {
     public Session pend() {
         this.status = SessionStatus.PENDING;
         return this;
+    }
+
+    @Override
+    public double getSessionCost() {
+        return sessionCost;
+    }
+
+    @Override
+    public void setSessionCost(double sessionCost) {
+        this.sessionCost = sessionCost;
     }
 }
