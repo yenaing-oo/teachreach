@@ -109,7 +109,7 @@ public class MessageHandler implements IMessageHandler
 
 
     @Override
-    public int createGroup(int studentID, int tutorID) throws MessageHandleException {
+    public int createGroup(int studentID, int tutorID)  {
 
         return !checkExistGroup(studentID, tutorID) ? accessMessage.createGroup(studentID, tutorID) : -1;
     }

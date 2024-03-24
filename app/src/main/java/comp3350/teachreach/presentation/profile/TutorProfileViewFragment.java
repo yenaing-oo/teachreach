@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,19 +14,25 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDate;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.communication.MessageHandler;
+import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
@@ -34,6 +41,7 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
 import comp3350.teachreach.presentation.booking.TimeSelectionFragment;
+import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
 
 public class TutorProfileViewFragment extends Fragment
 {
@@ -44,10 +52,15 @@ public class TutorProfileViewFragment extends Fragment
     private BookingViewModel      bookingViewModel;
 
     private ITutorProfileHandler      profileHandler;
+
+    private IMessageHandler messageHandler;
     private ITutorAvailabilityManager availabilityManager;
 
     private ITutor   tutor;
     private IAccount tutorAccount;
+
+   // private TRViewModel   vm;
+
 
     public TutorProfileViewFragment(View.OnClickListener listener)
     {
@@ -71,7 +84,10 @@ public class TutorProfileViewFragment extends Fragment
         tutor = trViewModel.getTutor().getValue();
         assert tutor != null;
 
+        //vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+
         profileHandler      = new TutorProfileHandler(tutor);
+        messageHandler      = new MessageHandler();
         availabilityManager = new TutorAvailabilityManager();
 
         tutorAccount = Server
@@ -188,7 +204,37 @@ public class TutorProfileViewFragment extends Fragment
         });
     }
 
+    private void createGroup(ExtendedFloatingActionButton floatingButton){
+        int studentID,tutorID;
+         studentID = Objects.requireNonNull(trViewModel.getAccount().getValue()).getStudentID();
+         tutorID = this.tutor.getTutorID();
+
+
+         floatingButton.setError(null);
+        try {
+            int groupID = messageHandler.createGroup(studentID, tutorID);
+            MessageModel messageModel = new ViewModelProvider(requireActivity()).get(MessageModel.class);
+            messageModel.setGroupID(groupID);
+        }
+        catch (final Exception e) {
+                floatingButton.setError(e.getMessage());
+               // Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show(); //i wanna try?
+            Snackbar.make(floatingButton, e.getMessage(), Snackbar.LENGTH_LONG).show();
+        }
+    }
+    //question!: WIll IT error if i open chat button again?
+
     private void chatGroupIntent(View v){
+        ExtendedFloatingActionButton floatingButton = v.findViewById(R.id.fabMsg);
+
+
+        floatingButton.setOnClickListener( view -> {
+            createGroup(floatingButton);
+            NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToIndividualChatFragment);
+        });
+
 
     }
 }

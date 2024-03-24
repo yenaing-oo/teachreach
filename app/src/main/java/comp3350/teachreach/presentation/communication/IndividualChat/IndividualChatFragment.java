@@ -85,7 +85,7 @@ public class IndividualChatFragment extends Fragment {
             @Override
             public void onChanged(List<IMessage> messagesList) {
                 // Update the RecyclerView adapter with the new list of users
-                SendMessageAdaptor messageAdapter = new SendMessageAdaptor(messagesList);
+                SentMessageAdaptor messageAdapter = new SentMessageAdaptor(messagesList);
                 recyclerView.setAdapter(messageAdapter);
             }
         });
@@ -106,7 +106,7 @@ public class IndividualChatFragment extends Fragment {
     private void setUpRecyclerView(RecyclerView recyclerView)
     {
 
-        SendMessageAdaptor messageAdaptor = new SendMessageAdaptor(
+        SentMessageAdaptor messageAdaptor = new SentMessageAdaptor(
                 vm.getMessages().getValue()
         );
         recyclerView.setAdapter(messageAdaptor);
