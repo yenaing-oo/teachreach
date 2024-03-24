@@ -1,5 +1,6 @@
 package comp3350.teachreach.presentation.profile;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
@@ -16,8 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Locale;
-import java.util.Objects;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileSelfViewBinding;
@@ -25,29 +28,28 @@ import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
 
 public class TutorProfileSelfViewFragment extends Fragment
 {
-    private ITutorProfileHandler                profileHandler;
-    private FragmentTutorProfileSelfViewBinding binding;
-    private TRViewModel                         trViewModel;
-    private TutorProfileViewModel               profileViewModel;
-    private IAccount                            account;
-    private ITutor                              tutor;
+    private TutorProfileViewModel profileViewModel;
+
+    private IAccount             account;
+    private ITutor               tutor;
+    private ITutorProfileHandler profileHandler;
+
+    private boolean isLarge, isLandscape;
 
     public TutorProfileSelfViewFragment()
     {
     }
 
-    private void fillUpProfileDetails()
+    private void fillUpProfileDetails(View view)
     {
-        View     v          = binding.getRoot();
-        TextView tvName     = v.findViewById(R.id.tvNameField);
-        TextView tvPronouns = v.findViewById(R.id.tvPronounsField);
-        TextView tvMajor    = v.findViewById(R.id.tvMajorField);
-        TextView tvPrice    = v.findViewById(R.id.tvRatingField);
-        TextView tvReviews  = v.findViewById(R.id.tvReviewsField);
+        TextView tvName     = view.findViewById(R.id.tvNameField);
+        TextView tvPronouns = view.findViewById(R.id.tvPronounsField);
+        TextView tvMajor    = view.findViewById(R.id.tvMajorField);
+        TextView tvPrice    = view.findViewById(R.id.tvRatingField);
+        TextView tvReviews  = view.findViewById(R.id.tvReviewsField);
 
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
@@ -61,21 +63,17 @@ public class TutorProfileSelfViewFragment extends Fragment
                                         profileHandler.getReviewCount()));
     }
 
-    private void setUpEditProfileButton()
+    private void setUpEditProfileButton(View view)
     {
-        Button btnEditProfile = binding
-                .getRoot()
-                .findViewById(R.id.fabEditProfile);
-        btnEditProfile.setOnClickListener(view -> NavHostFragment
+        Button btnEditProfile = view.findViewById(R.id.fabEditProfile);
+        btnEditProfile.setOnClickListener(v -> NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.actionToEditTutorProfileFragment));
     }
 
-    private void setUpTopBarMenu()
+    private void setUpTopBarMenu(View view)
     {
-        MaterialToolbar mtTopBar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
+        MaterialToolbar mtTopBar = view.findViewById(R.id.topAppBar);
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {
@@ -87,12 +85,11 @@ public class TutorProfileSelfViewFragment extends Fragment
         });
     }
 
-    private void setUpTutoredCourses()
+    private void setUpTutoredCourses(View view)
     {
-        View   root         = binding.getRoot();
-        Button btnAddCourse = root.findViewById(R.id.btnAddCourse);
+        Button btnAddCourse = view.findViewById(R.id.btnAddCourse);
 
-        RecyclerView recycler = root.findViewById(R.id.rvTutoredCourses);
+        RecyclerView recycler = view.findViewById(R.id.rvTutoredCourses);
 
         profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
@@ -116,22 +113,21 @@ public class TutorProfileSelfViewFragment extends Fragment
                 "Add Course"));
     }
 
-    private void setUpPreferredLocations()
+    private void setUpPreferredLocations(View view)
     {
-        View         root           = binding.getRoot();
-        Button       btnAddLocation = root.findViewById(R.id.btnAddLocation);
-        RecyclerView recycler
-                                    =
-                root.findViewById(R.id.rvPreferredLocations);
+        Button btnAddLocation = view.findViewById(R.id.btnAddLocation);
+        RecyclerView recycler = view.findViewById(R.id.rvPreferredLocations);
 
         profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
                 profileViewModel.getPreferredLocations().getValue());
 
+        int spanCount = isLarge || isLandscape ? 6 : 3;
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),
-                3);
+                spanCount);
 
         recycler.setAdapter(recyclerAdapter);
         recycler.setLayoutManager(layoutManager);
@@ -150,6 +146,8 @@ public class TutorProfileSelfViewFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(
+                TutorProfileViewModel.class);
     }
 
     @Override
@@ -157,27 +155,28 @@ public class TutorProfileSelfViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        binding = FragmentTutorProfileSelfViewBinding.inflate(inflater,
-                                                              container,
-                                                              false);
+        return FragmentTutorProfileSelfViewBinding
+                .inflate(inflater, container, false)
+                .getRoot();
+    }
 
-        trViewModel
-                         = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
-        profileViewModel = new ViewModelProvider(requireActivity()).get(
-                TutorProfileViewModel.class);
-
-        profileHandler = new TutorProfileHandler(Objects.requireNonNull(
-                trViewModel.getTutor().getValue()));
-
-        account = trViewModel.getAccount().getValue();
-        tutor   = trViewModel.getTutor().getValue();
-
-        fillUpProfileDetails();
-        setUpEditProfileButton();
-        setUpTopBarMenu();
-        setUpTutoredCourses();
-        setUpPreferredLocations();
-        return binding.getRoot();
+    @Override
+    public void onViewCreated(@NotNull View view,
+                              @Nullable Bundle savedInstanceState)
+    {
+        super.onViewCreated(view, savedInstanceState);
+        tutor          = profileViewModel.getTutor().getValue();
+        account        = profileViewModel.getTutorAccount().getValue();
+        profileHandler = new TutorProfileHandler(tutor);
+        fillUpProfileDetails(view);
+        setUpEditProfileButton(view);
+        setUpTopBarMenu(view);
+        setUpTutoredCourses(view);
+        setUpPreferredLocations(view);
+        Configuration config = getResources().getConfiguration();
+        isLarge
+                    =
+                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 }

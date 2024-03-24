@@ -21,6 +21,7 @@ public class TimeSlotRecyclerAdapter
 {
     private static List<ITimeSlice>         timeSlots;
     private static IOnTimeSlotClickListener listener;
+    private        int                      selectedPosition = -1;
 
     public TimeSlotRecyclerAdapter(List<ITimeSlice> timeSlots,
                                    IOnTimeSlotClickListener listener)
@@ -47,10 +48,16 @@ public class TimeSlotRecyclerAdapter
         if (position == RecyclerView.NO_POSITION) {
             return;
         }
-        ITimeSlice ts = timeSlots.get(position);
-        holder
-                .getCardView()
-                .setOnClickListener(v -> listener.onTimeSlotClick(ts));
+        ITimeSlice ts       = timeSlots.get(position);
+        CardView   cardView = holder.getCardView();
+        cardView.setCardBackgroundColor(position == selectedPosition ?
+                                        cardView
+                                                .getContext()
+                                                .getColor(R.color.TIME_CLOT_CARD_BACKGROUND_PRESSED) :
+                                        cardView
+                                                .getContext()
+                                                .getColor(R.color.TIME_CLOT_CARD_BACKGROUND_DEFAULT));
+        cardView.setOnClickListener(v -> setSelectedPosition(ts, position));
         String dateStr = ts
                 .getStartTime()
                 .format(DateTimeFormatter.ofPattern("h:mm a"));
@@ -61,6 +68,14 @@ public class TimeSlotRecyclerAdapter
     public int getItemCount()
     {
         return timeSlots.size();
+    }
+
+    public void setSelectedPosition(ITimeSlice timeSlice, int position)
+    {
+        notifyItemChanged(selectedPosition);
+        selectedPosition = position;
+        notifyItemChanged(position);
+        listener.onTimeSlotClick(timeSlice);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder

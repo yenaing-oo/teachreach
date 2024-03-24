@@ -35,7 +35,7 @@ public class TimeSlotSelectionFragment extends Fragment
     private static final String                     YEAR_ID  = "YEAR_ID";
     private static final String                     MONTH_ID = "MONTH_ID";
     private static final String                     DAY_ID   = "DAY_ID";
-    private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
+    //    private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
     private              OnTimeSlotSelectedListener timeSlotSelectedListener;
     private              List<ITimeSlice>           timeSlots;
     private              int                        tutorID;
@@ -99,7 +99,7 @@ public class TimeSlotSelectionFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_time_selection,
+        return inflater.inflate(R.layout.fragment_booking_selection,
                                 container,
                                 false);
     }
@@ -113,15 +113,13 @@ public class TimeSlotSelectionFragment extends Fragment
         RecyclerView recyclerView
                 = view.findViewById(R.id.timeSlotRecyclerView);
 
-        timeSlotRecyclerViewAdapter
-                = new TimeSlotRecyclerViewAdapter(getContext(),
-                                                  timeSlots,
-                                                  this);
-        recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
+        //        timeSlotRecyclerViewAdapter
+        //                = new TimeSlotRecyclerViewAdapter(getContext(),
+        //                                                  timeSlots,
+        //                                                  this);
+        //        recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        int spacingInPixels
-                =
-                getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+        int spacingInPixels = 8;
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
                                                                      spacingInPixels,
                                                                      true,

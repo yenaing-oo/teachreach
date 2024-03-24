@@ -21,22 +21,10 @@
             android:name=".presentation.TutorHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.booking.ReviewBookingActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.booking.BookingActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.profile.StudentProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.profile.EditUserProfileActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.signup.TutorSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.profile.EditTutorProfileActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.login.TutorLoginActivity"

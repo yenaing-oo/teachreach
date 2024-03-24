@@ -54,9 +54,9 @@
     </fragment>
     <fragment
         android:id="@+id/timeSlotSelectionFragment"
-        android:name="comp3350.teachreach.presentation.booking.TimeSelectionFragment"
+        android:name="comp3350.teachreach.presentation.booking.BookingSelectionFragment"
         android:label="fragment_time_slot_selection"
-        tools:layout="@layout/fragment_time_selection">
+        tools:layout="@layout/fragment_booking_selection">
         <action
             android:id="@+id/actionToReviewBookingFragment"
             app:destination="@id/reviewBookingFragment"
@@ -91,6 +91,54 @@
         android:name="comp3350.teachreach.presentation.booking.ReviewBookingFragment"
         android:label="fragment_review_booking"
         tools:layout="@layout/fragment_review_booking">
+        <action
+            android:id="@+id/actionToTimeSlotSelectionFragment"
+            app:destination="@id/timeSlotSelectionFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_reviewBookingFragment_to_placeHolderFragment"
+            app:destination="@id/placeHolderFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToTutorProfileViewFragment"
+            app:destination="@id/tutorProfileViewFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToReviewBookingFragment"
+            app:destination="@id/reviewBookingFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToPaymentFragment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="comp3350.teachreach.presentation.booking.PaymentFragment"
+        android:label="fragment_payment"
+        tools:layout="@layout/fragment_payment">
+        <action
+            android:id="@+id/actionToPaymentFragment"
+            app:destination="@id/paymentFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTimeSlotSelectionFragment"
             app:destination="@id/timeSlotSelectionFragment"

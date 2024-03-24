@@ -18,9 +18,11 @@ public class BookingViewModel extends ViewModel
     MutableLiveData<ITutor>    tutor        = new MutableLiveData<>();
     MutableLiveData<LocalDate> bookingDate  = new MutableLiveData<>();
 
-    MutableLiveData<List<ITimeSlice>> timeSlots = new MutableLiveData<>();
+    MutableLiveData<List<ITimeSlice>> timeSlots      = new MutableLiveData<>();
+    MutableLiveData<List<String>>     tutorLocations = new MutableLiveData<>();
 
-    MutableLiveData<ITimeSlice> sessionTime = new MutableLiveData<>();
+    MutableLiveData<ITimeSlice> sessionTime     = new MutableLiveData<>();
+    MutableLiveData<String>     sessionLocation = new MutableLiveData<>();
 
     public LiveData<LocalDate> getBookingDate()
     {
@@ -70,5 +72,25 @@ public class BookingViewModel extends ViewModel
     public void setTutor(ITutor tutor)
     {
         this.tutor.postValue(tutor);
+    }
+
+    public LiveData<List<String>> getTutorLocations()
+    {
+        return tutorLocations;
+    }
+
+    public void setTutorLocations(List<String> l)
+    {
+        this.tutorLocations.postValue(l);
+    }
+
+    public LiveData<String> getSessionLocation()
+    {
+        return sessionLocation;
+    }
+
+    public void setSessionLocation(String sessionLocation)
+    {
+        this.sessionLocation.postValue(sessionLocation);
     }
 }

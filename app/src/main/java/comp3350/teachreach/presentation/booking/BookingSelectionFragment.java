@@ -5,11 +5,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +24,23 @@ import com.google.android.material.appbar.MaterialToolbar;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import comp3350.teachreach.R;
-import comp3350.teachreach.databinding.FragmentTimeSelectionBinding;
+import comp3350.teachreach.databinding.FragmentBookingSelectionBinding;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 
-public class TimeSelectionFragment extends Fragment
+public class BookingSelectionFragment extends Fragment
 {
     private BookingViewModel bookingViewModel;
     private LocalDate        date;
+    private ITimeSlice       selectedSlot;
+    private String           selectedLocation;
+    private boolean          isLarge, isLandscape;
 
-    public TimeSelectionFragment()
+    public BookingSelectionFragment()
     {
     }
 
@@ -47,7 +58,7 @@ public class TimeSelectionFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentTimeSelectionBinding
+        return FragmentBookingSelectionBinding
                 .inflate(inflater, container, false)
                 .getRoot();
     }
@@ -59,6 +70,53 @@ public class TimeSelectionFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setUpTopBar(view);
         setUpTimeSlots(view);
+        setUpButtons(view);
+        setUpLocationField(view);
+        Configuration config = getResources().getConfiguration();
+
+        isLarge
+                =
+                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+
+        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    private void setUpLocationField(View view)
+    {
+        List<String> tutorLocations = bookingViewModel
+                .getTutorLocations()
+                .getValue();
+        ArrayAdapter<String> arrayAdapter
+                = new ArrayAdapter<>(requireActivity(),
+                                     android.R.layout.simple_list_item_1,
+                                     tutorLocations == null ?
+                                     new ArrayList<>() :
+                                     tutorLocations);
+
+        AutoCompleteTextView locations = view.findViewById(R.id.locationField);
+        locations.setAdapter(arrayAdapter);
+        locations.setThreshold(1);
+        locations.setLongClickable(true);
+        locations.setOnLongClickListener(v -> {
+            locations.setText("");
+            selectedLocation = null;
+            return true;
+        });
+        locations.setOnItemClickListener((p, v, pos, id) -> {
+            locations.clearFocus();
+            selectedLocation = tutorLocations.get(pos);
+        });
+    }
+
+    private void setUpButtons(View view)
+    {
+        Button positive = view.findViewById(R.id.confirmButton);
+        Button negative = view.findViewById(R.id.cancelButton);
+
+        NavController navController = NavHostFragment.findNavController(this);
+
+        positive.setOnClickListener(v -> continueBooking(navController));
+        negative.setOnClickListener(v -> navController.navigateUp());
     }
 
     private void setUpTimeSlots(View v)
@@ -67,15 +125,9 @@ public class TimeSelectionFragment extends Fragment
 
         TimeSlotRecyclerAdapter adapter = new TimeSlotRecyclerAdapter(
                 bookingViewModel.getTimeSlots().getValue(),
-                this::openDetails);
+                this::setSelectedSlot);
 
-        Configuration conf = getResources().getConfiguration();
-
-        int spanCount
-                =
-                conf.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE) ?
-                  4 :
-                  2;
+        int spanCount = isLarge || isLandscape ? 4 : 2;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),
@@ -87,6 +139,7 @@ public class TimeSelectionFragment extends Fragment
         int spacingInPixels
                 =
                 getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
                                                                      spacingInPixels,
                                                                      true,
@@ -104,18 +157,24 @@ public class TimeSelectionFragment extends Fragment
                 .navigateUp());
     }
 
-    void openDetails(ITimeSlice t)
+    void setSelectedSlot(ITimeSlice ts)
     {
-        bookingViewModel.setSessionTime(t);
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToReviewBookingFragment);
-        //        FragmentManager fm = getParentFragmentManager();
-        //        fm
-        //                .beginTransaction()
-        //                .replace(R.id.rightSide, new ReviewBookingFragment())
-        //                .setTransition(FragmentTransaction
-        //                .TRANSIT_FRAGMENT_FADE)
-        //                .commit();
+        selectedSlot = ts;
+    }
+
+    void continueBooking(NavController navController)
+    {
+        if (selectedSlot == null) {
+            Toast
+                    .makeText(requireContext(),
+                              "Must select a time slot!",
+                              Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        bookingViewModel.setSessionTime(selectedSlot);
+        bookingViewModel.setSessionLocation(selectedLocation);
+        selectedSlot = null;
+        navController.navigate(R.id.actionToReviewBookingFragment);
     }
 }

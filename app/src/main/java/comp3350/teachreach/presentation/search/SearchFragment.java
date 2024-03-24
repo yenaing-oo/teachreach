@@ -63,9 +63,9 @@ public class SearchFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
+        return FragmentSearchBinding
+                .inflate(inflater, container, false)
+                .getRoot();
     }
 
     @Override
