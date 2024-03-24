@@ -1,13 +1,12 @@
 package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.*;
-
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.ICoursePersistence;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 

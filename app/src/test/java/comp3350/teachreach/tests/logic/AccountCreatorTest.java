@@ -1,15 +1,17 @@
 package comp3350.teachreach.tests.logic;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
-import java.io.File;
-import java.io.IOException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
-import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
-import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
-import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
 import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
@@ -18,90 +20,117 @@ import comp3350.teachreach.logic.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
-import comp3350.teachreach.logic.interfaces.IAccountCreator;
-import comp3350.teachreach.tests.utils.TestUtils;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccountCreatorTest {
-    private File tempDB;
-    private IAccountCreator accountCreator;
-    private String validStudentEmail;
-    private String validPassword;
-    private String validName;
-    private String validMajor;
-    private String validPronouns;
-    private String validTutorEmail;
 
-    @Before
-    public void setUp() throws IOException {
-        System.out.println("Starting a new test for AccountCreator");
-        this.tempDB = TestUtils.copyDB();
-        String tempDBPath = this.tempDB.getAbsolutePath().replace(".script", "");
-        IAccountPersistence accountsDataAccess = new AccountHSQLDB(tempDBPath);
-        IStudentPersistence studentsDataAccess = new StudentHSQLDB(tempDBPath);
-        ITutorPersistence tutorsDataAccess = new TutorHSQLDB(tempDBPath);
+    private final String email = "test@email.com";
+    private final String password = "password";
+    private final String name = "Test User";
+    private final String pronouns = "they/them";
+    private final String major = "Computer Science";
+    @Mock
+    private IAccountPersistence mockAccountPersistence;
+    @Mock
+    private IStudentPersistence mockStudentPersistence;
+    @Mock
+    private ITutorPersistence mockTutorPersistence;
+    @InjectMocks
+    private AccountCreator accountCreator;
+    @Mock
+    private IAccount mockIAccount;
+    @Mock
+    private ITutor mockITutor;
+    @Mock
+    private IStudent mockIStudent;
 
-        this.validStudentEmail = "johndoe@email.com";
-        this.validTutorEmail = "johndoe2@email.com";
-        this.validPassword = "password";
-        this.validName = "John Doe";
-        this.validMajor = "Computer Science";
-        this.validPronouns = "he/him";
+    @Test
+    public void testCreateStudentAccount() throws Exception {
 
-        accountCreator = new AccountCreator(
-                accountsDataAccess,
-                studentsDataAccess,
-                tutorsDataAccess);
+        when(mockAccountPersistence.storeAccount(any(IAccount.class))).thenReturn(mockIAccount);
+        when(mockStudentPersistence.storeStudent(any(IStudent.class))).thenReturn(mockIStudent);
+
+        accountCreator.createStudentAccount(email, password, name, pronouns, major);
+
+        verify(mockAccountPersistence).storeAccount(any());
+        verify(mockStudentPersistence).storeStudent(any());
     }
 
     @Test
-    public void testCreateTutorValid() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
+    public void testCreateTutorAccount() throws Exception {
+
+        when(mockAccountPersistence.storeAccount(any())).thenReturn(mockIAccount);
+        when(mockTutorPersistence.storeTutor(any())).thenReturn(mockITutor);
+
+        accountCreator.createTutorAccount(email, password, name, pronouns, major);
+
+        verify(mockAccountPersistence).storeAccount(any());
+        verify(mockTutorPersistence).storeTutor(any());
     }
 
     @Test
-    public void testCreateStudentValid() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
+    public void testCreateStudentAccount_DuplicateEmailException() throws Exception {
+
+        when(mockAccountPersistence.storeAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
+
+        assertThrows(DuplicateEmailException.class, () -> accountCreator.createStudentAccount(email, password, name, pronouns, major));
+
+        verify(mockAccountPersistence).storeAccount(any());
     }
 
-    @Test(expected = InvalidNameException.class)
-    public void testCreateStudentAccountInvalidName() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createStudentAccount(validStudentEmail, validPassword, "  ", validPronouns, validMajor);
+    @Test
+    public void testCreateStudentAccount_InvalidEmailException() {
+        assertThrows(InvalidEmailException.class, () -> accountCreator.createStudentAccount("notAnEmail", password, name, pronouns, major));
     }
 
-    @Test(expected = InvalidEmailException.class)
-    public void testCreateStudentInvalidEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createStudentAccount("user123", validPassword, validName, validPronouns, validMajor);
+    @Test
+    public void testCreateStudentAccount_InvalidPasswordException() {
+        assertThrows(InvalidPasswordException.class, () -> accountCreator.createStudentAccount(email, " ", name, pronouns, major));
     }
 
-    @Test(expected = DuplicateEmailException.class)
-    public void testCreateStudentDuplicateEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
-        accountCreator.createStudentAccount(validStudentEmail, validPassword, validName, validPronouns, validMajor);
+    @Test
+    public void testCreateStudentAccount_InvalidNameException() {
+        assertThrows(InvalidNameException.class, () -> accountCreator.createStudentAccount(email, password, " ", pronouns, major));
     }
 
-    @Test(expected = InvalidPasswordException.class)
-    public void testCreateStudentInvalidPassword() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createStudentAccount(validStudentEmail, "  ", validName, validPronouns, validMajor);
+    @Test
+    public void testCreateStudentAccount_AccountCreatorException() throws Exception {
+        when(mockAccountPersistence.storeAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
+        assertThrows(AccountCreatorException.class, () -> accountCreator.createStudentAccount(email, password, name, pronouns, major));
     }
 
-    @Test(expected = InvalidNameException.class)
-    public void testCreateTutorAccountInvalidName() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createTutorAccount(validTutorEmail, validPassword, "  ", validPronouns, validMajor);
+    @Test
+    public void testCreateTutorAccount_DuplicateEmailException() throws Exception {
+        when(mockAccountPersistence.storeAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
+
+        assertThrows(DuplicateEmailException.class, () -> accountCreator.createTutorAccount(email, password, name, pronouns, major));
+
+        verify(mockAccountPersistence).storeAccount(any());
     }
 
-    @Test(expected = InvalidEmailException.class)
-    public void testCreateTutorInvalidEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createTutorAccount("user123", validPassword, validName, validPronouns, validMajor);
+    @Test
+    public void testCreateTutorAccount_InvalidEmailException() {
+        assertThrows(InvalidEmailException.class, () -> accountCreator.createTutorAccount("notAnEmail", password, name, pronouns, major));
     }
 
-    @Test(expected = DuplicateEmailException.class)
-    public void testCreateTutorDuplicateEmail() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
-        accountCreator.createTutorAccount(validTutorEmail, validPassword, validName, validPronouns, validMajor);
+    @Test
+    public void testCreateTutorAccount_InvalidPasswordException() {
+        assertThrows(InvalidPasswordException.class, () -> accountCreator.createTutorAccount(email, " ", name, pronouns, major));
     }
 
-    @Test(expected = InvalidPasswordException.class)
-    public void testCreateTutorInvalidPassword() throws InvalidNameException, DuplicateEmailException, InvalidPasswordException, InvalidEmailException, AccountCreatorException {
-        accountCreator.createTutorAccount(validTutorEmail, "  ", validName, validPronouns, validMajor);
+    @Test
+    public void testCreateTutorAccount_InvalidNameException() {
+        assertThrows(InvalidNameException.class, () -> accountCreator.createTutorAccount(email, password, " ", pronouns, major));
     }
+
+    @Test
+    public void testCreateTutorAccount_AccountCreatorException() throws Exception {
+        when(mockAccountPersistence.storeAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
+
+        assertThrows(AccountCreatorException.class, () -> accountCreator.createTutorAccount(email, password, name, pronouns, major));
+    }
+
 }
