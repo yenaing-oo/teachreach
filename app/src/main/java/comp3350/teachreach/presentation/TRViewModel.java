@@ -16,10 +16,9 @@ public class TRViewModel extends ViewModel
     private final MutableLiveData<IAccount> account = new MutableLiveData<>();
     private final MutableLiveData<IStudent> student = new MutableLiveData<>();
     private final MutableLiveData<ITutor>   tutor   = new MutableLiveData<>();
-    private final MutableLiveData<Boolean>  isTutor
-                                                    =
-            new MutableLiveData<Boolean>(
-            false);
+
+    private final MutableLiveData<Boolean> isTutor
+            = new MutableLiveData<Boolean>(false);
 
     private final MutableLiveData<List<ICourse>> courses
             = new MutableLiveData<>();
@@ -31,6 +30,9 @@ public class TRViewModel extends ViewModel
             = new MutableLiveData<>();
 
     private final MutableLiveData<List<ITutor>> tutors
+            = new MutableLiveData<>();
+
+    private final MutableLiveData<List<ITutor>> tutorsFiltered
             = new MutableLiveData<>();
 
     public LiveData<IAccount> getAccount()
@@ -103,6 +105,11 @@ public class TRViewModel extends ViewModel
         this.tutors.setValue(tutors);
     }
 
+    public void postTutors(List<ITutor> tutors)
+    {
+        this.tutors.postValue(tutors);
+    }
+
     public void setIsTutor()
     {
         this.isTutor.setValue(true);
@@ -111,5 +118,20 @@ public class TRViewModel extends ViewModel
     public LiveData<Boolean> getIsTutor()
     {
         return isTutor;
+    }
+
+    public LiveData<List<ITutor>> getTutorsFiltered()
+    {
+        return tutorsFiltered;
+    }
+
+    public void setTutorsFiltered(List<ITutor> tutors)
+    {
+        tutorsFiltered.setValue(tutors);
+    }
+
+    public void postTutorsFiltered(List<ITutor> tutors)
+    {
+        tutorsFiltered.postValue(tutors);
     }
 }

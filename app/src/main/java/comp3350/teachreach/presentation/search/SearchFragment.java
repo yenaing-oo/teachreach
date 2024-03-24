@@ -1,42 +1,49 @@
 package comp3350.teachreach.presentation.search;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
-import java.util.function.Function;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.databinding.DialogAddLocationBinding;
 import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.SearchSortHandler;
 import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
+import comp3350.teachreach.logic.interfaces.ITutorFilter;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
-import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchFragment extends Fragment
 {
-    Function<List<ITutor>, List<ITutor>> tutorFilter;
+    static ITutorFilter tutorFilter = TutorFilter.New();
+    SideSheetBehavior<FrameLayout> filterSheetBehaviour;
+    FrameLayout                    filterSheet;
     private ISearchSortHandler    searchSortHandler;
     private TRViewModel           vm;
     private FragmentSearchBinding binding;
-    private Fragment              tutorProfileView;
 
     public SearchFragment()
     {
@@ -58,12 +65,6 @@ public class SearchFragment extends Fragment
     {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
 
-        tutorProfileView
-                = getChildFragmentManager().findFragmentById(R.id.rightSide);
-
-        assert tutorProfileView != null;
-        hideDetails();
-        setUpFilterSheet();
         return binding.getRoot();
     }
 
@@ -72,57 +73,81 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        setUpRecyclerView();
+
+        setUpRecyclerView(view);
+        setUpSearchBar(view);
     }
 
-    private void setUpFilterSheet()
+    private void setUpSearchBar(View view)
     {
-        FrameLayout filterSheet = binding
-                .getRoot()
-                .findViewById(R.id.filterSheet);
-        SideSheetBehavior<FrameLayout> behavior = SideSheetBehavior.from(
-                filterSheet);
-        behavior.setState(SideSheetBehavior.STATE_HIDDEN);
-    }
-
-    private void setUpSearchBar()
-    {
-        TextInputLayout til = binding.getRoot().findViewById(R.id.searchField);
+        TextInputLayout til = view.findViewById(R.id.textField);
         EditText        et  = til.getEditText();
-        tutorFilter = TutorFilter.New().filterFunc();
+        Button          btn = view.findViewById(R.id.btnFilter);
+
+        et.setOnEditorActionListener((v, id, e) -> {
+            if (id == EditorInfo.IME_ACTION_DONE ||
+                (e.getAction() == KeyEvent.ACTION_DOWN &&
+                 e.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                String searchString = et.getText().toString().trim();
+                tutorFilter.Reset();
+                if (!searchString.isEmpty()) {
+                    tutorFilter.setSearchFilter(searchString);
+                }
+                vm.postTutorsFiltered(tutorFilter
+                                              .filterFunc()
+                                              .apply(vm
+                                                             .getTutors()
+                                                             .getValue()));
+                return true;
+            }
+            return false;
+        });
+
+        btn.setOnClickListener(v -> new MaterialAlertDialogBuilder(
+                requireContext())
+                .setTitle("Apply Filters")
+                .setView(DialogAddLocationBinding
+                                 .inflate(this.getLayoutInflater())
+                                 .getRoot())
+                .setPositiveButton("Apply", (d, i) -> {
+                    String searchString = et.getText().toString().trim();
+                    tutorFilter.Reset();
+                    if (!searchString.isEmpty()) {
+                        tutorFilter.setSearchFilter(searchString);
+                    }
+                    vm.postTutorsFiltered(tutorFilter
+                                                  .filterFunc()
+                                                  .apply(vm
+                                                                 .getTutors()
+                                                                 .getValue()));
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show());
     }
 
-    private void setUpRecyclerView()
+    private void setUpRecyclerView(View view)
     {
-        RecyclerView recyclerView = binding
-                .getRoot()
-                .findViewById(R.id.rvSearchResult);
-        SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(vm
-                                                                                    .getTutors()
-                                                                                    .getValue(),
-                                                                            this::openDetails);
+        List<ITutor> tutorList = vm.getTutors().getValue();
+        vm.setTutorsFiltered(tutorList);
+        RecyclerView recyclerView = view.findViewById(R.id.rvSearchResult);
+        SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(
+                tutorList,
+                this::openDetails);
+        vm
+                .getTutorsFiltered()
+                .observe(getViewLifecycleOwner(), adapter::updateData);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
-    void openDetails(ITutor t)
+    private void openDetails(ITutor t)
     {
         vm.setTutor(t);
-        tutorProfileView = new TutorProfileViewFragment(v -> hideDetails());
-        FragmentTransaction ft = getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.rightSide, tutorProfileView)
-                .show(tutorProfileView)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        ft.commit();
-    }
-
-    void hideDetails()
-    {
-        FragmentTransaction ft = getChildFragmentManager()
-                .beginTransaction()
-                .hide(tutorProfileView)
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-        ft.commit();
+        FragmentManager fm = getChildFragmentManager();
+        NavHostFragment navHostFragment = (NavHostFragment) fm.findFragmentById(
+                R.id.rightSide);
+        NavController nc = navHostFragment.getNavController();
+        nc.navigate(R.id.actionToTutorProfileViewFragment);
     }
 }

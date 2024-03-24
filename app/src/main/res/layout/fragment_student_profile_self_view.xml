@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="96dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/fabEditProfile"
         app:icon="@drawable/ic_edit_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

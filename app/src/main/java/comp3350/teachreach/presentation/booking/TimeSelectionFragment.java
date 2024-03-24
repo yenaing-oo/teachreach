@@ -1,5 +1,6 @@
 package comp3350.teachreach.presentation.booking;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,60 +20,26 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.databinding.FragmentTimeSlotSelectionBinding;
-import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
-import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
-import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
-import comp3350.teachreach.logic.profile.TutorProfileHandler;
-import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.databinding.FragmentTimeSelectionBinding;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
-import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
-import comp3350.teachreach.presentation.profile.TutorProfileViewModel;
+import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 
 public class TimeSelectionFragment extends Fragment
 {
-    private final View.OnClickListener      listener;
-    private       TutorProfileViewModel     tutorProfileViewModel;
-    private       TRViewModel               trViewModel;
-    private       BookingViewModel          bookingViewModel;
-    private       ITutorProfileHandler      profileHandler;
-    private       ITutorAvailabilityManager availabilityManager;
-    private       ITutor                    tutor;
-    private       IAccount                  tutorAccount;
-    private       LocalDate                 date;
+    private BookingViewModel bookingViewModel;
+    private LocalDate        date;
 
-    public TimeSelectionFragment(View.OnClickListener listener)
+    public TimeSelectionFragment()
     {
-        this.listener = listener;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        trViewModel
-                              = new ViewModelProvider(requireActivity()).get(
-                TRViewModel.class);
-        tutorProfileViewModel = new ViewModelProvider(requireActivity()).get(
-                TutorProfileViewModel.class);
-        bookingViewModel      = new ViewModelProvider(requireActivity()).get(
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(
                 BookingViewModel.class);
-
-        date = bookingViewModel.getBookingDate().getValue();
-
-        tutor = trViewModel.getTutor().getValue();
-        assert tutor != null;
-
-        profileHandler      = new TutorProfileHandler(tutor);
-        availabilityManager = new TutorAvailabilityManager();
-
-        tutorAccount = Server
-                .getAccountDataAccess()
-                .getAccounts()
-                .get(tutor.getAccountID());
+        date             = bookingViewModel.getBookingDate().getValue();
     }
 
     @Override
@@ -79,7 +47,7 @@ public class TimeSelectionFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentTimeSlotSelectionBinding
+        return FragmentTimeSelectionBinding
                 .inflate(inflater, container, false)
                 .getRoot();
     }
@@ -98,25 +66,56 @@ public class TimeSelectionFragment extends Fragment
         RecyclerView recyclerView = v.findViewById(R.id.timeSlotRecyclerView);
 
         TimeSlotRecyclerAdapter adapter = new TimeSlotRecyclerAdapter(
-                availabilityManager.getAvailabilityAsSlots(tutor, date),
+                bookingViewModel.getTimeSlots().getValue(),
                 this::openDetails);
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              2);
+        Configuration conf = getResources().getConfiguration();
+
+        int spanCount
+                =
+                conf.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE) ?
+                  4 :
+                  2;
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                requireContext(),
+                spanCount);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(lm);
+        recyclerView.setLayoutManager(layoutManager);
+
+        int spacingInPixels
+                =
+                getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount,
+                                                                     spacingInPixels,
+                                                                     true,
+                                                                     0));
     }
 
     private void setUpTopBar(View v)
     {
         MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
-        materialToolbar.setTitle("Selecting for Date " +
-                                 date.format(DateTimeFormatter.ISO_LOCAL_DATE));
-        materialToolbar.setNavigationOnClickListener(listener);
+        materialToolbar.setTitle("Booking for " +
+                                 date.format(DateTimeFormatter.ofPattern(
+                                         "eee, d MMM, yyyy")));
+        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
+                .findNavController(this)
+                .navigateUp());
     }
 
     void openDetails(ITimeSlice t)
     {
+        bookingViewModel.setSessionTime(t);
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToReviewBookingFragment);
+        //        FragmentManager fm = getParentFragmentManager();
+        //        fm
+        //                .beginTransaction()
+        //                .replace(R.id.rightSide, new ReviewBookingFragment())
+        //                .setTransition(FragmentTransaction
+        //                .TRANSIT_FRAGMENT_FADE)
+        //                .commit();
     }
 }

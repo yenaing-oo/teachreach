@@ -28,26 +28,32 @@ import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
  * Use the {@link TimeSlotSelectionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecyclerView {
+public class TimeSlotSelectionFragment extends Fragment
+        implements ITimeSlotRecyclerView
+{
+    private static final String                     TUTOR_ID = "TUTOR_ID";
+    private static final String                     YEAR_ID  = "YEAR_ID";
+    private static final String                     MONTH_ID = "MONTH_ID";
+    private static final String                     DAY_ID   = "DAY_ID";
     private TimeSlotRecyclerViewAdapter timeSlotRecyclerViewAdapter;
+    private              OnTimeSlotSelectedListener timeSlotSelectedListener;
+    private              List<ITimeSlice>           timeSlots;
+    private              int                        tutorID;
+    private              LocalDate                  selectedDate;
+    private              TutorAvailabilityManager   tutorAvailabilityManager;
+    private              AccessTutors               accessTutors;
 
-    private static final String TUTOR_ID = "TUTOR_ID";
-    private static final String YEAR_ID = "YEAR_ID";
-    private static final String MONTH_ID = "MONTH_ID";
-    private static final String DAY_ID = "DAY_ID";
-    private OnTimeSlotSelectedListener timeSlotSelectedListener;
-    private List<ITimeSlice> timeSlots;
-    private int tutorID;
-    private LocalDate selectedDate;
-    private TutorAvailabilityManager tutorAvailabilityManager;
-    private AccessTutors accessTutors;
-
-    public TimeSlotSelectionFragment() {
+    public TimeSlotSelectionFragment()
+    {
     }
 
-    public static TimeSlotSelectionFragment newInstance(int tutorID, int year, int month, int dayOfMonth) {
+    public static TimeSlotSelectionFragment newInstance(int tutorID,
+                                                        int year,
+                                                        int month,
+                                                        int dayOfMonth)
+    {
         TimeSlotSelectionFragment fragment = new TimeSlotSelectionFragment();
-        Bundle args = new Bundle();
+        Bundle                    args     = new Bundle();
         args.putInt(TUTOR_ID, tutorID);
         args.putInt(YEAR_ID, year);
         args.putInt(MONTH_ID, month);
@@ -57,55 +63,75 @@ public class TimeSlotSelectionFragment extends Fragment implements ITimeSlotRecy
     }
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context)
+    {
         super.onAttach(context);
 
         if (context instanceof OnTimeSlotSelectedListener) {
             timeSlotSelectedListener = (OnTimeSlotSelectedListener) context;
         } else {
-            throw new RuntimeException(context
-                    + " must implement OnTimeSlotSelectedListener");
+            throw new RuntimeException(
+                    context + " must implement OnTimeSlotSelectedListener");
         }
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         tutorAvailabilityManager = new TutorAvailabilityManager();
-        accessTutors = new AccessTutors();
+        accessTutors             = new AccessTutors();
         Bundle args = getArguments();
         if (args != null) {
-            this.tutorID = args.getInt(TUTOR_ID, -1);
-            this.selectedDate = LocalDate.of(args.getInt(YEAR_ID), args.getInt(MONTH_ID), args.getInt(DAY_ID));
+            this.tutorID      = args.getInt(TUTOR_ID, -1);
+            this.selectedDate = LocalDate.of(args.getInt(YEAR_ID),
+                                             args.getInt(MONTH_ID),
+                                             args.getInt(DAY_ID));
         }
         ITutor tutor = accessTutors.getTutorByTutorID(this.tutorID);
-        this.timeSlots = tutorAvailabilityManager.getAvailabilityAsSlots(tutor, selectedDate);
+        this.timeSlots = tutorAvailabilityManager.getAvailabilityAsSlots(tutor,
+                                                                         selectedDate);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_time_slot_selection, container, false);
+        return inflater.inflate(R.layout.fragment_time_selection,
+                                container,
+                                false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.timeSlotRecyclerView);
+        RecyclerView recyclerView
+                = view.findViewById(R.id.timeSlotRecyclerView);
 
-        timeSlotRecyclerViewAdapter = new TimeSlotRecyclerViewAdapter(getContext(), timeSlots, this);
+        timeSlotRecyclerViewAdapter
+                = new TimeSlotRecyclerViewAdapter(getContext(),
+                                                  timeSlots,
+                                                  this);
         recyclerView.setAdapter(timeSlotRecyclerViewAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true, 0));
+        int spacingInPixels
+                =
+                getResources().getDimensionPixelSize(R.dimen.grid_layout_margin);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2,
+                                                                     spacingInPixels,
+                                                                     true,
+                                                                     0));
     }
 
     @Override
-    public void onTimeSlotItemClick(int position) {
+    public void onTimeSlotItemClick(int position)
+    {
         ITimeSlice selectedTimeSlot = timeSlots.get(position);
         timeSlotSelectedListener.onTimeSlotSelected(selectedTimeSlot);
     }
-
 }

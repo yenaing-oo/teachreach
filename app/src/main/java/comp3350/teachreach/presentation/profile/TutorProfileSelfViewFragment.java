@@ -29,10 +29,10 @@ import comp3350.teachreach.presentation.TRViewModel;
 
 public class TutorProfileSelfViewFragment extends Fragment
 {
-    private ITutorProfileHandler                tph;
+    private ITutorProfileHandler                profileHandler;
     private FragmentTutorProfileSelfViewBinding binding;
-    private TRViewModel                         vm;
-    private TutorProfileViewModel               tvm;
+    private TRViewModel                         trViewModel;
+    private TutorProfileViewModel               profileViewModel;
     private IAccount                            account;
     private ITutor                              tutor;
 
@@ -52,13 +52,13 @@ public class TutorProfileSelfViewFragment extends Fragment
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
         tvMajor.setText(account.getUserMajor());
-        tvPrice.setText(String.format(Locale.US,
+        tvPrice.setText(String.format(Locale.getDefault(),
                                       "$%.2f/h",
                                       tutor.getHourlyRate()));
-        tvReviews.setText(String.format(Locale.US,
+        tvReviews.setText(String.format(Locale.getDefault(),
                                         "%.1f ⭐(%d)",
-                                        tph.getAvgReview(),
-                                        tph.getReviewCount()));
+                                        profileHandler.getAvgReview(),
+                                        profileHandler.getReviewCount()));
     }
 
     private void setUpEditProfileButton()
@@ -92,56 +92,58 @@ public class TutorProfileSelfViewFragment extends Fragment
         View   root         = binding.getRoot();
         Button btnAddCourse = root.findViewById(R.id.btnAddCourse);
 
-        RecyclerView r = root.findViewById(R.id.rvTutoredCourses);
+        RecyclerView recycler = root.findViewById(R.id.rvTutoredCourses);
 
-        tvm.setTutoredCoursesCode(tph.getCourseCodeList());
+        profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
-        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
-                                                                    .getTutoredCoursesCode()
-                                                                    .getValue());
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
+                profileViewModel.getTutoredCoursesCode().getValue());
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              3);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                requireContext(),
+                3);
 
-        r.setAdapter(a);
-        r.setLayoutManager(lm);
+        recycler.setAdapter(recyclerAdapter);
+        recycler.setLayoutManager(layoutManager);
 
-        tvm
+        profileViewModel
                 .getTutoredCoursesCode()
-                .observe(getViewLifecycleOwner(), a::updateData);
+                .observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
 
-        btnAddCourse.setOnClickListener(v -> {
-            DialogueAddCourse addCourse = new DialogueAddCourse();
-            addCourse.show(getChildFragmentManager(), "Add Course");
-        });
+        DialogueAddCourse addCourse = new DialogueAddCourse();
+        btnAddCourse.setOnClickListener(v -> addCourse.show(
+                getChildFragmentManager(),
+                "Add Course"));
     }
 
     private void setUpPreferredLocations()
     {
-        View   root           = binding.getRoot();
-        Button btnAddLocation = root.findViewById(R.id.btnAddLocation);
-        RecyclerView r = root.findViewById(R.id.rvPreferredLocations);
+        View         root           = binding.getRoot();
+        Button       btnAddLocation = root.findViewById(R.id.btnAddLocation);
+        RecyclerView recycler
+                                    =
+                root.findViewById(R.id.rvPreferredLocations);
 
-        tvm.setPreferredLocations(tph.getPreferredLocations());
+        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
-        StringRecyclerAdapter a = new StringRecyclerAdapter(tvm
-                                                                    .getPreferredLocations()
-                                                                    .getValue());
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
+                profileViewModel.getPreferredLocations().getValue());
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              3);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                requireContext(),
+                3);
 
-        r.setAdapter(a);
-        r.setLayoutManager(lm);
+        recycler.setAdapter(recyclerAdapter);
+        recycler.setLayoutManager(layoutManager);
 
-        tvm
+        profileViewModel
                 .getPreferredLocations()
-                .observe(getViewLifecycleOwner(), a::updateData);
+                .observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
 
-        btnAddLocation.setOnClickListener(v -> {
-            DialogueAddLocation addLocation = new DialogueAddLocation();
-            addLocation.show(getChildFragmentManager(), "Add Location");
-        });
+        DialogueAddLocation addLocation = new DialogueAddLocation();
+        btnAddLocation.setOnClickListener(v -> addLocation.show(
+                getChildFragmentManager(),
+                "Add Location"));
     }
 
     @Override
@@ -159,16 +161,17 @@ public class TutorProfileSelfViewFragment extends Fragment
                                                               container,
                                                               false);
 
-        vm  = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
-        tvm
-            = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
+        trViewModel
+                         = new ViewModelProvider(requireActivity()).get(
+                TRViewModel.class);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(
+                TutorProfileViewModel.class);
 
-        tph = new TutorProfileHandler(Objects.requireNonNull(vm
-                                                                     .getTutor()
-                                                                     .getValue()));
+        profileHandler = new TutorProfileHandler(Objects.requireNonNull(
+                trViewModel.getTutor().getValue()));
 
-        account = vm.getAccount().getValue();
-        tutor   = vm.getTutor().getValue();
+        account = trViewModel.getAccount().getValue();
+        tutor   = trViewModel.getTutor().getValue();
 
         fillUpProfileDetails();
         setUpEditProfileButton();

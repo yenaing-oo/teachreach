@@ -6,20 +6,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import comp3350.teachreach.R;
@@ -30,15 +34,13 @@ import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
-import comp3350.teachreach.presentation.booking.TimeSelectionFragment;
 
 public class TutorProfileViewFragment extends Fragment
 {
-    private final View.OnClickListener listener;
-
     private TutorProfileViewModel tutorProfileViewModel;
     private TRViewModel           trViewModel;
     private BookingViewModel      bookingViewModel;
@@ -49,9 +51,8 @@ public class TutorProfileViewFragment extends Fragment
     private ITutor   tutor;
     private IAccount tutorAccount;
 
-    public TutorProfileViewFragment(View.OnClickListener listener)
+    public TutorProfileViewFragment()
     {
-        this.listener = listener;
     }
 
     @Override
@@ -126,7 +127,9 @@ public class TutorProfileViewFragment extends Fragment
     {
         MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
         materialToolbar.setTitle(tutorAccount.getUserName());
-        materialToolbar.setNavigationOnClickListener(listener);
+        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToPlaceHolderFragment));
     }
 
     private void setUpProfile(View v)
@@ -171,19 +174,34 @@ public class TutorProfileViewFragment extends Fragment
     private void setUpCalendarView(View v)
     {
         CalendarView calendarView = v.findViewById(R.id.cvCalendarBook);
+        LocalDate    now          = LocalDate.now();
+        Date         date         = Date.from(Instant.now());
+        calendarView.setMinDate(date.getTime());
         calendarView.setOnDateChangeListener((view, y, m, d) -> {
-            bookingViewModel.setBookingDate(LocalDate.of(y, m + 1, d));
-            FragmentManager fm = getParentFragmentManager();
-            fm
-                    .beginTransaction()
-                    .replace(R.id.rightSide,
-                             new TimeSelectionFragment(viu -> fm
-                                     .beginTransaction()
-                                     .replace(R.id.rightSide, this)
-                                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                     .commit()))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            LocalDate calDate = LocalDate.of(y, m + 1, d);
+            List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
+                    tutor,
+                    calDate);
+            boolean notAvailable = slots.isEmpty();
+            if (calDate.isBefore(now) || notAvailable) {
+                String toastMsg = String.format(Locale.getDefault(),
+                                                "%s is not available on %s",
+                                                tutorAccount.getUserName(),
+                                                calDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                Toast
+                        .makeText(requireContext(),
+                                  toastMsg,
+                                  Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+            bookingViewModel.setBookingDate(calDate);
+            bookingViewModel.setTimeSlots(slots);
+            bookingViewModel.setTutorAccount(tutorAccount);
+            bookingViewModel.setTutor(tutor);
+            NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToTimeSlotSelectionFragment);
         });
     }
 }

@@ -27,13 +27,7 @@ public interface ITutorFilter
 
     ITutorFilter setMaximumHourlyRate(double desiredHourlyRate);
 
-    ITutorFilter setCourse(String courseString);
-
-    ITutorFilter setMajor(String searchString);
-
-    ITutorFilter setName(String searchString);
-
-    ITutorFilter setLocation(String searchString);
+    ITutorFilter setSearchFilter(String searchString);
 
     Function<List<ITutor>, List<ITutor>> filterFunc();
 }

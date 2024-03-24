@@ -44,13 +44,16 @@ public class TimeSlotRecyclerAdapter
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
+        if (position == RecyclerView.NO_POSITION) {
+            return;
+        }
         ITimeSlice ts = timeSlots.get(position);
-        holder.getCardView().setOnClickListener(v -> {
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onTimeSlotClick(ts);
-            }
-        });
-        String dateStr = ts.getStartTime().format(DateTimeFormatter.ISO_TIME);
+        holder
+                .getCardView()
+                .setOnClickListener(v -> listener.onTimeSlotClick(ts));
+        String dateStr = ts
+                .getStartTime()
+                .format(DateTimeFormatter.ofPattern("h:mm a"));
         holder.getTimeField().setText(dateStr);
     }
 
