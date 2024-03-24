@@ -27,6 +27,7 @@
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/baseline_close_24"
                 app:title="@string/topAppBarTitle" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView

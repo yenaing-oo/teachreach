@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
 import org.threeten.bp.format.DateTimeFormatter;
 
@@ -24,14 +25,10 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class ReviewBookingFragment extends Fragment
 {
-    private final View.OnClickListener back, confirm;
     private BookingViewModel bookingViewModel;
 
-    public ReviewBookingFragment(@NonNull View.OnClickListener back,
-                                 @NonNull View.OnClickListener confirm)
+    public ReviewBookingFragment()
     {
-        this.back    = back;
-        this.confirm = confirm;
     }
 
     @Override
@@ -65,8 +62,12 @@ public class ReviewBookingFragment extends Fragment
     {
         Button cancelButton  = view.findViewById(R.id.cancelButton);
         Button confirmButton = view.findViewById(R.id.confirmButton);
-        cancelButton.setOnClickListener(back);
-        confirmButton.setOnClickListener(confirm);
+        cancelButton.setOnClickListener(v -> NavHostFragment
+                .findNavController(this)
+                .navigateUp());
+        confirmButton.setOnClickListener(v -> NavHostFragment
+                .findNavController(this)
+                .navigateUp());
     }
 
     private void fillUpBookingDetails(View view)

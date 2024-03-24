@@ -4,6 +4,7 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
@@ -63,16 +64,32 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager
 
     @Override
     public void addAvailability(ITutor tutor, ITimeSlice timeRange)
-            throws TutorAvailabilityManagerException
     {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
-        if (doesNotConflict(timeRange, tutorAvailability)) {
-            accessTutorAvailability.addAvailability(tutor, timeRange);
-        } else {
-            throw new TutorAvailabilityManagerException(
-                    "Cannot add availability that overlaps with existing " +
-                    "availability");
-        }
+        tutorAvailability
+                .stream()
+                .filter(t -> t.conflictsWith(timeRange))
+                .findFirst()
+                .ifPresentOrElse(t -> {
+                    try {
+                        removeAvailability(tutor, t);
+                    } catch (TutorAvailabilityManagerException e) {
+                        throw new NoSuchElementException(e.getMessage());
+                    }
+                    t.mergeWith(timeRange);
+                    accessTutorAvailability.addAvailability(tutor, t);
+                }, () -> {
+                    accessTutorAvailability.addAvailability(tutor, timeRange);
+                });
+        //        if (doesNotConflict(timeRange, tutorAvailability)) {
+        //            accessTutorAvailability.addAvailability(tutor, timeRange);
+        //        } else {
+        //
+        //            throw new TutorAvailabilityManagerException(
+        //                    "Cannot add availability that overlaps with
+        //                    existing " +
+        //                    "availability");
+        //        }
     }
 
     @Override

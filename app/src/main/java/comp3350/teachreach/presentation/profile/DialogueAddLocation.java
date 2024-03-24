@@ -29,26 +29,21 @@ public class DialogueAddLocation extends AppCompatDialogFragment
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
         FragmentActivity parentActivity = requireActivity();
-
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
                 parentActivity);
-
         DialogAddLocationBinding binding = DialogAddLocationBinding.inflate(
                 parentActivity.getLayoutInflater());
-
         TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(
                 TRViewModel.class);
         TutorProfileViewModel profileViewModel = new ViewModelProvider(
                 parentActivity).get(TutorProfileViewModel.class);
-
         View bindingRoot = binding.getRoot();
-
         TextInputLayout tilAddLocation
                 = bindingRoot.findViewById(R.id.tilAddLocation);
         EditText etLocation = tilAddLocation.getEditText();
 
         return builder
-                .setTitle("Adding parentActivity New Location")
+                .setTitle("Adding New Location")
                 .setPositiveButton("Add", (d, w) -> {
                     try {
                         ITutor tutor = trViewModel.getTutor().getValue();

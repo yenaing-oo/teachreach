@@ -53,7 +53,7 @@ public class DialogueAddCourse extends AppCompatDialogFragment
         EditText etCourseName = tilCourseName.getEditText();
 
         return builder
-                .setTitle("Adding parentActivity New Course")
+                .setTitle("Adding New Course")
                 .setPositiveButton("Add", (d, w) -> {
                     try {
                         tilCourseCode.setError(null);

@@ -18,13 +18,11 @@ import comp3350.teachreach.application.Server;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
-    private static final int  BACK_DELAY = 2000;
-    private              long backPressedTime;
-
-    private NavigationBarView navigationMenu;
-    private NavController     navController;
-
-    private TRViewModel vm;
+    private static final int               BACK_DELAY = 2000;
+    private              long              backPressedTime;
+    private              NavigationBarView navigationMenu;
+    private              NavController     navController;
+    private              TRViewModel       vm;
 
     private OnBackPressedCallback onBackPressedCallback;
 

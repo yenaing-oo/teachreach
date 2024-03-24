@@ -11,9 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +21,8 @@ import com.google.android.material.appbar.MaterialToolbar;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -37,12 +38,9 @@ import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
-import comp3350.teachreach.presentation.booking.TimeSelectionFragment;
 
 public class TutorProfileViewFragment extends Fragment
 {
-    private final View.OnClickListener listener;
-
     private TutorProfileViewModel tutorProfileViewModel;
     private TRViewModel           trViewModel;
     private BookingViewModel      bookingViewModel;
@@ -53,9 +51,8 @@ public class TutorProfileViewFragment extends Fragment
     private ITutor   tutor;
     private IAccount tutorAccount;
 
-    public TutorProfileViewFragment(View.OnClickListener listener)
+    public TutorProfileViewFragment()
     {
-        this.listener = listener;
     }
 
     @Override
@@ -130,7 +127,9 @@ public class TutorProfileViewFragment extends Fragment
     {
         MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
         materialToolbar.setTitle(tutorAccount.getUserName());
-        materialToolbar.setNavigationOnClickListener(listener);
+        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToPlaceHolderFragment));
     }
 
     private void setUpProfile(View v)
@@ -176,6 +175,8 @@ public class TutorProfileViewFragment extends Fragment
     {
         CalendarView calendarView = v.findViewById(R.id.cvCalendarBook);
         LocalDate    now          = LocalDate.now();
+        Date         date         = Date.from(Instant.now());
+        calendarView.setMinDate(date.getTime());
         calendarView.setOnDateChangeListener((view, y, m, d) -> {
             LocalDate calDate = LocalDate.of(y, m + 1, d);
             List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
@@ -198,17 +199,9 @@ public class TutorProfileViewFragment extends Fragment
             bookingViewModel.setTimeSlots(slots);
             bookingViewModel.setTutorAccount(tutorAccount);
             bookingViewModel.setTutor(tutor);
-            FragmentManager fm = getParentFragmentManager();
-            View.OnClickListener back = viu -> fm
-                    .beginTransaction()
-                    .replace(R.id.rightSide, this)
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
-            fm
-                    .beginTransaction()
-                    .replace(R.id.rightSide, new TimeSelectionFragment(back))
-                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                    .commit();
+            NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToTimeSlotSelectionFragment);
         });
     }
 }

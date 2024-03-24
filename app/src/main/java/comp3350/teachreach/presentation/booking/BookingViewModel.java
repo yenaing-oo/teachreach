@@ -14,10 +14,9 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class BookingViewModel extends ViewModel
 {
-    MutableLiveData<IAccount> tutorAccount = new MutableLiveData<>();
-    MutableLiveData<ITutor>   tutor        = new MutableLiveData<>();
-
-    MutableLiveData<LocalDate> bookingDate = new MutableLiveData<>();
+    MutableLiveData<IAccount>  tutorAccount = new MutableLiveData<>();
+    MutableLiveData<ITutor>    tutor        = new MutableLiveData<>();
+    MutableLiveData<LocalDate> bookingDate  = new MutableLiveData<>();
 
     MutableLiveData<List<ITimeSlice>> timeSlots = new MutableLiveData<>();
 

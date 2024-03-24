@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,19 +20,17 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.databinding.FragmentTimeSlotSelectionBinding;
+import comp3350.teachreach.databinding.FragmentTimeSelectionBinding;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 
 public class TimeSelectionFragment extends Fragment
 {
-    private final View.OnClickListener back;
-    private       BookingViewModel     bookingViewModel;
-    private       LocalDate            date;
+    private BookingViewModel bookingViewModel;
+    private LocalDate        date;
 
-    public TimeSelectionFragment(View.OnClickListener back)
+    public TimeSelectionFragment()
     {
-        this.back = back;
     }
 
     @Override
@@ -50,7 +47,7 @@ public class TimeSelectionFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentTimeSlotSelectionBinding
+        return FragmentTimeSelectionBinding
                 .inflate(inflater, container, false)
                 .getRoot();
     }
@@ -80,11 +77,12 @@ public class TimeSelectionFragment extends Fragment
                   4 :
                   2;
 
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              spanCount);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
+                requireContext(),
+                spanCount);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(lm);
+        recyclerView.setLayoutManager(layoutManager);
 
         int spacingInPixels
                 =
@@ -101,17 +99,23 @@ public class TimeSelectionFragment extends Fragment
         materialToolbar.setTitle("Booking for " +
                                  date.format(DateTimeFormatter.ofPattern(
                                          "eee, d MMM, yyyy")));
-        materialToolbar.setNavigationOnClickListener(back);
+        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
+                .findNavController(this)
+                .navigateUp());
     }
 
     void openDetails(ITimeSlice t)
     {
         bookingViewModel.setSessionTime(t);
-        FragmentManager fm = getParentFragmentManager();
-        fm
-                .beginTransaction()
-                .replace(R.id.rightSide, new ReviewBookingFragment(back, back))
-                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .commit();
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToReviewBookingFragment);
+        //        FragmentManager fm = getParentFragmentManager();
+        //        fm
+        //                .beginTransaction()
+        //                .replace(R.id.rightSide, new ReviewBookingFragment())
+        //                .setTransition(FragmentTransaction
+        //                .TRANSIT_FRAGMENT_FADE)
+        //                .commit();
     }
 }

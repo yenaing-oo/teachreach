@@ -132,6 +132,13 @@
         android:label="fragment_tutor_profile"
         tools:layout="@layout/fragment_tutor_profile">
         <action
+            android:id="@+id/actionToSearchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
             android:id="@+id/actionToPlaceHolderFragment"
             app:destination="@id/placeHolderFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
@@ -211,7 +218,7 @@
         android:id="@+id/timeSlotSelectionFragment"
         android:name="comp3350.teachreach.presentation.booking.TimeSlotSelectionFragment"
         android:label="fragment_time_slot_selection"
-        tools:layout="@layout/fragment_time_slot_selection">
+        tools:layout="@layout/fragment_time_selection">
         <action
             android:id="@+id/actionToSearchFragment"
             app:destination="@id/searchFragment"

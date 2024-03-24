@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -72,6 +73,46 @@ public class SearchTutorRecyclerAdapter
     public int getItemCount()
     {
         return tutorList.size();
+    }
+
+    public void updateData(List<ITutor> newList)
+    {
+        DiffUtil.DiffResult diffResult
+                = DiffUtil.calculateDiff(new DiffUtil.Callback()
+        {
+            @Override
+            public int getOldListSize()
+            {
+                return tutorList.size();
+            }
+
+            @Override
+            public int getNewListSize()
+            {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition,
+                                           int newItemPosition)
+            {
+                return tutorList.get(oldItemPosition).getTutorID() ==
+                       newList.get(newItemPosition).getTutorID();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition,
+                                              int newItemPosition)
+            {
+                ITutor oldTutor = tutorList.get(oldItemPosition);
+                ITutor newTutor = newList.get(newItemPosition);
+                return oldTutor.getHourlyRate() == newTutor.getHourlyRate() &&
+                       oldTutor.getReviewSum() == newTutor.getReviewSum() &&
+                       oldTutor.getReviewCount() == newTutor.getReviewCount();
+            }
+        });
+        tutorList = newList;
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
