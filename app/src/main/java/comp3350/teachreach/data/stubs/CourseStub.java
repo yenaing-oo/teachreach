@@ -24,7 +24,6 @@ class CourseStub implements ICoursePersistence
         CourseStub.courses.put("COMP 2080",
                                new Course("COMP 2080",
                                           "Analysis of Algorithms"));
-        // don't take this course with "your fav 2080 instructor" x
         CourseStub.courses.put("COMP 1010",
                                new Course("COMP 1010",
                                           "Introduction to Computer Science"));
@@ -34,11 +33,9 @@ class CourseStub implements ICoursePersistence
                                           "for Engineers"));
         CourseStub.courses.put("COMP 2150",
                                new Course("COMP 2150", "Object Orientation"));
-        // 3 monster energies per day with John xx
         CourseStub.courses.put("COMP 3380",
                                new Course("COMP 3380",
                                           "Databases Concepts and Usage"));
-        // I got a C+ for this >:-(
     }
 
     @Override
