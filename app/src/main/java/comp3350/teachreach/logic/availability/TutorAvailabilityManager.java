@@ -14,33 +14,34 @@ import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorAvailabilityManager implements ITutorAvailabilityManager {
+public class TutorAvailabilityManager implements ITutorAvailabilityManager
+{
 
     private final ITutorAvailabilityPersistence accessTutorAvailability;
 
-    public TutorAvailabilityManager() {
+    public TutorAvailabilityManager()
+    {
         this.accessTutorAvailability = Server.getTutorAvailabilityAccess();
     }
 
-    public TutorAvailabilityManager(ITutorAvailabilityPersistence tutorAvailabilityPersistence, ITutorPersistence tutorPersistence, ISessionPersistence sessionPersistence) {
+    public TutorAvailabilityManager(ITutorAvailabilityPersistence tutorAvailabilityPersistence,
+                                    ITutorPersistence tutorPersistence,
+                                    ISessionPersistence sessionPersistence)
+    {
         this.accessTutorAvailability = tutorAvailabilityPersistence;
     }
 
-
     @Override
-    public List<ITimeSlice> getAvailability(ITutor tutor) {
+    public List<ITimeSlice> getAvailability(ITutor tutor)
+    {
         return accessTutorAvailability.getAvailability(tutor);
     }
 
     @Override
-    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date) {
-        return accessTutorAvailability.getAvailabilityOnDay(tutor, date);
-    }
-
-    @Override
-    public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor, LocalDate date) {
+    public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor, LocalDate date)
+    {
         List<ITimeSlice> availability = getAvailabilityOnDay(tutor, date);
-        List<ITimeSlice> timeSlots = new ArrayList<>();
+        List<ITimeSlice> timeSlots    = new ArrayList<>();
 
         for (ITimeSlice timeRange : availability) {
             timeSlots.addAll(TimeSlotGenerator.generateTimeSlots(timeRange));
@@ -48,42 +49,58 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager {
         return timeSlots;
     }
 
-    public ITimeSlice isAvailableAt(ITutor tutor, ITimeSlice timeRange) {
+    @Override
+    public List<ITimeSlice> getAvailabilityOnDay(ITutor tutor, LocalDate date)
+    {
+        return accessTutorAvailability.getAvailabilityOnDay(tutor, date);
+    }
+
+    public ITimeSlice isAvailableAt(ITutor tutor, ITimeSlice timeRange)
+    {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
         return getAvailableTimeRange(timeRange, tutorAvailability);
     }
 
     @Override
-    public void addAvailability(ITutor tutor, ITimeSlice timeRange) throws TutorAvailabilityManagerException {
+    public void addAvailability(ITutor tutor, ITimeSlice timeRange)
+            throws TutorAvailabilityManagerException
+    {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
         if (doesNotConflict(timeRange, tutorAvailability)) {
             accessTutorAvailability.addAvailability(tutor, timeRange);
         } else {
-            throw new TutorAvailabilityManagerException("Cannot add availability that overlaps with existing availability");
+            throw new TutorAvailabilityManagerException(
+                    "Cannot add availability that overlaps with existing " +
+                    "availability");
         }
     }
 
     @Override
-    public void removeAvailability(ITutor tutor, ITimeSlice timeRange) throws TutorAvailabilityManagerException {
+    public void removeAvailability(ITutor tutor, ITimeSlice timeRange)
+            throws TutorAvailabilityManagerException
+    {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
         if (tutorAvailability.contains(timeRange)) {
             accessTutorAvailability.removeAvailability(tutor, timeRange);
         } else {
-            throw new TutorAvailabilityManagerException("Cannot remove availability that does not exist");
+            throw new TutorAvailabilityManagerException(
+                    "Cannot remove availability that does not exist");
         }
     }
 
-    private boolean doesNotConflict(ITimeSlice timeSlice, List<ITimeSlice> timeSlices) {
-        return timeSlices
-                .stream()
-                .noneMatch(t -> t.conflictsWith(timeSlice));
+    private boolean doesNotConflict(ITimeSlice timeSlice,
+                                    List<ITimeSlice> timeSlices)
+    {
+        return timeSlices.stream().noneMatch(t -> t.conflictsWith(timeSlice));
     }
 
-    private ITimeSlice getAvailableTimeRange(ITimeSlice timeSlice, List<ITimeSlice> timeSlices) {
-        return timeSlices.stream()
+    private ITimeSlice getAvailableTimeRange(ITimeSlice timeSlice,
+                                             List<ITimeSlice> timeSlices)
+    {
+        return timeSlices
+                .stream()
                 .filter(t -> t.canContain(timeSlice))
                 .findFirst()
                 .orElse(null);
     }
-
 }

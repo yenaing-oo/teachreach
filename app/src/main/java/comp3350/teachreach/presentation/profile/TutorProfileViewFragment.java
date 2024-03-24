@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
 
+import java.util.List;
 import java.util.Locale;
 
 import comp3350.teachreach.R;
@@ -30,6 +33,7 @@ import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
@@ -171,17 +175,38 @@ public class TutorProfileViewFragment extends Fragment
     private void setUpCalendarView(View v)
     {
         CalendarView calendarView = v.findViewById(R.id.cvCalendarBook);
+        LocalDate    now          = LocalDate.now();
         calendarView.setOnDateChangeListener((view, y, m, d) -> {
-            bookingViewModel.setBookingDate(LocalDate.of(y, m + 1, d));
+            LocalDate calDate = LocalDate.of(y, m + 1, d);
+            List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
+                    tutor,
+                    calDate);
+            boolean notAvailable = slots.isEmpty();
+            if (calDate.isBefore(now) || notAvailable) {
+                String toastMsg = String.format(Locale.getDefault(),
+                                                "%s is not available on %s",
+                                                tutorAccount.getUserName(),
+                                                calDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+                Toast
+                        .makeText(requireContext(),
+                                  toastMsg,
+                                  Toast.LENGTH_SHORT)
+                        .show();
+                return;
+            }
+            bookingViewModel.setBookingDate(calDate);
+            bookingViewModel.setTimeSlots(slots);
+            bookingViewModel.setTutorAccount(tutorAccount);
+            bookingViewModel.setTutor(tutor);
             FragmentManager fm = getParentFragmentManager();
+            View.OnClickListener back = viu -> fm
+                    .beginTransaction()
+                    .replace(R.id.rightSide, this)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
             fm
                     .beginTransaction()
-                    .replace(R.id.rightSide,
-                             new TimeSelectionFragment(viu -> fm
-                                     .beginTransaction()
-                                     .replace(R.id.rightSide, this)
-                                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                                     .commit()))
+                    .replace(R.id.rightSide, new TimeSelectionFragment(back))
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         });

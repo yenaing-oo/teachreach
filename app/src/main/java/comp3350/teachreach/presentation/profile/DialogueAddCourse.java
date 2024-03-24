@@ -28,32 +28,36 @@ public class DialogueAddCourse extends AppCompatDialogFragment
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
-        FragmentActivity a = requireActivity();
+        FragmentActivity parentActivity = requireActivity();
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(a);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
+                parentActivity);
 
-        DialogAddCourseBinding binding
-                = DialogAddCourseBinding.inflate(a.getLayoutInflater());
+        DialogAddCourseBinding binding = DialogAddCourseBinding.inflate(
+                parentActivity.getLayoutInflater());
 
-        TRViewModel vm = new ViewModelProvider(a).get(TRViewModel.class);
+        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(
+                TRViewModel.class);
 
-        TutorProfileViewModel tvm = new ViewModelProvider(a).get(
-                TutorProfileViewModel.class);
+        TutorProfileViewModel profileViewModel = new ViewModelProvider(
+                parentActivity).get(TutorProfileViewModel.class);
 
-        View root = binding.getRoot();
+        View bindingRoot = binding.getRoot();
 
-        TextInputLayout tilCourseCode = root.findViewById(R.id.tilCourseCode);
-        EditText        etCourseCode  = tilCourseCode.getEditText();
+        TextInputLayout tilCourseCode
+                = bindingRoot.findViewById(R.id.tilCourseCode);
+        EditText etCourseCode = tilCourseCode.getEditText();
 
-        TextInputLayout tilCourseName = root.findViewById(R.id.tilCourseName);
-        EditText        etCourseName  = tilCourseName.getEditText();
+        TextInputLayout tilCourseName
+                = bindingRoot.findViewById(R.id.tilCourseName);
+        EditText etCourseName = tilCourseName.getEditText();
 
         return builder
-                .setTitle("Adding a New Course")
+                .setTitle("Adding parentActivity New Course")
                 .setPositiveButton("Add", (d, w) -> {
                     try {
                         tilCourseCode.setError(null);
-                        ITutor tutor = vm.getTutor().getValue();
+                        ITutor tutor = trViewModel.getTutor().getValue();
                         assert tutor != null;
 
                         assert etCourseCode != null;
@@ -68,7 +72,9 @@ public class DialogueAddCourse extends AppCompatDialogFragment
                                 .toString()
                                 .trim();
 
-                        tvm.addCourse(tutor, courseCode, courseName);
+                        profileViewModel.addCourse(tutor,
+                                                   courseCode,
+                                                   courseName);
                     } catch (final AssertionError e) {
                         Toast
                                 .makeText(requireContext(),
@@ -85,7 +91,7 @@ public class DialogueAddCourse extends AppCompatDialogFragment
                     }
                 })
                 .setNegativeButton("Cancel", null)
-                .setView(root)
+                .setView(bindingRoot)
                 .create();
     }
 }

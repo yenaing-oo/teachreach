@@ -25,8 +25,8 @@ public class SearchTutorRecyclerAdapter
     public SearchTutorRecyclerAdapter(List<ITutor> tutors,
                                       IOnTutorClickListener listener)
     {
-        tutorList                           = tutors;
-        SearchTutorRecyclerAdapter.listener = listener;
+        SearchTutorRecyclerAdapter.tutorList = tutors;
+        SearchTutorRecyclerAdapter.listener  = listener;
     }
 
     @NonNull
@@ -45,26 +45,27 @@ public class SearchTutorRecyclerAdapter
     public void onBindViewHolder(
             @NonNull SearchTutorRecyclerAdapter.ViewHolder holder, int position)
     {
+        if (position == RecyclerView.NO_POSITION) {
+            return;
+        }
         ITutor              tutor = tutorList.get(position);
         TutorProfileHandler tph   = new TutorProfileHandler(tutor);
 
-        holder.getCardView().setOnClickListener(v -> {
-            if (position != RecyclerView.NO_POSITION) {
-                listener.onTutorClick(tutor);
-            }
-        });
-        holder.getTvName().setText(tph.getUserName());
-        holder.getTvMajor().setText(tph.getUserMajor());
-        holder
-                .getTvRatings()
-                .setText(String.format(Locale.getDefault(),
-                                       "%.2f",
-                                       tph.getAvgReview()));
-        holder
-                .getTvHourlyRate()
-                .setText(String.format(Locale.getDefault(),
-                                       "%.2f",
-                                       tph.getHourlyRate()));
+        CardView tutorCard = holder.getCardView();
+        TextView tvName    = holder.getTvName();
+        TextView tvMajor   = holder.getTvMajor();
+        TextView tvRatings = holder.getTvRatings();
+        TextView tvPrice   = holder.getTvHourlyRate();
+
+        tutorCard.setOnClickListener(v -> listener.onTutorClick(tutor));
+        tvName.setText(tph.getUserName());
+        tvMajor.setText(tph.getUserMajor());
+        tvRatings.setText(String.format(Locale.getDefault(),
+                                        "%.2f",
+                                        tph.getAvgReview()));
+        tvPrice.setText(String.format(Locale.getDefault(),
+                                      "%.2f",
+                                      tph.getHourlyRate()));
     }
 
     @Override

@@ -28,38 +28,39 @@ public class DialogueAddLocation extends AppCompatDialogFragment
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
-        FragmentActivity a = requireActivity();
+        FragmentActivity parentActivity = requireActivity();
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(a);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
+                parentActivity);
 
-        DialogAddLocationBinding binding
-                = DialogAddLocationBinding.inflate(a.getLayoutInflater());
+        DialogAddLocationBinding binding = DialogAddLocationBinding.inflate(
+                parentActivity.getLayoutInflater());
 
-        TRViewModel vm = new ViewModelProvider(a).get(TRViewModel.class);
+        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(
+                TRViewModel.class);
+        TutorProfileViewModel profileViewModel = new ViewModelProvider(
+                parentActivity).get(TutorProfileViewModel.class);
 
-        TutorProfileViewModel tvm = new ViewModelProvider(a).get(
-                TutorProfileViewModel.class);
+        View bindingRoot = binding.getRoot();
 
-        View root = binding.getRoot();
-
-        TextInputLayout tilAddLocation = root.findViewById(R.id.tilAddLocation);
-        EditText        etLocation     = tilAddLocation.getEditText();
+        TextInputLayout tilAddLocation
+                = bindingRoot.findViewById(R.id.tilAddLocation);
+        EditText etLocation = tilAddLocation.getEditText();
 
         return builder
-                .setTitle("Adding a New Location")
+                .setTitle("Adding parentActivity New Location")
                 .setPositiveButton("Add", (d, w) -> {
                     try {
-                        ITutor tutor = vm.getTutor().getValue();
+                        ITutor tutor = trViewModel.getTutor().getValue();
                         assert tutor != null;
 
                         assert etLocation != null;
-
                         String location = etLocation
                                 .getText()
                                 .toString()
                                 .trim();
 
-                        tvm.addLocation(tutor, location);
+                        profileViewModel.addLocation(tutor, location);
                     } catch (final AssertionError e) {
                         Toast
                                 .makeText(requireContext(),
