@@ -23,9 +23,6 @@ public class TRViewModel extends ViewModel
     private final MutableLiveData<List<ICourse>> courses
             = new MutableLiveData<>();
 
-    private final MutableLiveData<List<IAccount>> accounts
-            = new MutableLiveData<>();
-
     private final MutableLiveData<List<IStudent>> students
             = new MutableLiveData<>();
 
@@ -73,16 +70,6 @@ public class TRViewModel extends ViewModel
     public void setCourses(List<ICourse> courses)
     {
         this.courses.setValue(courses);
-    }
-
-    public LiveData<List<IAccount>> getAccounts()
-    {
-        return accounts;
-    }
-
-    public void setAccounts(List<IAccount> accounts)
-    {
-        this.accounts.setValue(accounts);
     }
 
     public LiveData<List<IStudent>> getStudents()

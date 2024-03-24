@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import org.threeten.bp.format.DateTimeFormatter;
@@ -60,14 +61,11 @@ public class ReviewBookingFragment extends Fragment
 
     private void setUpButtons(View view)
     {
-        Button cancelButton  = view.findViewById(R.id.cancelButton);
-        Button confirmButton = view.findViewById(R.id.confirmButton);
-        cancelButton.setOnClickListener(v -> NavHostFragment
-                .findNavController(this)
-                .navigateUp());
-        confirmButton.setOnClickListener(v -> NavHostFragment
-                .findNavController(this)
-                .navigateUp());
+        Button        cancelButton  = view.findViewById(R.id.cancelButton);
+        Button        confirmButton = view.findViewById(R.id.confirmButton);
+        NavController navController = NavHostFragment.findNavController(this);
+        cancelButton.setOnClickListener(v -> navController.navigateUp());
+        confirmButton.setOnClickListener(v -> navController.navigate(R.id.actionToPaymentFragment));
     }
 
     private void fillUpBookingDetails(View view)
@@ -77,10 +75,16 @@ public class ReviewBookingFragment extends Fragment
         TextView sTime     = view.findViewById(R.id.tvSessionTimeField);
         TextView sDuration = view.findViewById(R.id.tvSessionDurationField);
         TextView sPrice    = view.findViewById(R.id.tvSessionPriceField);
+        TextView sLocation = view.findViewById(R.id.tvSessionLocationField);
 
         ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
         IAccount   account     = bookingViewModel.getTutorAccount().getValue();
         ITutor     tutor       = bookingViewModel.getTutor().getValue();
+        String location = bookingViewModel.getSessionLocation().getValue();
+        if (location == null) {
+            location = "TBD";
+            bookingViewModel.setSessionLocation(location);
+        }
         double price = (double) sessionTime.getDuration().toMinutes() / 60 *
                        tutor.getHourlyRate();
         assert account != null;
@@ -96,5 +100,6 @@ public class ReviewBookingFragment extends Fragment
                                         "%d minutes",
                                         sessionTime.getDuration().toMinutes()));
         sPrice.setText(String.format(Locale.getDefault(), "$%.2f", price));
+        sLocation.setText(location);
     }
 }

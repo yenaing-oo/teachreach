@@ -50,10 +50,6 @@ public class StudentHomeActivity extends AppCompatActivity
                               .getStudentDataAccess()
                               .getStudents()
                               .get(studentId));
-        vm.setAccounts(new ArrayList<>(Server
-                                               .getAccountDataAccess()
-                                               .getAccounts()
-                                               .values()));
         vm.setCourses(new ArrayList<>(Server
                                               .getCourseDataAccess()
                                               .getCourses()

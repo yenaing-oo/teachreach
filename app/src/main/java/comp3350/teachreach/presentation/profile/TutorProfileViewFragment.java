@@ -1,5 +1,6 @@
 package comp3350.teachreach.presentation.profile;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +52,9 @@ public class TutorProfileViewFragment extends Fragment
     private ITutor   tutor;
     private IAccount tutorAccount;
 
+    private Configuration config;
+    private boolean       isLarge, isLandscape;
+
     public TutorProfileViewFragment()
     {
     }
@@ -59,6 +63,7 @@ public class TutorProfileViewFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         trViewModel
                 =
                 new ViewModelProvider(requireActivity()).get(TRViewModel.class);
@@ -96,6 +101,11 @@ public class TutorProfileViewFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        config      = getResources().getConfiguration();
+        isLarge
+                    =
+                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         setUpProfile(view);
         setUpTopBar(view);
         setUpTutoredCourses(view);
@@ -159,49 +169,54 @@ public class TutorProfileViewFragment extends Fragment
         StringRecyclerAdapter adapter = new StringRecyclerAdapter(
                 tutorProfileViewModel.getPreferredLocations().getValue());
 
+        int spanCount = isLarge || isLandscape ? 6 : 3;
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),
-                3);
+                spanCount);
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(layoutManager);
-
         tutorProfileViewModel
                 .getPreferredLocations()
                 .observe(getViewLifecycleOwner(), adapter::updateData);
     }
 
-    private void setUpCalendarView(View v)
+    private void setUpCalendarView(View view)
     {
-        CalendarView calendarView = v.findViewById(R.id.cvCalendarBook);
-        LocalDate    now          = LocalDate.now();
+        CalendarView calendarView = view.findViewById(R.id.cvCalendarBook);
         Date         date         = Date.from(Instant.now());
         calendarView.setMinDate(date.getTime());
-        calendarView.setOnDateChangeListener((view, y, m, d) -> {
-            LocalDate calDate = LocalDate.of(y, m + 1, d);
-            List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
-                    tutor,
-                    calDate);
-            boolean notAvailable = slots.isEmpty();
-            if (calDate.isBefore(now) || notAvailable) {
-                String toastMsg = String.format(Locale.getDefault(),
-                                                "%s is not available on %s",
-                                                tutorAccount.getUserName(),
-                                                calDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
-                Toast
-                        .makeText(requireContext(),
-                                  toastMsg,
-                                  Toast.LENGTH_SHORT)
-                        .show();
-                return;
-            }
-            bookingViewModel.setBookingDate(calDate);
-            bookingViewModel.setTimeSlots(slots);
-            bookingViewModel.setTutorAccount(tutorAccount);
-            bookingViewModel.setTutor(tutor);
-            NavHostFragment
-                    .findNavController(this)
-                    .navigate(R.id.actionToTimeSlotSelectionFragment);
-        });
+        calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y,
+                                                                             m,
+                                                                             d));
+    }
+
+    private void goToDayFragment(int y, int m, int d)
+    {
+        LocalDate calDate = LocalDate.of(y, m + 1, d);
+        List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
+                tutor,
+                calDate);
+        boolean   notAvailable = slots.isEmpty();
+        LocalDate now          = LocalDate.now();
+        if (calDate.isBefore(now) || notAvailable) {
+            String toastMsg = String.format(Locale.getDefault(),
+                                            "%s is not available on %s",
+                                            tutorAccount.getUserName(),
+                                            calDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
+            Toast
+                    .makeText(requireContext(), toastMsg, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        bookingViewModel.setBookingDate(calDate);
+        bookingViewModel.setTimeSlots(slots);
+        bookingViewModel.setTutorAccount(tutorAccount);
+        bookingViewModel.setTutor(tutor);
+        bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations());
+        NavHostFragment
+                .findNavController(this)
+                .navigate(R.id.actionToTimeSlotSelectionFragment);
     }
 }
