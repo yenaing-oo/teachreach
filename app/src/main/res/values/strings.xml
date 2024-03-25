@@ -129,4 +129,10 @@
     <string name="tilMaxPriceHint">$ max</string>
     <string name="sortByPrice">Sort By Price</string>
     <string name="sortByReviews">Sort By Ratings</string>
+    <string name="fabSessionsTitle">Sessions</string>
+    <string name="tabUpcoming">Upcoming</string>
+    <string name="tabPending">Pending</string>
+    <string name="tabPrevious">Previous</string>
+    <string name="sessionCalendar">Calendar view</string>
+    <string name="sessionList">List view</string>
 </resources>
