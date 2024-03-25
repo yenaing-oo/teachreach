@@ -133,25 +133,24 @@ public class PaymentFragment extends Fragment
                                                    sessionTime,
                                                    grandTotal,
                                                    location));
-            makeDoneDialog("Congratulations!",
-                           "Booking request has been sent to your tutor!",
-                           "Done",
-                           "View My Sessions",
-                           (dialog, which) -> {
-                               SlidingPaneLayout slidingPaneLayout
-                                       =
-                                       requireActivity().requireViewById(R.id.searchFragment);
-                               slidingPaneLayout.close();
-                               NavHostFragment
-                                       .findNavController(this)
-                                       .navigate(R.id.actionToPlaceHolderFragment);
-                           },
-                           (dialog, which) -> {
-                               // TO-DO: Jump to view session
-                               NavHostFragment
-                                       .findNavController(requireParentFragment().requireParentFragment())
-                                       .navigate(R.id.actionToStudentProfileSelfViewFragment);
-                           }).show();
+            AlertDialog doneDialog = makeDoneDialog("Congratulations!",
+                                                    "Booking request has been" +
+                                                    " sent to your tutor!",
+                                                    "View My Sessions",
+                                                    (dialog, which) -> {
+                                                        // TO-DO: Jump to
+                                                        // view session
+                                                        NavHostFragment
+                                                                .findNavController(
+                                                                        requireParentFragment().requireParentFragment())
+                                                                .navigate(R.id.actionToStudentProfileSelfViewFragment);
+                                                    },
+                                                    "Done",
+                                                    (dialog, which) -> dialog.dismiss());
+            doneDialog.setOnDismissListener(dialog -> NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToTutorProfileViewFragment));
+            doneDialog.show();
         } catch (InvalidCardNumberException e) {
             tilCardNumber.setError(e.getMessage());
         } catch (InvalidCVCException e) {
@@ -165,20 +164,29 @@ public class PaymentFragment extends Fragment
                               Toast.LENGTH_SHORT)
                     .show();
         } catch (final Throwable e) {
-            makeDoneDialog("Something Bad Happened!",
-                           "Booking is not sent to tutor :(",
-                           "Go Back",
-                           "Cancel",
-                           (dialog, which) -> {
-                               NavHostFragment
-                                       .findNavController(this)
-                                       .navigate(R.id.actionToTutorProfileViewFragment);
-                           },
-                           (dialog, which) -> {
-                               NavHostFragment
-                                       .findNavController(this)
-                                       .navigate(R.id.actionToPlaceHolderFragment);
-                           }).show();
+            AlertDialog errorDialog = makeDoneDialog("Something Bad Happened!",
+                                                     "Booking request " +
+                                                     "mightn't be sent to " +
+                                                     "tutor :(",
+                                                     "Go Back to Tutor Profile",
+                                                     (dialog, which) -> {
+                                                         NavHostFragment
+                                                                 .findNavController(
+                                                                         this)
+                                                                 .navigate(R.id.actionToTutorProfileViewFragment);
+                                                     },
+                                                     "Dismiss",
+                                                     (dialog, which) -> dialog.dismiss());
+            errorDialog.setOnDismissListener(dialog -> {
+                SlidingPaneLayout slidingPaneLayout
+                        =
+                        requireActivity().requireViewById(R.id.searchFragment);
+                slidingPaneLayout.closePane();
+                NavHostFragment
+                        .findNavController(this)
+                        .navigate(R.id.actionToPlaceHolderFragment);
+            });
+            errorDialog.show();
             Toast
                     .makeText(requireContext(),
                               "Tutor mightn't be available for booking",
@@ -190,18 +198,16 @@ public class PaymentFragment extends Fragment
     private AlertDialog makeDoneDialog(String title,
                                        String message,
                                        CharSequence posMsg,
-                                       CharSequence negMsg,
                                        DialogInterface.OnClickListener posListener,
+                                       CharSequence negMsg,
                                        DialogInterface.OnClickListener negListener)
     {
-        View dialogView = FragmentPlaceHolderBinding
-                .inflate(this.getLayoutInflater())
-                .getRoot();
-
         return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(title)
                 .setMessage(message)
-                .setView(dialogView)
+                .setView(FragmentPlaceHolderBinding
+                                 .inflate(this.getLayoutInflater())
+                                 .getRoot())
                 .setPositiveButton(posMsg, posListener)
                 .setNegativeButton(negMsg, negListener)
                 .create();
