@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/design_default_color_background"
+    android:background="?attr/colorPrimaryContainer"
     android:fillViewport="true"
-    tools:context=".presentation.profile.TutorProfileViewFragment">
+    tools:context=".presentation.profile.tutor.TutorProfileViewFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/abTop"
+            style="@style/Widget.App.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -27,6 +28,7 @@
                 android:minHeight="?attr/actionBarSize"
                 app:navigationIcon="@drawable/baseline_close_24"
                 app:title="@string/topAppBarTitle" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -39,7 +41,6 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTutor"
-                    style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -165,7 +166,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTutoredCourses"
-                    style="?attr/materialCardViewElevatedStyle"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -197,7 +198,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardPreferredLocations"
-                    style="?attr/materialCardViewElevatedStyle"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -235,7 +236,7 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTutorCalendar"
-                    style="?attr/materialCardViewElevatedStyle"
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -274,6 +275,7 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabMsg"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

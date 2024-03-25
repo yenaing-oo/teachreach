@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,8 +83,9 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
             Date sqlDate = DateTimeUtils.toSqlDate(date);
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * " + "FROM TUTOR_AVAILABILITY " +
-                    "WHERE TUTOR_ID = ? " +
-                    "  AND CAST(START_DATE_TIME AS DATE) = ?;");
+                            "WHERE TUTOR_ID = ? " +
+                            "  AND CAST(START_DATE_TIME AS DATE) = ? " +
+                            "  AND START_DATE_TIME > CURRENT_TIMESTAMP;");
             pst.setInt(1, tutor.getTutorID());
             pst.setDate(2, sqlDate);
             final ResultSet rs = pst.executeQuery();
@@ -111,7 +111,7 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
             pst.setTimestamp(2,
                              DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
             pst.setTimestamp(3,
-                             Timestamp.valueOf(String.valueOf(timeRange.getEndTime())));
+                             DateTimeUtils.toSqlTimestamp(timeRange.getEndTime()));
 
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {

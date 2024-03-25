@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tutorProfileEditFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".presentation.profile.EditTutorProfileFragment">
+    android:orientation="vertical"
+    tools:context=".presentation.profile.tutor.EditTutorProfileFragment">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/abTop"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/abTop"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="8dp"
+            android:minHeight="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_back_24"
+            app:title="@string/fabEditProfile" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="8dp"
-                android:minHeight="?attr/actionBarSize"
-                app:navigationIcon="@drawable/ic_back_24"
-                app:title="@string/fabEditProfile" />
-        </com.google.android.material.appbar.AppBarLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="?attr/colorPrimaryContainer"
+        app:cardCornerRadius="0dp">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -41,7 +44,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEditName"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="@style/Widget.App.TextInputLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -59,7 +62,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEditMajor"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="@style/Widget.App.TextInputLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -76,7 +79,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEditPronouns"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="@style/Widget.App.TextInputLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -91,7 +94,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tilEditHourlyRate"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    style="@style/Widget.App.TextInputLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -106,16 +109,18 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabApply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="96dp"
-        android:text="@string/fabApply"
-        app:icon="@drawable/ic_done_24" />
+        <Button
+            android:id="@+id/fabApply"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/fabApply"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:icon="@drawable/ic_done_24" />
+    </com.google.android.material.card.MaterialCardView>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>

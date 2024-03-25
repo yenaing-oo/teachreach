@@ -1,5 +1,7 @@
 package comp3350.teachreach.logic;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,36 +9,23 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.interfaces.ITutorFilter;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TutorFilter implements ITutorFilter
 {
-    Map<ITutor, TutorProfileHandler> tutorProfileMap = new HashMap<>();
+    Map<ITutor, ITutorProfileHandler> tphMap = new HashMap<>();
 
-    Map<ConditionFilterTag, Predicate<ITutor>> conditions = new HashMap<>();
-    Map<SearchFilterTag, Predicate<ITutor>>    searches   = new HashMap<>();
+    Map<ConditionFilterTag, Predicate<ITutor>> cond = new HashMap<>();
 
-    public TutorFilter()
+    List<SortConditionTag> sortCondSet = new ArrayList<>();
+
+    Predicate<ITutor> searchCondition = t -> true;
+
+    private TutorFilter()
     {
-        Server
-                .getTutorDataAccess()
-                .getTutors()
-                .values()
-                .forEach(t -> tutorProfileMap.put(t,
-                                                  new TutorProfileHandler(t)));
-    }
-
-    public TutorFilter(ITutorPersistence persistence)
-    {
-        persistence
-                .getTutors()
-                .values()
-                .forEach(t -> tutorProfileMap.put(t,
-                                                  new TutorProfileHandler(t)));
     }
 
     public static TutorFilter New()
@@ -47,122 +36,180 @@ public class TutorFilter implements ITutorFilter
     @Override
     public TutorFilter Reset()
     {
-        conditions.clear();
-        searches.clear();
+        cond.clear();
+        sortCondSet.clear();
+        searchCondition = t -> true;
+        return this;
+    }
+
+    @Override
+    public TutorFilter resetSearchString()
+    {
+        searchCondition = t -> true;
         return this;
     }
 
     @Override
     public boolean getMinimumAvgRatingState()
     {
-        return conditions.containsKey(ConditionFilterTag.minReview);
+        return cond.containsKey(ConditionFilterTag.minReview);
     }
 
     @Override
     public boolean getMinimumHourlyRateState()
     {
-        return conditions.containsKey(ConditionFilterTag.minPrice);
+        return cond.containsKey(ConditionFilterTag.minPrice);
     }
 
     @Override
     public boolean getMaximumHourlyRateState()
     {
-        return conditions.containsKey(ConditionFilterTag.maxPrice);
+        return cond.containsKey(ConditionFilterTag.maxPrice);
+    }
+
+    @Override
+    public boolean getCourseCodeState()
+    {
+        return cond.containsKey(ConditionFilterTag.courseCode);
+    }
+
+    @Override
+    public boolean getSortByPriceState()
+    {
+        return sortCondSet.contains(SortConditionTag.byPrice);
+    }
+
+    @Override
+    public boolean getSortByReviewsState()
+    {
+        return sortCondSet.contains(SortConditionTag.byReviews);
     }
 
     @Override
     public TutorFilter clearMinimumAvgRating()
     {
-        conditions.remove(ConditionFilterTag.minReview);
+        cond.remove(ConditionFilterTag.minReview);
         return this;
     }
 
     @Override
     public TutorFilter clearMinimumHourlyRate()
     {
-        conditions.remove(ConditionFilterTag.minPrice);
+        cond.remove(ConditionFilterTag.minPrice);
         return this;
     }
 
     @Override
     public TutorFilter clearMaximumHourlyRate()
     {
-        conditions.remove(ConditionFilterTag.maxPrice);
+        cond.remove(ConditionFilterTag.maxPrice);
+        return this;
+    }
+
+    @Override
+    public TutorFilter clearCourseCode()
+    {
+        cond.remove(ConditionFilterTag.courseCode);
         return this;
     }
 
     @Override
     public TutorFilter setMinimumAvgRating(double minimumAvgRating)
     {
-        conditions.put(ConditionFilterTag.minReview,
-                       t -> tutorProfileMap
-                                    .getOrDefault(t, new TutorProfileHandler(t))
-                                    .getAvgReview() >= minimumAvgRating);
+        cond.put(ConditionFilterTag.minReview,
+                 t -> tphMap
+                              .computeIfAbsent(t, TutorProfileHandler::new)
+                              .getAvgReview() >= minimumAvgRating);
         return this;
     }
 
     @Override
     public TutorFilter setMinimumHourlyRate(double desiredHourlyRate)
     {
-        conditions.put(ConditionFilterTag.minPrice,
-                       t -> t.getHourlyRate() >= desiredHourlyRate);
+        cond.put(ConditionFilterTag.minPrice,
+                 t -> t.getHourlyRate() >= desiredHourlyRate);
         return this;
     }
 
     @Override
     public TutorFilter setMaximumHourlyRate(double desiredHourlyRate)
     {
-        conditions.put(ConditionFilterTag.maxPrice,
-                       t -> t.getHourlyRate() <= desiredHourlyRate);
+        cond.put(ConditionFilterTag.maxPrice,
+                 t -> t.getHourlyRate() <= desiredHourlyRate);
         return this;
     }
 
     @Override
-    public TutorFilter setCourse(String courseString)
+    public TutorFilter setCourseCode(String courseCode)
     {
-        searches.put(SearchFilterTag.course,
-                     t -> tutorProfileMap
-                             .getOrDefault(t, new TutorProfileHandler(t))
-                             .getCourses()
-                             .stream()
-                             .anyMatch(c -> c
-                                                    .getCourseCode()
-                                                    .contains(courseString) || c
-                                                    .getCourseName()
-                                                    .contains(courseString)));
+        cond.put(ConditionFilterTag.courseCode,
+                 t -> tphMap
+                         .computeIfAbsent(t, TutorProfileHandler::new)
+                         .getCourseCodeList()
+                         .contains(courseCode));
         return this;
     }
 
     @Override
-    public TutorFilter setMajor(String searchString)
+    public TutorFilter setSearchFilter(String searchString)
     {
-        searches.put(SearchFilterTag.major,
-                     t -> tutorProfileMap
-                             .getOrDefault(t, new TutorProfileHandler(t))
-                             .getUserMajor()
-                             .contains(searchString));
+        final String s = searchString.trim().toLowerCase();
+        searchCondition = t -> {
+            ITutorProfileHandler tph = tphMap.computeIfAbsent(t,
+                                                              TutorProfileHandler::new);
+            return tph
+                           .getCourseCodeList()
+                           .stream()
+                           .anyMatch(code -> code.toLowerCase().contains(s))
+
+                   || tph
+                           .getCourseDescriptionList()
+                           .stream()
+                           .anyMatch(desc -> desc.toLowerCase().contains(s))
+
+                   || tph
+                           .getPreferredLocations()
+                           .stream()
+                           .anyMatch(l -> l.toLowerCase().contains(s))
+
+                   || tph.getUserName().toLowerCase().contains(s)
+
+                   || tph.getUserMajor().toLowerCase().contains(s);
+        };
         return this;
     }
 
     @Override
-    public TutorFilter setName(String searchString)
+    public TutorFilter setSortByPrice()
     {
-        searches.put(SearchFilterTag.name,
-                     t -> tutorProfileMap
-                             .getOrDefault(t, new TutorProfileHandler(t))
-                             .getUserName()
-                             .contains(searchString));
+        if (sortCondSet.contains(SortConditionTag.byPrice)) {
+            return this;
+        }
+        sortCondSet.add(SortConditionTag.byPrice);
         return this;
     }
 
     @Override
-    public TutorFilter setLocation(String searchString)
+    public TutorFilter setSortByReviews()
     {
-        searches.put(SearchFilterTag.location,
-                     t -> tutorProfileMap
-                             .getOrDefault(t, new TutorProfileHandler(t))
-                             .getPreferredLocations()
-                             .contains(searchString));
+        if (sortCondSet.contains(SortConditionTag.byReviews)) {
+            return this;
+        }
+        sortCondSet.add(SortConditionTag.byReviews);
+        return this;
+    }
+
+    @Override
+    public TutorFilter clearSortByPrice()
+    {
+        sortCondSet.remove(SortConditionTag.byPrice);
+        return this;
+    }
+
+    @Override
+    public TutorFilter clearSortByReviews()
+    {
+        sortCondSet.remove(SortConditionTag.byReviews);
         return this;
     }
 
@@ -171,32 +218,67 @@ public class TutorFilter implements ITutorFilter
     {
         return t -> t
                 .stream()
-                .filter(this.condition())
+                .filter(condition())
+                .sorted(sortBy())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Function<List<ITutor>, List<ITutor>> filterFunc(Predicate<ITutor> p)
+    {
+        return t -> t
+                .stream()
+                .filter(p)
+                .sorted(sortBy())
                 .collect(Collectors.toList());
     }
 
     private Predicate<ITutor> condition()
     {
-        Predicate<ITutor> filterConditions = conditions
+        Predicate<ITutor> filterConditions = cond
                 .values()
                 .stream()
                 .reduce(Predicate::and)
                 .orElse(t -> true);
-        Predicate<ITutor> searchConditions = searches
-                .values()
-                .stream()
-                .reduce(Predicate::or)
-                .orElse(t -> true);
-        return filterConditions.and(searchConditions);
+        return filterConditions.and(searchCondition);
     }
 
-    private enum SearchFilterTag
+    private Comparator<ITutor> sortBy()
     {
-        location, major, name, course
+        Comparator<ITutor> result = null;
+
+        Comparator<ITutor> byPrice
+                = Comparator.comparingDouble(ITutor::getHourlyRate);
+
+        Comparator<ITutor> byReviews
+                = Comparator.comparingDouble(tutor -> tphMap
+                .computeIfAbsent(tutor, TutorProfileHandler::new)
+                .getAvgReview());
+        byReviews = byReviews.reversed();
+
+        for (SortConditionTag t : sortCondSet) {
+            switch (t) {
+                case byPrice -> result = (result == null) ?
+                                         byPrice :
+                                         result.thenComparing(byPrice);
+                case byReviews -> result = (result == null) ?
+                                           byReviews :
+                                           result.thenComparing(byReviews);
+            }
+        }
+
+        return result == null ?
+               Comparator.comparingInt(ITutor::getTutorID) :
+               result;
     }
 
     private enum ConditionFilterTag
     {
-        minReview, minPrice, maxPrice
+        minReview, minPrice, maxPrice, courseCode
+    }
+
+    private enum SortConditionTag
+    {
+        byPrice, byReviews
     }
 }

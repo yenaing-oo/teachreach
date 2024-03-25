@@ -2,6 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="TIME_CLOT_CARD_BACKGROUND_DEFAULT">#FCFAFF</color>
-    <color name="TIME_CLOT_CARD_BACKGROUND_PRESSED">#FFE2CFFF</color>
+    <color name="TIME_CLOT_CARD_BACKGROUND_DEFAULT">
+        @color/material_dynamic_neutral70
+    </color>
+    <color name="TIME_CLOT_CARD_BACKGROUND_PRESSED">
+        @color/material_dynamic_primary80
+    </color>
 </resources>
