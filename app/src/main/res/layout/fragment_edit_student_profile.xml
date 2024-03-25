@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
+        android:backgroundTint="?attr/colorPrimaryContainer"
         app:cardCornerRadius="0dp">
 
         <androidx.core.widget.NestedScrollView
@@ -110,7 +111,7 @@
 
         <Button
             android:id="@+id/fabApply"
-            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

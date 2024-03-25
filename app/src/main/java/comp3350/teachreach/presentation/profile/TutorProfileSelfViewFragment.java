@@ -96,9 +96,11 @@ public class TutorProfileSelfViewFragment extends Fragment
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
                 profileViewModel.getTutoredCoursesCode().getValue());
 
+        int spanCount = isLarge || isLandscape ? 6 : 2;
+
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),
-                3);
+                spanCount);
 
         recycler.setAdapter(recyclerAdapter);
         recycler.setLayoutManager(layoutManager);
@@ -123,7 +125,7 @@ public class TutorProfileSelfViewFragment extends Fragment
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
                 profileViewModel.getPreferredLocations().getValue());
 
-        int spanCount = isLarge || isLandscape ? 6 : 3;
+        int spanCount = isLarge || isLandscape ? 6 : 2;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),
@@ -168,15 +170,15 @@ public class TutorProfileSelfViewFragment extends Fragment
         tutor          = profileViewModel.getTutor().getValue();
         account        = profileViewModel.getTutorAccount().getValue();
         profileHandler = new TutorProfileHandler(tutor);
-        fillUpProfileDetails(view);
-        setUpEditProfileButton(view);
-        setUpTopBarMenu(view);
-        setUpTutoredCourses(view);
-        setUpPreferredLocations(view);
         Configuration config = getResources().getConfiguration();
         isLarge
                     =
                 config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
+        fillUpProfileDetails(view);
+        setUpEditProfileButton(view);
+        setUpTopBarMenu(view);
+        setUpTutoredCourses(view);
+        setUpPreferredLocations(view);
     }
 }
