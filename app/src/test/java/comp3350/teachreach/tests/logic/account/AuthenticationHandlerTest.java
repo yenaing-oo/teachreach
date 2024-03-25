@@ -1,4 +1,4 @@
-package comp3350.teachreach.tests.logic;
+package comp3350.teachreach.tests.logic.account;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
