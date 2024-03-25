@@ -26,7 +26,7 @@ public class TeachReachTest
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
             = new ActivityScenarioRule<>(MainActivity.class);
-
+    //system test for login
     @Test
     public void testSuccessfulLogin()
     {
