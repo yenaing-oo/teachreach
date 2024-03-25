@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
@@ -137,6 +138,10 @@ public class PaymentFragment extends Fragment
                            "Done",
                            "View My Sessions",
                            (dialog, which) -> {
+                               SlidingPaneLayout slidingPaneLayout
+                                       =
+                                       requireActivity().requireViewById(R.id.searchFragment);
+                               slidingPaneLayout.close();
                                NavHostFragment
                                        .findNavController(this)
                                        .navigate(R.id.actionToPlaceHolderFragment);

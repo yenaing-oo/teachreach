@@ -21,6 +21,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -40,10 +41,11 @@ import comp3350.teachreach.presentation.utils.TRViewModel;
 public class SearchFragment extends Fragment
 {
     static ITutorFilter tutorFilter = TutorFilter.New();
-    EditText maxPrice;
-    EditText minPrice;
-    CheckBox priceMaxSwitch;
-    CheckBox priceMinSwitch;
+    EditText          maxPrice;
+    EditText          minPrice;
+    CheckBox          priceMaxSwitch;
+    CheckBox          priceMinSwitch;
+    SlidingPaneLayout slidingPaneLayout;
     private double          prevMaxPrice   = -1.0;
     private double          prevMinPrice   = -1.0;
     private int             selectedReview = -1;
@@ -86,6 +88,7 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        slidingPaneLayout = view.findViewById(R.id.searchFragment);
         setUpRecyclerView(view);
         setUpSearchBar(view);
     }
@@ -372,5 +375,6 @@ public class SearchFragment extends Fragment
                 R.id.rightSide);
         NavController nc = navHostFragment.getNavController();
         nc.navigate(R.id.actionToTutorProfileViewFragment);
+        slidingPaneLayout.open();
     }
 }

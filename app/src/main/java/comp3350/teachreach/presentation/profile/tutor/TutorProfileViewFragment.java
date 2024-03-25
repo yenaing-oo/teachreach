@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -140,9 +141,14 @@ public class TutorProfileViewFragment extends Fragment
     {
         MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
         materialToolbar.setTitle(tutorAccount.getUserName());
-        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToPlaceHolderFragment));
+        materialToolbar.setNavigationOnClickListener(view -> {
+            SlidingPaneLayout slidingPaneLayout
+                    = requireActivity().requireViewById(R.id.searchFragment);
+            slidingPaneLayout.close();
+            NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToPlaceHolderFragment);
+        });
     }
 
     private void setUpProfile(View v)
