@@ -10,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +110,7 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
             pst.setTimestamp(2,
                              DateTimeUtils.toSqlTimestamp(timeRange.getStartTime()));
             pst.setTimestamp(3,
-                             Timestamp.valueOf(String.valueOf(timeRange.getEndTime())));
+                             DateTimeUtils.toSqlTimestamp(timeRange.getEndTime()));
 
             final boolean success = pst.executeUpdate() == 1;
             if (!success) {

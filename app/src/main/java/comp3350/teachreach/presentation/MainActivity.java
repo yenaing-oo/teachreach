@@ -31,9 +31,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
-        TRData.loadEnums(this);
+        TRData.loadEnums(getApplicationContext());
         AndroidThreeTen.init(this);
-
 
         Button btnStudent = findViewById(R.id.btnStudentLogin);
         Button btnTutor   = findViewById(R.id.btnTutorLogin);
@@ -61,15 +60,16 @@ public class MainActivity extends AppCompatActivity
     {
         final String DB_PATH = "db";
 
-        String[]     assetNames;
-        Context      context       = getApplicationContext();
-        File         dataDirectory = context.getDir(DB_PATH,
-                                                    Context.MODE_PRIVATE);
-        AssetManager assetManager  = getAssets();
+        String[] assetNames;
+        Context  context = getApplicationContext();
+        File dataDirectory = context.getDir(DB_PATH, Context.MODE_PRIVATE);
+        AssetManager assetManager = getAssets();
 
         try {
             assetNames = assetManager.list(DB_PATH);
-            for (int i = 0; i < Objects.requireNonNull(assetNames).length; i++) {
+            for (int i = 0;
+                 i < Objects.requireNonNull(assetNames).length;
+                 i++) {
                 assetNames[i] = DB_PATH + "/" + assetNames[i];
             }
 

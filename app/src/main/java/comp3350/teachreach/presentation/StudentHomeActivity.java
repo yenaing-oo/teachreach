@@ -11,10 +11,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
-
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
@@ -46,22 +45,9 @@ public class StudentHomeActivity extends AppCompatActivity
                               .getAccountDataAccess()
                               .getAccounts()
                               .get(accountId));
-        vm.setStudent(Server
-                              .getStudentDataAccess()
-                              .getStudents()
-                              .get(studentId));
-        vm.setAccounts(new ArrayList<>(Server
-                                               .getAccountDataAccess()
-                                               .getAccounts()
-                                               .values()));
-        vm.setCourses(new ArrayList<>(Server
-                                              .getCourseDataAccess()
-                                              .getCourses()
-                                              .values()));
-        vm.setTutors(new ArrayList<>(Server
-                                             .getTutorDataAccess()
-                                             .getTutors()
-                                             .values()));
+        AccessStudents accessStudents = new AccessStudents();
+        vm.setStudent(accessStudents.getStudentByAccountID(accountId));
+        assert vm.getStudent() != null;
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }

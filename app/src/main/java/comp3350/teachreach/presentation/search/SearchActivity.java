@@ -30,7 +30,6 @@ import comp3350.teachreach.logic.interfaces.ISearchSortHandler;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.enums.SortCriteria;
-import comp3350.teachreach.presentation.profile.StudentProfileActivity;
 import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
 
 public class SearchActivity extends AppCompatActivity
@@ -55,7 +54,7 @@ public class SearchActivity extends AppCompatActivity
         accountID = getIntent().getIntExtra("ACCOUNT_ID", -1);
         RecyclerView recyclerView = findViewById(R.id.searchResultRecyclerView);
         autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-        Button sortButton = findViewById(R.id.sortButton);
+        Button       sortButton   = findViewById(R.id.sortButton);
         AccessTutors accessTutors = new AccessTutors();
 
         searchSortHandler = new SearchSortHandler();
@@ -100,9 +99,6 @@ public class SearchActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarSearch) {
                 return true;
             } else if (itemId == R.id.NavBarProfile) {
-                Intent intent = new Intent(this, StudentProfileActivity.class);
-                intent.putExtra("ACCOUNT_ID", accountID);
-                startActivity(intent);
                 return true;
             }
             return false;

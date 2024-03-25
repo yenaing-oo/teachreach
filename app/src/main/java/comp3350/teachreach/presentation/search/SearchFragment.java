@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
@@ -38,12 +36,13 @@ import comp3350.teachreach.presentation.TRViewModel;
 
 public class SearchFragment extends Fragment
 {
-    static ITutorFilter tutorFilter = TutorFilter.New();
-    SideSheetBehavior<FrameLayout> filterSheetBehaviour;
-    FrameLayout                    filterSheet;
-    private ISearchSortHandler    searchSortHandler;
-    private TRViewModel           vm;
-    private FragmentSearchBinding binding;
+    static  ITutorFilter       tutorFilter = TutorFilter.New();
+    private ISearchSortHandler searchSortHandler;
+    private TRViewModel        vm;
+
+    private List<ITutor> tutorList;
+
+    private SearchViewModel searchViewModel;
 
     public SearchFragment()
     {
@@ -56,6 +55,11 @@ public class SearchFragment extends Fragment
         searchSortHandler = new SearchSortHandler();
 
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+
+        searchViewModel
+                = new ViewModelProvider(this).get(SearchViewModel.class);
+
+        tutorList = searchViewModel.getTutors().getValue();
     }
 
     @Override
@@ -63,9 +67,9 @@ public class SearchFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-
-        return binding.getRoot();
+        return FragmentSearchBinding
+                .inflate(inflater, container, false)
+                .getRoot();
     }
 
     @Override
@@ -73,7 +77,6 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-
         setUpRecyclerView(view);
         setUpSearchBar(view);
     }
@@ -93,11 +96,9 @@ public class SearchFragment extends Fragment
                 if (!searchString.isEmpty()) {
                     tutorFilter.setSearchFilter(searchString);
                 }
-                vm.postTutorsFiltered(tutorFilter
-                                              .filterFunc()
-                                              .apply(vm
-                                                             .getTutors()
-                                                             .getValue()));
+                searchViewModel.postTutorsFiltered(tutorFilter
+                                                           .filterFunc()
+                                                           .apply(tutorList));
                 return true;
             }
             return false;
@@ -115,11 +116,9 @@ public class SearchFragment extends Fragment
                     if (!searchString.isEmpty()) {
                         tutorFilter.setSearchFilter(searchString);
                     }
-                    vm.postTutorsFiltered(tutorFilter
-                                                  .filterFunc()
-                                                  .apply(vm
-                                                                 .getTutors()
-                                                                 .getValue()));
+                    searchViewModel.postTutorsFiltered(tutorFilter
+                                                               .filterFunc()
+                                                               .apply(tutorList));
                 })
                 .setNegativeButton("Cancel", null)
                 .create()
@@ -128,13 +127,12 @@ public class SearchFragment extends Fragment
 
     private void setUpRecyclerView(View view)
     {
-        List<ITutor> tutorList = vm.getTutors().getValue();
-        vm.setTutorsFiltered(tutorList);
+        searchViewModel.setTutorsFiltered(tutorList);
         RecyclerView recyclerView = view.findViewById(R.id.rvSearchResult);
         SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(
                 tutorList,
                 this::openDetails);
-        vm
+        searchViewModel
                 .getTutorsFiltered()
                 .observe(getViewLifecycleOwner(), adapter::updateData);
         recyclerView.setAdapter(adapter);

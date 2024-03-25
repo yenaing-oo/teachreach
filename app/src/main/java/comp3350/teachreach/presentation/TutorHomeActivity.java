@@ -11,23 +11,24 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
-
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.presentation.profile.TutorProfileViewModel;
 
 public class TutorHomeActivity extends AppCompatActivity
 {
-    private static final int  BACK_DELAY = 2000;
-    private              long backPressedTime;
+    private static final int                   BACK_DELAY = 2000;
+    private              TRViewModel           vm;
+    private              long                  backPressedTime;
+    private              NavigationBarView     navigationMenu;
+    private              NavController         navController;
+    private              OnBackPressedCallback onBackPressedCallback;
 
-    private NavigationBarView navigationMenu;
+    private IAccount account;
 
-    private NavController navController;
-
-    private TRViewModel vm;
-
-    private OnBackPressedCallback onBackPressedCallback;
+    private ITutor tutor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,30 +47,23 @@ public class TutorHomeActivity extends AppCompatActivity
 
         int accountID = getIntent().getIntExtra("ACCOUNT_ID", -1);
         int tutorID   = getIntent().getIntExtra("TUTOR_ID", -1);
-        vm.setAccount(Server
-                              .getAccountDataAccess()
-                              .getAccounts()
-                              .get(accountID));
-        vm.setTutor(Server.getTutorDataAccess().getTutors().get(tutorID));
+        account = Server.getAccountDataAccess().getAccounts().get(accountID);
+        tutor   = Server.getTutorDataAccess().getTutors().get(tutorID);
+
+        vm.setAccount(account);
+        vm.setTutor(tutor);
         vm.setIsTutor();
-        vm.setAccounts(new ArrayList<>(Server
-                                               .getAccountDataAccess()
-                                               .getAccounts()
-                                               .values()));
-        vm.setCourses(new ArrayList<>(Server
-                                              .getCourseDataAccess()
-                                              .getCourses()
-                                              .values()));
-        vm.setTutors(new ArrayList<>(Server
-                                             .getTutorDataAccess()
-                                             .getTutors()
-                                             .values()));
+        TutorProfileViewModel profileViewModel
+                = new ViewModelProvider(this).get(TutorProfileViewModel.class);
+        profileViewModel.setTutor(tutor);
+        profileViewModel.setTutorAccount(account);
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }
 
     private void setUpNavigationMenu()
     {
+
         navigationMenu.setSelectedItemId(R.id.NavBarProfile);
         navigationMenu.setOnItemSelectedListener(i -> {
             int itemId = i.getItemId();

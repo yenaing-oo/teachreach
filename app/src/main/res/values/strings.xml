@@ -100,6 +100,7 @@
     <string name="tvTutorImage">Tutor Icon Image</string>
     <string name="tvCourseCodeField">COURSE 0000</string>
     <string name="tilLocationHint">Location</string>
+    <string name="tilLocationSearchHint">Location (Long press to reset)</string>
     <string name="tvStringField">Dummy List Item</string>
     <string name="timeSelectionTitle">Selecting for -/-/-</string>
     <string name="timeSlotTime">time here</string>
@@ -114,4 +115,13 @@
     <string name="tvBookingSessionDurationField">MM minutes</string>
     <string name="tvBookingSessionPrice">"Price: "</string>
     <string name="tvBookingSessionPriceField">$xx.xx</string>
+    <string name="continueBooking">Continue</string>
+    <string name="tvBookingSessionLocation">Session Location:</string>
+    <string name="tvBookingSessionLocationField">Somewhere</string>
+    <string name="fabPaymentDetails">Enter Your Payment Details</string>
+    <string name="tilCardNumberHint">16 digit card number</string>
+    <string name="tilExpDateHint">MMYY</string>
+    <string name="tilCVCHint">CVC</string>
+    <string name="paymentMessage">Payment will be processed once session request is accepted by tutor.</string>
+    <string name="priceMessage">"Your total is: "</string>
 </resources>
