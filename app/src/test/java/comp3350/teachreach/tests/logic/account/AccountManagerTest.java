@@ -1,4 +1,4 @@
-package comp3350.teachreach.tests.logic;
+package comp3350.teachreach.tests.logic.account;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.any;
