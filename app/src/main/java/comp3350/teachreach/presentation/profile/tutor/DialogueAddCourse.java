@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.tutor;
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import comp3350.teachreach.databinding.DialogAddCourseBinding;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class DialogueAddCourse extends AppCompatDialogFragment
 {

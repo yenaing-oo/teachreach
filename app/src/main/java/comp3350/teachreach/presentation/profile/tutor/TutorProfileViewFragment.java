@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -38,8 +38,8 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class TutorProfileViewFragment extends Fragment
 {

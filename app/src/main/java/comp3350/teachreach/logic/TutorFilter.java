@@ -25,7 +25,7 @@ public class TutorFilter implements ITutorFilter
 
     Predicate<ITutor> searchCondition = t -> true;
 
-    public TutorFilter()
+    private TutorFilter()
     {
     }
 
@@ -246,8 +246,10 @@ public class TutorFilter implements ITutorFilter
                 = Comparator.comparingDouble(ITutor::getHourlyRate);
 
         Comparator<ITutor> byReviews
-                = Comparator.comparingDouble(tutor -> new TutorProfileHandler(
-                tutor).getAvgReview());
+                = Comparator.comparingDouble(tutor -> tphMap
+                .computeIfAbsent(tutor, TutorProfileHandler::new)
+                .getAvgReview());
+        byReviews = byReviews.reversed();
 
         for (SortConditionTag t : sortCondSet) {
             switch (t) {

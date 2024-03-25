@@ -35,15 +35,15 @@ import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.logic.interfaces.ITutorFilter;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class SearchFragment extends Fragment
 {
+    static ITutorFilter tutorFilter = TutorFilter.New();
     EditText maxPrice;
     EditText minPrice;
     CheckBox priceMaxSwitch;
     CheckBox priceMinSwitch;
-    private ITutorFilter    tutorFilter    = TutorFilter.New();
     private double          prevMaxPrice   = -1.0;
     private double          prevMinPrice   = -1.0;
     private int             selectedReview = -1;
@@ -64,8 +64,8 @@ public class SearchFragment extends Fragment
 
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        searchViewModel
-                = new ViewModelProvider(this).get(SearchViewModel.class);
+        searchViewModel = new ViewModelProvider(requireActivity()).get(
+                SearchViewModel.class);
 
         tutorList  = searchViewModel.getTutors().getValue();
         courseList = searchViewModel.getCourses().getValue();

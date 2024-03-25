@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeachReach">
         <activity
-            android:name=".presentation.StudentHomeActivity"
+            android:name=".presentation.home.StudentHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.TutorHomeActivity"
+            android:name=".presentation.home.TutorHomeActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.signup.TutorSignUpActivity"

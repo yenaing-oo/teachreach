@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.utils;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.student;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +17,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentStudentProfileSelfViewBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
-import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class StudentProfileSelfViewFragment extends Fragment
 {

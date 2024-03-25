@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/studentProfileSelfViewFragment"
-        android:name="comp3350.teachreach.presentation.profile.StudentProfileSelfViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.student.StudentProfileSelfViewFragment"
         android:label="fragment_student_profile_self_view"
         tools:layout="@layout/fragment_student_profile_self_view">
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountSettingsFragment"
-        android:name="comp3350.teachreach.presentation.profile.AccountSettingsFragment"
+        android:name="comp3350.teachreach.presentation.profile.account.AccountSettingsFragment"
         android:label="fragment_account_settings"
         tools:layout="@layout/fragment_account_settings">
         <action
@@ -102,7 +102,7 @@
     </fragment>
     <fragment
         android:id="@+id/editStudentProfileFragment"
-        android:name="comp3350.teachreach.presentation.profile.EditStudentProfileFragment"
+        android:name="comp3350.teachreach.presentation.profile.student.EditStudentProfileFragment"
         android:label="fragment_edit_student_profile"
         tools:layout="@layout/fragment_edit_student_profile">
         <action
@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/placeHolderFragment"
-        android:name="comp3350.teachreach.presentation.profile.PlaceHolderFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.PlaceHolderFragment"
         android:label="fragment_place_holder"
         tools:layout="@layout/fragment_place_holder">
         <action
@@ -128,7 +128,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorProfileViewFragment"
-        android:name="comp3350.teachreach.presentation.profile.TutorProfileViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.TutorProfileViewFragment"
         android:label="fragment_tutor_profile"
         tools:layout="@layout/fragment_tutor_profile">
         <action
@@ -152,17 +152,10 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
             app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/actionToTimeSlotSelectionFragment"
-            app:destination="@id/timeSlotSelectionFragment"
-            app:enterAnim="@animator/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
-            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingEmail"
-        android:name="comp3350.teachreach.presentation.profile.FragmentChangingEmail"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingEmail"
         android:label="fragment_change_email"
         tools:layout="@layout/fragment_change_email">
         <action
@@ -189,7 +182,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingPassword"
-        android:name="comp3350.teachreach.presentation.profile.FragmentChangingPassword"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingPassword"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password">
         <action
@@ -202,40 +195,6 @@
         <action
             android:id="@+id/actionToSearchFragment"
             app:destination="@id/searchFragment"
-            app:enterAnim="@animator/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
-            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/actionToStudentProfileSelfViewFragment"
-            app:destination="@id/studentProfileSelfViewFragment"
-            app:enterAnim="@animator/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
-            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-    </fragment>
-    <fragment
-        android:id="@+id/timeSlotSelectionFragment"
-        android:name="comp3350.teachreach.presentation.booking.TimeSlotSelectionFragment"
-        android:label="fragment_time_slot_selection"
-        tools:layout="@layout/fragment_booking_selection">
-        <action
-            android:id="@+id/actionToSearchFragment"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@animator/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
-            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/actionToTutorProfileViewFragment"
-            app:destination="@id/tutorProfileViewFragment"
-            app:enterAnim="@animator/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
-            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/actionToTimeSlotSelectionFragment"
-            app:destination="@id/timeSlotSelectionFragment"
             app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
