@@ -18,75 +18,66 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <androidx.coordinatorlayout.widget.CoordinatorLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/textField"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="256dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:hint="@string/searchHint"
+                    android:labelFor="@id/searchField"
+                    app:boxCornerRadiusBottomEnd="20dp"
+                    app:boxCornerRadiusBottomStart="20dp"
+                    app:boxCornerRadiusTopEnd="20dp"
+                    app:boxCornerRadiusTopStart="20dp"
+                    app:endIconMode="clear_text"
+                    app:startIconDrawable="@drawable/ic_search_24">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/textField"
-                            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-                            android:layout_width="256dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="8dp"
-                            android:hint="@string/searchHint"
-                            android:labelFor="@id/searchField"
-                            app:boxCornerRadiusBottomEnd="20dp"
-                            app:boxCornerRadiusBottomStart="20dp"
-                            app:boxCornerRadiusTopEnd="20dp"
-                            app:boxCornerRadiusTopStart="20dp"
-                            app:endIconMode="clear_text"
-                            app:startIconDrawable="@drawable/ic_search_24">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/searchField"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="4dp"
-                                android:inputType="textFilter" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <Button
-                            android:id="@+id/btnSearch"
-                            style="@style/Widget.Material3.Button.IconButton.Filled"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="4dp"
-                            android:text="@string/btnIcon"
-                            app:icon="@drawable/ic_search_24" />
-
-                        <Button
-                            android:id="@+id/btnFilter"
-                            style="@style/Widget.Material3.Button.IconButton.Filled"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="4dp"
-                            android:text="@string/btnIcon"
-                            app:icon="@drawable/ic_filter_list_24" />
-
-                    </LinearLayout>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvSearchResult"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/searchField"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp" />
-                </LinearLayout>
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        android:layout_marginBottom="4dp"
+                        android:inputType="textFilter" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:text="@string/btnIcon"
+                    app:icon="@drawable/ic_search_24" />
+
+                <Button
+                    android:id="@+id/btnFilter"
+                    style="@style/Widget.Material3.Button.IconButton.Filled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:text="@string/btnIcon"
+                    app:icon="@drawable/ic_filter_list_24" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSearchResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp" />
+
         </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView

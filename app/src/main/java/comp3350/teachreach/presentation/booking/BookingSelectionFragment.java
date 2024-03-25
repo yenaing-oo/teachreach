@@ -68,17 +68,15 @@ public class BookingSelectionFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        Configuration config = getResources().getConfiguration();
+        isLarge
+                    =
+                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         setUpTopBar(view);
         setUpTimeSlots(view);
         setUpButtons(view);
         setUpLocationField(view);
-        Configuration config = getResources().getConfiguration();
-
-        isLarge
-                =
-                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
-
-        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private void setUpLocationField(View view)
