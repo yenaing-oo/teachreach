@@ -1,11 +1,10 @@
 package comp3350.teachreach.logic;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -21,11 +20,11 @@ public class TutorFilter implements ITutorFilter
 
     Map<ConditionFilterTag, Predicate<ITutor>> cond = new HashMap<>();
 
-    SortedSet<SortConditionTag> sortCondSet = new TreeSet<>();
+    List<SortConditionTag> sortCondSet = new ArrayList<>();
 
     Predicate<ITutor> searchCondition = t -> true;
 
-    public TutorFilter()
+    private TutorFilter()
     {
     }
 
@@ -183,6 +182,9 @@ public class TutorFilter implements ITutorFilter
     @Override
     public TutorFilter setSortByPrice()
     {
+        if (sortCondSet.contains(SortConditionTag.byPrice)) {
+            return this;
+        }
         sortCondSet.add(SortConditionTag.byPrice);
         return this;
     }
@@ -190,6 +192,9 @@ public class TutorFilter implements ITutorFilter
     @Override
     public TutorFilter setSortByReviews()
     {
+        if (sortCondSet.contains(SortConditionTag.byReviews)) {
+            return this;
+        }
         sortCondSet.add(SortConditionTag.byReviews);
         return this;
     }
@@ -246,8 +251,10 @@ public class TutorFilter implements ITutorFilter
                 = Comparator.comparingDouble(ITutor::getHourlyRate);
 
         Comparator<ITutor> byReviews
-                = Comparator.comparingDouble(tutor -> new TutorProfileHandler(
-                tutor).getAvgReview());
+                = Comparator.comparingDouble(tutor -> tphMap
+                .computeIfAbsent(tutor, TutorProfileHandler::new)
+                .getAvgReview());
+        byReviews = byReviews.reversed();
 
         for (SortConditionTag t : sortCondSet) {
             switch (t) {

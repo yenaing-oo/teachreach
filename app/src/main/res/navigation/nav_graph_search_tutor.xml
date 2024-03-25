@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/placeHolderFragment"
-        android:name="comp3350.teachreach.presentation.profile.PlaceHolderFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.PlaceHolderFragment"
         android:label="fragment_place_holder"
         tools:layout="@layout/fragment_place_holder">
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/tutorProfileViewFragment"
-        android:name="comp3350.teachreach.presentation.profile.TutorProfileViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.TutorProfileViewFragment"
         android:label="fragment_tutor_profile"
         tools:layout="@layout/fragment_tutor_profile">
         <action
@@ -99,7 +99,7 @@
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
             app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_reviewBookingFragment_to_placeHolderFragment"
+            android:id="@+id/actionToPlaceHolderFragment"
             app:destination="@id/placeHolderFragment"
             app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
@@ -147,7 +147,7 @@
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
             app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/action_reviewBookingFragment_to_placeHolderFragment"
+            android:id="@+id/actionToPlaceHolderFragment"
             app:destination="@id/placeHolderFragment"
             app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"

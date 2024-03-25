@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.student;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,7 +25,7 @@ import comp3350.teachreach.logic.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.objects.interfaces.IAccount;
-import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class EditStudentProfileFragment extends Fragment
 {

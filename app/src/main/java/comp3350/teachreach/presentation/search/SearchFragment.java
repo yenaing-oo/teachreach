@@ -21,6 +21,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -35,15 +36,16 @@ import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.logic.interfaces.ITutorFilter;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class SearchFragment extends Fragment
 {
-    EditText maxPrice;
-    EditText minPrice;
-    CheckBox priceMaxSwitch;
-    CheckBox priceMinSwitch;
-    private ITutorFilter    tutorFilter    = TutorFilter.New();
+    static ITutorFilter tutorFilter = TutorFilter.New();
+    EditText          maxPrice;
+    EditText          minPrice;
+    CheckBox          priceMaxSwitch;
+    CheckBox          priceMinSwitch;
+    SlidingPaneLayout slidingPaneLayout;
     private double          prevMaxPrice   = -1.0;
     private double          prevMinPrice   = -1.0;
     private int             selectedReview = -1;
@@ -64,8 +66,8 @@ public class SearchFragment extends Fragment
 
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        searchViewModel
-                = new ViewModelProvider(this).get(SearchViewModel.class);
+        searchViewModel = new ViewModelProvider(requireActivity()).get(
+                SearchViewModel.class);
 
         tutorList  = searchViewModel.getTutors().getValue();
         courseList = searchViewModel.getCourses().getValue();
@@ -86,6 +88,7 @@ public class SearchFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
+        slidingPaneLayout = view.findViewById(R.id.searchFragment);
         setUpRecyclerView(view);
         setUpSearchBar(view);
     }
@@ -372,5 +375,6 @@ public class SearchFragment extends Fragment
                 R.id.rightSide);
         NavController nc = navHostFragment.getNavController();
         nc.navigate(R.id.actionToTutorProfileViewFragment);
+        slidingPaneLayout.open();
     }
 }

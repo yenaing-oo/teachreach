@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryContainer"
     android:fillViewport="true"
-    tools:context=".presentation.profile.TutorProfileSelfViewFragment">
+    tools:context=".presentation.profile.tutor.TutorProfileSelfViewFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

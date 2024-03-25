@@ -1,5 +1,6 @@
 package comp3350.teachreach.presentation.booking;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +12,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Locale;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentPaymentBinding;
+import comp3350.teachreach.databinding.FragmentPlaceHolderBinding;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.exceptions.payment.ExpiredCardException;
 import comp3350.teachreach.logic.exceptions.payment.InvalidCVCException;
@@ -128,6 +133,24 @@ public class PaymentFragment extends Fragment
                                                    sessionTime,
                                                    grandTotal,
                                                    location));
+            AlertDialog doneDialog = makeDoneDialog("Congratulations!",
+                                                    "Booking request has been" +
+                                                    " sent to your tutor!",
+                                                    "View My Sessions",
+                                                    (dialog, which) -> {
+                                                        // TO-DO: Jump to
+                                                        // view session
+                                                        NavHostFragment
+                                                                .findNavController(
+                                                                        requireParentFragment().requireParentFragment())
+                                                                .navigate(R.id.actionToStudentProfileSelfViewFragment);
+                                                    },
+                                                    "Done",
+                                                    (dialog, which) -> dialog.dismiss());
+            doneDialog.setOnDismissListener(dialog -> NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToTutorProfileViewFragment));
+            doneDialog.show();
         } catch (InvalidCardNumberException e) {
             tilCardNumber.setError(e.getMessage());
         } catch (InvalidCVCException e) {
@@ -141,12 +164,52 @@ public class PaymentFragment extends Fragment
                               Toast.LENGTH_SHORT)
                     .show();
         } catch (final Throwable e) {
-            e.printStackTrace();
+            AlertDialog errorDialog = makeDoneDialog("Something Bad Happened!",
+                                                     "Booking request " +
+                                                     "mightn't be sent to " +
+                                                     "tutor :(",
+                                                     "Go Back to Tutor Profile",
+                                                     (dialog, which) -> {
+                                                         NavHostFragment
+                                                                 .findNavController(
+                                                                         this)
+                                                                 .navigate(R.id.actionToTutorProfileViewFragment);
+                                                     },
+                                                     "Dismiss",
+                                                     (dialog, which) -> dialog.dismiss());
+            errorDialog.setOnDismissListener(dialog -> {
+                SlidingPaneLayout slidingPaneLayout
+                        =
+                        requireActivity().requireViewById(R.id.searchFragment);
+                slidingPaneLayout.closePane();
+                NavHostFragment
+                        .findNavController(this)
+                        .navigate(R.id.actionToPlaceHolderFragment);
+            });
+            errorDialog.show();
             Toast
                     .makeText(requireContext(),
                               "Tutor mightn't be available for booking",
                               Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private AlertDialog makeDoneDialog(String title,
+                                       String message,
+                                       CharSequence posMsg,
+                                       DialogInterface.OnClickListener posListener,
+                                       CharSequence negMsg,
+                                       DialogInterface.OnClickListener negListener)
+    {
+        return new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setView(FragmentPlaceHolderBinding
+                                 .inflate(this.getLayoutInflater())
+                                 .getRoot())
+                .setPositiveButton(posMsg, posListener)
+                .setNegativeButton(negMsg, negListener)
+                .create();
     }
 }

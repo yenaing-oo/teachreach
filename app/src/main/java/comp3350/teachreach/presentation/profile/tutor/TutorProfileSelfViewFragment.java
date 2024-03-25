@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

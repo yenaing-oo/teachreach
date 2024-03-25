@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation.profile;
+package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -38,8 +39,8 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TRViewModel;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class TutorProfileViewFragment extends Fragment
 {
@@ -140,9 +141,14 @@ public class TutorProfileViewFragment extends Fragment
     {
         MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
         materialToolbar.setTitle(tutorAccount.getUserName());
-        materialToolbar.setNavigationOnClickListener(view -> NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToPlaceHolderFragment));
+        materialToolbar.setNavigationOnClickListener(view -> {
+            SlidingPaneLayout slidingPaneLayout
+                    = requireActivity().requireViewById(R.id.searchFragment);
+            slidingPaneLayout.close();
+            NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToPlaceHolderFragment);
+        });
     }
 
     private void setUpProfile(View v)

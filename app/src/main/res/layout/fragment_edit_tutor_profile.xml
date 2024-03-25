@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".presentation.profile.EditTutorProfileFragment">
+    tools:context=".presentation.profile.tutor.EditTutorProfileFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abTop"

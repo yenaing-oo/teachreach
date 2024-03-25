@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/tutorProfileSelfViewFragment"
-        android:name="comp3350.teachreach.presentation.profile.TutorProfileSelfViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.TutorProfileSelfViewFragment"
         android:label="fragment_tutor_profile_self_view"
         tools:layout="@layout/fragment_tutor_profile_self_view">
         <action
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/editTutorProfileFragment"
-        android:name="comp3350.teachreach.presentation.profile.EditTutorProfileFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.EditTutorProfileFragment"
         android:label="fragment_edit_tutor_profile"
         tools:layout="@layout/fragment_edit_tutor_profile">
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountSettingsFragment"
-        android:name="comp3350.teachreach.presentation.profile.AccountSettingsFragment"
+        android:name="comp3350.teachreach.presentation.profile.account.AccountSettingsFragment"
         android:label="fragment_account_settings"
         tools:layout="@layout/fragment_account_settings">
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingEmail"
-        android:name="comp3350.teachreach.presentation.profile.FragmentChangingEmail"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingEmail"
         android:label="fragment_change_email"
         tools:layout="@layout/fragment_change_email">
         <action
@@ -109,7 +109,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingPassword"
-        android:name="comp3350.teachreach.presentation.profile.FragmentChangingPassword"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingPassword"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password">
         <action

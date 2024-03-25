@@ -20,7 +20,7 @@ import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.TutorHomeActivity;
+import comp3350.teachreach.presentation.home.TutorHomeActivity;
 
 public class TutorSignUpActivity extends AppCompatActivity
 {
