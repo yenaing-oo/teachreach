@@ -35,6 +35,7 @@ import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.TRViewModel;
@@ -50,6 +51,7 @@ public class TutorProfileViewFragment extends Fragment
     private ITutorAvailabilityManager availabilityManager;
 
     private ITutor   tutor;
+    private IStudent student;
     private IAccount tutorAccount;
 
     private Configuration config;
@@ -74,8 +76,9 @@ public class TutorProfileViewFragment extends Fragment
         bookingViewModel = new ViewModelProvider(requireActivity()).get(
                 BookingViewModel.class);
 
-        tutor = trViewModel.getTutor().getValue();
-        assert tutor != null;
+        tutor   = trViewModel.getTutor().getValue();
+        student = trViewModel.getStudent().getValue();
+        assert tutor != null && student != null;
 
         profileHandler      = new TutorProfileHandler(tutor);
         availabilityManager = new TutorAvailabilityManager();
@@ -214,6 +217,7 @@ public class TutorProfileViewFragment extends Fragment
         bookingViewModel.setTimeSlots(slots);
         bookingViewModel.setTutorAccount(tutorAccount);
         bookingViewModel.setTutor(tutor);
+        bookingViewModel.setStudent(student);
         bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations());
         NavHostFragment
                 .findNavController(this)

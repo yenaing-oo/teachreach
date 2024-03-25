@@ -49,7 +49,7 @@ public class TRViewModel extends ViewModel
 
     public void setStudent(IStudent student)
     {
-        this.student.setValue(student);
+        this.student.postValue(student);
     }
 
     public LiveData<ITutor> getTutor()

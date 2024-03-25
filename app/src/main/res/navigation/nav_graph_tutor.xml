@@ -14,24 +14,24 @@
         <action
             android:id="@+id/actionToEditTutorProfileFragment"
             app:destination="@id/editTutorProfileFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTutorProfileSelfViewFragment"
             app:destination="@id/tutorProfileSelfViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/editTutorProfileFragment"
@@ -41,17 +41,17 @@
         <action
             android:id="@+id/actionToEditTutorProfileFragment"
             app:destination="@id/editTutorProfileFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToTutorProfileSelfViewFragment"
             app:destination="@id/tutorProfileSelfViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/accountSettingsFragment"
@@ -61,31 +61,31 @@
         <action
             android:id="@+id/actionToTutorProfileSelfViewFragment"
             app:destination="@id/tutorProfileSelfViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToFragmentChangingEmail"
             app:destination="@id/fragmentChangingEmail"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToFragmentChangingPassword"
             app:destination="@id/fragmentChangingPassword"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingEmail"
@@ -95,17 +95,17 @@
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_fragmentChangingEmail2_to_tutorProfileSelfViewFragment"
             app:destination="@id/tutorProfileSelfViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingPassword"
@@ -115,16 +115,16 @@
         <action
             android:id="@+id/actionToTutorProfileSelfViewFragment"
             app:destination="@id/tutorProfileSelfViewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/actionToAccountSettingsFragment"
             app:destination="@id/accountSettingsFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
+            app:enterAnim="@animator/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>

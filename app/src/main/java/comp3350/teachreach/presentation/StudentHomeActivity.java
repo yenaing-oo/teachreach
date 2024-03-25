@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
@@ -46,10 +47,9 @@ public class StudentHomeActivity extends AppCompatActivity
                               .getAccountDataAccess()
                               .getAccounts()
                               .get(accountId));
-        vm.setStudent(Server
-                              .getStudentDataAccess()
-                              .getStudents()
-                              .get(studentId));
+        AccessStudents accessStudents = new AccessStudents();
+        vm.setStudent(accessStudents.getStudentByAccountID(accountId));
+        assert vm.getStudent() != null;
         vm.setCourses(new ArrayList<>(Server
                                               .getCourseDataAccess()
                                               .getCourses()
