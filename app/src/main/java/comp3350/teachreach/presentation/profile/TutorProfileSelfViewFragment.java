@@ -18,8 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Locale;
 
 import comp3350.teachreach.R;
@@ -117,8 +115,10 @@ public class TutorProfileSelfViewFragment extends Fragment
 
     private void setUpPreferredLocations(View view)
     {
-        Button btnAddLocation = view.findViewById(R.id.btnAddLocation);
-        RecyclerView recycler = view.findViewById(R.id.rvPreferredLocations);
+        Button       btnAddLocation = view.findViewById(R.id.btnAddLocation);
+        RecyclerView recycler
+                                    =
+                view.findViewById(R.id.rvPreferredLocations);
 
         profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
@@ -163,7 +163,7 @@ public class TutorProfileSelfViewFragment extends Fragment
     }
 
     @Override
-    public void onViewCreated(@NotNull View view,
+    public void onViewCreated(@NonNull View view,
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
