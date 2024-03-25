@@ -20,7 +20,7 @@ import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.ITutor;
-import comp3350.teachreach.presentation.profile.TutorProfileViewFragment;
+import comp3350.teachreach.presentation.home.TutorHomeActivity;
 
 public class TutorSignUpActivity extends AppCompatActivity
 {
@@ -40,7 +40,7 @@ public class TutorSignUpActivity extends AppCompatActivity
         String password = etTutorPassword.getText().toString().trim();
         String email    = etTutorEmail.getText().toString().trim();
         String major    = etTutorMajor.getText().toString().trim();
-        String pronoun  = etPronouns.getText().toString();
+        String pronouns = etPronouns.getText().toString();
 
         try {
             tilEmail.setError(null);
@@ -49,8 +49,8 @@ public class TutorSignUpActivity extends AppCompatActivity
             ITutor newTutor = accountCreator.createTutorAccount(email,
                                                                 password,
                                                                 username,
-                                                                major,
-                                                                pronoun);
+                                                                pronouns,
+                                                                major);
 
             Toast
                     .makeText(TutorSignUpActivity.this,
@@ -58,7 +58,8 @@ public class TutorSignUpActivity extends AppCompatActivity
                               Toast.LENGTH_SHORT)
                     .show();
             Intent intent = new Intent(TutorSignUpActivity.this,
-                                       TutorProfileViewFragment.class);
+                                       TutorHomeActivity.class);
+            intent.putExtra("ACCOUNT_ID", newTutor.getAccountID());
             intent.putExtra("TUTOR_ID", newTutor.getTutorID());
 
             startActivity(intent);

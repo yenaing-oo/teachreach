@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -19,13 +20,14 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class SearchTutorRecyclerAdapter
         extends RecyclerView.Adapter<SearchTutorRecyclerAdapter.ViewHolder>
 {
-    static List<ITutor>          tutorList;
-    static IOnTutorClickListener listener;
+    private static List<ITutor>          tutorList;
+    private static IOnTutorClickListener listener;
 
-    public SearchTutorRecyclerAdapter(List<ITutor> tutors, IOnTutorClickListener listener)
+    public SearchTutorRecyclerAdapter(List<ITutor> tutors,
+                                      IOnTutorClickListener listener)
     {
-        tutorList                           = tutors;
-        SearchTutorRecyclerAdapter.listener = listener;
+        SearchTutorRecyclerAdapter.tutorList = tutors;
+        SearchTutorRecyclerAdapter.listener  = listener;
     }
 
     @NonNull
@@ -44,27 +46,73 @@ public class SearchTutorRecyclerAdapter
     public void onBindViewHolder(
             @NonNull SearchTutorRecyclerAdapter.ViewHolder holder, int position)
     {
+        if (position == RecyclerView.NO_POSITION) {
+            return;
+        }
         ITutor              tutor = tutorList.get(position);
         TutorProfileHandler tph   = new TutorProfileHandler(tutor);
 
-        holder.getTvName().setText(tph.getUserName());
-        holder.getTvMajor().setText(tph.getUserMajor());
-        holder
-                .getTvRatings()
-                .setText(String.format(Locale.getDefault(),
-                                       "%.2f",
-                                       tph.getAvgReview()));
-        holder
-                .getTvHourlyRate()
-                .setText(String.format(Locale.getDefault(),
-                                       "%.2f",
-                                       tph.getHourlyRate()));
+        CardView tutorCard = holder.getCardView();
+        TextView tvName    = holder.getTvName();
+        TextView tvMajor   = holder.getTvMajor();
+        TextView tvRatings = holder.getTvRatings();
+        TextView tvPrice   = holder.getTvHourlyRate();
+
+        tutorCard.setOnClickListener(v -> listener.onTutorClick(tutor));
+        tvName.setText(tph.getUserName());
+        tvMajor.setText(tph.getUserMajor());
+        tvRatings.setText(String.format(Locale.getDefault(),
+                                        "%.2f",
+                                        tph.getAvgReview()));
+        tvPrice.setText(String.format(Locale.getDefault(),
+                                      "%.2f",
+                                      tph.getHourlyRate()));
     }
 
     @Override
     public int getItemCount()
     {
         return tutorList.size();
+    }
+
+    public void updateData(List<ITutor> newList)
+    {
+        DiffUtil.DiffResult diffResult
+                = DiffUtil.calculateDiff(new DiffUtil.Callback()
+        {
+            @Override
+            public int getOldListSize()
+            {
+                return tutorList.size();
+            }
+
+            @Override
+            public int getNewListSize()
+            {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition,
+                                           int newItemPosition)
+            {
+                return tutorList.get(oldItemPosition).getTutorID() ==
+                       newList.get(newItemPosition).getTutorID();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition,
+                                              int newItemPosition)
+            {
+                ITutor oldTutor = tutorList.get(oldItemPosition);
+                ITutor newTutor = newList.get(newItemPosition);
+                return oldTutor.getHourlyRate() == newTutor.getHourlyRate() &&
+                       oldTutor.getReviewSum() == newTutor.getReviewSum() &&
+                       oldTutor.getReviewCount() == newTutor.getReviewCount();
+            }
+        });
+        tutorList = newList;
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
@@ -75,14 +123,7 @@ public class SearchTutorRecyclerAdapter
         public ViewHolder(View view)
         {
             super(view);
-            cardView = view.findViewById(R.id.cardTutor);
-            cardView.setOnClickListener(v -> {
-                int pos = getAdapterPosition();
-
-                if (pos != RecyclerView.NO_POSITION) {
-                    listener.onTutorClick(tutorList.get(pos));
-                }
-            });
+            cardView     = view.findViewById(R.id.cardTutor);
             tvName       = view.findViewById(R.id.tvNameField);
             tvMajor      = view.findViewById(R.id.tvMajorField);
             tvRatings    = view.findViewById(R.id.tvRatingsField);

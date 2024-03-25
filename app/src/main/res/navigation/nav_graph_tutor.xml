@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_tutor"
+    app:startDestination="@id/tutorProfileSelfViewFragment">
+
+
+    <fragment
+        android:id="@+id/tutorProfileSelfViewFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.TutorProfileSelfViewFragment"
+        android:label="fragment_tutor_profile_self_view"
+        tools:layout="@layout/fragment_tutor_profile_self_view">
+        <action
+            android:id="@+id/actionToEditTutorProfileFragment"
+            app:destination="@id/editTutorProfileFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/editTutorProfileFragment"
+        android:name="comp3350.teachreach.presentation.profile.tutor.EditTutorProfileFragment"
+        android:label="fragment_edit_tutor_profile"
+        tools:layout="@layout/fragment_edit_tutor_profile">
+        <action
+            android:id="@+id/actionToEditTutorProfileFragment"
+            app:destination="@id/editTutorProfileFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountSettingsFragment"
+        android:name="comp3350.teachreach.presentation.profile.account.AccountSettingsFragment"
+        android:label="fragment_account_settings"
+        tools:layout="@layout/fragment_account_settings">
+        <action
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToFragmentChangingEmail"
+            app:destination="@id/fragmentChangingEmail"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToFragmentChangingPassword"
+            app:destination="@id/fragmentChangingPassword"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingEmail"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingEmail"
+        android:label="fragment_change_email"
+        tools:layout="@layout/fragment_change_email">
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_fragmentChangingEmail2_to_tutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentChangingPassword"
+        android:name="comp3350.teachreach.presentation.profile.account.FragmentChangingPassword"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password">
+        <action
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileSelfViewFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToAccountSettingsFragment"
+            app:destination="@id/accountSettingsFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@animator/nav_default_pop_enter_anim"
+            app:popExitAnim="@animator/nav_default_pop_exit_anim" />
+    </fragment>
+</navigation>

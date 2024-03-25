@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
+import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 
 public class InputValidator
@@ -57,6 +58,13 @@ public class InputValidator
     {
         if (isEmpty(name)) {
             throw new InvalidNameException("Name cannot be empty");
+        }
+    }
+
+    public static void validateInput(String in) throws InvalidInputException
+    {
+        if (isEmpty(in)) {
+            throw new InvalidInputException("Input cannot be empty!");
         }
     }
 

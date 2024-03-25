@@ -17,7 +17,7 @@ import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.presentation.StudentHomeActivity;
+import comp3350.teachreach.presentation.home.StudentHomeActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
 public class StudentLoginActivity extends AppCompatActivity
