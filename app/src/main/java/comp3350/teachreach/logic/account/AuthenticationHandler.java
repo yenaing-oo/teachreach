@@ -1,8 +1,5 @@
 package comp3350.teachreach.logic.account;
 
-import java.util.Map;
-
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
@@ -14,27 +11,27 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
-    private static Map<Integer, IAccount> accounts;
-    private AccessAccounts accessAccounts;
-    private AccessTutors tutorAccess;
-    private AccessStudents studentAccess;
+    private final AccessAccounts accountAccess;
+    private final AccessTutors tutorAccess;
+    private final AccessStudents studentAccess;
 
     public AuthenticationHandler() {
-        this.accessAccounts = new AccessAccounts();
+        this.accountAccess = new AccessAccounts();
         this.tutorAccess = new AccessTutors();
         this.studentAccess = new AccessStudents();
-
-        AuthenticationHandler.accounts = accessAccounts.getAccounts();
     }
 
-    public AuthenticationHandler(IAccountPersistence accountPersistence) {
-        accessAccounts = new AccessAccounts(accountPersistence);
-        AuthenticationHandler.accounts = accessAccounts.getAccounts();
+    public AuthenticationHandler(AccessAccounts accountAccess,
+                                 AccessTutors tutorAccess,
+                                 AccessStudents studentAccess) {
+        this.accountAccess = accountAccess;
+        this.tutorAccess = tutorAccess;
+        this.studentAccess = studentAccess;
     }
 
     @Override
     public IAccount authenticateUser(String email, String plainPassword) throws InvalidCredentialException {
-        for (IAccount account : accounts.values()) {
+        for (IAccount account : accountAccess.getAccounts().values()) {
             if (account.getAccountEmail().equals(email)) {
                 boolean passwordMatches = PasswordManager.verifyPassword(plainPassword, account.getAccountPassword());
                 if (passwordMatches) {
