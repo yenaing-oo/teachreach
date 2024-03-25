@@ -56,6 +56,7 @@ public class MessageHandler implements IMessageHandler
         this.accessMessage =  accessMessage;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
+        this.accessAccounts = accessAccounts;
 
     }
 
@@ -263,56 +264,143 @@ public class MessageHandler implements IMessageHandler
         return accessMessage.retrieveAllGroupsByStudentID(studentID);
     }
 
-    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID){
+//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID){
+//        List<IAccount> users = new ArrayList<>();
+//        List<Integer> groups = new ArrayList<>();
+//
+//        int findStudentID = -1;
+//        int findTutorID = -1;
+//        //find out the original account is a student/tutor
+//        try {
+//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
+//            findStudentID = findStudent.getStudentID();
+//        }
+//        catch(DataAccessException ignored){
+//        }
+//
+//        try {
+//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
+//            findTutorID = findTutor.getTutorID();
+//        }
+//        catch(DataAccessException ignored) {
+//        }
+//
+//        //find all chat groups (Accounts)
+//        if (findStudentID>0){
+//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
+//
+//            if(groups!= null){
+//                for (int group: groups
+//                ) {
+//                    ITutor tutor = accessTutors.getTutorByTutorID(group);
+//                    int tutorAccountID = tutor.getAccountID();
+//
+//                    IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
+//                    users.add(user);
+//
+//                }
+//            }
+//
+//        }
+//        else if (findTutorID>0){
+//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
+//
+//            if(groups!= null){
+//                for (int group: groups
+//                ) {
+//                    IStudent student = accessStudents.getStudentByStudentID(group);
+//                    int studentAccountID = student.getAccountID();
+//                    IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
+//                    users.add(user);
+//
+//                }
+//            }
+//        }
+//
+//        return users;
+//
+//    }
+//
+//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
+//        List<IAccount> users = new ArrayList<>();
+//        List<Integer> groups = new ArrayList<>();
+//
+//        // Initialize findStudentID and findTutorID to 0
+//        int findStudentID = 0;
+//        int findTutorID = 0;
+//
+//        // Initialize users and groups lists where they are declared
+//        try {
+//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
+//            findStudentID = findStudent.getStudentID();
+//        } catch (DataAccessException ignored) {
+//        }
+//
+//        try {
+//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
+//            findTutorID = findTutor.getTutorID();
+//        } catch (DataAccessException ignored) {
+//        }
+//
+//        //find all chat groups (Accounts)
+//        if (findStudentID > 0) {
+//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
+//        } else if (findTutorID > 0) {
+//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
+//        }
+//
+//        // Process retrieved groups
+//        for (int group : groups) {
+//            accessAccounts.getAccountByAccountID(group).ifPresent(users::add);
+//        }
+//
+//        return users;
+//    }
+
+    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
         List<IAccount> users = new ArrayList<>();
-        List<Integer> groups = new ArrayList<>();
 
-        int findStudentID = -1;
-        int findTutorID = -1;
-        //find out the original account is a student/tutor
+        // Determine if the accountID belongs to a student or a tutor
+        IStudent findStudent = null;
+        ITutor findTutor = null;
+
         try {
-            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
-            findStudentID = findStudent.getStudentID();
-        }
-        catch(DataAccessException ignored){
+            findStudent = accessStudents.getStudentByAccountID(accountID);
+        } catch (DataAccessException ignored) {
         }
 
         try {
-            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
-            findTutorID = findTutor.getTutorID();
-        }
-        catch(DataAccessException ignored) {
+            findTutor = accessTutors.getTutorByAccountID(accountID);
+        } catch (DataAccessException ignored) {
         }
 
-        //find all chat groups (Accounts)
-        if (findStudentID>0){
-            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
-
-            if(groups!= null){
-                for (int group: groups
-                ) {
-                    IAccount user = accessAccounts.getAccountByAccountID(group).orElse(null);
+        // Find chat accounts based on the type of the account (student or tutor)
+        if (findStudent != null && findStudent.getAccountID() == accountID) {
+            List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
+            for (int tutorID : tutorIDs) {
+                //???
+                ITutor tutor = accessTutors.getTutorByTutorID(tutorID);
+                int tutorAccountID = tutor.getAccountID();
+                IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
+                if (user != null) {
                     users.add(user);
-
                 }
             }
-
-        }
-        else if (findTutorID>0){
-            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
-
-            if(groups!= null){
-                for (int group: groups
-                ) {
-                    IAccount user = accessAccounts.getAccountByAccountID(group).orElse(null);
+        } else if (findTutor != null && findTutor.getAccountID() == accountID) {
+            List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
+            for (int studentID : studentIDs) {
+                //???
+                IStudent student = accessStudents.getStudentByStudentID(studentID);
+                int studentAccountID = student.getAccountID();
+                IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
+                if (user != null) {
                     users.add(user);
-
                 }
             }
         }
 
         return users;
-
     }
+
 
 }

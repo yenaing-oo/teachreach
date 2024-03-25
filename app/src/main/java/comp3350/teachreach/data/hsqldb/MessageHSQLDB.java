@@ -193,11 +193,11 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> groupsID = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM CHAT_GROUPS where student_ID = ?");
+                    "SELECT GROUP_ID FROM CHAT_GROUPS where student_ID = ? ");
             pst.setInt(1, studentID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                groupsID.add(rs.getInt(1));
+                groupsID.add(rs.getInt("GROUP_ID"));
             }
             pst.close();
             rs.close();
@@ -212,11 +212,11 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> groupsID = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM CHAT_GROUPS where tutor_ID = ? ");
+                    "SELECT GROUP_ID FROM CHAT_GROUPS where tutor_ID = ? ");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                groupsID.add(rs.getInt(1));
+                groupsID.add(rs.getInt("GROUP_ID"));
             }
             pst.close();
             rs.close();
@@ -231,11 +231,12 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> studentIDs = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID where tutor_ID = ? Order by MESSAGES.MESSAGE_ID DESC");
+                    //"SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID where CHAT_GROUPS.tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS where tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                studentIDs.add(rs.getInt(1));
+                studentIDs.add(rs.getInt("STUDENT_ID"));
             }
             pst.close();
             rs.close();
@@ -250,11 +251,21 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> tutorIDs = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID where student_ID = ? Order by MESSAGES.MESSAGE_ID DESC");
+//                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID "+
+//                    "FROM CHAT_GROUPS "+
+//                    "JOIN ("+
+//                    "      SELECT Group_ID, MAX(MESSAGE_ID) AS MAX_MESSAGE_ID "+
+//                    "       FROM MESSAGES "+
+//                     "       GROUP BY Group_ID "+
+//                    ") AS recent_messages ON CHAT_GROUPS.Group_ID = recent_messages.Group_ID "+
+//                    "WHERE tutor_ID = ? "+
+//                    "ORDER BY recent_messages.MAX_MESSAGE_ID DESC");
+                    //"SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
             pst.setInt(1, studentID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                tutorIDs.add(rs.getInt(1));
+                tutorIDs.add(rs.getInt("TUTOR_ID"));
             }
             pst.close();
             rs.close();

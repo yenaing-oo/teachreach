@@ -203,6 +203,30 @@ public class AccessMessageIT {
 
     }
 
+
+    @Test
+    public void test(){
+        assertEquals(1,accessMessage.createGroup(1,1));
+        assertEquals(2,accessMessage.createGroup(2,1));
+        assertEquals(3,accessMessage.createGroup(2,2));
+        List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(2);
+        assertEquals(1,studentIDs.size());
+        System.out.println(studentIDs.get(0));//+"   "+studentIDs.get(1));
+    }
+
+    @Test
+    public void test2(){
+       // assertEquals(1,accessMessage.createGroup(1,1));
+       // assertEquals(2,accessMessage.createGroup(1,2));
+       // assertEquals(2,accessMessage.retrieveAllTutorIDsByStudentID(1).size());
+
+        assertEquals(1,accessMessage.createGroup(2,1));
+        assertEquals(2,accessMessage.createGroup(2,2));
+        List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(2);
+        assertEquals(1,tutorIDs.size());
+        System.out.println(tutorIDs.get(0));
+
+    }
     @After
     public
     void tearDown()

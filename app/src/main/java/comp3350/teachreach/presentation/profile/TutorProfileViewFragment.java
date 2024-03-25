@@ -1,6 +1,7 @@
 package comp3350.teachreach.presentation.profile;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,10 +216,13 @@ public class TutorProfileViewFragment extends Fragment
             int groupID = messageHandler.createGroup(studentID, tutorID);
             MessageModel messageModel = new ViewModelProvider(requireActivity()).get(MessageModel.class);
             messageModel.setGroupID(groupID);
+
+            //trViewModel.setUsers(this.tutorAccount);
         }
         catch (final Exception e) {
                 floatingButton.setError(e.getMessage());
-               // Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show(); //i wanna try?
+            Log.e("GroupCreation", "Error creating group: " + e.getMessage());
+               Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show(); //i wanna try?
             Snackbar.make(floatingButton, e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }

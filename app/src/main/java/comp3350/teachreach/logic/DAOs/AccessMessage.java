@@ -80,7 +80,7 @@ public class AccessMessage {
 
     public List<Integer> retrieveAllGroupsByStudentID(int studentID){
         try{
-            return messagePersistence.retrieveAllGroupsByTutorID(studentID);
+            return messagePersistence.retrieveAllGroupsByStudentID(studentID);
         }
         catch (final Exception e) {
             throw new DataAccessException("Exception on searching Group By student ID!", e);
@@ -92,7 +92,7 @@ public class AccessMessage {
             return messagePersistence.retrieveAllTutorIDsByStudentID(studentID);
         }
         catch (final Exception e) {
-            throw new DataAccessException("Exception on searching Group By student ID!", e);
+            throw new DataAccessException("Exception on searching Tutors By student ID!", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class AccessMessage {
             return messagePersistence.retrieveAllStudentIDsByTutorID(tutorID);
         }
         catch (final Exception e) {
-            throw new DataAccessException("Exception on searching Group By student ID!", e);
+            throw new DataAccessException("Exception on searching Students By student ID!", e);
         }
     }
 

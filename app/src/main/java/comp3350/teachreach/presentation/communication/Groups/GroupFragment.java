@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Objects;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentGroupBinding;
@@ -46,6 +47,8 @@ public class GroupFragment extends Fragment {
     private int accountID;
     private RecyclerView recyclerView;
 
+    List<IAccount> contactAccounts;
+
 
 
     @Override
@@ -54,6 +57,7 @@ public class GroupFragment extends Fragment {
         super.onCreate(savedInstanceState);
         messageHandler = new MessageHandler();
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        contactAccounts = messageHandler.retrieveAllChatAccountsByAccountID(Objects.requireNonNull(vm.getAccount().getValue()).getAccountID());
 //        LiveData<IAccount> accountLiveData = vm.getAccount();
 //        accountLiveData.observe(this, account -> {
 //            // Extract the int value from the IAccount object
@@ -83,21 +87,22 @@ public class GroupFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView(recyclerView);
 
-        vm.getUsers().observe(getViewLifecycleOwner(), new Observer<List<IAccount>>() {
-            @Override
-            public void onChanged(List<IAccount> userList) {
-                // Update the RecyclerView adapter with the new list of users
-                UsersAdapter usersAdapter = new UsersAdapter(userList);
-                recyclerView.setAdapter(usersAdapter);
-            }
-        });
+//        vm.getUsers().observe(getViewLifecycleOwner(), new Observer<List<IAccount>>() {
+//            @Override
+//            public void onChanged(List<IAccount> userList) {
+//                // Update the RecyclerView adapter with the new list of users
+//                UsersAdapter usersAdapter = new UsersAdapter(userList);
+//                recyclerView.setAdapter(usersAdapter);
+//            }
+//        });
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView)
     {
-
+       contactAccounts = messageHandler.retrieveAllChatAccountsByAccountID(accountID);
+       vm.setUsers(contactAccounts);
         UsersAdapter usersAdapter = new UsersAdapter(
-                vm.getUsers().getValue()
+                contactAccounts
         );
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

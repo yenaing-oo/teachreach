@@ -66,7 +66,7 @@ public class TRViewModel extends ViewModel
 
     public void setUsers(List<IAccount> users)
     {
-        this.users.setValue(users);
+        this.users.postValue(users);
     }
 
     public LiveData<IAccount> getAccount()
