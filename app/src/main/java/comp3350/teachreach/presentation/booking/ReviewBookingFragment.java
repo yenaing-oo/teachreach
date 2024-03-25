@@ -80,13 +80,16 @@ public class ReviewBookingFragment extends Fragment
         ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
         IAccount   account     = bookingViewModel.getTutorAccount().getValue();
         ITutor     tutor       = bookingViewModel.getTutor().getValue();
-        String location = bookingViewModel.getSessionLocation().getValue();
+        String     location    = bookingViewModel
+                .getSessionLocation()
+                .getValue();
         if (location == null) {
             location = "TBD";
             bookingViewModel.setSessionLocation(location);
         }
         double price = (double) sessionTime.getDuration().toMinutes() / 60 *
                        tutor.getHourlyRate();
+        bookingViewModel.setSessionPrice(price);
         assert account != null;
         tutorName.setText(account.getUserName());
         sDate.setText(sessionTime
