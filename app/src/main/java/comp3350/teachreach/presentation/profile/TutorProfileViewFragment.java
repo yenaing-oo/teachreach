@@ -70,7 +70,7 @@ public class TutorProfileViewFragment extends Fragment
                 =
                 new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        tutorProfileViewModel = new ViewModelProvider(requireActivity()).get(
+        tutorProfileViewModel = new ViewModelProvider(this).get(
                 TutorProfileViewModel.class);
 
         bookingViewModel = new ViewModelProvider(requireActivity()).get(
@@ -124,9 +124,9 @@ public class TutorProfileViewFragment extends Fragment
 
         StringRecyclerAdapter a = new StringRecyclerAdapter(
                 tutorProfileViewModel.getTutoredCoursesCode().getValue());
-
+        int spanCount = isLarge || isLandscape ? 6 : 3;
         RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              3);
+                                                              spanCount);
 
         r.setAdapter(a);
         r.setLayoutManager(lm);
@@ -172,7 +172,7 @@ public class TutorProfileViewFragment extends Fragment
         StringRecyclerAdapter adapter = new StringRecyclerAdapter(
                 tutorProfileViewModel.getPreferredLocations().getValue());
 
-        int spanCount = isLarge || isLandscape ? 6 : 3;
+        int spanCount = isLarge || isLandscape ? 6 : 2;
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
                 requireContext(),

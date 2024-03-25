@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSecondaryContainer"
+    android:background="?attr/colorPrimaryContainer"
     android:fillViewport="true"
     tools:context=".presentation.profile.TutorProfileViewFragment">
 
@@ -15,6 +15,7 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/abTop"
+            style="@style/Widget.App.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -274,7 +275,7 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fabMsg"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

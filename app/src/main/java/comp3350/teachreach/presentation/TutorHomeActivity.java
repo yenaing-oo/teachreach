@@ -11,8 +11,6 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.navigation.NavigationBarView;
 
-import java.util.ArrayList;
-
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.objects.interfaces.IAccount;
@@ -55,14 +53,6 @@ public class TutorHomeActivity extends AppCompatActivity
         vm.setAccount(account);
         vm.setTutor(tutor);
         vm.setIsTutor();
-        vm.setCourses(new ArrayList<>(Server
-                                              .getCourseDataAccess()
-                                              .getCourses()
-                                              .values()));
-        vm.setTutors(new ArrayList<>(Server
-                                             .getTutorDataAccess()
-                                             .getTutors()
-                                             .values()));
         TutorProfileViewModel profileViewModel
                 = new ViewModelProvider(this).get(TutorProfileViewModel.class);
         profileViewModel.setTutor(tutor);

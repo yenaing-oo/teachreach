@@ -3,8 +3,8 @@
     <style name="Base.Theme.TeachReach" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/material_dynamic_primary70</item>
         <item name="colorSecondary">@color/material_dynamic_secondary70</item>
-        <item name="colorOnSurface">@color/material_dynamic_primary30</item>
-        <item name="colorSurface">@color/material_dynamic_neutral90</item>
+        <item name="colorSurface">@color/material_dynamic_secondary90</item>
+        <item name="colorOnSurface">@color/material_dynamic_secondary30</item>
         <item name="colorPrimaryInverse">@color/material_dynamic_primary20
         </item>
         <item name="colorTertiary">@color/material_dynamic_tertiary90</item>
