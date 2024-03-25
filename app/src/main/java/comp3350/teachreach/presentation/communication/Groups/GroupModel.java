@@ -13,6 +13,16 @@ public class GroupModel extends ViewModel {
 
     private final MutableLiveData<Integer> groupID = new MutableLiveData<>();
 
+    private final  MutableLiveData<Integer> otherAccountID = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getOtherAccountID() {
+        return otherAccountID;
+    }
+
+    public void setOtherAccountID(MutableLiveData<Integer> otherAccountID ) {
+        this.otherAccountID.setValue(otherAccountID.getValue());
+    }
+
     public MutableLiveData<Integer> getGroupID() {
         return groupID;
     }
