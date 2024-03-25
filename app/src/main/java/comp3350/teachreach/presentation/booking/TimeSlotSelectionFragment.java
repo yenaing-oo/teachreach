@@ -19,6 +19,7 @@ import java.util.List;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
@@ -39,9 +40,9 @@ public class TimeSlotSelectionFragment extends Fragment
     private              OnTimeSlotSelectedListener timeSlotSelectedListener;
     private              List<ITimeSlice>           timeSlots;
     private              int                        tutorID;
-    private              LocalDate                  selectedDate;
-    private              TutorAvailabilityManager   tutorAvailabilityManager;
-    private              AccessTutors               accessTutors;
+    private LocalDate selectedDate;
+    private ITutorAvailabilityManager tutorAvailabilityManager;
+    private AccessTutors accessTutors;
 
     public TimeSlotSelectionFragment()
     {

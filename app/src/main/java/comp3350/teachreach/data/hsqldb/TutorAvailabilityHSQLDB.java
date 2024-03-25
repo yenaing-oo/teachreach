@@ -83,8 +83,9 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
             Date sqlDate = DateTimeUtils.toSqlDate(date);
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * " + "FROM TUTOR_AVAILABILITY " +
-                    "WHERE TUTOR_ID = ? " +
-                    "  AND CAST(START_DATE_TIME AS DATE) = ?;");
+                            "WHERE TUTOR_ID = ? " +
+                            "  AND CAST(START_DATE_TIME AS DATE) = ? " +
+                            "  AND START_DATE_TIME > CURRENT_TIMESTAMP;");
             pst.setInt(1, tutor.getTutorID());
             pst.setDate(2, sqlDate);
             final ResultSet rs = pst.executeQuery();
