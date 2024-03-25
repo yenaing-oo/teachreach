@@ -89,8 +89,7 @@ public class TimeSlice implements ITimeSlice {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TimeSlice) {
-            TimeSlice that = (TimeSlice) obj;
+        if (obj instanceof TimeSlice that) {
             return this.startTime.equals(that.startTime) && this.endTime.equals(that.endTime);
         }
         return false;
