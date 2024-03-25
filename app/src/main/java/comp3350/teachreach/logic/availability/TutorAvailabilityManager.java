@@ -4,7 +4,6 @@ import org.threeten.bp.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.data.interfaces.ISessionPersistence;
@@ -63,39 +62,21 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager
     }
 
     @Override
-    public void addAvailability(ITutor tutor, ITimeSlice timeRange)
-    {
+    public void addAvailability(ITutor tutor, ITimeSlice timeRange) throws TutorAvailabilityManagerException {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
-        tutorAvailability
-                .stream()
-                .filter(t -> t.conflictsWith(timeRange))
-                .findFirst()
-                .ifPresentOrElse(t -> {
-                    try {
-                        removeAvailability(tutor, t);
-                    } catch (TutorAvailabilityManagerException e) {
-                        throw new NoSuchElementException(e.getMessage());
-                    }
-                    t.mergeWith(timeRange);
-                    accessTutorAvailability.addAvailability(tutor, t);
-                }, () -> {
-                    accessTutorAvailability.addAvailability(tutor, timeRange);
-                });
-        //        if (doesNotConflict(timeRange, tutorAvailability)) {
-        //            accessTutorAvailability.addAvailability(tutor, timeRange);
-        //        } else {
-        //
-        //            throw new TutorAvailabilityManagerException(
-        //                    "Cannot add availability that overlaps with
-        //                    existing " +
-        //                    "availability");
-        //        }
+        if (!overlapsExistingAvailability(timeRange, tutorAvailability)) {
+            accessTutorAvailability.addAvailability(tutor, timeRange);
+        } else {
+            throw new TutorAvailabilityManagerException(
+                    "Cannot add availability that overlaps with" +
+                            "existing " +
+                            "availability");
+        }
     }
 
     @Override
     public void removeAvailability(ITutor tutor, ITimeSlice timeRange)
-            throws TutorAvailabilityManagerException
-    {
+            throws TutorAvailabilityManagerException {
         List<ITimeSlice> tutorAvailability = getAvailability(tutor);
         if (tutorAvailability.contains(timeRange)) {
             accessTutorAvailability.removeAvailability(tutor, timeRange);
@@ -105,15 +86,13 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager
         }
     }
 
-    private boolean doesNotConflict(ITimeSlice timeSlice,
-                                    List<ITimeSlice> timeSlices)
-    {
-        return timeSlices.stream().noneMatch(t -> t.conflictsWith(timeSlice));
+    private boolean overlapsExistingAvailability(ITimeSlice timeSlice,
+                                                 List<ITimeSlice> timeSlices) {
+        return timeSlices.stream().anyMatch(t -> t.conflictsWith(timeSlice));
     }
 
     private ITimeSlice getAvailableTimeRange(ITimeSlice timeSlice,
-                                             List<ITimeSlice> timeSlices)
-    {
+                                             List<ITimeSlice> timeSlices) {
         return timeSlices
                 .stream()
                 .filter(t -> t.canContain(timeSlice))
