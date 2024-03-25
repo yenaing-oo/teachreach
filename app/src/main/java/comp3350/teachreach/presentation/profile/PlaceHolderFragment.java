@@ -1,4 +1,4 @@
-package comp3350.teachreach.presentation;
+package comp3350.teachreach.presentation.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

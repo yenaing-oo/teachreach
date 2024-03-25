@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/placeHolderFragment"
-        android:name="comp3350.teachreach.presentation.PlaceHolderFragment"
+        android:name="comp3350.teachreach.presentation.profile.PlaceHolderFragment"
         android:label="fragment_place_holder"
         tools:layout="@layout/fragment_place_holder">
         <action

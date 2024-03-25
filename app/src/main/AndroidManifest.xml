@@ -14,13 +14,7 @@
             android:name=".presentation.StudentHomeActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.booking.PaymentActivity"
-            android:exported="false" />
-        <activity
             android:name=".presentation.TutorHomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.booking.BookingActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.signup.TutorSignUpActivity"
@@ -33,9 +27,6 @@
             android:exported="false" />
         <activity
             android:name=".presentation.signup.StudentSignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".presentation.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"

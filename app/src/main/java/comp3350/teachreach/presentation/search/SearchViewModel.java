@@ -15,6 +15,12 @@ public class SearchViewModel extends ViewModel
     private final MutableLiveData<List<ITutor>> tutors = new MutableLiveData<>(
             new ArrayList<>(Server.getTutorDataAccess().getTutors().values()));
 
+    private final MutableLiveData<List<String>> courses = new MutableLiveData<>(
+            new ArrayList<>(Server
+                                    .getCourseDataAccess()
+                                    .getCourses()
+                                    .keySet()));
+
     private final MutableLiveData<List<ITutor>> tutorsFiltered
             = new MutableLiveData<>();
 
@@ -36,6 +42,11 @@ public class SearchViewModel extends ViewModel
     public LiveData<List<ITutor>> getTutors()
     {
         return tutors;
+    }
+
+    public LiveData<List<String>> getCourses()
+    {
+        return courses;
     }
 
     public void postTutors(List<ITutor> l)

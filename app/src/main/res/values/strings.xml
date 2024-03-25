@@ -124,4 +124,9 @@
     <string name="tilCVCHint">CVC</string>
     <string name="paymentMessage">Payment will be processed once session request is accepted by tutor.</string>
     <string name="priceMessage">"Your total is: "</string>
+    <string name="tilReviewsHint">Minimum stars</string>
+    <string name="tilMinPriceHint">$ min</string>
+    <string name="tilMaxPriceHint">$ max</string>
+    <string name="sortByPrice">Sort By Price</string>
+    <string name="sortByReviews">Sort By Ratings</string>
 </resources>
