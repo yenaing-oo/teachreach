@@ -26,10 +26,10 @@ import comp3350.teachreach.objects.interfaces.ISession;
 public class AccessSessionsTest {
 
     @Mock
-    private ISessionPersistence sessionPersistence;
+    ISessionPersistence sessionPersistence;
 
     @InjectMocks
-    private AccessSessions accessSessions;
+    AccessSessions accessSessions;
 
     @Test
     public void getSessionsTest() {
