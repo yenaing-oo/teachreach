@@ -176,8 +176,8 @@ public class PaymentFragment extends Fragment
                                                                  .navigate(R.id.actionToTutorProfileViewFragment);
                                                      },
                                                      "Dismiss",
-                                                     (dialog, which) -> dialog.dismiss());
-            errorDialog.setOnDismissListener(dialog -> {
+                                                     (dialog, which) -> dialog.cancel());
+            errorDialog.setOnCancelListener(dialog -> {
                 SlidingPaneLayout slidingPaneLayout
                         =
                         requireActivity().requireViewById(R.id.searchFragment);
