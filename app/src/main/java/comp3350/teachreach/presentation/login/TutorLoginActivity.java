@@ -40,8 +40,6 @@ public class TutorLoginActivity extends AppCompatActivity
         etTutorEmail     = tilTutorEmail.getEditText();
         etTutorPassword  = tilTutorPassword.getEditText();
 
-        authenticationHandler = new AuthenticationHandler();
-
         mtTopBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         btnLogin.setOnClickListener(v -> login());
         btnSignUp.setOnClickListener(v -> startActivity(new Intent(
@@ -56,6 +54,7 @@ public class TutorLoginActivity extends AppCompatActivity
         try {
             tilTutorEmail.setError(null);
             tilTutorPassword.setError(null);
+            authenticationHandler = new AuthenticationHandler();
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
             ITutor tutor = authenticationHandler.authenticateTutor(email,
@@ -71,7 +70,12 @@ public class TutorLoginActivity extends AppCompatActivity
         } catch (final InvalidPasswordException e) {
             tilTutorPassword.setError(e.getMessage());
         } catch (final Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            Toast
+                    .makeText(this,
+                              "Please clear app storage and try again",
+                              Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }

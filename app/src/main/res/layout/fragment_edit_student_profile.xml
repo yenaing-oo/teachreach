@@ -26,94 +26,98 @@
             app:title="@string/fabEditProfile" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEditName"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="32"
+                    app:endIconMode="clear_text"
+                    app:errorEnabled="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="256dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/tilEditNameHint" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEditMajor"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="64"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tilEditName"
+                    app:layout_constraintVertical_bias="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="256dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/tilEditMajorHint" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEditPronouns"
+                    style="@style/Widget.App.TextInputLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tilEditMajor"
+                    app:layout_constraintVertical_bias="0">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="256dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/tilEditPronounsHint" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/fabApply"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEditName"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                app:counterEnabled="true"
-                app:counterMaxLength="32"
-                app:endIconMode="clear_text"
-                app:errorEnabled="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="256dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/tilEditNameHint" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEditMajor"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                app:counterEnabled="true"
-                app:counterMaxLength="64"
-                app:endIconMode="clear_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilEditName"
-                app:layout_constraintVertical_bias="0">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="256dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/tilEditMajorHint" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilEditPronouns"
-                style="@style/Widget.App.TextInputLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                app:endIconMode="clear_text"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tilEditMajor"
-                app:layout_constraintVertical_bias="0">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="256dp"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/tilEditPronounsHint" />
-            </com.google.android.material.textfield.TextInputLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <Button
-        android:id="@+id/fabApply"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/fabApply"
-        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-        app:icon="@drawable/ic_done_24" />
+            android:layout_gravity="bottom|end"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/fabApply"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:icon="@drawable/ic_done_24" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>
 

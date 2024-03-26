@@ -26,6 +26,7 @@ public class TeachReachTest
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
             = new ActivityScenarioRule<>(MainActivity.class);
+
     //system test for login
     @Test
     public void testSuccessfulLogin()
@@ -39,6 +40,6 @@ public class TeachReachTest
 
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
 
-        onView(withId(R.id.navigation_menu)).check(matches(isDisplayed()));
+        onView(withId(R.id.navigationMenu)).check(matches(isDisplayed()));
     }
 }

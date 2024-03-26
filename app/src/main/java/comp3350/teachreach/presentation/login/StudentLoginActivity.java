@@ -40,8 +40,6 @@ public class StudentLoginActivity extends AppCompatActivity
         Button          btnSignUp = findViewById(R.id.btnSignupAsStudent);
         MaterialToolbar mtTopBar  = findViewById(R.id.topAppBar);
 
-        authenticationHandler = new AuthenticationHandler();
-
         mtTopBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         btnLogin.setOnClickListener(v -> login());
         btnSignUp.setOnClickListener(v -> {
@@ -59,6 +57,7 @@ public class StudentLoginActivity extends AppCompatActivity
         try {
             tilStudentEmail.setError(null);
             tilStudentPassword.setError(null);
+            authenticationHandler = new AuthenticationHandler();
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
             IStudent student = authenticationHandler.authenticateStudent(email,
@@ -74,7 +73,12 @@ public class StudentLoginActivity extends AppCompatActivity
         } catch (final InvalidPasswordException e) {
             tilStudentPassword.setError(e.getMessage());
         } catch (final Exception e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            Toast
+                    .makeText(this,
+                              "Please clear app storage and try again",
+                              Toast.LENGTH_LONG)
+                    .show();
         }
     }
 }
