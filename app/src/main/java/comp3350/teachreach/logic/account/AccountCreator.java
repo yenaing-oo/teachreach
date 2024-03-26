@@ -1,9 +1,6 @@
 package comp3350.teachreach.logic.account;
 
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
-import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
@@ -23,23 +20,21 @@ public class AccountCreator implements IAccountCreator
 {
     private static final Object         lock           = new Object();
     private static       AccessAccounts accessAccounts = null;
-    private static       AccessStudents accessStudents = null;
-    private static       AccessTutors   accessTutors   = null;
+    private static AccessStudents accessStudents = null;
+    private static AccessTutors accessTutors = null;
 
-    public AccountCreator()
-    {
+    public AccountCreator() {
         accessAccounts = new AccessAccounts();
         accessStudents = new AccessStudents();
-        accessTutors   = new AccessTutors();
+        accessTutors = new AccessTutors();
     }
 
-    public AccountCreator(IAccountPersistence accounts,
-                          IStudentPersistence students,
-                          ITutorPersistence tutors)
-    {
-        accessAccounts = new AccessAccounts(accounts);
-        accessStudents = new AccessStudents(students);
-        accessTutors   = new AccessTutors(tutors);
+    public AccountCreator(AccessAccounts accessAccounts,
+                          AccessStudents accessStudents,
+                          AccessTutors accessTutors) {
+        AccountCreator.accessAccounts = accessAccounts;
+        AccountCreator.accessStudents = accessStudents;
+        AccountCreator.accessTutors = accessTutors;
     }
 
     private static IAccount createAccount(String email,
