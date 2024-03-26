@@ -26,7 +26,8 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class ReviewBookingFragment extends Fragment
 {
-    private BookingViewModel bookingViewModel;
+    private FragmentReviewBookingBinding binding;
+    private BookingViewModel             bookingViewModel;
 
     public ReviewBookingFragment()
     {
@@ -45,9 +46,10 @@ public class ReviewBookingFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentReviewBookingBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentReviewBookingBinding.inflate(inflater,
+                                                       container,
+                                                       false);
+        return binding.getRoot();
     }
 
     @Override
@@ -55,34 +57,32 @@ public class ReviewBookingFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        fillUpBookingDetails(view);
-        setUpButtons(view);
+        fillUpBookingDetails();
+        setUpButtons();
     }
 
-    private void setUpButtons(View view)
+    private void setUpButtons()
     {
-        Button        cancelButton  = view.findViewById(R.id.cancelButton);
-        Button        confirmButton = view.findViewById(R.id.confirmButton);
+        Button        cancelButton  = binding.cancelButton;
+        Button        confirmButton = binding.confirmButton;
         NavController navController = NavHostFragment.findNavController(this);
         cancelButton.setOnClickListener(v -> navController.navigateUp());
         confirmButton.setOnClickListener(v -> navController.navigate(R.id.actionToPaymentFragment));
     }
 
-    private void fillUpBookingDetails(View view)
+    private void fillUpBookingDetails()
     {
-        TextView tutorName = view.findViewById(R.id.tvNameField);
-        TextView sDate     = view.findViewById(R.id.tvSessionDateField);
-        TextView sTime     = view.findViewById(R.id.tvSessionTimeField);
-        TextView sDuration = view.findViewById(R.id.tvSessionDurationField);
-        TextView sPrice    = view.findViewById(R.id.tvSessionPriceField);
-        TextView sLocation = view.findViewById(R.id.tvSessionLocationField);
+        TextView tutorName = binding.tvNameField;
+        TextView sDate     = binding.tvSessionDateField;
+        TextView sTime     = binding.tvSessionTimeField;
+        TextView sDuration = binding.tvSessionDurationField;
+        TextView sPrice    = binding.tvSessionPriceField;
+        TextView sLocation = binding.tvSessionLocationField;
 
         ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
         IAccount   account     = bookingViewModel.getTutorAccount().getValue();
         ITutor     tutor       = bookingViewModel.getTutor().getValue();
-        String     location    = bookingViewModel
-                .getSessionLocation()
-                .getValue();
+        String location = bookingViewModel.getSessionLocation().getValue();
         if (location == null) {
             location = "TBD";
             bookingViewModel.setSessionLocation(location);

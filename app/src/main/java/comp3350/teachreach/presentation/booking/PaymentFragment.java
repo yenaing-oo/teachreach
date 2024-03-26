@@ -44,8 +44,9 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class PaymentFragment extends Fragment
 {
-    private Double          grandTotal;
-    private TextInputLayout tilCardNumber, tilExpDate, tilCVC;
+    private FragmentPaymentBinding binding;
+    private Double                 grandTotal;
+    private TextInputLayout        tilCardNumber, tilExpDate, tilCVC;
     private BookingViewModel bookingViewModel;
     private EditText         cardNumber, expDate, cVc;
 
@@ -66,9 +67,8 @@ public class PaymentFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentPaymentBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentPaymentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -76,31 +76,31 @@ public class PaymentFragment extends Fragment
                               @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        setUpButtons(view);
-        setUpTextFields(view);
+        setUpButtons();
+        setUpTextFields();
     }
 
-    private void setUpTextFields(View view)
+    private void setUpTextFields()
     {
         grandTotal = bookingViewModel.getSessionPrice().getValue();
-        TextView tvGrandTotal = view.findViewById(R.id.tvTotalField);
+        TextView tvGrandTotal = binding.tvTotalField;
         tvGrandTotal.setText(String.format(Locale.getDefault(),
                                            "$%.2f",
                                            grandTotal));
 
-        tilCardNumber = view.findViewById(R.id.tilCardNumber);
-        tilExpDate    = view.findViewById(R.id.tilExpDate);
-        tilCVC        = view.findViewById(R.id.tilCVC);
+        tilCardNumber = binding.tilCardNumber;
+        tilExpDate    = binding.tilExpDate;
+        tilCVC        = binding.tilCVC;
 
         cardNumber = tilCardNumber.getEditText();
         expDate    = tilExpDate.getEditText();
         cVc        = tilCVC.getEditText();
     }
 
-    private void setUpButtons(View view)
+    private void setUpButtons()
     {
-        Button        cancelButton  = view.findViewById(R.id.cancelButton);
-        Button        confirmButton = view.findViewById(R.id.confirmButton);
+        Button        cancelButton  = binding.cancelButton;
+        Button        confirmButton = binding.confirmButton;
         NavController navController = NavHostFragment.findNavController(this);
         cancelButton.setOnClickListener(v -> navController.navigateUp());
         confirmButton.setOnClickListener(v -> confirmBooking());

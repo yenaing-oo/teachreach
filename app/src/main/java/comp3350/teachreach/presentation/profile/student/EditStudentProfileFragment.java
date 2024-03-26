@@ -45,10 +45,9 @@ public class EditStudentProfileFragment extends Fragment
 
     private void setUpInputBoxes()
     {
-        View v = binding.getRoot();
-        tilName     = v.findViewById(R.id.tilEditName);
-        tilMajor    = v.findViewById(R.id.tilEditMajor);
-        tilPronouns = v.findViewById(R.id.tilEditPronouns);
+        tilName     = binding.tilEditName;
+        tilMajor    = binding.tilEditMajor;
+        tilPronouns = binding.tilEditPronouns;
         etName      = tilName.getEditText();
         etPronouns  = tilPronouns.getEditText();
         etMajor     = tilMajor.getEditText();
@@ -65,9 +64,7 @@ public class EditStudentProfileFragment extends Fragment
 
     protected void setUpTopBar()
     {
-        MaterialToolbar mtTopBar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
+        MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setNavigationOnClickListener(view -> {
             NavController navController
                     = NavHostFragment.findNavController(this);
@@ -77,7 +74,7 @@ public class EditStudentProfileFragment extends Fragment
 
     private void setUpApplyButton()
     {
-        btnApply = binding.getRoot().findViewById(R.id.fabApply);
+        btnApply = binding.fabApply;
         btnApply.setOnClickListener(view -> {
             if (applyChanges()) {
                 goBack();

@@ -48,6 +48,8 @@ public class TutorProfileViewFragment extends Fragment
     private TRViewModel           trViewModel;
     private BookingViewModel      bookingViewModel;
 
+    private FragmentTutorProfileBinding binding;
+
     private ITutorProfileHandler      profileHandler;
     private ITutorAvailabilityManager availabilityManager;
 
@@ -95,9 +97,10 @@ public class TutorProfileViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentTutorProfileBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentTutorProfileBinding.inflate(inflater,
+                                                      container,
+                                                      false);
+        return binding.getRoot();
     }
 
     @Override
@@ -110,16 +113,16 @@ public class TutorProfileViewFragment extends Fragment
                     =
                 config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
-        setUpProfile(view);
-        setUpTopBar(view);
-        setUpTutoredCourses(view);
-        setUpPreferredLocations(view);
-        setUpCalendarView(view);
+        setUpProfile();
+        setUpTopBar();
+        setUpTutoredCourses();
+        setUpPreferredLocations();
+        setUpCalendarView();
     }
 
-    private void setUpTutoredCourses(View v)
+    private void setUpTutoredCourses()
     {
-        RecyclerView r = v.findViewById(R.id.rvTutoredCourses);
+        RecyclerView r = binding.rvTutoredCourses;
 
         tutorProfileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
@@ -137,9 +140,9 @@ public class TutorProfileViewFragment extends Fragment
                 .observe(getViewLifecycleOwner(), a::updateData);
     }
 
-    private void setUpTopBar(View v)
+    private void setUpTopBar()
     {
-        MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
+        MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle(tutorAccount.getUserName());
         materialToolbar.setNavigationOnClickListener(view -> {
             SlidingPaneLayout slidingPaneLayout
@@ -151,12 +154,12 @@ public class TutorProfileViewFragment extends Fragment
         });
     }
 
-    private void setUpProfile(View v)
+    private void setUpProfile()
     {
-        TextView tvPronouns = v.findViewById(R.id.tvPronounsField);
-        TextView tvMajor    = v.findViewById(R.id.tvMajorField);
-        TextView tvPrice    = v.findViewById(R.id.tvRatingField);
-        TextView tvReviews  = v.findViewById(R.id.tvReviewsField);
+        TextView tvPronouns = binding.tvPronounsField;
+        TextView tvMajor    = binding.tvMajorField;
+        TextView tvPrice    = binding.tvRatingField;
+        TextView tvReviews  = binding.tvReviewsField;
 
         tvPronouns.setText(tutorAccount.getUserPronouns());
         tvMajor.setText(tutorAccount.getUserMajor());
@@ -169,9 +172,9 @@ public class TutorProfileViewFragment extends Fragment
                                         profileHandler.getReviewCount()));
     }
 
-    private void setUpPreferredLocations(View v)
+    private void setUpPreferredLocations()
     {
-        RecyclerView recycler = v.findViewById(R.id.rvPreferredLocations);
+        RecyclerView recycler = binding.rvPreferredLocations;
 
         tutorProfileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
@@ -191,9 +194,9 @@ public class TutorProfileViewFragment extends Fragment
                 .observe(getViewLifecycleOwner(), adapter::updateData);
     }
 
-    private void setUpCalendarView(View view)
+    private void setUpCalendarView()
     {
-        CalendarView calendarView = view.findViewById(R.id.cvCalendarBook);
+        CalendarView calendarView = binding.cvCalendarBook;
         Date         date         = Date.from(Instant.now());
         calendarView.setMinDate(date.getTime());
         calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y,
