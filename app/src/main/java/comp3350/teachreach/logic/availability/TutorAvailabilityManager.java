@@ -5,10 +5,7 @@ import org.threeten.bp.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.data.interfaces.ITutorAvailabilityPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.logic.DAOs.AccessTutorAvailability;
 import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
@@ -17,18 +14,15 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class TutorAvailabilityManager implements ITutorAvailabilityManager
 {
 
-    private final ITutorAvailabilityPersistence accessTutorAvailability;
+    private final AccessTutorAvailability accessTutorAvailability;
 
     public TutorAvailabilityManager()
     {
-        this.accessTutorAvailability = Server.getTutorAvailabilityAccess();
+        this.accessTutorAvailability = new AccessTutorAvailability();
     }
 
-    public TutorAvailabilityManager(ITutorAvailabilityPersistence tutorAvailabilityPersistence,
-                                    ITutorPersistence tutorPersistence,
-                                    ISessionPersistence sessionPersistence)
-    {
-        this.accessTutorAvailability = tutorAvailabilityPersistence;
+    public TutorAvailabilityManager(AccessTutorAvailability accessTutorAvailability) {
+        this.accessTutorAvailability = accessTutorAvailability;
     }
 
     @Override

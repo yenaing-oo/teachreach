@@ -3,10 +3,6 @@ package comp3350.teachreach.logic.profile;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.data.interfaces.ICoursePersistence;
-import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
@@ -30,22 +26,21 @@ class TutorProfileHandler implements ITutorProfileHandler
     public
     TutorProfileHandler()
     {
-        accessTutors         = new AccessTutors();
-        accessTutoredCourses = new AccessTutoredCourses();
-        accessCourses        = new AccessCourses();
-        accessTutorLocation  = new AccessTutorLocation();
+        this.accessTutors = new AccessTutors();
+        this.accessTutoredCourses = new AccessTutoredCourses();
+        this.accessCourses = new AccessCourses();
+        this.accessTutorLocation = new AccessTutorLocation();
     }
 
-    public
-    TutorProfileHandler(ITutorPersistence tutorPersistence,
-                        ICoursePersistence coursePersistence,
-                        ITutoredCoursesPersistence tutoredCoursesPersistence,
-                        ITutorLocationPersistence locationPersistence)
-    {
-        accessTutors         = new AccessTutors(tutorPersistence);
-        accessTutoredCourses = new AccessTutoredCourses(tutoredCoursesPersistence);
-        accessTutorLocation  = new AccessTutorLocation(locationPersistence);
-        accessCourses        = new AccessCourses(coursePersistence);
+    public TutorProfileHandler(AccessTutors accessTutors,
+                               AccessCourses accessCourses,
+                               AccessTutoredCourses accessTutoredCourses,
+                               AccessTutorLocation accessTutorLocation) {
+        this.accessTutors = accessTutors;
+        this.accessCourses = accessCourses;
+        this.accessTutoredCourses = accessTutoredCourses;
+        this.accessTutorLocation = accessTutorLocation;
+
     }
 
     @Override

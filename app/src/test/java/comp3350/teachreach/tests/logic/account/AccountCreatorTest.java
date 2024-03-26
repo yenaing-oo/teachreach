@@ -12,9 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import comp3350.teachreach.data.exceptions.DuplicateEmailException;
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
-import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.account.AccountCreator;
 import comp3350.teachreach.logic.exceptions.AccountCreatorException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
@@ -33,11 +33,11 @@ public class AccountCreatorTest {
     private final String pronouns = "they/them";
     private final String major = "Computer Science";
     @Mock
-    private IAccountPersistence mockAccountPersistence;
+    private AccessAccounts accessAccounts;
     @Mock
-    private IStudentPersistence mockStudentPersistence;
+    private AccessStudents accessStudents;
     @Mock
-    private ITutorPersistence mockTutorPersistence;
+    private AccessTutors accessTutors;
     @InjectMocks
     private AccountCreator accountCreator;
     @Mock
@@ -50,35 +50,35 @@ public class AccountCreatorTest {
     @Test
     public void testCreateStudentAccount() throws Exception {
 
-        when(mockAccountPersistence.storeAccount(any(IAccount.class))).thenReturn(mockIAccount);
-        when(mockStudentPersistence.storeStudent(any(IStudent.class))).thenReturn(mockIStudent);
+        when(accessAccounts.insertAccount(any(IAccount.class))).thenReturn(mockIAccount);
+        when(accessStudents.insertStudent(any(IStudent.class))).thenReturn(mockIStudent);
 
         accountCreator.createStudentAccount(email, password, name, pronouns, major);
 
-        verify(mockAccountPersistence).storeAccount(any());
-        verify(mockStudentPersistence).storeStudent(any());
+        verify(accessAccounts).insertAccount(any());
+        verify(accessStudents).insertStudent(any());
     }
 
     @Test
     public void testCreateTutorAccount() throws Exception {
 
-        when(mockAccountPersistence.storeAccount(any())).thenReturn(mockIAccount);
-        when(mockTutorPersistence.storeTutor(any())).thenReturn(mockITutor);
+        when(accessAccounts.insertAccount(any())).thenReturn(mockIAccount);
+        when(accessTutors.insertTutor(any())).thenReturn(mockITutor);
 
         accountCreator.createTutorAccount(email, password, name, pronouns, major);
 
-        verify(mockAccountPersistence).storeAccount(any());
-        verify(mockTutorPersistence).storeTutor(any());
+        verify(accessAccounts).insertAccount(any());
+        verify(accessTutors).insertTutor(any());
     }
 
     @Test
     public void testCreateStudentAccount_DuplicateEmailException() throws Exception {
 
-        when(mockAccountPersistence.storeAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
+        when(accessAccounts.insertAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
 
         assertThrows(DuplicateEmailException.class, () -> accountCreator.createStudentAccount(email, password, name, pronouns, major));
 
-        verify(mockAccountPersistence).storeAccount(any());
+        verify(accessAccounts).insertAccount(any());
     }
 
     @Test
@@ -98,17 +98,17 @@ public class AccountCreatorTest {
 
     @Test
     public void testCreateStudentAccount_AccountCreatorException() throws Exception {
-        when(mockAccountPersistence.storeAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
+        when(accessAccounts.insertAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
         assertThrows(AccountCreatorException.class, () -> accountCreator.createStudentAccount(email, password, name, pronouns, major));
     }
 
     @Test
     public void testCreateTutorAccount_DuplicateEmailException() throws Exception {
-        when(mockAccountPersistence.storeAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
+        when(accessAccounts.insertAccount(any())).thenThrow(new DuplicateEmailException("Email already in use"));
 
         assertThrows(DuplicateEmailException.class, () -> accountCreator.createTutorAccount(email, password, name, pronouns, major));
 
-        verify(mockAccountPersistence).storeAccount(any());
+        verify(accessAccounts).insertAccount(any());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class AccountCreatorTest {
 
     @Test
     public void testCreateTutorAccount_AccountCreatorException() throws Exception {
-        when(mockAccountPersistence.storeAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
+        when(accessAccounts.insertAccount(any())).thenThrow(new RuntimeException("Some unexpected error occurred"));
 
         assertThrows(AccountCreatorException.class, () -> accountCreator.createTutorAccount(email, password, name, pronouns, major));
     }
