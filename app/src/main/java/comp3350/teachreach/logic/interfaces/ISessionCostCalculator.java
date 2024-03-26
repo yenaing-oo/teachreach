@@ -1,6 +1,9 @@
 package comp3350.teachreach.logic.interfaces;
 
-public interface ISessionCostCalculator
+import comp3350.teachreach.objects.interfaces.ITutor;
+
+public
+interface ISessionCostCalculator
 {
-    double calculateSessionCost(int sessionDuration);
+    double calculateSessionCost(ITutor t, int sessionDuration);
 }

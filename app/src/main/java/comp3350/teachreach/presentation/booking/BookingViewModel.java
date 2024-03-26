@@ -13,7 +13,8 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class BookingViewModel extends ViewModel
+public
+class BookingViewModel extends ViewModel
 {
     MutableLiveData<IAccount>  tutorAccount = new MutableLiveData<>();
     MutableLiveData<ITutor>    tutor        = new MutableLiveData<>();
@@ -28,92 +29,110 @@ public class BookingViewModel extends ViewModel
     MutableLiveData<ITimeSlice> sessionTime     = new MutableLiveData<>();
     MutableLiveData<String>     sessionLocation = new MutableLiveData<>();
 
-    public LiveData<LocalDate> getBookingDate()
+    public
+    LiveData<LocalDate> getBookingDate()
     {
         return bookingDate;
     }
 
-    public void setBookingDate(LocalDate bookingDate)
+    public
+    void setBookingDate(LocalDate bookingDate)
     {
         this.bookingDate.postValue(bookingDate);
     }
 
-    public LiveData<ITimeSlice> getSessionTime()
+    public
+    LiveData<ITimeSlice> getSessionTime()
     {
         return sessionTime;
     }
 
-    public void setSessionTime(ITimeSlice sessionTime)
+    public
+    void setSessionTime(ITimeSlice sessionTime)
     {
         this.sessionTime.postValue(sessionTime);
     }
 
-    public LiveData<List<ITimeSlice>> getTimeSlots()
+    public
+    LiveData<List<ITimeSlice>> getTimeSlots()
     {
         return timeSlots;
     }
 
-    public void setTimeSlots(List<ITimeSlice> timeSlots)
+    public
+    void setTimeSlots(List<ITimeSlice> timeSlots)
     {
         this.timeSlots.postValue(timeSlots);
     }
 
-    public LiveData<IAccount> getTutorAccount()
+    public
+    LiveData<IAccount> getTutorAccount()
     {
         return tutorAccount;
     }
 
-    public void setTutorAccount(IAccount tutorAccount)
+    public
+    void setTutorAccount(IAccount tutorAccount)
     {
         this.tutorAccount.postValue(tutorAccount);
     }
 
-    public LiveData<ITutor> getTutor()
+    public
+    LiveData<ITutor> getTutor()
     {
         return tutor;
     }
 
-    public void setTutor(ITutor tutor)
+    public
+    void setTutor(ITutor tutor)
     {
         this.tutor.postValue(tutor);
     }
 
-    public LiveData<IStudent> getStudent()
+    public
+    LiveData<IStudent> getStudent()
     {
         return student;
     }
 
-    public void setStudent(IStudent student)
+    public
+    void setStudent(IStudent student)
     {
         this.student.postValue(student);
     }
 
-    public LiveData<List<String>> getTutorLocations()
+    public
+    LiveData<List<String>> getTutorLocations()
     {
         return tutorLocations;
     }
 
-    public void setTutorLocations(List<String> l)
+    public
+    void setTutorLocations(List<String> l)
     {
         this.tutorLocations.postValue(l);
     }
 
-    public LiveData<String> getSessionLocation()
+    public
+    LiveData<String> getSessionLocation()
     {
         return sessionLocation;
     }
 
-    public void setSessionLocation(String sessionLocation)
+    public
+    void setSessionLocation(String sessionLocation)
     {
         this.sessionLocation.postValue(sessionLocation);
     }
 
-    public LiveData<Double> getSessionPrice()
+    public
+    LiveData<Double> getSessionPrice()
     {
         return sessionPrice;
     }
 
-    public void setSessionPrice(double p)
+    public
+    void setSessionPrice(double p)
     {
         this.sessionPrice.postValue(p);
     }

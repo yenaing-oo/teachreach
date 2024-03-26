@@ -13,39 +13,41 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.databinding.ActivityNavigationStudentBinding;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class StudentHomeActivity extends AppCompatActivity
+public
+class StudentHomeActivity extends AppCompatActivity
 {
-    private static final int               BACK_DELAY = 2000;
-    private              long              backPressedTime;
-    private              NavigationBarView navigationMenu;
-    private              NavController     navController;
-    private              TRViewModel       vm;
+    private static final int BACK_DELAY = 2000;
+    ActivityNavigationStudentBinding binding;
+    private long              backPressedTime;
+    private NavigationBarView navigationMenu;
+    private NavController     navController;
+    private TRViewModel       vm;
 
     private OnBackPressedCallback onBackPressedCallback;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        vm = new ViewModelProvider(this).get(TRViewModel.class);
-        setContentView(R.layout.activity_navigation_student);
-        navigationMenu = findViewById(R.id.navigation_menu);
-        NavHostFragment navHostFragment
-                =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(
-                R.id.nav_host_fragment_student);
+        binding = ActivityNavigationStudentBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        vm             = new ViewModelProvider(this).get(TRViewModel.class);
+        navigationMenu = (NavigationBarView) binding.navigationMenu;
+        NavHostFragment
+                navHostFragment
+                = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_student);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
         int accountId = getIntent().getIntExtra("ACCOUNT_ID", -1);
         int studentId = getIntent().getIntExtra("STUDENT_ID", -1);
-        vm.setAccount(Server
-                              .getAccountDataAccess()
-                              .getAccounts()
-                              .get(accountId));
+        vm.setAccount(Server.getAccountDataAccess().getAccounts().get(accountId));
         AccessStudents accessStudents = new AccessStudents();
         vm.setStudent(accessStudents.getStudentByAccountID(accountId));
         assert vm.getStudent() != null;
@@ -63,7 +65,8 @@ public class StudentHomeActivity extends AppCompatActivity
         setUpBackButtonHandler();
     }
 
-    private void setUpNavigationMenu()
+    private
+    void setUpNavigationMenu()
     {
         navigationMenu.setSelectedItemId(R.id.NavBarSearch);
         navigationMenu.setOnItemSelectedListener(i -> {
@@ -72,21 +75,42 @@ public class StudentHomeActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarSearch) {
                 navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.NavBarProfile) {
-                navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
+                navController.navigate(R.id.studentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
                 navController.navigate(R.id.actionToGroupFragment);// i need it work
                 //navController.navigate(R.id.actionToIndividualChatFragment);
             }
             return true;
         });
+        navController.addOnDestinationChangedListener((controller, dest, bundle) -> {
+            if (dest.getId() == R.id.studentProfileSelfViewFragment) {
+                changeNavigationMenu(NavDest.profile);
+            }
+            if (dest.getId() == R.id.searchFragment) {
+                changeNavigationMenu(NavDest.search);
+            }
+        });
     }
 
-    private void setUpBackButtonHandler()
+    private
+    void changeNavigationMenu(NavDest n)
+    {
+        switch (n) {
+            case sessions -> navigationMenu.getMenu().findItem(R.id.NavBarSessions).setChecked(true);
+            case search -> navigationMenu.getMenu().findItem(R.id.NavBarSearch).setChecked(true);
+            case profile -> navigationMenu.getMenu().findItem(R.id.NavBarProfile).setChecked(true);
+            case chat -> navigationMenu.getMenu().findItem(R.id.NavBarChats).setChecked(true);
+        }
+    }
+
+    private
+    void setUpBackButtonHandler()
     {
         onBackPressedCallback = new OnBackPressedCallback(true)
         {
             @Override
-            public void handleOnBackPressed()
+            public
+            void handleOnBackPressed()
             {
                 backIsPressed();
             }
@@ -94,17 +118,20 @@ public class StudentHomeActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private void backIsPressed()
+    private
+    void backIsPressed()
     {
         if (backPressedTime + BACK_DELAY > System.currentTimeMillis()) {
             finishAffinity();
         } else {
-            Toast
-                    .makeText(this,
-                              "Press back again to exit",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressedTime = System.currentTimeMillis();
+    }
+
+    private
+    enum NavDest
+    {
+        sessions, search, profile, chat
     }
 }

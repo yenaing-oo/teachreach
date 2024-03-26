@@ -55,20 +55,11 @@ public class AccessAccounts
         }
     }
 
-    public Optional<IAccount> getAccountByAccountID(int accountID)
-    {
-        try {
-            if (accounts == null) {
-                AccessAccounts.accounts = accountPersistence.getAccounts();
-            }
-            return accounts
-                    .values()
-                    .stream()
-                    .filter(a -> a.getAccountID()==accountID)
-                    .findFirst();
-        } catch (final Exception e) {
-            throw new DataAccessException("Failed to get account by account ID", e);
+    public Optional<IAccount> getAccountByAccountID(int accountID) {
+        if (accounts == null) {
+            accounts = accountPersistence.getAccounts();
         }
+        return Optional.ofNullable(accounts.get(accountID));
     }
 
     public IAccount insertAccount(IAccount newAccount)

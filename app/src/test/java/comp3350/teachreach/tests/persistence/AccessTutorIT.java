@@ -18,14 +18,12 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.tests.utils.TestUtils;
 
 public
-class AccessTutorIT
-{
+class AccessTutorIT {
     private AccessTutors accessTutors;
     private File tempDB;
+
     @Before
-    public
-    void setUp() throws IOException
-    {
+    public void setUp() throws IOException {
         this.tempDB = TestUtils.copyDB();
         final ITutorPersistence persistence = new TutorHSQLDB(this.tempDB
                 .getAbsolutePath()
@@ -34,46 +32,38 @@ class AccessTutorIT
                         ""));
         this.accessTutors = new AccessTutors(persistence);
     }
-    //
-    //
-    //
+
     @Test
-    public void testGetTutorByAccountID(){
-        ITutor tutor = accessTutors.getTutorByAccountID(1);
-        assertEquals(1, tutor.getAccountID());
+    public void testGetTutorByAccountID() {
+        ITutor tutor = accessTutors.getTutorByAccountID(2);
+        assertEquals(2, tutor.getAccountID());
     }
 
 
     @Test
-    public void testGetTutorByTutorID(){
+    public void testGetTutorByTutorID() {
         ITutor tutor = accessTutors.getTutorByTutorID(1);
         assertEquals(1, tutor.getTutorID());
     }
 
     @Test
-    public void testInsertTutor(){
+    public void testInsertTutor() {
         ITutor tutor = new Tutor(2);
         tutor = accessTutors.insertTutor(tutor);
         assertNotNull(tutor);
     }
 
     @Test
-    public void testUpdateTutor(){
+    public void testUpdateTutor() {
         ITutor tutor = accessTutors.getTutorByTutorID(1);
         tutor.setHourlyRate(20);
         ITutor testTutor = accessTutors.updateTutor(tutor);
-        assertEquals(20,testTutor.getHourlyRate(),0);
+        assertEquals(20, testTutor.getHourlyRate(), 0);
     }
 
 
     @After
-    public
-    void tearDown()
-    {
+    public void tearDown() {
         this.tempDB.delete();
     }
-    // ITutor getTutorByAccountID(int accountID)
-    //ITutor getTutorByTutorID(int tutorID)
-    // ITutor insertTutor(ITutor newTutor)
-    // ITutor updateTutor(ITutor existingTutor)
 }

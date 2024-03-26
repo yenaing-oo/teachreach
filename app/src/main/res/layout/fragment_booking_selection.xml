@@ -24,11 +24,9 @@
             app:title="@string/timeSelectionTitle" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="?attr/colorPrimaryContainer"
-        app:cardCornerRadius="0dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -91,6 +89,6 @@
                 android:text="@string/continueBooking" />
 
         </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
@@ -47,23 +48,26 @@ public class AccessCoursesTest
 
         Map<String, ICourse> result = accessCourses.getCourses();
 
-        assertEquals(result.size(), 5);
-        assertEquals("Issue with getCourses return contents",
-                     result.get("COMP 2080").getCourseName(),
-                     "Analysis of Algorithms");
-        assertEquals("Issue with getCourses return contents",
-                     result.get("COMP 1010").getCourseName(),
-                     "Introduction to Computer Science");
-        assertEquals("Issue with getCourses return contents",
-                     result.get("COMP 1012").getCourseName(),
-                     "Introduction to Computer Science for Engineers");
-        assertEquals("Issue with getCourses return contents",
-                     result.get("COMP 2150").getCourseName(),
-                     "Object Orientation");
-        assertEquals("Issue with getCourses return contents",
-                     result.get("COMP 3380").getCourseName(),
-                     "Databases Concepts and Usage");
-
+        try {
+            assertEquals(result.size(), 5);
+            assertEquals("Issue with getCourses return contents",
+                    result.get("COMP 2080").getCourseName(),
+                    "Analysis of Algorithms");
+            assertEquals("Issue with getCourses return contents",
+                    result.get("COMP 1010").getCourseName(),
+                    "Introduction to Computer Science");
+            assertEquals("Issue with getCourses return contents",
+                    result.get("COMP 1012").getCourseName(),
+                    "Introduction to Computer Science for Engineers");
+            assertEquals("Issue with getCourses return contents",
+                    result.get("COMP 2150").getCourseName(),
+                    "Object Orientation");
+            assertEquals("Issue with getCourses return contents",
+                    result.get("COMP 3380").getCourseName(),
+                    "Databases Concepts and Usage");
+        } catch(NullPointerException n) {
+            fail("Issues with results from getCourses");
+        }
         assertThrows("Result from getAccounts is not an unmodifiable map",
                      UnsupportedOperationException.class,
                      () -> result.put("COMP 4620",

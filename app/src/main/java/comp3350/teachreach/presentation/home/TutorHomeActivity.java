@@ -18,7 +18,8 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.profile.tutor.TutorProfileViewModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class TutorHomeActivity extends AppCompatActivity
+public
+class TutorHomeActivity extends AppCompatActivity
 {
     private static final int                   BACK_DELAY = 2000;
     private              TRViewModel           vm;
@@ -32,17 +33,17 @@ public class TutorHomeActivity extends AppCompatActivity
     private ITutor tutor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(this).get(TRViewModel.class);
 
         setContentView(R.layout.activity_navigation_tutor);
-        navigationMenu = findViewById(R.id.navigation_menu);
-        NavHostFragment navHostFragment
-                =
-                (NavHostFragment) getSupportFragmentManager().findFragmentById(
-                R.id.nav_host_fragment_tutor);
+        navigationMenu = findViewById(R.id.navigationMenu);
+        NavHostFragment
+                navHostFragment
+                = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_tutor);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
@@ -54,15 +55,15 @@ public class TutorHomeActivity extends AppCompatActivity
         vm.setAccount(account);
         vm.setTutor(tutor);
         vm.setIsTutor();
-        TutorProfileViewModel profileViewModel
-                = new ViewModelProvider(this).get(TutorProfileViewModel.class);
+        TutorProfileViewModel profileViewModel = new ViewModelProvider(this).get(TutorProfileViewModel.class);
         profileViewModel.setTutor(tutor);
         profileViewModel.setTutorAccount(account);
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }
 
-    private void setUpNavigationMenu()
+    private
+    void setUpNavigationMenu()
     {
 
         navigationMenu.setSelectedItemId(R.id.NavBarProfile);
@@ -79,12 +80,14 @@ public class TutorHomeActivity extends AppCompatActivity
         });
     }
 
-    private void setUpBackButtonHandler()
+    private
+    void setUpBackButtonHandler()
     {
         onBackPressedCallback = new OnBackPressedCallback(true)
         {
             @Override
-            public void handleOnBackPressed()
+            public
+            void handleOnBackPressed()
             {
                 backIsPressed();
             }
@@ -92,16 +95,13 @@ public class TutorHomeActivity extends AppCompatActivity
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private void backIsPressed()
+    private
+    void backIsPressed()
     {
         if (backPressedTime + BACK_DELAY > System.currentTimeMillis()) {
             finishAffinity();
         } else {
-            Toast
-                    .makeText(this,
-                              "Press back again to exit",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         }
         backPressedTime = System.currentTimeMillis();
     }

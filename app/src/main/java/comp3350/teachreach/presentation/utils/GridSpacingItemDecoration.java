@@ -6,7 +6,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
+public
+class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
 {
 
     private final int     spanCount;
@@ -14,10 +15,8 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
     private final boolean includeEdge;
     private final int     headerNum;
 
-    public GridSpacingItemDecoration(int spanCount,
-                                     int spacing,
-                                     boolean includeEdge,
-                                     int headerNum)
+    public
+    GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge, int headerNum)
     {
         this.spanCount   = spanCount;
         this.spacing     = spacing;
@@ -26,10 +25,11 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration
     }
 
     @Override
-    public void getItemOffsets(@NonNull Rect outRect,
-                               @NonNull View view,
-                               RecyclerView parent,
-                               @NonNull RecyclerView.State state)
+    public
+    void getItemOffsets(@NonNull Rect outRect,
+                        @NonNull View view,
+                        RecyclerView parent,
+                        @NonNull RecyclerView.State state)
     {
         int position = parent.getChildAdapterPosition(view) - headerNum;
 

@@ -22,19 +22,19 @@ import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.home.TutorHomeActivity;
 
-public class TutorSignUpActivity extends AppCompatActivity
+public
+class TutorSignUpActivity extends AppCompatActivity
 {
     private static final int REQUEST_CODE_PICK_FILE = 1;
 
-    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail,
-            tilPassword;
+    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail, tilPassword;
 
-    private EditText etTutorUsername, etTutorPassword, etTutorEmail,
-            etTutorMajor, etPronouns;
+    private EditText etTutorUsername, etTutorPassword, etTutorEmail, etTutorMajor, etPronouns;
 
     private IAccountCreator accountCreator;
 
-    private void createTutorProfile()
+    private
+    void createTutorProfile()
     {
         String username = etTutorUsername.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
@@ -46,19 +46,11 @@ public class TutorSignUpActivity extends AppCompatActivity
             tilEmail.setError(null);
             tilPassword.setError(null);
             tilUsername.setError(null);
-            ITutor newTutor = accountCreator.createTutorAccount(email,
-                                                                password,
-                                                                username,
-                                                                pronouns,
-                                                                major);
+            accountCreator = new AccountCreator();
+            ITutor newTutor = accountCreator.createTutorAccount(email, password, username, pronouns, major);
 
-            Toast
-                    .makeText(TutorSignUpActivity.this,
-                              "Tutor Account Created Successfully!",
-                              Toast.LENGTH_SHORT)
-                    .show();
-            Intent intent = new Intent(TutorSignUpActivity.this,
-                                       TutorHomeActivity.class);
+            Toast.makeText(TutorSignUpActivity.this, "Tutor Account Created Successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(TutorSignUpActivity.this, TutorHomeActivity.class);
             intent.putExtra("ACCOUNT_ID", newTutor.getAccountID());
             intent.putExtra("TUTOR_ID", newTutor.getTutorID());
 
@@ -71,37 +63,27 @@ public class TutorSignUpActivity extends AppCompatActivity
         } catch (final InvalidEmailException | DuplicateEmailException e) {
             tilEmail.setError(e.getMessage());
         } catch (final Exception e) {
-            Toast
-                    .makeText(TutorSignUpActivity.this,
-                              e.getMessage(),
-                              Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(TutorSignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void openFilePicker()
+    private
+    void openFilePicker()
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         try {
-            startActivityForResult(Intent.createChooser(intent,
-                                                        "Select a File to " +
-                                                        "Upload"),
+            startActivityForResult(Intent.createChooser(intent, "Select a File to " + "Upload"),
                                    REQUEST_CODE_PICK_FILE);
         } catch (android.content.ActivityNotFoundException ex) {
-            Toast
-                    .makeText(this,
-                              "Please install a File Manager.",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onActivityResult(int requestCode,
-                                    int resultCode,
-                                    @Nullable Intent data)
+    protected
+    void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
@@ -113,7 +95,8 @@ public class TutorSignUpActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_sign_up);
@@ -133,7 +116,6 @@ public class TutorSignUpActivity extends AppCompatActivity
         Button btnUploadTranscript = findViewById(R.id.btnUploadTranscript);
         Button btnCreateProfile    = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator();
         btnUploadTranscript.setOnClickListener(v -> openFilePicker());
         btnCreateProfile.setOnClickListener(v -> createTutorProfile());
     }

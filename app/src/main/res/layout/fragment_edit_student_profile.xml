@@ -26,12 +26,9 @@
             app:title="@string/fabEditProfile" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="?attr/colorPrimaryContainer"
-        app:cardCornerRadius="0dp">
+        android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -120,7 +117,7 @@
             android:text="@string/fabApply"
             android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
             app:icon="@drawable/ic_done_24" />
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>
 

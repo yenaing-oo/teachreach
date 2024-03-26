@@ -24,84 +24,77 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class ReviewBookingFragment extends Fragment
+public
+class ReviewBookingFragment extends Fragment
 {
-    private BookingViewModel bookingViewModel;
+    private FragmentReviewBookingBinding binding;
+    private BookingViewModel             bookingViewModel;
 
-    public ReviewBookingFragment()
+    public
+    ReviewBookingFragment()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        bookingViewModel = new ViewModelProvider(requireActivity()).get(
-                BookingViewModel.class);
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return FragmentReviewBookingBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentReviewBookingBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState)
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        fillUpBookingDetails(view);
-        setUpButtons(view);
+        fillUpBookingDetails();
+        setUpButtons();
     }
 
-    private void setUpButtons(View view)
+    private
+    void setUpButtons()
     {
-        Button        cancelButton  = view.findViewById(R.id.cancelButton);
-        Button        confirmButton = view.findViewById(R.id.confirmButton);
+        Button        cancelButton  = binding.cancelButton;
+        Button        confirmButton = binding.confirmButton;
         NavController navController = NavHostFragment.findNavController(this);
         cancelButton.setOnClickListener(v -> navController.navigateUp());
         confirmButton.setOnClickListener(v -> navController.navigate(R.id.actionToPaymentFragment));
     }
 
-    private void fillUpBookingDetails(View view)
+    private
+    void fillUpBookingDetails()
     {
-        TextView tutorName = view.findViewById(R.id.tvNameField);
-        TextView sDate     = view.findViewById(R.id.tvSessionDateField);
-        TextView sTime     = view.findViewById(R.id.tvSessionTimeField);
-        TextView sDuration = view.findViewById(R.id.tvSessionDurationField);
-        TextView sPrice    = view.findViewById(R.id.tvSessionPriceField);
-        TextView sLocation = view.findViewById(R.id.tvSessionLocationField);
+        TextView tutorName = binding.tvNameField;
+        TextView sDate     = binding.tvSessionDateField;
+        TextView sTime     = binding.tvSessionTimeField;
+        TextView sDuration = binding.tvSessionDurationField;
+        TextView sPrice    = binding.tvSessionPriceField;
+        TextView sLocation = binding.tvSessionLocationField;
 
         ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
         IAccount   account     = bookingViewModel.getTutorAccount().getValue();
         ITutor     tutor       = bookingViewModel.getTutor().getValue();
-        String     location    = bookingViewModel
-                .getSessionLocation()
-                .getValue();
+        String     location    = bookingViewModel.getSessionLocation().getValue();
         if (location == null) {
             location = "TBD";
             bookingViewModel.setSessionLocation(location);
         }
-        double price = (double) sessionTime.getDuration().toMinutes() / 60 *
-                       tutor.getHourlyRate();
+        double price = (double) sessionTime.getDuration().toMinutes() / 60 * tutor.getHourlyRate();
         bookingViewModel.setSessionPrice(price);
         assert account != null;
         tutorName.setText(account.getUserName());
-        sDate.setText(sessionTime
-                              .getStartTime()
-                              .format(DateTimeFormatter.ofPattern(
-                                      "eee, d MMMM, yyyy")));
-        sTime.setText(sessionTime
-                              .getStartTime()
-                              .format(DateTimeFormatter.ofPattern("h:mm a")));
-        sDuration.setText(String.format(Locale.getDefault(),
-                                        "%d minutes",
-                                        sessionTime.getDuration().toMinutes()));
+        sDate.setText(sessionTime.getStartTime().format(DateTimeFormatter.ofPattern("eee, d MMMM, yyyy")));
+        sTime.setText(sessionTime.getStartTime().format(DateTimeFormatter.ofPattern("h:mm a")));
+        sDuration.setText(String.format(Locale.getDefault(), "%d minutes", sessionTime.getDuration().toMinutes()));
         sPrice.setText(String.format(Locale.getDefault(), "$%.2f", price));
         sLocation.setText(location);
     }

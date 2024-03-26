@@ -8,7 +8,9 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
+        style="@style/Widget.App.Toolbar"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -45,7 +47,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTutorLoginEmail"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -62,7 +64,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTutorLoginPassword"
-                style="@style/Widget.Material3.TextInputLayout.FilledBox.Dense"
+                style="@style/Widget.App.TextInputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

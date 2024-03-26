@@ -23,61 +23,56 @@ import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class FragmentChangingPassword extends Fragment
+public
+class FragmentChangingPassword extends Fragment
 {
     private FragmentChangePasswordBinding binding;
     private TRViewModel                   vm;
     private IAccount                      account;
 
-    public FragmentChangingPassword()
+    public
+    FragmentChangingPassword()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        vm      =
-                new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        vm      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         account = vm.getAccount().getValue();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentChangePasswordBinding.inflate(inflater,
-                                                        container,
-                                                        false);
+        binding = FragmentChangePasswordBinding.inflate(inflater, container, false);
         setUpTopBar();
         setUpTextFields();
         return binding.getRoot();
     }
 
-    private void setUpTopBar()
+    private
+    void setUpTopBar()
     {
-        MaterialToolbar materialToolbar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
-        NavController navController = NavHostFragment.findNavController(this);
-        materialToolbar.setNavigationOnClickListener(v -> navController.navigate(
-                R.id.actionToAccountSettingsFragment));
+        MaterialToolbar materialToolbar = binding.topAppBar;
+        NavController   navController   = NavHostFragment.findNavController(this);
+        materialToolbar.setNavigationOnClickListener(v -> navController.navigate(R.id.actionToAccountSettingsFragment));
     }
 
-    private void setUpTextFields()
+    private
+    void setUpTextFields()
     {
-        View v = binding.getRoot();
+        TextInputLayout tvCurrentPassword = binding.tilCurrentPassword;
 
-        TextInputLayout tvCurrentPassword
-                = v.findViewById(R.id.tilCurrentPassword);
-
-        TextInputLayout tvNewPassword = v.findViewById(R.id.tilNewValue);
+        TextInputLayout tvNewPassword = binding.tilNewValue;
 
         EditText etCurrentPassword = tvCurrentPassword.getEditText();
         EditText etNewPassword     = tvNewPassword.getEditText();
 
-        Button btnApply = binding.getRoot().findViewById(R.id.fabApply);
+        Button btnApply = binding.fabApply;
 
         NavController navController = NavHostFragment.findNavController(this);
         btnApply.setOnClickListener(view -> {

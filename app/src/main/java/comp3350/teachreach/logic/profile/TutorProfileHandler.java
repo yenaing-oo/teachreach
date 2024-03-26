@@ -1,10 +1,8 @@
 package comp3350.teachreach.logic.profile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
@@ -13,154 +11,99 @@ import comp3350.teachreach.logic.account.InputValidator;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
-import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.objects.Course;
-import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorProfileHandler
-        implements ITutorProfileHandler, IUserProfileHandler
+public
+class TutorProfileHandler implements ITutorProfileHandler
 {
-    private final AccessAccounts       accessAccounts;
     private final AccessTutors         accessTutors;
     private final AccessTutoredCourses accessTutoredCourses;
     private final AccessTutorLocation  accessTutorLocation;
     private final AccessCourses        accessCourses;
-    private       ITutor               theTutor;
-    private       IAccount             parentAccount;
 
-    public TutorProfileHandler(ITutor theTutor)
+    public
+    TutorProfileHandler()
     {
-        accessAccounts       = new AccessAccounts();
-        accessTutors         = new AccessTutors();
-        accessTutoredCourses = new AccessTutoredCourses();
-        accessCourses        = new AccessCourses();
-        accessTutorLocation  = new AccessTutorLocation();
-        this.theTutor        = theTutor;
-        this.parentAccount   = accessAccounts
-                .getAccounts()
-                .get(theTutor.getAccountID());
+        this.accessTutors = new AccessTutors();
+        this.accessTutoredCourses = new AccessTutoredCourses();
+        this.accessCourses = new AccessCourses();
+        this.accessTutorLocation = new AccessTutorLocation();
     }
 
-    public TutorProfileHandler(int tutorID)
-    {
-        accessAccounts       = new AccessAccounts();
-        accessTutors         = new AccessTutors();
-        accessTutoredCourses = new AccessTutoredCourses();
-        accessTutorLocation  = new AccessTutorLocation();
-        accessCourses        = new AccessCourses();
-        this.theTutor        = accessTutors.getTutorByTutorID(tutorID);
-        this.parentAccount   = accessAccounts
-                .getAccounts()
-                .get(theTutor.getAccountID());
+    public TutorProfileHandler(AccessTutors accessTutors,
+                               AccessCourses accessCourses,
+                               AccessTutoredCourses accessTutoredCourses,
+                               AccessTutorLocation accessTutorLocation) {
+        this.accessTutors = accessTutors;
+        this.accessCourses = accessCourses;
+        this.accessTutoredCourses = accessTutoredCourses;
+        this.accessTutorLocation = accessTutorLocation;
+
     }
 
     @Override
-    public String getUserEmail()
+    public
+    ITutorProfileHandler setHourlyRate(ITutor t, double hourlyRate)
     {
-        return this.parentAccount.getAccountEmail();
-    }
-
-    @Override
-    public String getUserName()
-    {
-        return this.parentAccount.getUserName();
-    }
-
-    @Override
-    public String getUserPronouns()
-    {
-        return this.parentAccount.getUserPronouns();
-    }
-
-    @Override
-    public String getUserMajor()
-    {
-        return this.parentAccount.getUserMajor();
-    }
-
-    @Override
-    public IAccount getUserAccount()
-    {
-        return parentAccount;
-    }
-
-    @Override
-    public double getHourlyRate()
-    {
-        return theTutor.getHourlyRate();
-    }
-
-    @Override
-    public ITutorProfileHandler setHourlyRate(double hourlyRate)
-    {
-        this.theTutor.setHourlyRate(hourlyRate);
+        t.setHourlyRate(hourlyRate);
         return this;
     }
 
     @Override
-    public double getAvgReview()
+    public
+    double getAvgReview(ITutor t)
     {
-        return theTutor.getReviewCount() > 0 ?
-               ((double) theTutor.getReviewSum() /
-                (double) theTutor.getReviewCount()) :
-               0;
+        return t.getReviewCount() > 0 ? ((double) t.getReviewSum() / (double) t.getReviewCount()) : 0;
     }
 
     @Override
-    public int getReviewCount()
+    public
+    List<ICourse> getCourses(ITutor t)
     {
-        return this.theTutor.getReviewCount();
+        return accessTutoredCourses.getTutoredCoursesByTutorID(t.getTutorID());
     }
 
     @Override
-    public int getReviewSum()
-    {
-        return this.theTutor.getReviewSum();
-    }
-
-    @Override
-    public List<ICourse> getCourses()
-    {
-        return accessTutoredCourses.getTutoredCoursesByTutorID(theTutor.getTutorID());
-    }
-
-    @Override
-    public List<String> getCourseCodeList()
+    public
+    List<String> getCourseCodeList(ITutor t)
     {
         return accessTutoredCourses
-                .getTutoredCoursesByTutorID(theTutor.getTutorID())
+                .getTutoredCoursesByTutorID(t.getTutorID())
                 .stream()
                 .map(ICourse::getCourseCode)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getCourseDescriptionList()
+    public
+    List<String> getCourseDescriptionList(ITutor t)
     {
         return accessTutoredCourses
-                .getTutoredCoursesByTutorID(theTutor.getTutorID())
+                .getTutoredCoursesByTutorID(t.getTutorID())
                 .stream()
                 .map(ICourse::getCourseName)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<String> getPreferredLocations()
+    public
+    List<String> getPreferredLocations(ITutor t)
     {
-        return accessTutorLocation.getTutorLocationByTutorID(theTutor.getTutorID());
+        return accessTutorLocation.getTutorLocationByTutorID(t.getTutorID());
     }
 
     @Override
-    public ITutorProfileHandler addReview(int score)
+    public
+    ITutorProfileHandler addReview(ITutor t, int score)
     {
         return this;
     }
 
     @Override
-    public ITutorProfileHandler addCourse(String courseCode, String courseName)
-            throws InvalidInputException
+    public
+    ITutorProfileHandler addCourse(ITutor t, String courseCode, String courseName) throws InvalidInputException
     {
         InputValidator.validateInput(courseCode);
         InputValidator.validateInput(courseName);
@@ -168,34 +111,34 @@ public class TutorProfileHandler
             accessCourses.insertCourse(new Course(courseCode, courseName));
         } catch (final DataAccessException ignored) {
         } finally {
-            accessTutoredCourses.storeTutorCourse(theTutor.getTutorID(),
-                                                  courseCode);
+            accessTutoredCourses.storeTutorCourse(t.getTutorID(), courseCode);
         }
         return this;
     }
 
     @Override
-    public ITutorProfileHandler removeCourse(String courseCode)
+    public
+    ITutorProfileHandler removeCourse(ITutor t, String courseCode)
     {
         return this;
     }
 
     @Override
-    public ITutorProfileHandler addPreferredLocation(String preferredLocation)
-            throws InvalidInputException
+    public
+    ITutorProfileHandler addPreferredLocation(ITutor t, String preferredLocation) throws InvalidInputException
     {
         InputValidator.validateInput(preferredLocation);
 
-        accessTutorLocation.storeTutorLocation(theTutor.getTutorID(),
-                                               preferredLocation);
+        accessTutorLocation.storeTutorLocation(t.getTutorID(), preferredLocation);
 
         return this;
     }
 
     @Override
-    public ITutor updateTutorProfile()
+    public
+    ITutor updateTutorProfile(ITutor t)
     {
-        theTutor = accessTutors.updateTutor(theTutor);
-        return theTutor;
+        t = accessTutors.updateTutor(t);
+        return t;
     }
 }

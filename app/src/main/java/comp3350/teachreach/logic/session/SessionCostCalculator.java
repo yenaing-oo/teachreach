@@ -1,21 +1,20 @@
 package comp3350.teachreach.logic.session;
 
-import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SessionCostCalculator
-        implements comp3350.teachreach.logic.interfaces.ISessionCostCalculator
+public
+class SessionCostCalculator implements comp3350.teachreach.logic.interfaces.ISessionCostCalculator
 {
-    private final ITutorProfileHandler tutorProfileHandler;
-
-    public SessionCostCalculator(ITutorProfileHandler tutorProfileHandler)
+    public
+    SessionCostCalculator()
     {
-        this.tutorProfileHandler = tutorProfileHandler;
     }
 
     @Override
-    public double calculateSessionCost(int sessionDuration)
+    public
+    double calculateSessionCost(ITutor t, int sessionDuration)
     {
-        double tutorHourlyRate = tutorProfileHandler.getHourlyRate();
+        double tutorHourlyRate = t.getHourlyRate();
         return tutorHourlyRate * sessionDuration;
     }
 }
