@@ -22,10 +22,10 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class AccessTutorAvailabilityTest {
 
     @Mock
-    private ITutorAvailabilityPersistence tutorAvailabilityPersistence;
+    ITutorAvailabilityPersistence tutorAvailabilityPersistence;
 
     @InjectMocks
-    private AccessTutorAvailability accessTutorAvailability;
+    AccessTutorAvailability accessTutorAvailability;
 
     @Test
     public void getAvailabilityTest() {
