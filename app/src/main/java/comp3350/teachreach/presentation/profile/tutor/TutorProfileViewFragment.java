@@ -26,6 +26,7 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -120,6 +121,7 @@ class TutorProfileViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 3;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 List<String> coursesCodes = profileHandler.getCourseCodeList(tutor);
@@ -167,6 +169,7 @@ class TutorProfileViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         Executors.newSingleThreadExecutor().execute(() -> {
             try {
                 prefLocation = profileHandler.getPreferredLocations(tutor);

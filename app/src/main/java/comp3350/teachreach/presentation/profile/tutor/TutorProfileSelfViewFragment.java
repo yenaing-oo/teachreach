@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -120,6 +121,7 @@ class TutorProfileSelfViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         Executors.newSingleThreadExecutor().execute(() -> {
             prefLocations = profileHandler.getPreferredLocations(tutor);
             new Handler(Looper.getMainLooper()).post(() -> {

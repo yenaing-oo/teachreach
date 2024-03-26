@@ -29,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -43,6 +44,7 @@ import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.presentation.profile.tutor.StringRecyclerAdapter;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
@@ -315,6 +317,7 @@ class SearchFragment extends Fragment
         RecyclerView recyclerView = binding.rvSearchResult;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         searchViewModel.setTutorsFiltered(tutorList);
+        recyclerView.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         Executors.newSingleThreadExecutor().execute(() -> {
             synchronized (lock) {
                 new Handler(Looper.getMainLooper()).post(() -> {
