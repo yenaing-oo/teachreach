@@ -64,6 +64,7 @@
         app:layout_constraintVertical_bias="0.1">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:hint="@string/tilSignupNameHint" />
@@ -85,6 +86,7 @@
         app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMajor"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:hint="@string/tilSignupMajorHint" />
@@ -104,6 +106,7 @@
         app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPronouns"
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:hint="@string/tilSignupPronounsHint" />
@@ -124,6 +127,8 @@
         app:layout_constraintVertical_bias="0.125">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:hint="@string/tilSignupEmailHint"
@@ -145,6 +150,9 @@
         app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
+
+            android:id="@+id/etPassword"
+
             android:layout_width="256dp"
             android:layout_height="wrap_content"
             android:hint="@string/tilSignupPasswordHint"
