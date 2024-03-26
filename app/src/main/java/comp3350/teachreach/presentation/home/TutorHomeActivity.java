@@ -40,7 +40,7 @@ class TutorHomeActivity extends AppCompatActivity
         vm = new ViewModelProvider(this).get(TRViewModel.class);
 
         setContentView(R.layout.activity_navigation_tutor);
-        navigationMenu = findViewById(R.id.navigation_menu);
+        navigationMenu = findViewById(R.id.navigationMenu);
         NavHostFragment
                 navHostFragment
                 = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_tutor);

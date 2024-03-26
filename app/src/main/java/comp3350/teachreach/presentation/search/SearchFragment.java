@@ -108,8 +108,8 @@ class SearchFragment extends Fragment
             }
             return false;
         });
-        searchButton.setOnClickListener(v -> onSearchClick(searchEditText));
         filterButton.setOnClickListener(v -> onFilterButtonClick(searchEditText));
+        searchButton.setOnClickListener(v -> onSearchClick(searchEditText));
     }
 
     private
@@ -261,36 +261,40 @@ class SearchFragment extends Fragment
     boolean onSearchClick(EditText searchEditText)
     {
         String searchString = searchEditText.getText().toString().trim();
-        if (priceMinSwitch.isChecked()) {
-            String s = minPrice.getText().toString().trim();
-            if (!s.isEmpty()) {
-                prevMinPrice = Double.parseDouble(s);
-                tutorFilter.setMinimumHourlyRate(prevMinPrice);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            if (priceMinSwitch.isChecked()) {
+                String s = minPrice.getText().toString().trim();
+                if (!s.isEmpty()) {
+                    prevMinPrice = Double.parseDouble(s);
+                    tutorFilter.setMinimumHourlyRate(prevMinPrice);
+                }
+            } else {
+                prevMinPrice = -1.0;
+                tutorFilter.clearMinimumHourlyRate();
             }
-        } else {
-            prevMinPrice = -1.0;
-            tutorFilter.clearMinimumHourlyRate();
-        }
-        if (priceMaxSwitch.isChecked()) {
-            String s = maxPrice.getText().toString().trim();
-            if (!s.isEmpty()) {
-                prevMaxPrice = Double.parseDouble(s);
-                tutorFilter.setMaximumHourlyRate(prevMaxPrice);
+            if (priceMaxSwitch.isChecked()) {
+                String s = maxPrice.getText().toString().trim();
+                if (!s.isEmpty()) {
+                    prevMaxPrice = Double.parseDouble(s);
+                    tutorFilter.setMaximumHourlyRate(prevMaxPrice);
+                }
+            } else {
+                prevMaxPrice = -1.0;
+                tutorFilter.clearMaximumHourlyRate();
             }
-        } else {
-            prevMaxPrice = -1.0;
-            tutorFilter.clearMaximumHourlyRate();
-        }
-        tutorFilter = selectedReview == -1 ?
-                      tutorFilter.clearMinimumAvgRating() :
-                      tutorFilter.setMinimumAvgRating(selectedReview);
-        tutorFilter = selectedCourse == null ?
-                      tutorFilter.clearCourseCode() :
-                      tutorFilter.setCourseCode(selectedCourse);
-        tutorFilter = searchString.isEmpty() ?
-                      tutorFilter.resetSearchString() :
-                      tutorFilter.setSearchFilter(searchString);
-        searchViewModel.postTutorsFiltered(tutorFilter.filterFunc().apply(tutorList));
+            tutorFilter = selectedReview == -1 ?
+                          tutorFilter.clearMinimumAvgRating() :
+                          tutorFilter.setMinimumAvgRating(selectedReview);
+            tutorFilter = selectedCourse == null ?
+                          tutorFilter.clearCourseCode() :
+                          tutorFilter.setCourseCode(selectedCourse);
+            tutorFilter = searchString.isEmpty() ?
+                          tutorFilter.resetSearchString() :
+                          tutorFilter.setSearchFilter(searchString);
+            List<ITutor> result = tutorFilter.filterFunc().apply(tutorList);
+            new Handler(Looper.getMainLooper()).post(() -> searchViewModel.postTutorsFiltered(result));
+
+        });
         return true;
     }
 
@@ -316,8 +320,8 @@ class SearchFragment extends Fragment
         FragmentManager fm              = getChildFragmentManager();
         NavHostFragment navHostFragment = (NavHostFragment) fm.findFragmentById(R.id.rightSide);
         assert navHostFragment != null;
+        slidingPaneLayout.open();
         NavController nc = navHostFragment.getNavController();
         nc.navigate(R.id.actionToTutorProfileViewFragment);
-        slidingPaneLayout.open();
     }
 }

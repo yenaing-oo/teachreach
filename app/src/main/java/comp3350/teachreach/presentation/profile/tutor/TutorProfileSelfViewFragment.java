@@ -2,6 +2,8 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileSelfViewBinding;
@@ -37,6 +41,10 @@ class TutorProfileSelfViewFragment extends Fragment
     private IAccount             account;
     private ITutor               tutor;
     private ITutorProfileHandler profileHandler;
+
+    private List<String> prefLocations;
+
+    private List<String> tutoredCourses;
 
     private boolean isLarge, isLandscape;
 
@@ -89,52 +97,43 @@ class TutorProfileSelfViewFragment extends Fragment
     private
     void setUpTutoredCourses()
     {
-        Button btnAddCourse = binding.btnAddCourse;
-
-        RecyclerView recycler = binding.rvTutoredCourses;
-
-        profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList(tutor));
-
-        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
-                                                                                  .getTutoredCoursesCode()
-                                                                                  .getValue());
-
-        int spanCount = isLarge || isLandscape ? 6 : 2;
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
-
-        recycler.setAdapter(recyclerAdapter);
-        recycler.setLayoutManager(layoutManager);
-
-        profileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
-
-        DialogueAddCourse addCourse = new DialogueAddCourse();
+        Button            btnAddCourse = binding.btnAddCourse;
+        DialogueAddCourse addCourse    = new DialogueAddCourse();
         btnAddCourse.setOnClickListener(v -> addCourse.show(getChildFragmentManager(), "Add Course"));
+        RecyclerView               recycler      = binding.rvTutoredCourses;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+        recycler.setLayoutManager(layoutManager);
+        profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList(tutor));
+        Executors.newSingleThreadExecutor().execute(() -> {
+            tutoredCourses = profileViewModel.getTutoredCoursesCode().getValue();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(tutoredCourses);
+                recycler.setAdapter(recyclerAdapter);
+                profileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
+            });
+        });
     }
 
     private
     void setUpPreferredLocations()
     {
-        Button       btnAddLocation = binding.btnAddLocation;
-        RecyclerView recycler       = binding.rvPreferredLocations;
-
-        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
-
-        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
-                                                                                  .getPreferredLocations()
-                                                                                  .getValue());
-
-        int spanCount = isLarge || isLandscape ? 6 : 2;
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
-
-        recycler.setAdapter(recyclerAdapter);
-        recycler.setLayoutManager(layoutManager);
-
-        profileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
-
-        DialogueAddLocation addLocation = new DialogueAddLocation();
+        DialogueAddLocation addLocation    = new DialogueAddLocation();
+        Button              btnAddLocation = binding.btnAddLocation;
         btnAddLocation.setOnClickListener(v -> addLocation.show(getChildFragmentManager(), "Add Location"));
+        RecyclerView               recycler      = binding.rvPreferredLocations;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+        recycler.setLayoutManager(layoutManager);
+        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
+        Executors.newSingleThreadExecutor().execute(() -> {
+            prefLocations = profileViewModel.getPreferredLocations().getValue();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(prefLocations);
+                recycler.setAdapter(recyclerAdapter);
+                profileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
+            });
+        });
     }
 
     @Override
