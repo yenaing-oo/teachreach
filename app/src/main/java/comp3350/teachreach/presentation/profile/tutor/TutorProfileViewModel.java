@@ -37,17 +37,17 @@ class TutorProfileViewModel extends ViewModel
     public
     void addCourse(ITutor t, String courseCode, String courseName) throws InvalidInputException
     {
-        ITutorProfileHandler tph = new TutorProfileHandler(t);
-        tph.addCourse(courseCode, courseName);
-        this.tutoredCoursesCode.postValue(tph.getCourseCodeList());
+        ITutorProfileHandler tph = new TutorProfileHandler();
+        tph.addCourse(t, courseCode, courseName);
+        this.tutoredCoursesCode.postValue(tph.getCourseCodeList(t));
     }
 
     public
     void addLocation(ITutor t, String l) throws InvalidInputException
     {
-        ITutorProfileHandler tph = new TutorProfileHandler(t);
-        tph.addPreferredLocation(l);
-        this.preferredLocations.postValue(tph.getPreferredLocations());
+        ITutorProfileHandler tph = new TutorProfileHandler();
+        tph.addPreferredLocation(t, l);
+        this.preferredLocations.postValue(tph.getPreferredLocations(t));
     }
 
     public

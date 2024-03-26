@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Locale;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
+import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
@@ -22,6 +25,8 @@ class SearchTutorRecyclerAdapter extends RecyclerView.Adapter<SearchTutorRecycle
 {
     private static List<ITutor>          tutorList;
     private static IOnTutorClickListener listener;
+    IUserProfileHandler<ITutor> profileHandler = new UserProfileFetcher<>();
+    ITutorProfileHandler        tph            = new TutorProfileHandler();
 
     public
     SearchTutorRecyclerAdapter(List<ITutor> tutors, IOnTutorClickListener listener)
@@ -42,13 +47,12 @@ class SearchTutorRecyclerAdapter extends RecyclerView.Adapter<SearchTutorRecycle
 
     @Override
     public
-    void onBindViewHolder(@NonNull SearchTutorRecyclerAdapter.ViewHolder holder, int position)
+    void onBindViewHolder(@NonNull ViewHolder holder, int position)
     {
         if (position == RecyclerView.NO_POSITION) {
             return;
         }
-        ITutor              tutor = tutorList.get(position);
-        TutorProfileHandler tph   = new TutorProfileHandler(tutor);
+        ITutor tutor = tutorList.get(position);
 
         CardView tutorCard = holder.getCardView();
         TextView tvName    = holder.getTvName();
@@ -57,10 +61,10 @@ class SearchTutorRecyclerAdapter extends RecyclerView.Adapter<SearchTutorRecycle
         TextView tvPrice   = holder.getTvHourlyRate();
 
         tutorCard.setOnClickListener(v -> listener.onTutorClick(tutor));
-        tvName.setText(tph.getUserName());
-        tvMajor.setText(tph.getUserMajor());
-        tvRatings.setText(String.format(Locale.getDefault(), "%.2f", tph.getAvgReview()));
-        tvPrice.setText(String.format(Locale.getDefault(), "%.2f", tph.getHourlyRate()));
+        tvName.setText(profileHandler.getUserName(tutor));
+        tvMajor.setText(profileHandler.getUserMajor(tutor));
+        tvRatings.setText(String.format(Locale.getDefault(), "%.2f", tph.getAvgReview(tutor)));
+        tvPrice.setText(String.format(Locale.getDefault(), "%.2f", tutor.getHourlyRate()));
     }
 
     @Override

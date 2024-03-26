@@ -27,7 +27,6 @@ import comp3350.teachreach.logic.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
-import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
@@ -45,7 +44,7 @@ class EditTutorProfileFragment extends Fragment
     private IAccount             account;
     private ITutor               tutor;
     private IAccountManager      accountManager;
-    private ITutorProfileHandler tph;
+    private ITutorProfileHandler profileHandler;
 
     public
     EditTutorProfileFragment()
@@ -119,7 +118,7 @@ class EditTutorProfileFragment extends Fragment
                     .updateAccountUsername(newName)
                     .updateAccountUserMajor(newMajor)
                     .updateAccountUserPronouns(newPronouns);
-            tph.setHourlyRate(newPrice).updateTutorProfile();
+            profileHandler.setHourlyRate(tutor, newPrice).updateTutorProfile(tutor);
             return true;
         } catch (AccountManagerException e) {
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -140,7 +139,6 @@ class EditTutorProfileFragment extends Fragment
         tutor   = vm.getTutor().getValue();
 
         accountManager = new AccountManager(account);
-        tph            = new TutorProfileHandler(tutor);
     }
 
     @Override

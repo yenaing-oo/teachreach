@@ -1,6 +1,8 @@
 package comp3350.teachreach.presentation.search;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.DialogFiltersBinding;
@@ -67,13 +70,10 @@ class SearchFragment extends Fragment
     void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
-
+        vm              = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
-
-        tutorList  = searchViewModel.getTutors().getValue();
-        courseList = searchViewModel.getCourses().getValue();
+        tutorList       = searchViewModel.getTutors().getValue();
+        courseList      = searchViewModel.getCourses().getValue();
     }
 
     @Override
@@ -101,7 +101,6 @@ class SearchFragment extends Fragment
         EditText        searchEditText  = searchTextInput.getEditText();
         Button          filterButton    = binding.btnFilter;
         Button          searchButton    = binding.btnSearch;
-
         searchEditText.setOnEditorActionListener((v, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
@@ -109,7 +108,6 @@ class SearchFragment extends Fragment
             }
             return false;
         });
-
         searchButton.setOnClickListener(v -> onSearchClick(searchEditText));
         filterButton.setOnClickListener(v -> onFilterButtonClick(searchEditText));
     }
@@ -119,40 +117,15 @@ class SearchFragment extends Fragment
     {
         DialogFiltersBinding filtersBinding   = DialogFiltersBinding.inflate(this.getLayoutInflater());
         View                 filterDialogView = filtersBinding.getRoot();
-
         setUpCourseCodeField(filtersBinding);
-
         setUpReviewFilterField(filtersBinding);
-
         setUpPriceFilterField(filtersBinding);
-
         setUpSortSwitches(filtersBinding);
-
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Apply Filters")
                 .setMessage("Long press on field to reset")
                 .setView(filterDialogView)
                 .setPositiveButton("Apply", (d, i) -> {
-                    if (priceMinSwitch.isChecked()) {
-                        String s = minPrice.getText().toString().trim();
-                        if (!s.isEmpty()) {
-                            prevMinPrice = Double.parseDouble(s);
-                            tutorFilter.setMinimumHourlyRate(prevMinPrice);
-                        }
-                    } else {
-                        prevMinPrice = -1.0;
-                        tutorFilter.clearMinimumHourlyRate();
-                    }
-                    if (priceMaxSwitch.isChecked()) {
-                        String s = maxPrice.getText().toString().trim();
-                        if (!s.isEmpty()) {
-                            prevMaxPrice = Double.parseDouble(s);
-                            tutorFilter.setMaximumHourlyRate(prevMaxPrice);
-                        }
-                    } else {
-                        prevMaxPrice = -1.0;
-                        tutorFilter.clearMaximumHourlyRate();
-                    }
                     onSearchClick(searchEditText);
                 })
                 .setNeutralButton("Reset", (d, i) -> {
@@ -171,39 +144,31 @@ class SearchFragment extends Fragment
     void setUpReviewFilterField(DialogFiltersBinding b)
     {
         TextInputLayout tilMinReviews = b.tilMinReviews;
-
-        List<Integer> intList = List.of(1, 2, 3, 4);
+        List<Integer>   intList       = List.of(1, 2, 3, 4);
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(requireActivity(),
                                                                 android.R.layout.simple_list_item_1,
                                                                 intList);
-        AutoCompleteTextView reviewsField = b.starField;
-
-        CheckBox reviewsSwitch = b.reviewsSwitch;
-
+        AutoCompleteTextView reviewsField  = b.starField;
+        CheckBox             reviewsSwitch = b.reviewsSwitch;
         reviewsField.setAdapter(arrayAdapter);
         reviewsField.setThreshold(1);
         reviewsField.setLongClickable(true);
         reviewsField.setOnLongClickListener(v -> {
             reviewsField.setText("");
             selectedReview = -1;
-            tutorFilter.clearMinimumAvgRating();
             return true;
         });
         reviewsField.setOnItemClickListener((p, v, pos, id) -> {
             reviewsField.clearFocus();
             selectedReview = intList.get(pos);
             reviewsField.setText("⭐️".repeat(selectedReview));
-            tutorFilter.setMinimumAvgRating(selectedReview);
         });
-
         reviewsSwitch.setOnCheckedChangeListener((d, checked) -> {
             tilMinReviews.setEnabled(checked);
             if (!checked) {
                 selectedReview = -1;
-                tutorFilter.clearMinimumAvgRating();
             }
         });
-
         if (selectedReview > 0) {
             reviewsField.setText("⭐️".repeat(selectedReview));
         }
@@ -216,7 +181,6 @@ class SearchFragment extends Fragment
     {
         MaterialSwitch sortByPriceSwitch   = b.sortByPriceSwitch;
         MaterialSwitch sortByRatingsSwitch = b.sortByReviewsSwitch;
-
         sortByPriceSwitch.setOnCheckedChangeListener((c, checked) -> {
             if (checked) {
                 searchViewModel.postTutorsFiltered(tutorFilter.setSortByPrice().filterFunc().apply(tutorList));
@@ -224,7 +188,6 @@ class SearchFragment extends Fragment
                 searchViewModel.postTutorsFiltered(tutorFilter.clearSortByPrice().filterFunc().apply(tutorList));
             }
         });
-
         sortByRatingsSwitch.setOnCheckedChangeListener((c, checked) -> {
             if (checked) {
                 searchViewModel.postTutorsFiltered(tutorFilter.setSortByReviews().filterFunc().apply(tutorList));
@@ -232,7 +195,6 @@ class SearchFragment extends Fragment
                 searchViewModel.postTutorsFiltered(tutorFilter.clearSortByReviews().filterFunc().apply(tutorList));
             }
         });
-
         sortByPriceSwitch.setChecked(tutorFilter.getSortByPriceState());
         sortByRatingsSwitch.setChecked(tutorFilter.getSortByReviewsState());
     }
@@ -241,73 +203,53 @@ class SearchFragment extends Fragment
     void setUpPriceFilterField(DialogFiltersBinding b)
     {
         TextInputLayout tilMinPrice = b.tilMinPrice;
-
         TextInputLayout tilMaxPrice = b.tilMaxPrice;
-
-        minPrice = tilMinPrice.getEditText();
-        maxPrice = tilMaxPrice.getEditText();
-
+        minPrice       = tilMinPrice.getEditText();
+        maxPrice       = tilMaxPrice.getEditText();
         priceMinSwitch = b.priceMinSwitch;
-
         priceMaxSwitch = b.priceMaxSwitch;
-
-        priceMinSwitch.setOnCheckedChangeListener((d, checked) -> {
-            tilMinPrice.setEnabled(checked);
-        });
-        priceMaxSwitch.setOnCheckedChangeListener((d, checked) -> {
-            tilMaxPrice.setEnabled(checked);
-        });
-
+        tilMinPrice.setEnabled(tutorFilter.getMinimumHourlyRateState());
+        tilMaxPrice.setEnabled(tutorFilter.getMaximumHourlyRateState());
+        priceMinSwitch.setOnCheckedChangeListener((d, checked) -> tilMinPrice.setEnabled(checked));
+        priceMaxSwitch.setOnCheckedChangeListener((d, checked) -> tilMaxPrice.setEnabled(checked));
         priceMinSwitch.setChecked(tutorFilter.getMinimumHourlyRateState());
         priceMaxSwitch.setChecked(tutorFilter.getMaximumHourlyRateState());
-
         if (prevMinPrice != -1.0) {
             minPrice.setText(String.format(Locale.getDefault(), "%.2f", prevMinPrice));
         }
-
         if (prevMaxPrice != -1.0) {
             maxPrice.setText(String.format(Locale.getDefault(), "%.2f", prevMaxPrice));
         }
 
-        tilMinPrice.setEnabled(tutorFilter.getMinimumHourlyRateState());
-        tilMaxPrice.setEnabled(tutorFilter.getMaximumHourlyRateState());
     }
 
     private
     void setUpCourseCodeField(DialogFiltersBinding b)
     {
         TextInputLayout tilCourseCodes = b.tilCourseCode;
-
         ArrayAdapter<String> coursesArrayAdapter = new ArrayAdapter<>(requireActivity(),
                                                                       android.R.layout.simple_list_item_1,
                                                                       courseList);
-        AutoCompleteTextView courseCodes = b.courseCodeField;
-
-        CheckBox courseSwitch = b.courseSwitch;
-
+        AutoCompleteTextView courseCodes  = b.courseCodeField;
+        CheckBox             courseSwitch = b.courseSwitch;
         courseCodes.setAdapter(coursesArrayAdapter);
         courseCodes.setThreshold(1);
         courseCodes.setLongClickable(true);
         courseCodes.setOnLongClickListener(v -> {
             courseCodes.setText("");
             selectedCourse = null;
-            tutorFilter.clearCourseCode();
             return true;
         });
         courseCodes.setOnItemClickListener((p, v, pos, id) -> {
             courseCodes.clearFocus();
             selectedCourse = courseList.get(pos);
-            tutorFilter.setCourseCode(selectedCourse);
         });
-
         if (selectedCourse != null) {
             courseCodes.setText(selectedCourse);
         }
-
         courseSwitch.setOnCheckedChangeListener((d, checked) -> {
             tilCourseCodes.setEnabled(checked);
             if (!checked) {
-                tutorFilter.clearCourseCode();
                 selectedCourse = null;
             }
         });
@@ -319,6 +261,32 @@ class SearchFragment extends Fragment
     boolean onSearchClick(EditText searchEditText)
     {
         String searchString = searchEditText.getText().toString().trim();
+        if (priceMinSwitch.isChecked()) {
+            String s = minPrice.getText().toString().trim();
+            if (!s.isEmpty()) {
+                prevMinPrice = Double.parseDouble(s);
+                tutorFilter.setMinimumHourlyRate(prevMinPrice);
+            }
+        } else {
+            prevMinPrice = -1.0;
+            tutorFilter.clearMinimumHourlyRate();
+        }
+        if (priceMaxSwitch.isChecked()) {
+            String s = maxPrice.getText().toString().trim();
+            if (!s.isEmpty()) {
+                prevMaxPrice = Double.parseDouble(s);
+                tutorFilter.setMaximumHourlyRate(prevMaxPrice);
+            }
+        } else {
+            prevMaxPrice = -1.0;
+            tutorFilter.clearMaximumHourlyRate();
+        }
+        tutorFilter = selectedReview == -1 ?
+                      tutorFilter.clearMinimumAvgRating() :
+                      tutorFilter.setMinimumAvgRating(selectedReview);
+        tutorFilter = selectedCourse == null ?
+                      tutorFilter.clearCourseCode() :
+                      tutorFilter.setCourseCode(selectedCourse);
         tutorFilter = searchString.isEmpty() ?
                       tutorFilter.resetSearchString() :
                       tutorFilter.setSearchFilter(searchString);
@@ -329,12 +297,16 @@ class SearchFragment extends Fragment
     private
     void setUpRecyclerView()
     {
-        searchViewModel.setTutorsFiltered(tutorList);
-        RecyclerView               recyclerView = binding.rvSearchResult;
-        SearchTutorRecyclerAdapter adapter      = new SearchTutorRecyclerAdapter(tutorList, this::openDetails);
-        searchViewModel.getTutorsFiltered().observe(getViewLifecycleOwner(), adapter::updateData);
-        recyclerView.setAdapter(adapter);
+        RecyclerView recyclerView = binding.rvSearchResult;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        searchViewModel.setTutorsFiltered(tutorList);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            new Handler(Looper.getMainLooper()).post(() -> {
+                SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(tutorList, this::openDetails);
+                searchViewModel.getTutorsFiltered().observe(getViewLifecycleOwner(), adapter::updateData);
+                recyclerView.setAdapter(adapter);
+            });
+        });
     }
 
     private
@@ -343,7 +315,8 @@ class SearchFragment extends Fragment
         vm.setTutor(t);
         FragmentManager fm              = getChildFragmentManager();
         NavHostFragment navHostFragment = (NavHostFragment) fm.findFragmentById(R.id.rightSide);
-        NavController   nc              = navHostFragment.getNavController();
+        assert navHostFragment != null;
+        NavController nc = navHostFragment.getNavController();
         nc.navigate(R.id.actionToTutorProfileViewFragment);
         slidingPaneLayout.open();
     }

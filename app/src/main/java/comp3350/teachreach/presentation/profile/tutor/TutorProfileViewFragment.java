@@ -2,6 +2,8 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +29,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
@@ -82,7 +85,7 @@ class TutorProfileViewFragment extends Fragment
         student = trViewModel.getStudent().getValue();
         assert tutor != null && student != null;
 
-        profileHandler      = new TutorProfileHandler(tutor);
+        profileHandler      = new TutorProfileHandler();
         availabilityManager = new TutorAvailabilityManager();
 
         tutorAccount = Server.getAccountDataAccess().getAccounts().get(tutor.getAccountID());
@@ -111,24 +114,42 @@ class TutorProfileViewFragment extends Fragment
         setUpCalendarView();
     }
 
+
     private
     void setUpTutoredCourses()
     {
-        RecyclerView r = binding.rvTutoredCourses;
+        RecyclerView               recyclerView  = binding.rvTutoredCourses;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 3;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+        recyclerView.setLayoutManager(layoutManager);
 
-        tutorProfileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
-
-        StringRecyclerAdapter      a         = new StringRecyclerAdapter(tutorProfileViewModel
-                                                                                 .getTutoredCoursesCode()
-                                                                                 .getValue());
-        int                        spanCount = isLarge || isLandscape ? 6 : 3;
-        RecyclerView.LayoutManager lm        = new GridLayoutManager(requireContext(), spanCount);
-
-        r.setAdapter(a);
-        r.setLayoutManager(lm);
-
-        tutorProfileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), a::updateData);
+        Executors.newSingleThreadExecutor().execute(() -> {
+            List<String> coursesCodes = profileHandler.getCourseCodeList(tutor);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                StringRecyclerAdapter adapter = new StringRecyclerAdapter(coursesCodes);
+                recyclerView.setAdapter(adapter);
+            });
+        });
     }
+
+    //    private
+    //    void setUpTutoredCourses()
+    //    {
+    //        RecyclerView r = binding.rvTutoredCourses;
+    //
+    //        tutorProfileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList(tutor));
+    //
+    //        StringRecyclerAdapter      a         = new StringRecyclerAdapter(tutorProfileViewModel
+    //                                                                                 .getTutoredCoursesCode()
+    //                                                                                 .getValue());
+    //        int                        spanCount = isLarge || isLandscape ? 6 : 3;
+    //        RecyclerView.LayoutManager lm        = new GridLayoutManager(requireContext(), spanCount);
+    //
+    //        r.setAdapter(a);
+    //        r.setLayoutManager(lm);
+    //
+    //        tutorProfileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), a::updateData);
+    //    }
 
     private
     void setUpTopBar()
@@ -155,8 +176,8 @@ class TutorProfileViewFragment extends Fragment
         tvPrice.setText(String.format(Locale.US, "$%.2f/h", tutor.getHourlyRate()));
         tvReviews.setText(String.format(Locale.US,
                                         "%.1f ⭐(%d)",
-                                        profileHandler.getAvgReview(),
-                                        profileHandler.getReviewCount()));
+                                        profileHandler.getAvgReview(tutor),
+                                        tutor.getReviewCount()));
     }
 
     private
@@ -164,7 +185,7 @@ class TutorProfileViewFragment extends Fragment
     {
         RecyclerView recycler = binding.rvPreferredLocations;
 
-        tutorProfileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
+        tutorProfileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
 
         StringRecyclerAdapter adapter = new StringRecyclerAdapter(tutorProfileViewModel
                                                                           .getPreferredLocations()
@@ -208,7 +229,7 @@ class TutorProfileViewFragment extends Fragment
         bookingViewModel.setTutorAccount(tutorAccount);
         bookingViewModel.setTutor(tutor);
         bookingViewModel.setStudent(student);
-        bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations());
+        bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations(tutor));
         NavHostFragment.findNavController(this).navigate(R.id.actionToTimeSlotSelectionFragment);
     }
 }

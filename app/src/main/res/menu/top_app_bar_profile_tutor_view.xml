@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/tbClose"
-        android:title="@string/tbcdClose"
-        android:icon="@drawable/baseline_close_24"
         android:contentDescription="@string/tbcdClose"
+        android:icon="@drawable/baseline_close_24"
+        android:title="@string/tbcdClose"
         app:showAsAction="ifRoom" />
 
 </menu>

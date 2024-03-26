@@ -60,8 +60,8 @@ class TutorProfileSelfViewFragment extends Fragment
         tvPrice.setText(String.format(Locale.getDefault(), "$%.2f/h", tutor.getHourlyRate()));
         tvReviews.setText(String.format(Locale.getDefault(),
                                         "%.1f ⭐(%d)",
-                                        profileHandler.getAvgReview(),
-                                        profileHandler.getReviewCount()));
+                                        profileHandler.getAvgReview(tutor),
+                                        tutor.getReviewCount()));
     }
 
     private
@@ -93,7 +93,7 @@ class TutorProfileSelfViewFragment extends Fragment
 
         RecyclerView recycler = binding.rvTutoredCourses;
 
-        profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
+        profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList(tutor));
 
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
                                                                                   .getTutoredCoursesCode()
@@ -118,7 +118,7 @@ class TutorProfileSelfViewFragment extends Fragment
         Button       btnAddLocation = binding.btnAddLocation;
         RecyclerView recycler       = binding.rvPreferredLocations;
 
-        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
+        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
 
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
                                                                                   .getPreferredLocations()
@@ -160,7 +160,7 @@ class TutorProfileSelfViewFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         tutor          = profileViewModel.getTutor().getValue();
         account        = profileViewModel.getTutorAccount().getValue();
-        profileHandler = new TutorProfileHandler(tutor);
+        profileHandler = new TutorProfileHandler();
         Configuration config = getResources().getConfiguration();
         isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
