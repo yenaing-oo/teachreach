@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.sql.Timestamp;
@@ -17,6 +18,7 @@ import comp3350.teachreach.databinding.FragmentOtherGuyMessageBinding;
 import comp3350.teachreach.databinding.SingleMessageBinding;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
+import comp3350.teachreach.presentation.profile.tutor.TutorProfileViewModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class FullMessageAdaptor
@@ -38,11 +40,11 @@ public class FullMessageAdaptor
     private Map<Timestamp, String> receivedMessage;
 
     public FullMessageAdaptor(Context context,
-                              Map<Integer, Map<Timestamp, String>> messages)
+                              Map<Integer, Map<Timestamp, String>> messages, TRViewModel vm)
     {
         this.context  = context;
         this.messages = messages;
-        vm            = new TRViewModel();
+        this.vm = vm;
         //userID = vm.getAccount().getValue().getAccountID();
         this.receivedMessage = new TreeMap<>();
         this.sentMessage     = new TreeMap<>();
@@ -51,7 +53,7 @@ public class FullMessageAdaptor
 
     private void extractMessages()
     {
-        //find out the user is tutor/student
+        //find out current account ID
         int currentUserID = getCurrentUserID();
 
         //extract messages
@@ -82,14 +84,15 @@ public class FullMessageAdaptor
         notifyDataSetChanged();
     }
 
-    private int getCurrentUserID()
-    {
-        if (Boolean.TRUE.equals(vm.getIsTutor().getValue())) {
-            return vm.getAccount().getValue().getTutorID();
-        } else {
-            return vm.getAccount().getValue().getStudentID();
-        }
+    private int getCurrentUserID() {
+        return vm.getAccount().getValue().getAccountID();
     }
+//        if (Boolean.TRUE.equals(vm.getIsTutor().getValue())) {
+//            return vm.getAccount().getValue().getTutorID();
+//        } else {
+//            return vm.getStudent().getValue().getStudentID();
+//        }
+
 
     @NonNull
     @Override

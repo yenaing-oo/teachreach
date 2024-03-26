@@ -74,8 +74,8 @@ public class StudentHomeActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarProfile) {
                 navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
-                //                navController.navigate(R.id
-                //                .actionToGroupFragment);// i need it work
+                navController.navigate(R.id.actionToGroupFragment);// i need it work
+                //navController.navigate(R.id.actionToIndividualChatFragment);
             }
             return true;
         });

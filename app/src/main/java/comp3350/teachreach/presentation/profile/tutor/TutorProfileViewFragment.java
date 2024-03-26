@@ -35,6 +35,8 @@ import java.util.Objects;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
@@ -54,6 +56,8 @@ public class TutorProfileViewFragment extends Fragment
     private TutorProfileViewModel tutorProfileViewModel;
     private TRViewModel           trViewModel;
     private BookingViewModel      bookingViewModel;
+
+    private MessageModel messageModel;
 
     private ITutorProfileHandler profileHandler;
 
@@ -85,6 +89,8 @@ public class TutorProfileViewFragment extends Fragment
 
         bookingViewModel = new ViewModelProvider(requireActivity()).get(
                 BookingViewModel.class);
+        messageModel = new ViewModelProvider(requireActivity()).get(
+                MessageModel.class);
 
         tutor   = trViewModel.getTutor().getValue();
         student = trViewModel.getStudent().getValue();
@@ -247,10 +253,19 @@ public class TutorProfileViewFragment extends Fragment
     private void createGroup(ExtendedFloatingActionButton floatingButton)
     {
         int studentID, tutorID;
-        studentID = Objects
-                .requireNonNull(trViewModel.getAccount().getValue())
-                .getStudentID();
-        tutorID   = this.tutor.getTutorID();
+        studentID = trViewModel.getStudent().getValue().getStudentID();
+//                Objects
+//                .requireNonNull(trViewModel.getAccount().getValue())
+//                .getStudentID();
+        tutorID   = trViewModel.getTutor().getValue().getTutorID();
+        AccessTutors accessTutors = new AccessTutors();
+
+        AccessAccounts accessAccounts = new AccessAccounts();
+
+        messageModel.setOtherUser( accessAccounts.getAccountByAccountID( accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
+
+                //tutorProfileViewModel.getTutor().getValue().getTutorID();
+                //this.tutor.getTutorID();
 
         floatingButton.setError(null);
         try {
@@ -259,6 +274,8 @@ public class TutorProfileViewFragment extends Fragment
                     =
                     new ViewModelProvider(requireActivity()).get(MessageModel.class);
             messageModel.setGroupID(groupID);
+
+            messageModel.setMessageByID(messageHandler.chatHistoryOfGroupV1(groupID));
 
             //trViewModel.setUsers(this.tutorAccount);
         } catch (final Exception e) {
@@ -279,10 +296,16 @@ public class TutorProfileViewFragment extends Fragment
         ExtendedFloatingActionButton floatingButton
                 = v.findViewById(R.id.fabMsg);
 
+
+
         floatingButton.setOnClickListener(view -> {
+            //NavHostFragment
+            //        .findNavController(requireParentFragment().requireParentFragment())
+            //        .navigate(R.id.actionToGroupFragment);
             createGroup(floatingButton);
+
             NavHostFragment
-                    .findNavController(this)
+                    .findNavController(requireParentFragment().requireParentFragment())
                     .navigate(R.id.actionToIndividualChatFragment);
         });
     }

@@ -7,6 +7,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import comp3350.teachreach.objects.interfaces.IAccount;
+
 public class MessageModel extends ViewModel {
 
     private final MutableLiveData< Map<Integer, Map<Timestamp, String>>> messagesByID
@@ -16,6 +18,16 @@ public class MessageModel extends ViewModel {
             = new MutableLiveData<>();
 
     private final MutableLiveData<Integer> groupID = new MutableLiveData<>();
+
+    private final MutableLiveData<IAccount> otherUser = new MutableLiveData<>();
+
+    public MutableLiveData<IAccount> getOtherUser() {
+        return otherUser;
+    }
+
+    public void setOtherUser(IAccount otherUser){
+        this.otherUser.setValue(otherUser);
+    }
 
     public MutableLiveData<Integer> getGroupID() {
         return groupID;

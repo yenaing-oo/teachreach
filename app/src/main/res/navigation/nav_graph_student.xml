@@ -6,7 +6,7 @@
     app:startDestination="@id/searchFragment">
     <fragment
         android:id="@+id/IndividualChatFragment"
-        android:name="comp3350.teachreach.presentation.communication.Groups.GroupFragment"
+        android:name="comp3350.teachreach.presentation.communication.IndividualChat.IndividualChatFragment"
         android:label="Group Fragment"
         tools:layout="@layout/fragment_individual_chat">
         <action
@@ -18,25 +18,33 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/actionToSearchFragment"
-            app:destination="@id/groupFragment"
+            app:destination="@id/searchFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
             android:id="@+id/actionToStudentProfileSelfViewFragment"
-            app:destination="@id/groupFragment"
+            app:destination="@id/studentProfileSelfViewFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
         <action
-            android:id="@+id/actionToTutorProfileSelfViewFragmentt"
-            app:destination="@id/groupFragment"
+            android:id="@+id/actionToTutorProfileSelfViewFragment"
+            app:destination="@id/tutorProfileViewFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/actionToIndividualChatFragment"
+            app:destination="@id/IndividualChatFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
     </fragment>
 
     <fragment
@@ -45,6 +53,13 @@
         android:label="Group Fragment"
         tools:layout="@layout/fragment_group">
         <!-- Define any actions associated with this fragment -->
+        <action
+            android:id="@+id/actionToEditStudentProfileFragment"
+            app:destination="@id/editStudentProfileFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_enter_anim"
+            app:popEnterAnim="@animator/nav_default_exit_anim"
+            app:popExitAnim="@animator/nav_default_exit_anim" />
         <action
             android:id="@+id/actionToGroupFragment"
             app:destination="@id/groupFragment"
@@ -88,6 +103,13 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
+            android:id="@+id/actionToEditStudentProfileFragment"
+            app:destination="@id/editStudentProfileFragment"
+            app:enterAnim="@animator/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_enter_anim"
+            app:popEnterAnim="@animator/nav_default_exit_anim"
+            app:popExitAnim="@animator/nav_default_exit_anim" />
+        <action
             android:id="@+id/actionToStudentProfileSelfViewFragment"
             app:destination="@id/studentProfileSelfViewFragment"
             app:enterAnim="@animator/nav_default_enter_anim"
@@ -101,7 +123,6 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
             app:popExitAnim="@animator/nav_default_pop_exit_anim" />
-
         <action
             android:id="@+id/actionToGroupFragment"
             app:destination="@id/groupFragment"
@@ -259,19 +280,15 @@
             app:popEnterAnim="@animator/nav_default_pop_enter_anim"
             app:popExitAnim="@animator/nav_default_pop_exit_anim" />
         <action
-            android:id="@+id/actionToGroupFragment"
-            app:destination="@id/groupFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@animator/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
-        <action
             android:id="@+id/actionToIndividualChatFragment"
             app:destination="@id/IndividualChatFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_tutorProfileViewFragment_to_groupFragment"
+            app:destination="@id/groupFragment" />
     </fragment>
     <fragment
         android:id="@+id/fragmentChangingEmail"

@@ -11,13 +11,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentIndividualChatBinding;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
@@ -39,7 +44,7 @@ public class IndividualChatFragment extends Fragment
     private int          accountID;
     private RecyclerView recyclerView;
     private FullMessageAdaptor fullMessageAdaptor;
-    private Map<Integer, Map<Timestamp, String>> messages;
+    //private Map<Integer, Map<Timestamp, String>> messages;
 
     public IndividualChatFragment()
     {
@@ -54,6 +59,7 @@ public class IndividualChatFragment extends Fragment
                 TRViewModel.class);
         mm             = new ViewModelProvider(requireActivity()).get(
                 MessageModel.class);
+    }
         //        LiveData<IAccount> accountLiveData = vm.getAccount();
         //        accountLiveData.observe(this, account -> {
         //            // Extract the int value from the IAccount object
@@ -62,7 +68,7 @@ public class IndividualChatFragment extends Fragment
         //        (accountID);
         //users = vm.getUsers();
 
-    }
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -83,7 +89,9 @@ public class IndividualChatFragment extends Fragment
     {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView(recyclerView);
-
+        setUpTopBar();
+        //assert getArguments() != null;
+        //IAccount account = (IAccount) getArguments().getSerializable("account",this);
         //vm.getMessages().observe(getViewLifecycleOwner(), new
         // Observer<List<IMessage>>() {
 
@@ -104,26 +112,27 @@ public class IndividualChatFragment extends Fragment
                                  });
     }
 
-    //
-    //    private void setUpTopBar(View v)
-    //    {
-    //        MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
-    //        materialToolbar.setTitle(tutorAccount.getUserName());
-    //        materialToolbar.setNavigationOnClickListener(listener);
-    //        NavController navController
-    //                = NavHostFragment.findNavController(this);
-    //        navController.navigate(R.id
-    //        .actionToStudentProfileSelfViewFragment);
-    //
-    //    }
 
-    private void setUpRecyclerView(RecyclerView recyclerView)
-    {
+        private void setUpTopBar()
+        {
+            MaterialToolbar materialToolbar = binding.topAppBar;
+            materialToolbar.setTitle(mm.getOtherUser().getValue().getUserName());
 
-        recyclerView       = binding.IndividualChatsRecycleViewFragment;
-        fullMessageAdaptor = new FullMessageAdaptor(getContext(), messages);
+            materialToolbar.setNavigationOnClickListener(view -> {
+                NavController navController
+                        = NavHostFragment.findNavController(this);
+                navController.navigate(R.id.actionToGroupFragment);
+            });
+
+        }
+
+    private void setUpRecyclerView(RecyclerView recyclerView) {
+
+        //recyclerView = binding.IndividualChatsRecycleViewFragment;
+        fullMessageAdaptor = new FullMessageAdaptor(getContext(), mm.getMessagesByID().getValue(), vm);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fullMessageAdaptor);
+    }
         //get IDs first
         //retrieve original message
         //split it into two (sender/receiver)
@@ -140,5 +149,5 @@ public class IndividualChatFragment extends Fragment
         //        recyclerView.setLayoutManager(new LinearLayoutManager
         //        (getContext()));
 
-    }
+
 }
