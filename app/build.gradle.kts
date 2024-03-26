@@ -20,8 +20,8 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                    getDefaultProguardFile("proguard-android-optimize.txt"),
-                    "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
             )
         }
     }
@@ -55,9 +55,11 @@ dependencies {
     testImplementation("com.google.guava:guava:25.1-jre")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("org.mockito:mockito-inline:4.0.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:4.0.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
+}
 
-
-
+tasks.register("clearData", org.gradle.api.tasks.Exec::class) {
+    val packageName = "comp3350.teachreach"
+    commandLine("adb", "shell", "pm", "clear", packageName)
 }

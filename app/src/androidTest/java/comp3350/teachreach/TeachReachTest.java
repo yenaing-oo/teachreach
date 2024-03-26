@@ -20,16 +20,15 @@ import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TeachReachTest
-{
+public class TeachReachTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
             = new ActivityScenarioRule<>(MainActivity.class);
+
     //system test for login
     @Test
-    public void testSuccessfulLogin()
-    {
+    public void testSuccessfulLogin() {
         onView(withId(R.id.btnStudentLogin)).perform(click());
         onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student@email.com"), closeSoftKeyboard());
         onView(withId(R.id.etStudentLoginPassword)).perform(typeText("123"), closeSoftKeyboard());
