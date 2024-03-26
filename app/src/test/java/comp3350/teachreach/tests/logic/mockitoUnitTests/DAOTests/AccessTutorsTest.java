@@ -45,12 +45,12 @@ public class AccessTutorsTest {
         Map<Integer, ITutor> results = accessTutors.getTutors();
 
         try {
-            assertEquals("Incorrect result from getTutors", results.size(), 5);
-            assertEquals("Incorrect result from getTutors", results.get(1).getAccountID(), 6);
-            assertEquals("Incorrect result from getTutors", results.get(2).getAccountID(), 7);
-            assertEquals("Incorrect result from getTutors", results.get(3).getAccountID(), 8);
-            assertEquals("Incorrect result from getTutors", results.get(4).getAccountID(), 9);
-            assertEquals("Incorrect result from getTutors", results.get(5).getAccountID(), 10);
+            assertEquals("Incorrect result from getTutors", 5, results.size());
+            assertEquals("Incorrect result from getTutors", 6, results.get(1).getAccountID());
+            assertEquals("Incorrect result from getTutors", 7, results.get(2).getAccountID());
+            assertEquals("Incorrect result from getTutors", 8, results.get(3).getAccountID());
+            assertEquals("Incorrect result from getTutors", 9, results.get(4).getAccountID());
+            assertEquals("Incorrect result from getTutors", 10, results.get(5).getAccountID());
         } catch(NullPointerException n) {
             fail("Issue with getTutors results");
         }
@@ -73,7 +73,7 @@ public class AccessTutorsTest {
 
         ITutor result = accessTutors.getTutorByAccountID(8);
 
-        assertEquals("Incorrect result from getTutorByAccountID", result.getTutorID(), 3);
+        assertEquals("Incorrect result from getTutorByAccountID", 3, result.getTutorID());
 
         assertThrows("DataAccessException expected, but not thrown", DataAccessException.class, () -> accessTutors.getTutorByAccountID(11));
     }
@@ -92,7 +92,7 @@ public class AccessTutorsTest {
 
         ITutor result = accessTutors.getTutorByTutorID(3);
 
-        assertEquals("Incorrect result from getTutorByAccountID", result.getAccountID(), 8);
+        assertEquals("Incorrect result from getTutorByAccountID", 8, result.getAccountID());
 
         assertNull("DataAccessException expected, but not thrown", accessTutors.getTutorByTutorID(6));
     }

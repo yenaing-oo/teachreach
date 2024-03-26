@@ -53,11 +53,11 @@ public class AccessTutorAvailabilityTest {
 
         List<ITimeSlice> results = accessTutorAvailability.getAvailability(tutor1);
 
-        assertEquals("Issue with getAvailability results", results.size(), 4);
+        assertEquals("Issue with getAvailability results", 4, results.size());
 
         results = accessTutorAvailability.getAvailability(tutor2);
 
-        assertEquals("Issue with getAvailability results", results.size(), 5);
+        assertEquals("Issue with getAvailability results", 5, results.size());
     }
 
     @Test
@@ -93,34 +93,34 @@ public class AccessTutorAvailabilityTest {
 
         List<ITimeSlice> results = accessTutorAvailability.getAvailabilityOnDay(tutor1,date10);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 1);
+        assertEquals("Issues with getAvailabilityOnDay", 1, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor2,date10);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 4);
+        assertEquals("Issues with getAvailabilityOnDay", 4, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor1,date11);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 1);
+        assertEquals("Issues with getAvailabilityOnDay", 1, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor2,date11);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 0);
+        assertEquals("Issues with getAvailabilityOnDay", 0, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor1,date12);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 2);
+        assertEquals("Issues with getAvailabilityOnDay", 2, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor2,date12);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 1);
+        assertEquals("Issues with getAvailabilityOnDay", 1, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor1,date13);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 0);
+        assertEquals("Issues with getAvailabilityOnDay", 0, results.size());
 
         results = accessTutorAvailability.getAvailabilityOnDay(tutor2,date13);
 
-        assertEquals("Issues with getAvailabilityOnDay", results.size(), 1);
+        assertEquals("Issues with getAvailabilityOnDay", 1, results.size());
     }
 }

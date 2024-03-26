@@ -53,7 +53,7 @@ public class AccessSessionsTest {
 
         List<ISession> result = accessSessions.getSessions(new Tutor(1, 1));
 
-        assertEquals("Issue with getSessions for tutor", result.size(), 6);
+        assertEquals("Issue with getSessions for tutor", 6, result.size());
 
         result = accessSessions.getSessions(new Tutor(2, 2));
 
@@ -61,7 +61,7 @@ public class AccessSessionsTest {
 
         result = accessSessions.getSessions(new Student(2, 3));
 
-        assertEquals("Issue with getSessions for student", result.size(), 3);
+        assertEquals("Issue with getSessions for student", 3, result.size());
 
     }
 
@@ -84,15 +84,15 @@ public class AccessSessionsTest {
 
         List<ISession> result = accessSessions.getPendingSessions(new Tutor(1, 1));
 
-        assertEquals("Issue with getPendingSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getPendingSessions for tutor", 2, result.size());
 
         result = accessSessions.getPendingSessions(new Tutor(2, 2));
 
-        assertEquals("Issue with getPendingSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getPendingSessions for tutor", 3, result.size());
 
         result = accessSessions.getPendingSessions(new Student(2, 3));
 
-        assertEquals("Issue with getPendingSessions for student", result.size(), 2);
+        assertEquals("Issue with getPendingSessions for student", 2, result.size());
     }
 
 
@@ -115,15 +115,15 @@ public class AccessSessionsTest {
 
         List<ISession> result = accessSessions.getAcceptedSessions(new Tutor(1, 1));
 
-        assertEquals("Issue with getAcceptedSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getAcceptedSessions for tutor", 2, result.size());
 
         result = accessSessions.getAcceptedSessions(new Tutor(2, 2));
 
-        assertEquals("Issue with getAcceptedSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getAcceptedSessions for tutor", 2, result.size());
 
         result = accessSessions.getAcceptedSessions(new Student(2, 3));
 
-        assertEquals("Issue with getAcceptedSessions for Student", result.size(), 0);
+        assertEquals("Issue with getAcceptedSessions for Student", 0, result.size());
 
     }
 
@@ -146,15 +146,15 @@ public class AccessSessionsTest {
 
         List<ISession> result = accessSessions.getRejectedSessions(new Tutor(1, 1));
 
-        assertEquals("Issue with getRejectedSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getRejectedSessions for tutor", 2, result.size());
 
         result = accessSessions.getRejectedSessions(new Tutor(2, 2));
 
-        assertEquals("Issue with getRejectedSessions for tutor", result.size(), 2);
+        assertEquals("Issue with getRejectedSessions for tutor", 2, result.size());
 
         result = accessSessions.getRejectedSessions(new Tutor(2, 2));
 
-        assertEquals("Issue with getRejectedSessions for student", result.size(), 1);
+        assertEquals("Issue with getRejectedSessions for student", 1, result.size());
 
     }
 }

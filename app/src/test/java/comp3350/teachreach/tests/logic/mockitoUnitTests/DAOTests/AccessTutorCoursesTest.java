@@ -41,8 +41,8 @@ public class AccessTutorCoursesTest {
 
         List<ICourse> results = accessTutoredCourses.getTutoredCoursesByTutorID(1);
 
-        assertEquals("Error in results from getTutoredCoursesByTutorID", results.size(), 2);
-        assertEquals("Error in results from getTutoredCoursesByTutorID", results.get(0).getCourseCode(), "COMP 1012");
+        assertEquals("Error in results from getTutoredCoursesByTutorID", 2, results.size());
+        assertEquals("Error in results from getTutoredCoursesByTutorID", "COMP 1012", results.get(0).getCourseCode());
 
         assertThrows("Expected DataAccessException expected but was not thrown", DataAccessException.class, () -> accessTutoredCourses.getTutoredCoursesByTutorID(2));
 

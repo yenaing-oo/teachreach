@@ -57,10 +57,10 @@ public class AccessAccountsTest {
         Map<Integer, IAccount> result = accessAccounts.getAccounts();
 
         try {
-            assertEquals(result.size(), 3);
-            assertEquals("Issue with getAccounts return contents", result.get(1).getUserName(), "Robert Guderian");
-            assertEquals("Issue with getAccounts return contents", result.get(2).getUserName(), "Camryn Mcmillan");
-            assertEquals("Issue with getAccounts return contents", result.get(3).getUserName(), "Justin Huang");
+            assertEquals(3, result.size());
+            assertEquals("Issue with getAccounts return contents",  "Robert Guderian", result.get(1).getUserName());
+            assertEquals("Issue with getAccounts return contents", "Camryn Mcmillan", result.get(2).getUserName());
+            assertEquals("Issue with getAccounts return contents", "Justin Huang", result.get(3).getUserName());
         } catch(NullPointerException n) {
             fail("Issues with results from getAccounts");
         }
@@ -100,7 +100,7 @@ public class AccessAccountsTest {
         Optional<IAccount> result = accessAccounts.getAccountByEmail("mcmill5@myumanitoba.ca");
 
         assertTrue("Did not pull account correctly from getAccountByEmail", result.isPresent());
-        assertEquals("Incorrect result for getAccountByEmail", result.get().getAccountID(), 3);
+        assertEquals("Incorrect result for getAccountByEmail", 3, result.get().getAccountID());
 
 
     }
@@ -119,7 +119,7 @@ public class AccessAccountsTest {
 
         IAccount result = accessAccounts.getAccountByAccountID(3).orElseThrow(() -> new DataAccessException(("Issues with results from getAccountByAccountID")));
 
-        assertEquals("Incorrect result from getAccountByAccountID", result.getAccountID(), 8);
+        assertEquals("Incorrect result from getAccountByAccountID", 8, result.getAccountID());
 
         assertNull("DataAccessException expected, but not thrown", accessAccounts.getAccountByAccountID(6));
     }

@@ -52,22 +52,22 @@ public class AccessCoursesTest
         Map<String, ICourse> result = accessCourses.getCourses();
 
         try {
-            assertEquals(result.size(), 5);
+            assertEquals(5, result.size());
             assertEquals("Issue with getCourses return contents",
-                    result.get("COMP 2080").getCourseName(),
-                    "Analysis of Algorithms");
+                    "Analysis of Algorithms",
+                    result.get("COMP 2080").getCourseName());
             assertEquals("Issue with getCourses return contents",
-                    result.get("COMP 1010").getCourseName(),
-                    "Introduction to Computer Science");
+                    "Introduction to Computer Science",
+                    result.get("COMP 1010").getCourseName());
             assertEquals("Issue with getCourses return contents",
-                    result.get("COMP 1012").getCourseName(),
-                    "Introduction to Computer Science for Engineers");
+                    "Introduction to Computer Science for Engineers",
+                    result.get("COMP 1012").getCourseName());
             assertEquals("Issue with getCourses return contents",
-                    result.get("COMP 2150").getCourseName(),
-                    "Object Orientation");
+                    "Object Orientation",
+                    result.get("COMP 2150").getCourseName());
             assertEquals("Issue with getCourses return contents",
-                    result.get("COMP 3380").getCourseName(),
-                    "Databases Concepts and Usage");
+                    "Databases Concepts and Usage",
+                    result.get("COMP 3380").getCourseName());
         } catch(NullPointerException n) {
             fail("Issues with results from getCourses");
         }
@@ -100,8 +100,8 @@ public class AccessCoursesTest
         ICourse result = accessCourses.getCourseByCode("COMP 1012");
 
         assertEquals("Issue with getCourseByCode result",
-                     result.getCourseName(),
-                     "Introduction to Computer Science for Engineers");
+                "Introduction to Computer Science for Engineers",
+                     result.getCourseName());
         assertThrows("DataAccessException expected from getCourseByCode",
                      DataAccessException.class,
                      () -> accessCourses.getCourseByCode("HelloWorld"));
@@ -129,11 +129,10 @@ public class AccessCoursesTest
                 "Object Orientation");
 
         assertEquals("Issue with getCoursesByName result",
-                     result.get(0).getCourseName(),
-                     "COMP 2150");
+                "COMP 2150",
+                     result.get(0).getCourseName());
 
-        assertEquals("Unexpected result from getCoursesByName",
-                     accessCourses.getCoursesByName("HelloWorld").size(),
-                     0);
+        assertEquals("Unexpected result from getCoursesByName", 0,
+                     accessCourses.getCoursesByName("HelloWorld").size());
     }
 }

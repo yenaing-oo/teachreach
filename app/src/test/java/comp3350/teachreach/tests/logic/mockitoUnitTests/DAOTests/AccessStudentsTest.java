@@ -45,11 +45,11 @@ public class AccessStudentsTest {
 
         try {
             assertEquals("Incorrect result from getStudents", results.size(), 5);
-            assertEquals("Incorrect result from getStudents", results.get(1).getAccountID(), 6);
-            assertEquals("Incorrect result from getStudents", results.get(2).getAccountID(), 7);
-            assertEquals("Incorrect result from getStudents", results.get(3).getAccountID(), 8);
-            assertEquals("Incorrect result from getStudents", results.get(4).getAccountID(), 9);
-            assertEquals("Incorrect result from getStudents", results.get(5).getAccountID(), 10);
+            assertEquals("Incorrect result from getStudents", 6, results.get(1).getAccountID());
+            assertEquals("Incorrect result from getStudents", 7, results.get(2).getAccountID());
+            assertEquals("Incorrect result from getStudents", 8, results.get(3).getAccountID());
+            assertEquals("Incorrect result from getStudents", 9, results.get(4).getAccountID());
+            assertEquals("Incorrect result from getStudents", 10, results.get(5).getAccountID());
         } catch(NullPointerException n) {
             fail("Error in results from get getStudents");
         }
@@ -71,7 +71,7 @@ public class AccessStudentsTest {
 
         IStudent resultStudent = accessStudents.getStudentByAccountID(8);
 
-        assertEquals("Incorrect result from getStudentByAccountID", resultStudent.getStudentID(), 3);
+        assertEquals("Incorrect result from getStudentByAccountID", 3, resultStudent.getStudentID());
 
         assertThrows("DataAccessException expected, but not thrown", DataAccessException.class, () -> accessStudents.getStudentByAccountID(11));
     }
@@ -90,7 +90,7 @@ public class AccessStudentsTest {
 
         IStudent resultStudent = accessStudents.getStudentByAccountID(3);
 
-        assertEquals("Incorrect result from getStudentByAccountID", resultStudent.getAccountID(), 8);
+        assertEquals("Incorrect result from getStudentByAccountID", 8, resultStudent.getAccountID());
 
         assertThrows("DataAccessException expected, but not thrown", DataAccessException.class, () -> accessStudents.getStudentByStudentID(11));
     }

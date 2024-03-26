@@ -54,7 +54,7 @@ public class TutorProfileHandlerTest {
 
         List<String> results = tutorProfileHandler.getCourseCodeList(new Tutor(1,1));
 
-        assertEquals("Issues with getCourseCodeList", results.size(), 4);
+        assertEquals("Issues with getCourseCodeList", 4, results.size());
     }
     @Test
     public void getCourseDescriptionListTest() {
@@ -72,7 +72,7 @@ public class TutorProfileHandlerTest {
 
         List<String> results = tutorProfileHandler.getCourseCodeList(new Tutor(1,1));
 
-        assertEquals("Issues with getCourseDescriptionList", results.size(), 4);
+        assertEquals("Issues with getCourseDescriptionList", 4, results.size());
 
     }
 }

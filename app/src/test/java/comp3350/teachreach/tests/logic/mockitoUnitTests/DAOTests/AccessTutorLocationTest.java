@@ -40,8 +40,8 @@ public class AccessTutorLocationTest {
 
         List<String> results = accessTutorLocation.getTutorLocationByTutorID(1);
 
-        assertEquals("Error in results from getTutorLocationByTutorID", results.size(), 3);
-        assertEquals("Error in results from getTutorLocationByTutorID", results.get(1), "Coffee Shop");
+        assertEquals("Error in results from getTutorLocationByTutorID", 3, results.size());
+        assertEquals("Error in results from getTutorLocationByTutorID", "Coffee Shop", results.get(1));
 
         assertThrows("Expected DataAccessException not thrown", DataAccessException.class, () -> accessTutorLocation.getTutorLocationByTutorID(2));
 
