@@ -42,6 +42,15 @@ class TutorProfileHandler implements ITutorProfileHandler
     }
 
     public
+    TutorProfileHandler(AccessTutors accessTutors, AccessTutoredCourses accessTutoredCourses,
+                        AccessCourses accessCourses, AccessTutorLocation accessTutorLocation) {
+        this.accessTutors         = accessTutors;
+        this.accessTutoredCourses = accessTutoredCourses;
+        this.accessCourses        = accessCourses;
+        this.accessTutorLocation  = accessTutorLocation;
+    }
+
+    public
     TutorProfileHandler(ITutorPersistence tutorPersistence,
                         ICoursePersistence coursePersistence,
                         ITutoredCoursesPersistence tutoredCoursesPersistence,
