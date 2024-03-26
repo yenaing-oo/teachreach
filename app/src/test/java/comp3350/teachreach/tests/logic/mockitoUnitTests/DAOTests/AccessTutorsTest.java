@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
@@ -14,12 +15,8 @@ import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
-import comp3350.teachreach.objects.Student;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.Tutor;
-import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class AccessTutorsTest {
@@ -32,7 +29,7 @@ public class AccessTutorsTest {
 
     @Test
     public void getTutorsTest() {
-        Map<Integer, ITutor> returns = new HashMap<Integer, ITutor>();
+        Map<Integer, ITutor> returns = new HashMap<>();
 
         returns.put(1, new Tutor(1, 6));
         returns.put(2, new Tutor(2, 7));
@@ -44,13 +41,16 @@ public class AccessTutorsTest {
 
         Map<Integer, ITutor> results = accessTutors.getTutors();
 
-        assertEquals("Incorrect result from getTutors", results.size(), 5);
-        assertEquals("Incorrect result from getTutors", results.get(1), 6);
-        assertEquals("Incorrect result from getTutors", results.get(2), 7);
-        assertEquals("Incorrect result from getTutors", results.get(3), 8);
-        assertEquals("Incorrect result from getTutors", results.get(4), 9);
-        assertEquals("Incorrect result from getTutors", results.get(5), 10);
-
+        try {
+            assertEquals("Incorrect result from getTutors", results.size(), 5);
+            assertEquals("Incorrect result from getTutors", results.get(1).getAccountID(), 6);
+            assertEquals("Incorrect result from getTutors", results.get(2).getAccountID(), 7);
+            assertEquals("Incorrect result from getTutors", results.get(3).getAccountID(), 8);
+            assertEquals("Incorrect result from getTutors", results.get(4).getAccountID(), 9);
+            assertEquals("Incorrect result from getTutors", results.get(5).getAccountID(), 10);
+        } catch(NullPointerException n) {
+            fail("Issue with getTutors results");
+        }
         assertThrows("Result from getTutors is not an unmodifiable map", UnsupportedOperationException.class,
                 () -> results.put(6, new Tutor(6, 11)));
 
@@ -58,7 +58,7 @@ public class AccessTutorsTest {
 
     @Test
     public void getTutorByAccountIDTest() {
-        Map<Integer, ITutor> returns = new HashMap<Integer, ITutor>();
+        Map<Integer, ITutor> returns = new HashMap<>();
 
         returns.put(1, new Tutor(1, 6));
         returns.put(2, new Tutor(2, 7));
@@ -77,7 +77,7 @@ public class AccessTutorsTest {
 
     @Test
     public void getTutorByTutorIDTest() {
-        Map<Integer, ITutor> returns = new HashMap<Integer, ITutor>();
+        Map<Integer, ITutor> returns = new HashMap<>();
 
         returns.put(1, new Tutor(1, 6));
         returns.put(2, new Tutor(2, 7));

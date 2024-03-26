@@ -26,7 +26,7 @@ public class AccessStudentsTest {
 
     @Test
     public void getStudentsTest() {
-        Map<Integer, IStudent> returns = new HashMap<Integer, IStudent>();
+        Map<Integer, IStudent> returns = new HashMap<>();
 
         returns.put(1, new Student(1, 6));
         returns.put(2, new Student(2, 7));
@@ -38,20 +38,23 @@ public class AccessStudentsTest {
 
         Map<Integer, IStudent> results = accessStudents.getStudents();
 
-        assertEquals("Incorrect result from getStudents", results.size(), 5);
-        assertEquals("Incorrect result from getStudents", results.get(1), 6);
-        assertEquals("Incorrect result from getStudents", results.get(2), 7);
-        assertEquals("Incorrect result from getStudents", results.get(3), 8);
-        assertEquals("Incorrect result from getStudents", results.get(4), 9);
-        assertEquals("Incorrect result from getStudents", results.get(5), 10);
-
+        try {
+            assertEquals("Incorrect result from getStudents", results.size(), 5);
+            assertEquals("Incorrect result from getStudents", results.get(1).getAccountID(), 6);
+            assertEquals("Incorrect result from getStudents", results.get(2).getAccountID(), 7);
+            assertEquals("Incorrect result from getStudents", results.get(3).getAccountID(), 8);
+            assertEquals("Incorrect result from getStudents", results.get(4).getAccountID(), 9);
+            assertEquals("Incorrect result from getStudents", results.get(5).getAccountID(), 10);
+        } catch(NullPointerException n) {
+            fail("Error in results from get getStudents");
+        }
         assertThrows("Result from getStudents is not an unmodifiable map", UnsupportedOperationException.class,
                 () -> results.put(6, new Student(6, 11)));
     }
 
     @Test
     public void getStudentByAccountID() {
-        Map<Integer, IStudent> returns = new HashMap<Integer, IStudent>();
+        Map<Integer, IStudent> returns = new HashMap<>();
 
         returns.put(1, new Student(1, 6));
         returns.put(2, new Student(2, 7));
@@ -70,7 +73,7 @@ public class AccessStudentsTest {
 
     @Test
     public void getStudentByStudentID() {
-        Map<Integer, IStudent> returns = new HashMap<Integer, IStudent>();
+        Map<Integer, IStudent> returns = new HashMap<>();
 
         returns.put(1, new Student(1, 6));
         returns.put(2, new Student(2, 7));

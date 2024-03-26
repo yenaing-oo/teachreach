@@ -8,14 +8,13 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import comp3350.teachreach.data.hsqldb.PersistenceException;
 import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 
 public class AccessTutorLocationTest {
 
@@ -27,7 +26,7 @@ public class AccessTutorLocationTest {
 
     @Test
     public void getTutorLocationByTutorIDTest() {
-        List<String> returns = new ArrayList<String>();
+        List<String> returns = new ArrayList<>();
 
         returns.add("Library");
         returns.add("Coffee Shop");

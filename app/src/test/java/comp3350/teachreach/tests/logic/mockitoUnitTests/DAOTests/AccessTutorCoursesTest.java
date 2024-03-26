@@ -14,7 +14,7 @@ import java.util.List;
 import comp3350.teachreach.data.hsqldb.PersistenceException;
 import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
@@ -28,7 +28,7 @@ public class AccessTutorCoursesTest {
 
     @Test
     public void getTutoredCoursesByTutorIDTest() {
-        List<ICourse> returns = new ArrayList<ICourse>();
+        List<ICourse> returns = new ArrayList<>();
 
         returns.add(new Course("COMP1012", "Introduction to Computer Science for Engineers"));
         returns.add(new Course("COMP 2080", "Analysis of Algorithms"));
