@@ -26,12 +26,6 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager
     }
 
     @Override
-    public List<ITimeSlice> getAvailability(ITutor tutor)
-    {
-        return accessTutorAvailability.getAvailability(tutor);
-    }
-
-    @Override
     public List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor, LocalDate date)
     {
         List<ITimeSlice> availability = getAvailabilityOnDay(tutor, date);
@@ -78,6 +72,10 @@ public class TutorAvailabilityManager implements ITutorAvailabilityManager
             throw new TutorAvailabilityManagerException(
                     "Cannot remove availability that does not exist");
         }
+    }
+
+    private List<ITimeSlice> getAvailability(ITutor tutor) {
+        return accessTutorAvailability.getAvailability(tutor);
     }
 
     private boolean overlapsExistingAvailability(ITimeSlice timeSlice,
