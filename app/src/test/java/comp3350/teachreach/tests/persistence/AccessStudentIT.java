@@ -27,49 +27,46 @@ import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.tests.utils.TestUtils;
 
-public class AccessStudentIT
-{
-    private IStudent       testStudent;
+public class AccessStudentIT {
+    private IStudent testStudent;
     private AccessStudents accessStudents;
-    private File           tempDB;
+    private File tempDB;
 
     @Before
     public void setUp() throws
-                        IOException,
-                        InvalidNameException,
-                        DuplicateEmailException,
-                        InvalidPasswordException,
-                        InvalidEmailException,
-                        AccountCreatorException
-    {
+            IOException,
+            InvalidNameException,
+            DuplicateEmailException,
+            InvalidPasswordException,
+            InvalidEmailException,
+            AccountCreatorException {
         this.tempDB = TestUtils.copyDB();
         final IAccountPersistence accountPersistence
                 = new AccountHSQLDB(this.tempDB
-                                            .getAbsolutePath()
-                                            .replace(".script", ""));
+                .getAbsolutePath()
+                .replace(".script", ""));
         final IStudentPersistence studentPersistence
                 = new StudentHSQLDB(this.tempDB
-                                            .getAbsolutePath()
-                                            .replace(".script", ""));
+                .getAbsolutePath()
+                .replace(".script", ""));
         final ITutorPersistence tutorPersistence = new TutorHSQLDB(this.tempDB
-                                                                           .getAbsolutePath()
-                                                                           .replace(
-                                                                                   ".script",
-                                                                                   ""));
+                .getAbsolutePath()
+                .replace(
+                        ".script",
+                        ""));
         IAccountCreator accountCreator = new AccountCreator(accountPersistence,
-                                                            studentPersistence,
-                                                            tutorPersistence);
+                studentPersistence,
+                tutorPersistence);
         this.accessStudents = new AccessStudents(studentPersistence);
-        testStudent         = accountCreator.createStudentAccount("a@a.a",
-                                                                  "a",
-                                                                  "a",
-                                                                  "a/am",
-                                                                  "a");
+        testStudent = accountCreator.createStudentAccount("a@a.a",
+                "a",
+                "a",
+                "a/am",
+                "a");
     }
 
     @Test
-    public void testGetStudentByStudentID()
-    {
+    public void testGetStudentByStudentID() {
         IStudent testS
                 =
                 accessStudents.getStudentByStudentID(testStudent.getStudentID());
@@ -77,16 +74,14 @@ public class AccessStudentIT
     }
 
     @Test
-    public void testGetStudents()
-    {
+    public void testGetStudents() {
         Map<Integer, IStudent> testStudents;
         testStudents = accessStudents.getStudents();
-        assertEquals(1, testStudents.size());
+        assertEquals(3, testStudents.size());
     }
 
     @After
-    public void tearDown()
-    {
+    public void tearDown() {
         this.tempDB.delete();
     }
 }
