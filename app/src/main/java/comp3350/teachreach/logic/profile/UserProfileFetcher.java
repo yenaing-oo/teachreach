@@ -1,11 +1,10 @@
 package comp3350.teachreach.logic.profile;
 
-import java.util.Map;
+
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import comp3350.teachreach.application.Server;
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
@@ -14,21 +13,18 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class UserProfileFetcher<T> implements IUserProfileHandler<T>
 {
-    private final Map<Integer, IAccount> userAccounts;
-    IAccountPersistence accountPersistence;
+    private AccessAccounts accessAccounts;
 
     public
     UserProfileFetcher()
     {
-        accountPersistence = Server.getAccountDataAccess();
-        userAccounts       = accountPersistence.getAccounts();
+        accessAccounts = new AccessAccounts();
     }
 
     public
-    UserProfileFetcher(IAccountPersistence accountPersistence)
+    UserProfileFetcher(AccessAccounts accessAccounts)
     {
-        this.accountPersistence = accountPersistence;
-        userAccounts            = this.accountPersistence.getAccounts();
+        this.accessAccounts = accessAccounts;
     }
 
     private
@@ -41,10 +37,10 @@ class UserProfileFetcher<T> implements IUserProfileHandler<T>
     Optional<IAccount> findAccount(T user)
     {
         if (user instanceof IStudent) {
-            return Optional.ofNullable(userAccounts.get(((IStudent) user).getAccountID()));
+            return accessAccounts.getAccountByAccountID(((IStudent) user).getAccountID());
         }
         if (user instanceof ITutor) {
-            return Optional.ofNullable(userAccounts.get(((ITutor) user).getAccountID()));
+            return accessAccounts.getAccountByAccountID(((ITutor) user).getAccountID());
         }
         return Optional.empty();
     }
