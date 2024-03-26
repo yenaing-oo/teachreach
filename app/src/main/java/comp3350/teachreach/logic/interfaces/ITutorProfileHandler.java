@@ -6,35 +6,29 @@ import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.objects.interfaces.ICourse;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface ITutorProfileHandler extends IUserProfileHandler
+public
+interface ITutorProfileHandler
 {
-    double getHourlyRate();
 
-    ITutorProfileHandler setHourlyRate(double hourlyRate);
+    ITutorProfileHandler setHourlyRate(ITutor t, double hourlyRate);
 
-    double getAvgReview();
+    double getAvgReview(ITutor t);
 
-    int getReviewCount();
+    List<ICourse> getCourses(ITutor t);
 
-    int getReviewSum();
+    List<String> getCourseCodeList(ITutor t);
 
-    List<ICourse> getCourses();
+    List<String> getCourseDescriptionList(ITutor t);
 
-    List<String> getCourseCodeList();
+    List<String> getPreferredLocations(ITutor t);
 
-    List<String> getCourseDescriptionList();
+    ITutorProfileHandler addReview(ITutor t, int score);
 
-    List<String> getPreferredLocations();
+    ITutorProfileHandler addCourse(ITutor t, String courseCode, String courseName) throws InvalidInputException;
 
-    ITutorProfileHandler addReview(int score);
+    ITutorProfileHandler removeCourse(ITutor t, String courseCode);
 
-    ITutorProfileHandler addCourse(String courseCode, String courseName)
-            throws InvalidInputException;
+    ITutorProfileHandler addPreferredLocation(ITutor t, String preferredLocation) throws InvalidInputException;
 
-    ITutorProfileHandler removeCourse(String courseCode);
-
-    ITutorProfileHandler addPreferredLocation(String preferredLocation)
-            throws InvalidInputException;
-
-    ITutor updateTutorProfile();
+    ITutor updateTutorProfile(ITutor t);
 }

@@ -24,44 +24,44 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class ReviewBookingFragment extends Fragment
+public
+class ReviewBookingFragment extends Fragment
 {
     private FragmentReviewBookingBinding binding;
     private BookingViewModel             bookingViewModel;
 
-    public ReviewBookingFragment()
+    public
+    ReviewBookingFragment()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        bookingViewModel = new ViewModelProvider(requireActivity()).get(
-                BookingViewModel.class);
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentReviewBookingBinding.inflate(inflater,
-                                                       container,
-                                                       false);
+        binding = FragmentReviewBookingBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState)
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         fillUpBookingDetails();
         setUpButtons();
     }
 
-    private void setUpButtons()
+    private
+    void setUpButtons()
     {
         Button        cancelButton  = binding.cancelButton;
         Button        confirmButton = binding.confirmButton;
@@ -70,7 +70,8 @@ public class ReviewBookingFragment extends Fragment
         confirmButton.setOnClickListener(v -> navController.navigate(R.id.actionToPaymentFragment));
     }
 
-    private void fillUpBookingDetails()
+    private
+    void fillUpBookingDetails()
     {
         TextView tutorName = binding.tvNameField;
         TextView sDate     = binding.tvSessionDateField;
@@ -82,26 +83,18 @@ public class ReviewBookingFragment extends Fragment
         ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
         IAccount   account     = bookingViewModel.getTutorAccount().getValue();
         ITutor     tutor       = bookingViewModel.getTutor().getValue();
-        String location = bookingViewModel.getSessionLocation().getValue();
+        String     location    = bookingViewModel.getSessionLocation().getValue();
         if (location == null) {
             location = "TBD";
             bookingViewModel.setSessionLocation(location);
         }
-        double price = (double) sessionTime.getDuration().toMinutes() / 60 *
-                       tutor.getHourlyRate();
+        double price = (double) sessionTime.getDuration().toMinutes() / 60 * tutor.getHourlyRate();
         bookingViewModel.setSessionPrice(price);
         assert account != null;
         tutorName.setText(account.getUserName());
-        sDate.setText(sessionTime
-                              .getStartTime()
-                              .format(DateTimeFormatter.ofPattern(
-                                      "eee, d MMMM, yyyy")));
-        sTime.setText(sessionTime
-                              .getStartTime()
-                              .format(DateTimeFormatter.ofPattern("h:mm a")));
-        sDuration.setText(String.format(Locale.getDefault(),
-                                        "%d minutes",
-                                        sessionTime.getDuration().toMinutes()));
+        sDate.setText(sessionTime.getStartTime().format(DateTimeFormatter.ofPattern("eee, d MMMM, yyyy")));
+        sTime.setText(sessionTime.getStartTime().format(DateTimeFormatter.ofPattern("h:mm a")));
+        sDuration.setText(String.format(Locale.getDefault(), "%d minutes", sessionTime.getDuration().toMinutes()));
         sPrice.setText(String.format(Locale.getDefault(), "$%.2f", price));
         sLocation.setText(location);
     }

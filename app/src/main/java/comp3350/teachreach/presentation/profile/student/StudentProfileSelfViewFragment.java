@@ -19,7 +19,8 @@ import comp3350.teachreach.databinding.FragmentStudentProfileSelfViewBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class StudentProfileSelfViewFragment extends Fragment
+public
+class StudentProfileSelfViewFragment extends Fragment
 {
     private FragmentStudentProfileSelfViewBinding binding;
 
@@ -30,11 +31,13 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private IAccount account;
 
-    public StudentProfileSelfViewFragment()
+    public
+    StudentProfileSelfViewFragment()
     {
     }
 
-    private void fillUpProfileDetails()
+    private
+    void fillUpProfileDetails()
     {
         tvName     = binding.tvNameField;
         tvPronouns = binding.tvPronounsField;
@@ -45,7 +48,8 @@ public class StudentProfileSelfViewFragment extends Fragment
         tvMajor.setText(account.getUserMajor());
     }
 
-    private void setUpEditProfileButton()
+    private
+    void setUpEditProfileButton()
     {
         btnEditProfile = binding.fabEditProfile;
         btnEditProfile.setOnClickListener(view -> NavHostFragment
@@ -53,22 +57,22 @@ public class StudentProfileSelfViewFragment extends Fragment
                 .navigate(R.id.actionToEditStudentProfileFragment));
     }
 
-    private void setUpTopBarMenu()
+    private
+    void setUpTopBarMenu()
     {
         MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {
-                NavHostFragment
-                        .findNavController(this)
-                        .navigate(R.id.actionToAccountSettingsFragment);
+                NavHostFragment.findNavController(this).navigate(R.id.actionToAccountSettingsFragment);
             }
             return true;
         });
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
@@ -77,13 +81,10 @@ public class StudentProfileSelfViewFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentStudentProfileSelfViewBinding.inflate(inflater,
-                                                                container,
-                                                                false);
+        binding = FragmentStudentProfileSelfViewBinding.inflate(inflater, container, false);
         fillUpProfileDetails();
         setUpEditProfileButton();
         setUpTopBarMenu();

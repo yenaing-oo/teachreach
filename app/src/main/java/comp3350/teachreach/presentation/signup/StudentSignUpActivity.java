@@ -20,15 +20,16 @@ import comp3350.teachreach.logic.interfaces.IAccountCreator;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.presentation.home.StudentHomeActivity;
 
-public class StudentSignUpActivity extends AppCompatActivity
+public
+class StudentSignUpActivity extends AppCompatActivity
 {
-    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail,
-            tilPassword;
+    private TextInputLayout tilUsername, tilMajor, tilPronouns, tilEmail, tilPassword;
     private EditText etUsername, etMajor, etPassword, etEmail, etPronouns;
     private IAccountCreator accountCreator;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_sign_up);
@@ -50,7 +51,8 @@ public class StudentSignUpActivity extends AppCompatActivity
         btnCreateProfile.setOnClickListener(v -> createProfile());
     }
 
-    private void createProfile()
+    private
+    void createProfile()
     {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
@@ -64,18 +66,9 @@ public class StudentSignUpActivity extends AppCompatActivity
             tilUsername.setError(null);
             accountCreator = new AccountCreator();
 
-            IStudent student = accountCreator.createStudentAccount(email,
-                                                                   password,
-                                                                   username,
-                                                                   pronoun,
-                                                                   major);
-            Toast
-                    .makeText(StudentSignUpActivity.this,
-                              "Account Created Successfully!",
-                              Toast.LENGTH_SHORT)
-                    .show();
-            Intent intent = new Intent(StudentSignUpActivity.this,
-                                       StudentHomeActivity.class);
+            IStudent student = accountCreator.createStudentAccount(email, password, username, pronoun, major);
+            Toast.makeText(StudentSignUpActivity.this, "Account Created Successfully!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(StudentSignUpActivity.this, StudentHomeActivity.class);
             intent.putExtra("ACCOUNT_ID", student.getAccountID());
             startActivity(intent);
             finish();
@@ -86,11 +79,7 @@ public class StudentSignUpActivity extends AppCompatActivity
         } catch (final InvalidEmailException | DuplicateEmailException e) {
             tilEmail.setError(e.getMessage());
         } catch (final Exception e) {
-            Toast
-                    .makeText(StudentSignUpActivity.this,
-                              e.getMessage(),
-                              Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(StudentSignUpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 }

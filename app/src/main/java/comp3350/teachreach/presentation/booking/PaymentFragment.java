@@ -42,7 +42,8 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class PaymentFragment extends Fragment
+public
+class PaymentFragment extends Fragment
 {
     private FragmentPaymentBinding binding;
     private Double                 grandTotal;
@@ -50,43 +51,42 @@ public class PaymentFragment extends Fragment
     private BookingViewModel bookingViewModel;
     private EditText         cardNumber, expDate, cVc;
 
-    public PaymentFragment()
+    public
+    PaymentFragment()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        bookingViewModel = new ViewModelProvider(requireActivity()).get(
-                BookingViewModel.class);
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         binding = FragmentPaymentBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState)
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         setUpButtons();
         setUpTextFields();
     }
 
-    private void setUpTextFields()
+    private
+    void setUpTextFields()
     {
         grandTotal = bookingViewModel.getSessionPrice().getValue();
         TextView tvGrandTotal = binding.tvTotalField;
-        tvGrandTotal.setText(String.format(Locale.getDefault(),
-                                           "$%.2f",
-                                           grandTotal));
+        tvGrandTotal.setText(String.format(Locale.getDefault(), "$%.2f", grandTotal));
 
         tilCardNumber = binding.tilCardNumber;
         tilExpDate    = binding.tilExpDate;
@@ -97,7 +97,8 @@ public class PaymentFragment extends Fragment
         cVc        = tilCVC.getEditText();
     }
 
-    private void setUpButtons()
+    private
+    void setUpButtons()
     {
         Button        cancelButton  = binding.cancelButton;
         Button        confirmButton = binding.confirmButton;
@@ -106,7 +107,8 @@ public class PaymentFragment extends Fragment
         confirmButton.setOnClickListener(v -> confirmBooking());
     }
 
-    private void confirmBooking()
+    private
+    void confirmBooking()
     {
         String strCardNumber = cardNumber.getText().toString().trim();
         String strExpDate    = expDate.getText().toString().trim();
@@ -115,34 +117,26 @@ public class PaymentFragment extends Fragment
         tilExpDate.setError(null);
         tilCVC.setError(null);
         try {
-            PaymentValidator.validatePaymentInfo(strCardNumber,
-                                                 strExpDate,
-                                                 strCVC);
-            ITutorAvailabilityManager availabilityManager
-                    = new TutorAvailabilityManager();
-            ISessionHandler sessionHandler = new SessionHandler(
-                    availabilityManager);
-            IStudent student = bookingViewModel.getStudent().getValue();
-            ITutor   tutor   = bookingViewModel.getTutor().getValue();
-            ITimeSlice sessionTime = bookingViewModel
-                    .getSessionTime()
-                    .getValue();
-            String location = bookingViewModel.getSessionLocation().getValue();
+            PaymentValidator.validatePaymentInfo(strCardNumber, strExpDate, strCVC);
+            ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
+            ISessionHandler           sessionHandler      = new SessionHandler(availabilityManager);
+            IStudent                  student             = bookingViewModel.getStudent().getValue();
+            ITutor                    tutor               = bookingViewModel.getTutor().getValue();
+            ITimeSlice                sessionTime         = bookingViewModel.getSessionTime().getValue();
+            String                    location            = bookingViewModel.getSessionLocation().getValue();
             sessionHandler.bookSession(new Session(student.getStudentID(),
                                                    tutor.getTutorID(),
                                                    sessionTime,
                                                    grandTotal,
                                                    location));
             AlertDialog doneDialog = makeDoneDialog("Congratulations!",
-                                                    "Booking request has been" +
-                                                    " sent to your tutor!",
+                                                    "Booking request has been" + " sent to your tutor!",
                                                     "View My Sessions",
                                                     (dialog, which) -> {
                                                         // TO-DO: Jump to
                                                         // view session
                                                         NavHostFragment
-                                                                .findNavController(
-                                                                        requireParentFragment().requireParentFragment())
+                                                                .findNavController(requireParentFragment().requireParentFragment())
                                                                 .navigate(R.id.actionToStudentProfileSelfViewFragment);
                                                     },
                                                     "Done",
@@ -158,56 +152,40 @@ public class PaymentFragment extends Fragment
         } catch (InvalidExpiryDateException | ExpiredCardException e) {
             tilExpDate.setError(e.getMessage());
         } catch (PaymentException unknownErr) {
-            Toast
-                    .makeText(requireContext(),
-                              "Issue with payment info, please review",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(requireContext(), "Issue with payment info, please review", Toast.LENGTH_SHORT).show();
         } catch (final Throwable e) {
             AlertDialog errorDialog = makeDoneDialog("Something Bad Happened!",
-                                                     "Booking request " +
-                                                     "mightn't be sent to " +
-                                                     "tutor :(",
+                                                     "Booking request " + "mightn't be sent to " + "tutor :(",
                                                      "Go Back to Tutor Profile",
                                                      (dialog, which) -> {
                                                          NavHostFragment
-                                                                 .findNavController(
-                                                                         this)
+                                                                 .findNavController(this)
                                                                  .navigate(R.id.actionToTutorProfileViewFragment);
                                                      },
                                                      "Dismiss",
                                                      (dialog, which) -> dialog.cancel());
             errorDialog.setOnCancelListener(dialog -> {
-                SlidingPaneLayout slidingPaneLayout
-                        =
-                        requireActivity().requireViewById(R.id.searchFragment);
+                SlidingPaneLayout slidingPaneLayout = requireActivity().requireViewById(R.id.searchFragment);
                 slidingPaneLayout.closePane();
-                NavHostFragment
-                        .findNavController(this)
-                        .navigate(R.id.actionToPlaceHolderFragment);
+                NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
             });
             errorDialog.show();
-            Toast
-                    .makeText(requireContext(),
-                              "Tutor mightn't be available for booking",
-                              Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(requireContext(), "Tutor mightn't be available for booking", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private AlertDialog makeDoneDialog(String title,
-                                       String message,
-                                       CharSequence posMsg,
-                                       DialogInterface.OnClickListener posListener,
-                                       CharSequence negMsg,
-                                       DialogInterface.OnClickListener negListener)
+    private
+    AlertDialog makeDoneDialog(String title,
+                               String message,
+                               CharSequence posMsg,
+                               DialogInterface.OnClickListener posListener,
+                               CharSequence negMsg,
+                               DialogInterface.OnClickListener negListener)
     {
         return new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(title)
                 .setMessage(message)
-                .setView(FragmentPlaceHolderBinding
-                                 .inflate(this.getLayoutInflater())
-                                 .getRoot())
+                .setView(FragmentPlaceHolderBinding.inflate(this.getLayoutInflater()).getRoot())
                 .setPositiveButton(posMsg, posListener)
                 .setNegativeButton(negMsg, negListener)
                 .create();

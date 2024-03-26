@@ -3,15 +3,15 @@ package comp3350.teachreach.logic.interfaces;
 import comp3350.teachreach.objects.interfaces.IAccount;
 
 public
-interface IUserProfileHandler
+interface IUserProfileHandler<T>
 {
-    String getUserEmail();
+    String getUserEmail(T user);
 
-    String getUserName();
+    String getUserName(T user);
 
-    String getUserPronouns();
+    String getUserPronouns(T user);
 
-    String getUserMajor();
+    String getUserMajor(T user);
 
-    IAccount getUserAccount();
+    IAccount getUserAccount(T user);
 }

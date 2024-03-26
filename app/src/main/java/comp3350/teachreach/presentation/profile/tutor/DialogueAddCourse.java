@@ -20,25 +20,23 @@ import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class DialogueAddCourse extends AppCompatDialogFragment
+public
+class DialogueAddCourse extends AppCompatDialogFragment
 {
     @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
+    public
+    Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
         FragmentActivity parentActivity = requireActivity();
 
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(
-                parentActivity);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentActivity);
 
-        DialogAddCourseBinding binding = DialogAddCourseBinding.inflate(
-                parentActivity.getLayoutInflater());
+        DialogAddCourseBinding binding = DialogAddCourseBinding.inflate(parentActivity.getLayoutInflater());
 
-        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(
-                TRViewModel.class);
+        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(TRViewModel.class);
 
-        TutorProfileViewModel profileViewModel = new ViewModelProvider(
-                parentActivity).get(TutorProfileViewModel.class);
+        TutorProfileViewModel profileViewModel = new ViewModelProvider(parentActivity).get(TutorProfileViewModel.class);
 
         TextInputLayout tilCourseCode = binding.tilCourseCode;
         EditText        etCourseCode  = tilCourseCode.getEditText();
@@ -46,46 +44,24 @@ public class DialogueAddCourse extends AppCompatDialogFragment
         TextInputLayout tilCourseName = binding.tilCourseName;
         EditText        etCourseName  = tilCourseName.getEditText();
 
-        return builder
-                .setTitle("Adding New Course")
-                .setPositiveButton("Add", (d, w) -> {
-                    try {
-                        tilCourseCode.setError(null);
-                        ITutor tutor = trViewModel.getTutor().getValue();
-                        assert tutor != null;
+        return builder.setTitle("Adding New Course").setPositiveButton("Add", (d, w) -> {
+            try {
+                tilCourseCode.setError(null);
+                ITutor tutor = trViewModel.getTutor().getValue();
+                assert tutor != null;
 
-                        assert etCourseCode != null;
-                        assert etCourseName != null;
+                assert etCourseCode != null;
+                assert etCourseName != null;
 
-                        String courseCode = etCourseCode
-                                .getText()
-                                .toString()
-                                .trim();
-                        String courseName = etCourseName
-                                .getText()
-                                .toString()
-                                .trim();
+                String courseCode = etCourseCode.getText().toString().trim();
+                String courseName = etCourseName.getText().toString().trim();
 
-                        profileViewModel.addCourse(tutor,
-                                                   courseCode,
-                                                   courseName);
-                    } catch (final AssertionError e) {
-                        Toast
-                                .makeText(requireContext(),
-                                          "Something went wrong :(",
-                                          Toast.LENGTH_LONG)
-                                .show();
-                    } catch (final InvalidInputException |
-                                   DataAccessException e) {
-                        Toast
-                                .makeText(requireContext(),
-                                          e.getMessage(),
-                                          Toast.LENGTH_LONG)
-                                .show();
-                    }
-                })
-                .setNegativeButton("Cancel", null)
-                .setView(binding.getRoot())
-                .create();
+                profileViewModel.addCourse(tutor, courseCode, courseName);
+            } catch (final AssertionError e) {
+                Toast.makeText(requireContext(), "Something went wrong :(", Toast.LENGTH_LONG).show();
+            } catch (final InvalidInputException | DataAccessException e) {
+                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }).setNegativeButton("Cancel", null).setView(binding.getRoot()).create();
     }
 }
