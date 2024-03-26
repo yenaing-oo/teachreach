@@ -100,17 +100,16 @@ class TutorProfileViewFragment extends Fragment
             tutor        = trViewModel.getTutor().getValue();
             student      = trViewModel.getStudent().getValue();
             tutorAccount = profileFetcher.getUserAccount(tutor);
+            setUpProfile();
+            setUpTopBar();
+            setUpTutoredCourses();
+            setUpPreferredLocations();
+            setUpCalendarView();
         } catch (final Throwable e) {
             Toast.makeText(requireContext(), "Not so fast!", Toast.LENGTH_SHORT).show();
             slidingPaneLayout.close();
             NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
-            return;
         }
-        setUpProfile();
-        setUpTopBar();
-        setUpTutoredCourses();
-        setUpPreferredLocations();
-        setUpCalendarView();
     }
 
 
@@ -122,11 +121,14 @@ class TutorProfileViewFragment extends Fragment
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
         Executors.newSingleThreadExecutor().execute(() -> {
-            List<String> coursesCodes = profileHandler.getCourseCodeList(tutor);
-            new Handler(Looper.getMainLooper()).post(() -> {
-                StringRecyclerAdapter adapter = new StringRecyclerAdapter(coursesCodes);
-                recyclerView.setAdapter(adapter);
-            });
+            try {
+                List<String> coursesCodes = profileHandler.getCourseCodeList(tutor);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    StringRecyclerAdapter adapter = new StringRecyclerAdapter(coursesCodes);
+                    recyclerView.setAdapter(adapter);
+                });
+            } catch (final Throwable ignored) {
+            }
         });
     }
 
@@ -166,11 +168,14 @@ class TutorProfileViewFragment extends Fragment
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
         Executors.newSingleThreadExecutor().execute(() -> {
-            prefLocation = profileHandler.getPreferredLocations(tutor);
-            new Handler(Looper.getMainLooper()).post(() -> {
-                StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
-                recycler.setAdapter(adapter);
-            });
+            try {
+                prefLocation = profileHandler.getPreferredLocations(tutor);
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
+                    recycler.setAdapter(adapter);
+                });
+            } catch (final Throwable ignored) {
+            }
         });
     }
 
