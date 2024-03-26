@@ -12,7 +12,7 @@ import java.util.Map;
 
 import comp3350.teachreach.data.interfaces.IStudentPersistence;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
-import comp3350.teachreach.logic.DAOs.DataAccessException;
+import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Student;
 import comp3350.teachreach.objects.interfaces.IStudent;
 

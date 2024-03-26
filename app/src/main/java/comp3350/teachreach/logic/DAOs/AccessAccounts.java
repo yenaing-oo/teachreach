@@ -55,6 +55,13 @@ public class AccessAccounts
         }
     }
 
+    public Optional<IAccount> getAccountByAccountID(int accountID) {
+        if (accounts == null) {
+            accounts = accountPersistence.getAccounts();
+        }
+        return Optional.ofNullable(accounts.get(accountID));
+    }
+
     public IAccount insertAccount(IAccount newAccount)
             throws DuplicateEmailException
     {
