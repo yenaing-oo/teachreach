@@ -21,10 +21,10 @@ import comp3350.teachreach.objects.interfaces.ICourse;
 public class AccessTutorCoursesTest {
 
     @Mock
-    ITutoredCoursesPersistence tutoredCoursesPersistence;
+    private ITutoredCoursesPersistence tutoredCoursesPersistence;
 
     @InjectMocks
-    AccessTutoredCourses accessTutoredCourses;
+    private AccessTutoredCourses accessTutoredCourses;
 
     @Test
     public void getTutoredCoursesByTutorIDTest() {

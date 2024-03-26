@@ -1,14 +1,14 @@
 package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 
-import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+
+import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +22,10 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public class AccessTutorsTest {
 
     @Mock
-    ITutorPersistence tutorPersistence;
+    private ITutorPersistence tutorPersistence;
 
     @InjectMocks
-    AccessTutors accessTutors;
+    private AccessTutors accessTutors;
 
     @Test
     public void getTutorsTest() {

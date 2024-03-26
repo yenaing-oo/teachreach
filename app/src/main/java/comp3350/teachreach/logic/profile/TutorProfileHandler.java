@@ -32,15 +32,25 @@ class TutorProfileHandler implements ITutorProfileHandler
         this.accessTutorLocation = new AccessTutorLocation();
     }
 
-    public TutorProfileHandler(AccessTutors accessTutors,
-                               AccessCourses accessCourses,
-                               AccessTutoredCourses accessTutoredCourses,
-                               AccessTutorLocation accessTutorLocation) {
-        this.accessTutors = accessTutors;
-        this.accessCourses = accessCourses;
+    public
+    TutorProfileHandler(AccessTutors accessTutors, AccessTutoredCourses accessTutoredCourses,
+                        AccessCourses accessCourses, AccessTutorLocation accessTutorLocation) {
+        this.accessTutors         = accessTutors;
         this.accessTutoredCourses = accessTutoredCourses;
-        this.accessTutorLocation = accessTutorLocation;
+        this.accessCourses        = accessCourses;
+        this.accessTutorLocation  = accessTutorLocation;
+    }
 
+    public
+    TutorProfileHandler(ITutorPersistence tutorPersistence,
+                        ICoursePersistence coursePersistence,
+                        ITutoredCoursesPersistence tutoredCoursesPersistence,
+                        ITutorLocationPersistence locationPersistence)
+    {
+        accessTutors         = new AccessTutors(tutorPersistence);
+        accessTutoredCourses = new AccessTutoredCourses(tutoredCoursesPersistence);
+        accessTutorLocation  = new AccessTutorLocation(locationPersistence);
+        accessCourses        = new AccessCourses(coursePersistence);
     }
 
     @Override

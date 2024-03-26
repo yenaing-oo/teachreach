@@ -23,10 +23,10 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 
 public class AccessAccountsTest {
     @Mock
-    IAccountPersistence accountPersistence;
+    private IAccountPersistence accountPersistence;
 
     @InjectMocks
-    AccessAccounts accessAccounts;
+    private AccessAccounts accessAccounts;
 
     @Test
     public void getAccountsTest() {

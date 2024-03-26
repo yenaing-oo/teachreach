@@ -19,10 +19,10 @@ import comp3350.teachreach.logic.exceptions.DataAccessException;
 public class AccessTutorLocationTest {
 
     @Mock
-    ITutorLocationPersistence tutorLocationPersistence;
+    private ITutorLocationPersistence tutorLocationPersistence;
 
     @InjectMocks
-    AccessTutorLocation accessTutorLocation;
+    private AccessTutorLocation accessTutorLocation;
 
     @Test
     public void getTutorLocationByTutorIDTest() {
