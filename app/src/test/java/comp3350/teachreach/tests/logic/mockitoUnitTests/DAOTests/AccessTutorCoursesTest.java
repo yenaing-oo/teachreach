@@ -2,11 +2,13 @@ package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,7 @@ import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessTutorCoursesTest {
 
     @Mock

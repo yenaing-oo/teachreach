@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
 
@@ -19,13 +21,15 @@ import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessTutorAvailabilityTest {
 
     @Mock
     private ITutorAvailabilityPersistence tutorAvailabilityPersistence;
 
     @InjectMocks
-    private AccessTutorAvailability accessTutorAvailability;
+    private
+    AccessTutorAvailability accessTutorAvailability;
 
     @Test
     public void getAvailabilityTest() {

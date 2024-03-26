@@ -7,8 +7,10 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +21,7 @@ import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessTutorsTest {
 
     @Mock

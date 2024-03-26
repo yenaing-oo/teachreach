@@ -5,8 +5,10 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
 import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessTutorLocationTest {
 
     @Mock

@@ -7,8 +7,10 @@ import static comp3350.teachreach.objects.SessionStatus.PENDING;
 import static comp3350.teachreach.objects.SessionStatus.REJECTED;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.threeten.bp.LocalDateTime;
 
 import java.util.HashMap;
@@ -23,6 +25,7 @@ import comp3350.teachreach.objects.TimeSlice;
 import comp3350.teachreach.objects.Tutor;
 import comp3350.teachreach.objects.interfaces.ISession;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessSessionsTest {
 
     @Mock
