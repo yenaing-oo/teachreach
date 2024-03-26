@@ -4,10 +4,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IMessage;
 
 public class MessageModel extends ViewModel {
 
@@ -16,6 +18,16 @@ public class MessageModel extends ViewModel {
 
     private final MutableLiveData< Map<java.sql.Timestamp, Map<Integer, String>>> messgaesByTimeStamp
             = new MutableLiveData<>();
+
+    private final MutableLiveData<List<IMessage>> messageList = new MutableLiveData<>();
+
+    public MutableLiveData<List<IMessage>> getMessageList() {
+        return messageList;
+    }
+
+    public void setMessageList(List<IMessage> messageList){
+        this.messageList.setValue(messageList);
+    }
 
     private final MutableLiveData<Integer> groupID = new MutableLiveData<>();
 

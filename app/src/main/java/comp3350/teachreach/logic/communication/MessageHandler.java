@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +102,7 @@ public class MessageHandler implements IMessageHandler
         }
         return account && valid;
     }
-    //public boolean validateSenderIDInGroup(){}// do it in database?
+
 
     public boolean checkExistGroup(int studentID, int tutorID){
         return (accessMessage.searchGroupByIDs(studentID,tutorID)> 0);
@@ -121,10 +122,10 @@ public class MessageHandler implements IMessageHandler
           if (validateSentMessage(groupID, senderAccountID, message)) {
               return accessMessage.storeMessage(groupID, senderAccountID, message);
           }
-      } catch(final Exception e){
+     } catch(final Exception e){
           throw new MessageHandleException("Invalid Message.",e);
       }
-    return -1;
+     return -1;
     }
 
     @Override
@@ -226,35 +227,40 @@ public class MessageHandler implements IMessageHandler
 
     }
 
-    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
+//    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
+//
+//            Map<String, Object> result = new HashMap<>();
+//
+//        LocalDateTime localDateTime = null; // Initialize localDateTime to null
+//
+//        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
+//             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//            // Extract various date-related components
+//            int year = localDateTime.getYear();
+//            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
+//            int dayOfMonth = localDateTime.getDayOfMonth();
+//            int hour = localDateTime.getHour();
+//            int minute = localDateTime.getMinute();
+//            int second = localDateTime.getSecond();
+//
+//            // Store the components and value in the result map
+//            result.put("year", year);
+//            result.put("month", month);
+//            result.put("dayOfMonth", dayOfMonth);
+//            result.put("hour", hour);
+//            result.put("minute", minute);
+//            result.put("second", second);
+//
+//
+//            return result;
+//    }
 
-            Map<String, Object> result = new HashMap<>();
-
-        LocalDateTime localDateTime = null; // Initialize localDateTime to null
-
-        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
-             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-            // Extract various date-related components
-            int year = localDateTime.getYear();
-            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
-            int dayOfMonth = localDateTime.getDayOfMonth();
-            int hour = localDateTime.getHour();
-            int minute = localDateTime.getMinute();
-            int second = localDateTime.getSecond();
-
-            // Store the components and value in the result map
-            result.put("year", year);
-            result.put("month", month);
-            result.put("dayOfMonth", dayOfMonth);
-            result.put("hour", hour);
-            result.put("minute", minute);
-            result.put("second", second);
-
-
-            return result;
+    public String timeStampConverter(@NonNull Timestamp timestamp) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return localDateTime.format(formatter);
     }
-
     @Override
     public List<Integer> retrieveAllGroupsByTutorID(int tutorID){
         return accessMessage.retrieveAllGroupsByTutorID(tutorID);

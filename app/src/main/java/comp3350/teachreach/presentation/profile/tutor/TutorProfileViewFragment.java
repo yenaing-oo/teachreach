@@ -273,9 +273,12 @@ public class TutorProfileViewFragment extends Fragment
             MessageModel messageModel
                     =
                     new ViewModelProvider(requireActivity()).get(MessageModel.class);
-            messageModel.setGroupID(groupID);
+            if(groupID>0) {
+                messageModel.setGroupID(groupID);
+            }
 
             messageModel.setMessageByID(messageHandler.chatHistoryOfGroupV1(groupID));
+            messageModel.setMessageList(messageHandler.retrieveAllMessageByGroupID(groupID));   //try it
 
             //trViewModel.setUsers(this.tutorAccount);
         } catch (final Exception e) {

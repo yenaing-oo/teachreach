@@ -98,12 +98,12 @@ public class MessageHandlerTest {
 //
 //    }
 //
-//    @Test
-//    public void testStoreMessage() throws MessageHandleException {
-//        int groupID = messageHandler.createGroup(2,1);
-//        assertFalse(messageHandler.storeMessage(groupID,1,"HELLO WORLD")>0);
-//        assertTrue(messageHandler.storeMessage(groupID,2,"HELLO WORLD")>0);
-//    }
+    @Test
+    public void testStoreMessage() throws MessageHandleException {
+        int groupID = messageHandler.createGroup(2,1);
+        assertTrue(messageHandler.storeMessage(groupID,2,"HELLO WORLD")>0);
+        assertTrue(messageHandler.storeMessage(groupID,3,"HELLO WORLD")>0);
+    }
 //
 ////    public void testValidateReceivedMessage(){
 ////        messageHandler.validateReceivedMessage()

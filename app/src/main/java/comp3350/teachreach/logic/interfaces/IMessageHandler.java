@@ -35,5 +35,6 @@ public interface IMessageHandler
     List<IAccount> retrieveAllChatAccountsByAccountID(int accountID);
 
 
-    Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp);
+    //Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp);
+    String timeStampConverter(@NonNull Timestamp timestamp);
 }

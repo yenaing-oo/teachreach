@@ -73,6 +73,7 @@ public class TutorHomeActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarProfile) {
                 navController.navigate(R.id.tutorProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
+                navController.navigate(R.id.actionToGroupFragment);
             }
             return true;
         });

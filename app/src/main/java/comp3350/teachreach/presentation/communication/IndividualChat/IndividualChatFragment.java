@@ -1,9 +1,14 @@
 package comp3350.teachreach.presentation.communication.IndividualChat;
 
 import android.os.Bundle;
+import android.security.identity.InvalidRequestMessageException;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,8 +30,10 @@ import java.util.Map;
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentIndividualChatBinding;
 import comp3350.teachreach.logic.communication.MessageHandler;
+import comp3350.teachreach.logic.exceptions.MessageHandleException;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 //import comp3350.teachreach.presentation.TRViewModel;
 
@@ -37,7 +44,7 @@ public class IndividualChatFragment extends Fragment
     private IMessageHandler messageHandler;
     private TRViewModel     vm;
 
-    private MessageModel                  mm;
+    private MessageModel    mm;
     private FragmentIndividualChatBinding binding;
     private List<IAccount> users;
     private Fragment       chatGroupView;
@@ -45,6 +52,9 @@ public class IndividualChatFragment extends Fragment
     private RecyclerView recyclerView;
     private FullMessageAdaptor fullMessageAdaptor;
     //private Map<Integer, Map<Timestamp, String>> messages;
+
+    private EditText inputMessage;
+    private FrameLayout sendButton;
 
     public IndividualChatFragment()
     {
@@ -79,7 +89,7 @@ public class IndividualChatFragment extends Fragment
         binding      = FragmentIndividualChatBinding.inflate(inflater,
                                                              container,
                                                              false);
-        recyclerView = binding.IndividualChatsRecycleViewFragment;
+        //recyclerView = binding.IndividualChatsRecycleViewFragment;
         return binding.getRoot();
     }
 
@@ -90,24 +100,24 @@ public class IndividualChatFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView(recyclerView);
         setUpTopBar();
+        setUpSendButton();
         //assert getArguments() != null;
         //IAccount account = (IAccount) getArguments().getSerializable("account",this);
         //vm.getMessages().observe(getViewLifecycleOwner(), new
         // Observer<List<IMessage>>() {
 
-        LiveData<Map<Integer, Map<Timestamp, String>>> messagesLiveData
-                = mm.getMessagesByID();
+        LiveData<List<IMessage>> messagesLiveData
+                = mm.getMessageList();
         messagesLiveData.observe(getViewLifecycleOwner(),
-                                 new Observer<Map<Integer, Map<Timestamp,
-                                         String>>>()
+                                 new Observer<List<IMessage>>()
                                  {
                                      @Override
-                                     public void onChanged(Map<Integer,
-                                             Map<Timestamp, String>> messages)
+                                     public void onChanged(List<IMessage> messageList)//Map<Integer,
+                                            // Map<Timestamp, String>> messages)
                                      {
                                          // Update the RecyclerView adapter
                                          // with the new messages
-                                         fullMessageAdaptor.setMessages(messages);
+                                         fullMessageAdaptor.setMessages();
                                      }
                                  });
     }
@@ -128,10 +138,66 @@ public class IndividualChatFragment extends Fragment
 
     private void setUpRecyclerView(RecyclerView recyclerView) {
 
-        //recyclerView = binding.IndividualChatsRecycleViewFragment;
-        fullMessageAdaptor = new FullMessageAdaptor(getContext(), mm.getMessagesByID().getValue(), vm);
+        recyclerView = binding.IndividualChatsRecycleViewFragment;
+        fullMessageAdaptor = new FullMessageAdaptor(getContext(),
+                messageHandler.retrieveAllMessageByGroupID(mm.getGroupID().getValue()),
+                //mm.getMessageList().getValue(),
+                vm, mm);
+
+        //fullMessageAdaptor = new FullMessageAdaptor(getContext(), mm.getMessagesByID().getValue(), vm, mm);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fullMessageAdaptor);
+    }
+
+    private void setUpSendButton()
+    {
+        inputMessage = binding.inputMessage;
+        sendButton = binding.layoutSend;
+        sendButton.setOnClickListener(view -> {
+            sendMessage();
+        });
+    }
+
+    private static final String TAG = "IndividualChatFragment";
+    private void sendMessage()  {
+        try {
+            String messages = inputMessage.getText().toString();
+
+            // Check if mm.getGroupID() is not null before accessing its value
+            Integer groupIDInteger = mm.getGroupID().getValue();
+            if (groupIDInteger != null) {
+                int groupID = groupIDInteger.intValue();
+
+                // Continue with your existing logic
+                int senderAccountID = vm.getAccount().getValue().getAccountID();
+                messageHandler.storeMessage(groupID, senderAccountID, messages);
+                updateMessage(groupID);
+            } else {
+                // Handle the case where groupID is null
+                Log.e(TAG, "GroupID is null");
+                // Show a message or perform other error handling actions
+                Toast.makeText(getContext(), "GroupID is null", Toast.LENGTH_SHORT).show();
+            }
+//            String messages = inputMessage.getText().toString();
+//            int groupID = mm.getGroupID().getValue();
+//            int senderAccountID = vm.getAccount().getValue().getAccountID();
+//            messageHandler.storeMessage(groupID,senderAccountID,messages);
+//            updateMessage(groupID);
+
+        }catch(MessageHandleException e){
+            Toast
+                    .makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
+                    .show();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    private void updateMessage(Integer groupID){
+        mm.setMessageList(messageHandler.retrieveAllMessageByGroupID(groupID));
+        //mm.setMessageByID(messageHandler.chatHistoryOfGroupV1(groupID));
     }
         //get IDs first
         //retrieve original message
@@ -148,6 +214,7 @@ public class IndividualChatFragment extends Fragment
         //        recyclerView.setAdapter(messageAdaptor);
         //        recyclerView.setLayoutManager(new LinearLayoutManager
         //        (getContext()));
+
 
 
 }

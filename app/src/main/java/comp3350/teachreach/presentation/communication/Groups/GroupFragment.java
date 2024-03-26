@@ -145,9 +145,11 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
         int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
 
         // Step 3: Retrieve Message History using the Group ID
-        //List<IMessage> messageHistory = messageHandler.retrieveAllMessageByGroupID(groupID);
-        Map<Integer, Map<Timestamp, String>> messageHistory = messageHandler.chatHistoryOfGroupV1(groupID);
-        mm.setMessageByID(messageHistory);
+        List<IMessage> messageHistory = messageHandler.retrieveAllMessageByGroupID(groupID);
+        Map<Integer, Map<Timestamp, String>> messageHistoryV1 = messageHandler.chatHistoryOfGroupV1(groupID);
+        mm.setGroupID(groupID);
+        mm.setMessageByID(messageHistoryV1);
+        mm.setMessageList(messageHistory);
 
         // Step 4: Pass necessary data to Individual Chat Fragment
         //Bundle args = new Bundle();
