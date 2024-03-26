@@ -27,7 +27,8 @@ import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class TutorProfileSelfViewFragment extends Fragment
+public
+class TutorProfileSelfViewFragment extends Fragment
 {
     private TutorProfileViewModel profileViewModel;
 
@@ -39,11 +40,13 @@ public class TutorProfileSelfViewFragment extends Fragment
 
     private boolean isLarge, isLandscape;
 
-    public TutorProfileSelfViewFragment()
+    public
+    TutorProfileSelfViewFragment()
     {
     }
 
-    private void fillUpProfileDetails()
+    private
+    void fillUpProfileDetails()
     {
         TextView tvName     = binding.tvNameField;
         TextView tvPronouns = binding.tvPronounsField;
@@ -54,16 +57,15 @@ public class TutorProfileSelfViewFragment extends Fragment
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
         tvMajor.setText(account.getUserMajor());
-        tvPrice.setText(String.format(Locale.getDefault(),
-                                      "$%.2f/h",
-                                      tutor.getHourlyRate()));
+        tvPrice.setText(String.format(Locale.getDefault(), "$%.2f/h", tutor.getHourlyRate()));
         tvReviews.setText(String.format(Locale.getDefault(),
                                         "%.1f ⭐(%d)",
                                         profileHandler.getAvgReview(),
                                         profileHandler.getReviewCount()));
     }
 
-    private void setUpEditProfileButton()
+    private
+    void setUpEditProfileButton()
     {
         Button btnEditProfile = binding.fabEditProfile;
         btnEditProfile.setOnClickListener(v -> NavHostFragment
@@ -71,21 +73,21 @@ public class TutorProfileSelfViewFragment extends Fragment
                 .navigate(R.id.actionToEditTutorProfileFragment));
     }
 
-    private void setUpTopBarMenu()
+    private
+    void setUpTopBarMenu()
     {
         MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {
-                NavHostFragment
-                        .findNavController(this)
-                        .navigate(R.id.actionToAccountSettingsFragment);
+                NavHostFragment.findNavController(this).navigate(R.id.actionToAccountSettingsFragment);
             }
             return true;
         });
     }
 
-    private void setUpTutoredCourses()
+    private
+    void setUpTutoredCourses()
     {
         Button btnAddCourse = binding.btnAddCourse;
 
@@ -93,88 +95,74 @@ public class TutorProfileSelfViewFragment extends Fragment
 
         profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
-        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
-                profileViewModel.getTutoredCoursesCode().getValue());
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
+                                                                                  .getTutoredCoursesCode()
+                                                                                  .getValue());
 
         int spanCount = isLarge || isLandscape ? 6 : 2;
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-                requireContext(),
-                spanCount);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
 
         recycler.setAdapter(recyclerAdapter);
         recycler.setLayoutManager(layoutManager);
 
-        profileViewModel
-                .getTutoredCoursesCode()
-                .observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
+        profileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
 
         DialogueAddCourse addCourse = new DialogueAddCourse();
-        btnAddCourse.setOnClickListener(v -> addCourse.show(
-                getChildFragmentManager(),
-                "Add Course"));
+        btnAddCourse.setOnClickListener(v -> addCourse.show(getChildFragmentManager(), "Add Course"));
     }
 
-    private void setUpPreferredLocations()
+    private
+    void setUpPreferredLocations()
     {
         Button       btnAddLocation = binding.btnAddLocation;
         RecyclerView recycler       = binding.rvPreferredLocations;
 
         profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
-        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(
-                profileViewModel.getPreferredLocations().getValue());
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(profileViewModel
+                                                                                  .getPreferredLocations()
+                                                                                  .getValue());
 
         int spanCount = isLarge || isLandscape ? 6 : 2;
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-                requireContext(),
-                spanCount);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
 
         recycler.setAdapter(recyclerAdapter);
         recycler.setLayoutManager(layoutManager);
 
-        profileViewModel
-                .getPreferredLocations()
-                .observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
+        profileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
 
         DialogueAddLocation addLocation = new DialogueAddLocation();
-        btnAddLocation.setOnClickListener(v -> addLocation.show(
-                getChildFragmentManager(),
-                "Add Location"));
+        btnAddLocation.setOnClickListener(v -> addLocation.show(getChildFragmentManager(), "Add Location"));
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        profileViewModel = new ViewModelProvider(requireActivity()).get(
-                TutorProfileViewModel.class);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentTutorProfileSelfViewBinding.inflate(inflater,
-                                                              container,
-                                                              false);
+        binding = FragmentTutorProfileSelfViewBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState)
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         tutor          = profileViewModel.getTutor().getValue();
         account        = profileViewModel.getTutorAccount().getValue();
         profileHandler = new TutorProfileHandler(tutor);
         Configuration config = getResources().getConfiguration();
-        isLarge
-                    =
-                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         fillUpProfileDetails();
         setUpEditProfileButton();

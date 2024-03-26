@@ -10,46 +10,53 @@ import java.util.List;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SearchViewModel extends ViewModel
+public
+class SearchViewModel extends ViewModel
 {
-    private final MutableLiveData<List<ITutor>> tutors = new MutableLiveData<>(
-            new ArrayList<>(Server.getTutorDataAccess().getTutors().values()));
+    private final MutableLiveData<List<ITutor>> tutors = new MutableLiveData<>(new ArrayList<>(Server
+                                                                                                       .getTutorDataAccess()
+                                                                                                       .getTutors()
+                                                                                                       .values()));
 
-    private final MutableLiveData<List<String>> courses = new MutableLiveData<>(
-            new ArrayList<>(Server
-                                    .getCourseDataAccess()
-                                    .getCourses()
-                                    .keySet()));
+    private final MutableLiveData<List<String>> courses = new MutableLiveData<>(new ArrayList<>(Server
+                                                                                                        .getCourseDataAccess()
+                                                                                                        .getCourses()
+                                                                                                        .keySet()));
 
-    private final MutableLiveData<List<ITutor>> tutorsFiltered
-            = new MutableLiveData<>();
+    private final MutableLiveData<List<ITutor>> tutorsFiltered = new MutableLiveData<>();
 
-    public LiveData<List<ITutor>> getTutorsFiltered()
+    public
+    LiveData<List<ITutor>> getTutorsFiltered()
     {
         return tutorsFiltered;
     }
 
-    public void setTutorsFiltered(List<ITutor> tutors)
+    public
+    void setTutorsFiltered(List<ITutor> tutors)
     {
         tutorsFiltered.setValue(tutors);
     }
 
-    public void postTutorsFiltered(List<ITutor> tutors)
+    public
+    void postTutorsFiltered(List<ITutor> tutors)
     {
         tutorsFiltered.postValue(tutors);
     }
 
-    public LiveData<List<ITutor>> getTutors()
+    public
+    LiveData<List<ITutor>> getTutors()
     {
         return tutors;
     }
 
-    public LiveData<List<String>> getCourses()
+    public
+    LiveData<List<String>> getCourses()
     {
         return courses;
     }
 
-    public void postTutors(List<ITutor> l)
+    public
+    void postTutors(List<ITutor> l)
     {
         this.tutors.postValue(l);
     }

@@ -27,7 +27,8 @@ import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class EditStudentProfileFragment extends Fragment
+public
+class EditStudentProfileFragment extends Fragment
 {
     private FragmentEditStudentProfileBinding binding;
     private TRViewModel                       vm;
@@ -39,11 +40,13 @@ public class EditStudentProfileFragment extends Fragment
     private IAccount        account;
     private IAccountManager accountManager;
 
-    public EditStudentProfileFragment()
+    public
+    EditStudentProfileFragment()
     {
     }
 
-    private void setUpInputBoxes()
+    private
+    void setUpInputBoxes()
     {
         tilName     = binding.tilEditName;
         tilMajor    = binding.tilEditMajor;
@@ -62,17 +65,18 @@ public class EditStudentProfileFragment extends Fragment
         }
     }
 
-    protected void setUpTopBar()
+    protected
+    void setUpTopBar()
     {
         MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setNavigationOnClickListener(view -> {
-            NavController navController
-                    = NavHostFragment.findNavController(this);
+            NavController navController = NavHostFragment.findNavController(this);
             navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
         });
     }
 
-    private void setUpApplyButton()
+    private
+    void setUpApplyButton()
     {
         btnApply = binding.fabApply;
         btnApply.setOnClickListener(view -> {
@@ -82,14 +86,14 @@ public class EditStudentProfileFragment extends Fragment
         });
     }
 
-    private void goBack()
+    private
+    void goBack()
     {
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToStudentProfileSelfViewFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.actionToStudentProfileSelfViewFragment);
     }
 
-    private boolean applyChanges()
+    private
+    boolean applyChanges()
     {
         String newName     = etName.getText().toString().trim();
         String newMajor    = etMajor.getText().toString().trim();
@@ -103,9 +107,7 @@ public class EditStudentProfileFragment extends Fragment
                     .updateAccountUserPronouns(newPronouns);
             return true;
         } catch (AccountManagerException e) {
-            Toast
-                    .makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (InvalidNameException e) {
             tilName.setError(e.getMessage());
         }
@@ -113,7 +115,8 @@ public class EditStudentProfileFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
@@ -124,13 +127,10 @@ public class EditStudentProfileFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentEditStudentProfileBinding.inflate(inflater,
-                                                            container,
-                                                            false);
+        binding = FragmentEditStudentProfileBinding.inflate(inflater, container, false);
         setUpInputBoxes();
         setUpApplyButton();
         setUpTopBar();

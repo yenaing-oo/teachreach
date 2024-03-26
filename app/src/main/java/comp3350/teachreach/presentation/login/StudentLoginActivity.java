@@ -20,14 +20,16 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.presentation.home.StudentHomeActivity;
 import comp3350.teachreach.presentation.signup.StudentSignUpActivity;
 
-public class StudentLoginActivity extends AppCompatActivity
+public
+class StudentLoginActivity extends AppCompatActivity
 {
     private TextInputLayout tilStudentEmail, tilStudentPassword;
     private EditText etStudentEmail, etStudentPassword;
     private AuthenticationHandler authenticationHandler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_login);
@@ -43,13 +45,13 @@ public class StudentLoginActivity extends AppCompatActivity
         mtTopBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         btnLogin.setOnClickListener(v -> login());
         btnSignUp.setOnClickListener(v -> {
-            Intent intent = new Intent(StudentLoginActivity.this,
-                                       StudentSignUpActivity.class);
+            Intent intent = new Intent(StudentLoginActivity.this, StudentSignUpActivity.class);
             startActivity(intent);
         });
     }
 
-    private void login()
+    private
+    void login()
     {
         String email    = etStudentEmail.getText().toString().trim();
         String password = etStudentPassword.getText().toString().trim();
@@ -60,10 +62,8 @@ public class StudentLoginActivity extends AppCompatActivity
             authenticationHandler = new AuthenticationHandler();
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            IStudent student = authenticationHandler.authenticateStudent(email,
-                                                                         password);
-            Intent intent = new Intent(StudentLoginActivity.this,
-                                       StudentHomeActivity.class);
+            IStudent student = authenticationHandler.authenticateStudent(email, password);
+            Intent   intent  = new Intent(StudentLoginActivity.this, StudentHomeActivity.class);
             intent.putExtra("ACCOUNT_ID", student.getAccountID());
             intent.putExtra("STUDENT_ID", student.getStudentID());
             startActivity(intent);
@@ -74,11 +74,7 @@ public class StudentLoginActivity extends AppCompatActivity
             tilStudentPassword.setError(e.getMessage());
         } catch (final Exception e) {
             e.printStackTrace();
-            Toast
-                    .makeText(this,
-                              "Please clear app storage and try again",
-                              Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this, "Please clear app storage and try again", Toast.LENGTH_LONG).show();
         }
     }
 }

@@ -20,14 +20,16 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.home.TutorHomeActivity;
 import comp3350.teachreach.presentation.signup.TutorSignUpActivity;
 
-public class TutorLoginActivity extends AppCompatActivity
+public
+class TutorLoginActivity extends AppCompatActivity
 {
     private TextInputLayout tilTutorEmail, tilTutorPassword;
     private EditText etTutorEmail, etTutorPassword;
     private AuthenticationHandler authenticationHandler;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    protected
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_login);
@@ -42,12 +44,12 @@ public class TutorLoginActivity extends AppCompatActivity
 
         mtTopBar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         btnLogin.setOnClickListener(v -> login());
-        btnSignUp.setOnClickListener(v -> startActivity(new Intent(
-                TutorLoginActivity.this,
-                TutorSignUpActivity.class)));
+        btnSignUp.setOnClickListener(v -> startActivity(new Intent(TutorLoginActivity.this,
+                                                                   TutorSignUpActivity.class)));
     }
 
-    private void login()
+    private
+    void login()
     {
         String email    = etTutorEmail.getText().toString().trim();
         String password = etTutorPassword.getText().toString().trim();
@@ -57,10 +59,8 @@ public class TutorLoginActivity extends AppCompatActivity
             authenticationHandler = new AuthenticationHandler();
             InputValidator.validateEmail(email);
             InputValidator.validatePassword(password);
-            ITutor tutor = authenticationHandler.authenticateTutor(email,
-                                                                   password);
-            Intent intent = new Intent(TutorLoginActivity.this,
-                                       TutorHomeActivity.class);
+            ITutor tutor  = authenticationHandler.authenticateTutor(email, password);
+            Intent intent = new Intent(TutorLoginActivity.this, TutorHomeActivity.class);
             intent.putExtra("ACCOUNT_ID", tutor.getAccountID());
             intent.putExtra("TUTOR_ID", tutor.getTutorID());
             startActivity(intent);
@@ -71,11 +71,7 @@ public class TutorLoginActivity extends AppCompatActivity
             tilTutorPassword.setError(e.getMessage());
         } catch (final Exception e) {
             e.printStackTrace();
-            Toast
-                    .makeText(this,
-                              "Please clear app storage and try again",
-                              Toast.LENGTH_LONG)
-                    .show();
+            Toast.makeText(this, "Please clear app storage and try again", Toast.LENGTH_LONG).show();
         }
     }
 }

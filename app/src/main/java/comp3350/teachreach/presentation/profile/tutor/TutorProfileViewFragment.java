@@ -42,7 +42,8 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class TutorProfileViewFragment extends Fragment
+public
+class TutorProfileViewFragment extends Fragment
 {
     private TutorProfileViewModel tutorProfileViewModel;
     private TRViewModel           trViewModel;
@@ -60,24 +61,22 @@ public class TutorProfileViewFragment extends Fragment
     private Configuration config;
     private boolean       isLarge, isLandscape;
 
-    public TutorProfileViewFragment()
+    public
+    TutorProfileViewFragment()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        trViewModel
-                =
-                new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        trViewModel = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
-        tutorProfileViewModel = new ViewModelProvider(this).get(
-                TutorProfileViewModel.class);
+        tutorProfileViewModel = new ViewModelProvider(this).get(TutorProfileViewModel.class);
 
-        bookingViewModel = new ViewModelProvider(requireActivity()).get(
-                BookingViewModel.class);
+        bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
 
         tutor   = trViewModel.getTutor().getValue();
         student = trViewModel.getStudent().getValue();
@@ -86,32 +85,24 @@ public class TutorProfileViewFragment extends Fragment
         profileHandler      = new TutorProfileHandler(tutor);
         availabilityManager = new TutorAvailabilityManager();
 
-        tutorAccount = Server
-                .getAccountDataAccess()
-                .getAccounts()
-                .get(tutor.getAccountID());
+        tutorAccount = Server.getAccountDataAccess().getAccounts().get(tutor.getAccountID());
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentTutorProfileBinding.inflate(inflater,
-                                                      container,
-                                                      false);
+        binding = FragmentTutorProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view,
-                              @Nullable Bundle savedInstanceState)
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
         config      = getResources().getConfiguration();
-        isLarge
-                    =
-                config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         setUpProfile();
         setUpTopBar();
@@ -120,41 +111,39 @@ public class TutorProfileViewFragment extends Fragment
         setUpCalendarView();
     }
 
-    private void setUpTutoredCourses()
+    private
+    void setUpTutoredCourses()
     {
         RecyclerView r = binding.rvTutoredCourses;
 
         tutorProfileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
-        StringRecyclerAdapter a = new StringRecyclerAdapter(
-                tutorProfileViewModel.getTutoredCoursesCode().getValue());
-        int spanCount = isLarge || isLandscape ? 6 : 3;
-        RecyclerView.LayoutManager lm = new GridLayoutManager(requireContext(),
-                                                              spanCount);
+        StringRecyclerAdapter      a         = new StringRecyclerAdapter(tutorProfileViewModel
+                                                                                 .getTutoredCoursesCode()
+                                                                                 .getValue());
+        int                        spanCount = isLarge || isLandscape ? 6 : 3;
+        RecyclerView.LayoutManager lm        = new GridLayoutManager(requireContext(), spanCount);
 
         r.setAdapter(a);
         r.setLayoutManager(lm);
 
-        tutorProfileViewModel
-                .getTutoredCoursesCode()
-                .observe(getViewLifecycleOwner(), a::updateData);
+        tutorProfileViewModel.getTutoredCoursesCode().observe(getViewLifecycleOwner(), a::updateData);
     }
 
-    private void setUpTopBar()
+    private
+    void setUpTopBar()
     {
         MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle(tutorAccount.getUserName());
         materialToolbar.setNavigationOnClickListener(view -> {
-            SlidingPaneLayout slidingPaneLayout
-                    = requireActivity().requireViewById(R.id.searchFragment);
+            SlidingPaneLayout slidingPaneLayout = requireActivity().requireViewById(R.id.searchFragment);
             slidingPaneLayout.close();
-            NavHostFragment
-                    .findNavController(this)
-                    .navigate(R.id.actionToPlaceHolderFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
         });
     }
 
-    private void setUpProfile()
+    private
+    void setUpProfile()
     {
         TextView tvPronouns = binding.tvPronounsField;
         TextView tvMajor    = binding.tvMajorField;
@@ -163,63 +152,55 @@ public class TutorProfileViewFragment extends Fragment
 
         tvPronouns.setText(tutorAccount.getUserPronouns());
         tvMajor.setText(tutorAccount.getUserMajor());
-        tvPrice.setText(String.format(Locale.US,
-                                      "$%.2f/h",
-                                      tutor.getHourlyRate()));
+        tvPrice.setText(String.format(Locale.US, "$%.2f/h", tutor.getHourlyRate()));
         tvReviews.setText(String.format(Locale.US,
                                         "%.1f ⭐(%d)",
                                         profileHandler.getAvgReview(),
                                         profileHandler.getReviewCount()));
     }
 
-    private void setUpPreferredLocations()
+    private
+    void setUpPreferredLocations()
     {
         RecyclerView recycler = binding.rvPreferredLocations;
 
         tutorProfileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
-        StringRecyclerAdapter adapter = new StringRecyclerAdapter(
-                tutorProfileViewModel.getPreferredLocations().getValue());
+        StringRecyclerAdapter adapter = new StringRecyclerAdapter(tutorProfileViewModel
+                                                                          .getPreferredLocations()
+                                                                          .getValue());
 
         int spanCount = isLarge || isLandscape ? 6 : 2;
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(
-                requireContext(),
-                spanCount);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
 
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(layoutManager);
-        tutorProfileViewModel
-                .getPreferredLocations()
-                .observe(getViewLifecycleOwner(), adapter::updateData);
+        tutorProfileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), adapter::updateData);
     }
 
-    private void setUpCalendarView()
+    private
+    void setUpCalendarView()
     {
         CalendarView calendarView = binding.cvCalendarBook;
         Date         date         = Date.from(Instant.now());
         calendarView.setMinDate(date.getTime());
-        calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y,
-                                                                             m,
-                                                                             d));
+        calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y, m, d));
     }
 
-    private void goToDayFragment(int y, int m, int d)
+    private
+    void goToDayFragment(int y, int m, int d)
     {
-        LocalDate calDate = LocalDate.of(y, m + 1, d);
-        List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(
-                tutor,
-                calDate);
-        boolean   notAvailable = slots.isEmpty();
-        LocalDate now          = LocalDate.now();
+        LocalDate        calDate      = LocalDate.of(y, m + 1, d);
+        List<ITimeSlice> slots        = availabilityManager.getAvailabilityAsSlots(tutor, calDate);
+        boolean          notAvailable = slots.isEmpty();
+        LocalDate        now          = LocalDate.now();
         if (calDate.isBefore(now) || notAvailable) {
             String toastMsg = String.format(Locale.getDefault(),
                                             "%s is not available on %s",
                                             tutorAccount.getUserName(),
                                             calDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
-            Toast
-                    .makeText(requireContext(), toastMsg, Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(requireContext(), toastMsg, Toast.LENGTH_SHORT).show();
             return;
         }
         bookingViewModel.setBookingDate(calDate);
@@ -228,8 +209,6 @@ public class TutorProfileViewFragment extends Fragment
         bookingViewModel.setTutor(tutor);
         bookingViewModel.setStudent(student);
         bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations());
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToTimeSlotSelectionFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.actionToTimeSlotSelectionFragment);
     }
 }

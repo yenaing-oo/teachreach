@@ -26,20 +26,15 @@ class TutorProfileFormatter
     public
     String getRating()
     {
-        String rating = String.format(Locale.US,
-                                      "%.1f",
-                                      tutorProfileHandler.getAvgReview());
-        String numReviews
-                = Integer.toString(tutorProfileHandler.getReviewCount());
+        String rating     = String.format(Locale.US, "%.1f", tutorProfileHandler.getAvgReview());
+        String numReviews = Integer.toString(tutorProfileHandler.getReviewCount());
         return String.format("Rating: %s⭐ (%s)", rating, numReviews);
     }
 
     public
     String getHourlyRate()
     {
-        String hourlyRate = String.format(Locale.US,
-                                          "%.2f",
-                                          tutorProfileHandler.getHourlyRate());
+        String hourlyRate = String.format(Locale.US, "%.2f", tutorProfileHandler.getHourlyRate());
         return "$" + hourlyRate + "/hr";
     }
 

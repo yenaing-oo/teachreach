@@ -21,8 +21,7 @@ class DateUtils
     private static
     String dateFormatHelper(Calendar date)
     {
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d",
-                                                    Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMM d", Locale.getDefault());
         return sdf.format(date.getTime());
     }
 }

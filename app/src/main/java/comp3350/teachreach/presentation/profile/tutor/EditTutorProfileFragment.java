@@ -32,7 +32,8 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class EditTutorProfileFragment extends Fragment
+public
+class EditTutorProfileFragment extends Fragment
 {
     private FragmentEditTutorProfileBinding binding;
     private TRViewModel                     vm;
@@ -46,11 +47,13 @@ public class EditTutorProfileFragment extends Fragment
     private IAccountManager      accountManager;
     private ITutorProfileHandler tph;
 
-    public EditTutorProfileFragment()
+    public
+    EditTutorProfileFragment()
     {
     }
 
-    private void setUpInputBoxes()
+    private
+    void setUpInputBoxes()
     {
         tilName     = binding.tilEditName;
         tilMajor    = binding.tilEditMajor;
@@ -63,9 +66,7 @@ public class EditTutorProfileFragment extends Fragment
         etPrice    = tilPrice.getEditText();
         etName.setText(account.getUserName());
 
-        etPrice.setText(String.format(Locale.US,
-                                      "%.2f",
-                                      tutor.getHourlyRate()));
+        etPrice.setText(String.format(Locale.US, "%.2f", tutor.getHourlyRate()));
         String currentPronouns = account.getUserPronouns();
         if (currentPronouns != null && !currentPronouns.isEmpty()) {
             etPronouns.setText(currentPronouns);
@@ -76,17 +77,18 @@ public class EditTutorProfileFragment extends Fragment
         }
     }
 
-    protected void setUpTopBar()
+    protected
+    void setUpTopBar()
     {
         MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setNavigationOnClickListener(view -> {
-            NavController navController
-                    = NavHostFragment.findNavController(this);
+            NavController navController = NavHostFragment.findNavController(this);
             navController.navigate(R.id.actionToTutorProfileSelfViewFragment);
         });
     }
 
-    private void setUpApplyButton()
+    private
+    void setUpApplyButton()
     {
         btnApply = binding.fabApply;
         btnApply.setOnClickListener(view -> {
@@ -96,14 +98,14 @@ public class EditTutorProfileFragment extends Fragment
         });
     }
 
-    private void goBack()
+    private
+    void goBack()
     {
-        NavHostFragment
-                .findNavController(this)
-                .navigate(R.id.actionToTutorProfileSelfViewFragment);
+        NavHostFragment.findNavController(this).navigate(R.id.actionToTutorProfileSelfViewFragment);
     }
 
-    private boolean applyChanges()
+    private
+    boolean applyChanges()
     {
         String newName     = etName.getText().toString().trim();
         String newMajor    = etMajor.getText().toString().trim();
@@ -120,9 +122,7 @@ public class EditTutorProfileFragment extends Fragment
             tph.setHourlyRate(newPrice).updateTutorProfile();
             return true;
         } catch (AccountManagerException e) {
-            Toast
-                    .makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (InvalidNameException e) {
             tilName.setError(e.getMessage());
         }
@@ -130,7 +130,8 @@ public class EditTutorProfileFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
@@ -143,13 +144,10 @@ public class EditTutorProfileFragment extends Fragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentEditTutorProfileBinding.inflate(inflater,
-                                                          container,
-                                                          false);
+        binding = FragmentEditTutorProfileBinding.inflate(inflater, container, false);
         setUpInputBoxes();
         setUpApplyButton();
         setUpTopBar();

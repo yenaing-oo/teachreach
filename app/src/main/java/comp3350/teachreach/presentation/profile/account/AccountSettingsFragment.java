@@ -20,41 +20,41 @@ import comp3350.teachreach.databinding.FragmentAccountSettingsBinding;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public class AccountSettingsFragment extends Fragment
+public
+class AccountSettingsFragment extends Fragment
 {
     private FragmentAccountSettingsBinding binding;
     private TRViewModel                    vm;
     private IAccount                       account;
     private boolean                        isTutor;
 
-    public AccountSettingsFragment()
+    public
+    AccountSettingsFragment()
     {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public
+    void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        vm      =
-                new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        vm      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         account = vm.getAccount().getValue();
         isTutor = Boolean.TRUE.equals(vm.getIsTutor().getValue());
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState)
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = FragmentAccountSettingsBinding.inflate(inflater,
-                                                         container,
-                                                         false);
+        binding = FragmentAccountSettingsBinding.inflate(inflater, container, false);
         setUpTopBar();
         setUpButtons();
         return binding.getRoot();
     }
 
-    private void setUpTopBar()
+    private
+    void setUpTopBar()
     {
         MaterialToolbar materialToolbar = binding.topAppBar;
 
@@ -65,7 +65,8 @@ public class AccountSettingsFragment extends Fragment
         materialToolbar.setNavigationOnClickListener(listener);
     }
 
-    private void setUpButtons()
+    private
+    void setUpButtons()
     {
         TextView tvEmailField = binding.tvEmailField;
         tvEmailField.setText(account.getAccountEmail());
