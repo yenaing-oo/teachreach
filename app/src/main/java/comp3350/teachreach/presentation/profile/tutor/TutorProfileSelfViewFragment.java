@@ -125,9 +125,8 @@ class TutorProfileSelfViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
-        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
         Executors.newSingleThreadExecutor().execute(() -> {
-            prefLocations = profileViewModel.getPreferredLocations().getValue();
+            prefLocations = profileHandler.getPreferredLocations(tutor);
             new Handler(Looper.getMainLooper()).post(() -> {
                 StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(prefLocations);
                 recycler.setAdapter(recyclerAdapter);

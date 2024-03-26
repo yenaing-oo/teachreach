@@ -38,13 +38,20 @@ import comp3350.teachreach.databinding.DialogFiltersBinding;
 import comp3350.teachreach.databinding.FragmentSearchBinding;
 import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.logic.interfaces.ITutorFilter;
+import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
+import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
 class SearchFragment extends Fragment
 {
-    static ITutorFilter tutorFilter = TutorFilter.New();
+    static final   Object                      lock                = new Object();
+    static         ITutorFilter                tutorFilter         = TutorFilter.New();
+    private static IUserProfileHandler<ITutor> profileHandler      = new UserProfileFetcher<>();
+    private static ITutorProfileHandler        tutorProfileHandler = new TutorProfileHandler();
     EditText          maxPrice;
     EditText          minPrice;
     CheckBox          priceMaxSwitch;
@@ -101,6 +108,7 @@ class SearchFragment extends Fragment
         EditText        searchEditText  = searchTextInput.getEditText();
         Button          filterButton    = binding.btnFilter;
         Button          searchButton    = binding.btnSearch;
+
         searchEditText.setOnEditorActionListener((v, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
                 (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
@@ -117,10 +125,12 @@ class SearchFragment extends Fragment
     {
         DialogFiltersBinding filtersBinding   = DialogFiltersBinding.inflate(this.getLayoutInflater());
         View                 filterDialogView = filtersBinding.getRoot();
+
         setUpCourseCodeField(filtersBinding);
         setUpReviewFilterField(filtersBinding);
         setUpPriceFilterField(filtersBinding);
         setUpSortSwitches(filtersBinding);
+
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle("Apply Filters")
                 .setMessage("Long press on field to reset")
@@ -262,7 +272,7 @@ class SearchFragment extends Fragment
     {
         String searchString = searchEditText.getText().toString().trim();
         Executors.newSingleThreadExecutor().execute(() -> {
-            if (priceMinSwitch.isChecked()) {
+            if (priceMinSwitch != null && priceMinSwitch.isChecked()) {
                 String s = minPrice.getText().toString().trim();
                 if (!s.isEmpty()) {
                     prevMinPrice = Double.parseDouble(s);
@@ -272,7 +282,7 @@ class SearchFragment extends Fragment
                 prevMinPrice = -1.0;
                 tutorFilter.clearMinimumHourlyRate();
             }
-            if (priceMaxSwitch.isChecked()) {
+            if (priceMaxSwitch != null && priceMaxSwitch.isChecked()) {
                 String s = maxPrice.getText().toString().trim();
                 if (!s.isEmpty()) {
                     prevMaxPrice = Double.parseDouble(s);
@@ -291,9 +301,10 @@ class SearchFragment extends Fragment
             tutorFilter = searchString.isEmpty() ?
                           tutorFilter.resetSearchString() :
                           tutorFilter.setSearchFilter(searchString);
-            List<ITutor> result = tutorFilter.filterFunc().apply(tutorList);
-            new Handler(Looper.getMainLooper()).post(() -> searchViewModel.postTutorsFiltered(result));
-
+            synchronized (lock) {
+                List<ITutor> result = tutorFilter.filterFunc().apply(tutorList);
+                new Handler(Looper.getMainLooper()).post(() -> searchViewModel.postTutorsFiltered(result));
+            }
         });
         return true;
     }
@@ -305,11 +316,16 @@ class SearchFragment extends Fragment
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         searchViewModel.setTutorsFiltered(tutorList);
         Executors.newSingleThreadExecutor().execute(() -> {
-            new Handler(Looper.getMainLooper()).post(() -> {
-                SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(tutorList, this::openDetails);
-                searchViewModel.getTutorsFiltered().observe(getViewLifecycleOwner(), adapter::updateData);
-                recyclerView.setAdapter(adapter);
-            });
+            synchronized (lock) {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    SearchTutorRecyclerAdapter adapter = new SearchTutorRecyclerAdapter(profileHandler,
+                                                                                        tutorProfileHandler,
+                                                                                        tutorList,
+                                                                                        this::openDetails);
+                    searchViewModel.getTutorsFiltered().observe(getViewLifecycleOwner(), adapter::updateData);
+                    recyclerView.setAdapter(adapter);
+                });
+            }
         });
     }
 

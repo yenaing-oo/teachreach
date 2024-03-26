@@ -32,12 +32,13 @@ import java.util.Locale;
 import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
+import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
@@ -48,13 +49,14 @@ import comp3350.teachreach.presentation.utils.TRViewModel;
 public
 class TutorProfileViewFragment extends Fragment
 {
-    List<String> prefLocation;
-    private TutorProfileViewModel       tutorProfileViewModel;
+    private IUserProfileHandler<ITutor> profileFetcher;
+    private List<String>                prefLocation;
+    private ITutorProfileHandler        profileHandler;
+    private ITutorAvailabilityManager   availabilityManager;
     private TRViewModel                 trViewModel;
     private BookingViewModel            bookingViewModel;
     private FragmentTutorProfileBinding binding;
-    private ITutorProfileHandler        profileHandler;
-    private ITutorAvailabilityManager   availabilityManager;
+    private SlidingPaneLayout           slidingPaneLayout;
     private ITutor                      tutor;
     private IStudent                    student;
     private IAccount                    tutorAccount;
@@ -73,20 +75,8 @@ class TutorProfileViewFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-        trViewModel = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
-
-        tutorProfileViewModel = new ViewModelProvider(this).get(TutorProfileViewModel.class);
-
+        trViewModel      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
-
-        tutor   = trViewModel.getTutor().getValue();
-        student = trViewModel.getStudent().getValue();
-        assert tutor != null && student != null;
-
-        profileHandler      = new TutorProfileHandler();
-        availabilityManager = new TutorAvailabilityManager();
-
-        tutorAccount = Server.getAccountDataAccess().getAccounts().get(tutor.getAccountID());
     }
 
     @Override
@@ -102,9 +92,23 @@ class TutorProfileViewFragment extends Fragment
     void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        config      = getResources().getConfiguration();
-        isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
-        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
+        config            = getResources().getConfiguration();
+        isLarge           = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLandscape       = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
+        slidingPaneLayout = requireActivity().requireViewById(R.id.searchFragment);
+        try {
+            profileFetcher      = new UserProfileFetcher<>();
+            profileHandler      = new TutorProfileHandler();
+            availabilityManager = new TutorAvailabilityManager();
+            tutor               = trViewModel.getTutor().getValue();
+            student             = trViewModel.getStudent().getValue();
+            tutorAccount        = profileFetcher.getUserAccount(tutor);
+        } catch (final Throwable e) {
+            Toast.makeText(requireContext(), "Not so fast!", Toast.LENGTH_SHORT).show();
+            slidingPaneLayout.close();
+            NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
+            return;
+        }
         setUpProfile();
         setUpTopBar();
         setUpTutoredCourses();
@@ -135,7 +139,6 @@ class TutorProfileViewFragment extends Fragment
         MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle(tutorAccount.getUserName());
         materialToolbar.setNavigationOnClickListener(view -> {
-            SlidingPaneLayout slidingPaneLayout = requireActivity().requireViewById(R.id.searchFragment);
             slidingPaneLayout.close();
             NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
         });
@@ -170,7 +173,6 @@ class TutorProfileViewFragment extends Fragment
             new Handler(Looper.getMainLooper()).post(() -> {
                 StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
                 recycler.setAdapter(adapter);
-                tutorProfileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), adapter::updateData);
             });
         });
     }
@@ -200,13 +202,12 @@ class TutorProfileViewFragment extends Fragment
                 Toast.makeText(requireContext(), toastMsg, Toast.LENGTH_SHORT).show();
                 return;
             }
-            tutorProfileViewModel.setPreferredLocations(prefLocation);
             bookingViewModel.setBookingDate(calDate);
             bookingViewModel.setTimeSlots(slots);
             bookingViewModel.setTutorAccount(tutorAccount);
             bookingViewModel.setTutor(tutor);
             bookingViewModel.setStudent(student);
-            bookingViewModel.setTutorLocations(profileHandler.getPreferredLocations(tutor));
+            bookingViewModel.setTutorLocations(prefLocation);
             NavHostFragment.findNavController(this).navigate(R.id.actionToTimeSlotSelectionFragment);
         } catch (final Throwable e) {
             Toast.makeText(requireContext(), "Something Happened! Please try again!", Toast.LENGTH_SHORT).show();

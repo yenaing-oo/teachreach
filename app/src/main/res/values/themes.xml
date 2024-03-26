@@ -3,7 +3,7 @@
     <style name="Base.Theme.TeachReach" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/material_dynamic_primary70</item>
         <item name="colorSecondary">@color/material_dynamic_secondary70</item>
-        <item name="colorSurface">@color/material_dynamic_secondary90</item>
+        <item name="colorSurface">@color/material_dynamic_primary90</item>
         <item name="colorOnSurface">@color/material_dynamic_secondary30</item>
         <item name="colorPrimaryInverse">@color/material_dynamic_primary20
         </item>
@@ -97,7 +97,7 @@
     </style>
 
     <style name="ThemeOverlay.App.Toolbar" parent="">
-        <item name="colorSurface">@color/material_dynamic_secondary95</item>
+        <item name="colorSurface">@color/material_dynamic_secondary90</item>
         <item name="colorOnSurface">@color/material_dynamic_secondary30</item>
     </style>
 
@@ -109,7 +109,7 @@
 
     <style name="ThemeOverlay.App.BottomNavigationView" parent="">
         <item name="colorSurface">@color/material_dynamic_primary80</item>
-        <item name="colorSurfaceContainer">@color/material_dynamic_secondary95
+        <item name="colorSurfaceContainer">@color/material_dynamic_secondary90
         </item>
         <item name="colorOnSurfaceVariant">@color/material_dynamic_secondary30
         </item>

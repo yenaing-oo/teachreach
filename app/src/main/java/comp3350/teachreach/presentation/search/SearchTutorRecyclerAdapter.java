@@ -16,23 +16,26 @@ import java.util.Locale;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
-import comp3350.teachreach.logic.profile.TutorProfileHandler;
-import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public
 class SearchTutorRecyclerAdapter extends RecyclerView.Adapter<SearchTutorRecyclerAdapter.ViewHolder>
 {
-    private static List<ITutor>          tutorList;
-    private static IOnTutorClickListener listener;
-    IUserProfileHandler<ITutor> profileHandler = new UserProfileFetcher<>();
-    ITutorProfileHandler        tph            = new TutorProfileHandler();
+    private static List<ITutor>                tutorList;
+    private static IOnTutorClickListener       listener;
+    private static IUserProfileHandler<ITutor> profileHandler;
+    private static ITutorProfileHandler        tutorProfileHandler;
 
     public
-    SearchTutorRecyclerAdapter(List<ITutor> tutors, IOnTutorClickListener listener)
+    SearchTutorRecyclerAdapter(IUserProfileHandler<ITutor> profileHandler,
+                               ITutorProfileHandler tutorProfileHandler,
+                               List<ITutor> tutors,
+                               IOnTutorClickListener listener)
     {
-        SearchTutorRecyclerAdapter.tutorList = tutors;
-        SearchTutorRecyclerAdapter.listener  = listener;
+        SearchTutorRecyclerAdapter.tutorList           = tutors;
+        SearchTutorRecyclerAdapter.listener            = listener;
+        SearchTutorRecyclerAdapter.profileHandler      = profileHandler;
+        SearchTutorRecyclerAdapter.tutorProfileHandler = tutorProfileHandler;
     }
 
     @NonNull
@@ -63,7 +66,7 @@ class SearchTutorRecyclerAdapter extends RecyclerView.Adapter<SearchTutorRecycle
         tutorCard.setOnClickListener(v -> listener.onTutorClick(tutor));
         tvName.setText(profileHandler.getUserName(tutor));
         tvMajor.setText(profileHandler.getUserMajor(tutor));
-        tvRatings.setText(String.format(Locale.getDefault(), "%.2f", tph.getAvgReview(tutor)));
+        tvRatings.setText(String.format(Locale.getDefault(), "%.2f", tutorProfileHandler.getAvgReview(tutor)));
         tvPrice.setText(String.format(Locale.getDefault(), "%.2f", tutor.getHourlyRate()));
     }
 
