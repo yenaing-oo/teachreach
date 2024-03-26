@@ -34,19 +34,14 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 public
 class TutorProfileSelfViewFragment extends Fragment
 {
-    private TutorProfileViewModel profileViewModel;
-
-    private FragmentTutorProfileSelfViewBinding binding;
-
-    private IAccount             account;
-    private ITutor               tutor;
-    private ITutorProfileHandler profileHandler;
-
-    private List<String> prefLocations;
-
-    private List<String> tutoredCourses;
-
-    private boolean isLarge, isLandscape;
+    private static final ITutorProfileHandler                profileHandler = new TutorProfileHandler();
+    private static       List<String>                        prefLocations;
+    private static       List<String>                        tutoredCourses;
+    private              TutorProfileViewModel               profileViewModel;
+    private              FragmentTutorProfileSelfViewBinding binding;
+    private              IAccount                            account;
+    private              ITutor                              tutor;
+    private              boolean                             isLarge, isLandscape;
 
     public
     TutorProfileSelfViewFragment()
@@ -156,9 +151,8 @@ class TutorProfileSelfViewFragment extends Fragment
     void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        tutor          = profileViewModel.getTutor().getValue();
-        account        = profileViewModel.getTutorAccount().getValue();
-        profileHandler = new TutorProfileHandler();
+        tutor   = profileViewModel.getTutor().getValue();
+        account = profileViewModel.getTutorAccount().getValue();
         Configuration config = getResources().getConfiguration();
         isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;

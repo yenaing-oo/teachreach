@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import comp3350.teachreach.R;
 import comp3350.teachreach.logic.account.AuthenticationHandler;
 import comp3350.teachreach.logic.account.InputValidator;
+import comp3350.teachreach.logic.exceptions.InvalidCredentialException;
 import comp3350.teachreach.logic.exceptions.input.InvalidEmailException;
 import comp3350.teachreach.logic.exceptions.input.InvalidPasswordException;
 import comp3350.teachreach.objects.interfaces.IStudent;
@@ -72,6 +73,8 @@ class StudentLoginActivity extends AppCompatActivity
             tilStudentEmail.setError(e.getMessage());
         } catch (final InvalidPasswordException e) {
             tilStudentPassword.setError(e.getMessage());
+        } catch (final InvalidCredentialException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (final Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "Please clear app storage and try again", Toast.LENGTH_LONG).show();

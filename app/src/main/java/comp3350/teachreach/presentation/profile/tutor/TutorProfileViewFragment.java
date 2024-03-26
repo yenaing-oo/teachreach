@@ -49,17 +49,17 @@ import comp3350.teachreach.presentation.utils.TRViewModel;
 public
 class TutorProfileViewFragment extends Fragment
 {
-    private IUserProfileHandler<ITutor> profileFetcher;
-    private List<String>                prefLocation;
-    private ITutorProfileHandler        profileHandler;
-    private ITutorAvailabilityManager   availabilityManager;
-    private TRViewModel                 trViewModel;
-    private BookingViewModel            bookingViewModel;
-    private FragmentTutorProfileBinding binding;
-    private SlidingPaneLayout           slidingPaneLayout;
-    private ITutor                      tutor;
-    private IStudent                    student;
-    private IAccount                    tutorAccount;
+    private static final IUserProfileHandler<ITutor> profileFetcher      = new UserProfileFetcher<>();
+    private static final ITutorProfileHandler        profileHandler      = new TutorProfileHandler();
+    private static final ITutorAvailabilityManager   availabilityManager = new TutorAvailabilityManager();
+    private              TRViewModel                 trViewModel;
+    private              BookingViewModel            bookingViewModel;
+    private              FragmentTutorProfileBinding binding;
+    private              SlidingPaneLayout           slidingPaneLayout;
+    private              ITutor                      tutor;
+    private              IStudent                    student;
+    private              IAccount                    tutorAccount;
+    private              List<String>                prefLocation;
 
     private Configuration config;
     private boolean       isLarge, isLandscape;
@@ -97,12 +97,9 @@ class TutorProfileViewFragment extends Fragment
         isLandscape       = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         slidingPaneLayout = requireActivity().requireViewById(R.id.searchFragment);
         try {
-            profileFetcher      = new UserProfileFetcher<>();
-            profileHandler      = new TutorProfileHandler();
-            availabilityManager = new TutorAvailabilityManager();
-            tutor               = trViewModel.getTutor().getValue();
-            student             = trViewModel.getStudent().getValue();
-            tutorAccount        = profileFetcher.getUserAccount(tutor);
+            tutor        = trViewModel.getTutor().getValue();
+            student      = trViewModel.getStudent().getValue();
+            tutorAccount = profileFetcher.getUserAccount(tutor);
         } catch (final Throwable e) {
             Toast.makeText(requireContext(), "Not so fast!", Toast.LENGTH_SHORT).show();
             slidingPaneLayout.close();

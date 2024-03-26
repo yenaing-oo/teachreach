@@ -27,6 +27,7 @@ import comp3350.teachreach.logic.exceptions.AccountManagerException;
 import comp3350.teachreach.logic.exceptions.InvalidNameException;
 import comp3350.teachreach.logic.interfaces.IAccountManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
+import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
@@ -34,17 +35,15 @@ import comp3350.teachreach.presentation.utils.TRViewModel;
 public
 class EditTutorProfileFragment extends Fragment
 {
+    private final static ITutorProfileHandler profileHandler = new TutorProfileHandler();
     private FragmentEditTutorProfileBinding binding;
     private TRViewModel                     vm;
-
     private TextInputLayout tilName, tilMajor, tilPronouns, tilPrice;
     private EditText etName, etMajor, etPronouns, etPrice;
     private Button btnApply;
-
-    private IAccount             account;
-    private ITutor               tutor;
-    private IAccountManager      accountManager;
-    private ITutorProfileHandler profileHandler;
+    private              IAccount             account;
+    private              ITutor               tutor;
+    private              IAccountManager      accountManager;
 
     public
     EditTutorProfileFragment()
