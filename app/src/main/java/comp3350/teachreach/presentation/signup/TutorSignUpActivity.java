@@ -46,6 +46,7 @@ public class TutorSignUpActivity extends AppCompatActivity
             tilEmail.setError(null);
             tilPassword.setError(null);
             tilUsername.setError(null);
+            accountCreator = new AccountCreator();
             ITutor newTutor = accountCreator.createTutorAccount(email,
                                                                 password,
                                                                 username,
@@ -133,7 +134,6 @@ public class TutorSignUpActivity extends AppCompatActivity
         Button btnUploadTranscript = findViewById(R.id.btnUploadTranscript);
         Button btnCreateProfile    = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator();
         btnUploadTranscript.setOnClickListener(v -> openFilePicker());
         btnCreateProfile.setOnClickListener(v -> createTutorProfile());
     }

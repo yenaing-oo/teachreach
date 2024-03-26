@@ -35,10 +35,12 @@ import comp3350.teachreach.presentation.utils.GridSpacingItemDecoration;
 public class BookingSelectionFragment extends Fragment
 {
     private BookingViewModel bookingViewModel;
-    private LocalDate        date;
-    private ITimeSlice       selectedSlot;
-    private String           selectedLocation;
-    private boolean          isLarge, isLandscape;
+
+    private FragmentBookingSelectionBinding binding;
+    private LocalDate                       date;
+    private ITimeSlice                      selectedSlot;
+    private String                          selectedLocation;
+    private boolean                         isLarge, isLandscape;
 
     public BookingSelectionFragment()
     {
@@ -58,9 +60,10 @@ public class BookingSelectionFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentBookingSelectionBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentBookingSelectionBinding.inflate(inflater,
+                                                          container,
+                                                          false);
+        return binding.getRoot();
     }
 
     @Override
@@ -73,13 +76,13 @@ public class BookingSelectionFragment extends Fragment
                     =
                 config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
-        setUpTopBar(view);
-        setUpTimeSlots(view);
-        setUpButtons(view);
-        setUpLocationField(view);
+        setUpTopBar();
+        setUpTimeSlots();
+        setUpButtons();
+        setUpLocationField();
     }
 
-    private void setUpLocationField(View view)
+    private void setUpLocationField()
     {
         List<String> tutorLocations = bookingViewModel
                 .getTutorLocations()
@@ -91,7 +94,7 @@ public class BookingSelectionFragment extends Fragment
                                      new ArrayList<>() :
                                      tutorLocations);
 
-        AutoCompleteTextView locations = view.findViewById(R.id.locationField);
+        AutoCompleteTextView locations = binding.locationField;
         locations.setAdapter(arrayAdapter);
         locations.setThreshold(1);
         locations.setLongClickable(true);
@@ -106,10 +109,10 @@ public class BookingSelectionFragment extends Fragment
         });
     }
 
-    private void setUpButtons(View view)
+    private void setUpButtons()
     {
-        Button positive = view.findViewById(R.id.confirmButton);
-        Button negative = view.findViewById(R.id.cancelButton);
+        Button positive = binding.confirmButton;
+        Button negative = binding.cancelButton;
 
         NavController navController = NavHostFragment.findNavController(this);
 
@@ -117,9 +120,9 @@ public class BookingSelectionFragment extends Fragment
         negative.setOnClickListener(v -> navController.navigateUp());
     }
 
-    private void setUpTimeSlots(View v)
+    private void setUpTimeSlots()
     {
-        RecyclerView recyclerView = v.findViewById(R.id.timeSlotRecyclerView);
+        RecyclerView recyclerView = binding.timeSlotRecyclerView;
 
         TimeSlotRecyclerAdapter adapter = new TimeSlotRecyclerAdapter(
                 bookingViewModel.getTimeSlots().getValue(),
@@ -144,9 +147,9 @@ public class BookingSelectionFragment extends Fragment
                                                                      0));
     }
 
-    private void setUpTopBar(View v)
+    private void setUpTopBar()
     {
-        MaterialToolbar materialToolbar = v.findViewById(R.id.topAppBar);
+        MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle("Booking for " +
                                  date.format(DateTimeFormatter.ofPattern(
                                          "eee, d MMM, yyyy")));

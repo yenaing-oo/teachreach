@@ -15,7 +15,7 @@ public class TRViewModel extends ViewModel
     private final MutableLiveData<ITutor>   tutor   = new MutableLiveData<>();
 
     private final MutableLiveData<Boolean> isTutor
-            = new MutableLiveData<Boolean>(false);
+            = new MutableLiveData<>(false);
 
     public LiveData<IAccount> getAccount()
     {

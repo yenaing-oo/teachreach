@@ -2,7 +2,6 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
-import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.DialogAddCourseBinding;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
@@ -42,15 +40,11 @@ public class DialogueAddCourse extends AppCompatDialogFragment
         TutorProfileViewModel profileViewModel = new ViewModelProvider(
                 parentActivity).get(TutorProfileViewModel.class);
 
-        View bindingRoot = binding.getRoot();
+        TextInputLayout tilCourseCode = binding.tilCourseCode;
+        EditText        etCourseCode  = tilCourseCode.getEditText();
 
-        TextInputLayout tilCourseCode
-                = bindingRoot.findViewById(R.id.tilCourseCode);
-        EditText etCourseCode = tilCourseCode.getEditText();
-
-        TextInputLayout tilCourseName
-                = bindingRoot.findViewById(R.id.tilCourseName);
-        EditText etCourseName = tilCourseName.getEditText();
+        TextInputLayout tilCourseName = binding.tilCourseName;
+        EditText        etCourseName  = tilCourseName.getEditText();
 
         return builder
                 .setTitle("Adding New Course")
@@ -91,7 +85,7 @@ public class DialogueAddCourse extends AppCompatDialogFragment
                     }
                 })
                 .setNegativeButton("Cancel", null)
-                .setView(bindingRoot)
+                .setView(binding.getRoot())
                 .create();
     }
 }

@@ -59,9 +59,7 @@ public class FragmentChangingEmail extends Fragment
 
     private void setUpTopBar()
     {
-        MaterialToolbar materialToolbar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
+        MaterialToolbar materialToolbar = binding.topAppBar;
         NavController navController = NavHostFragment.findNavController(this);
         materialToolbar.setNavigationOnClickListener(v -> navController.navigate(
                 R.id.actionToAccountSettingsFragment));
@@ -69,17 +67,14 @@ public class FragmentChangingEmail extends Fragment
 
     private void setUpTextFields()
     {
-        View v = binding.getRoot();
+        TextInputLayout tvCurrentPassword = binding.tilCurrentPassword;
 
-        TextInputLayout tvCurrentPassword
-                = v.findViewById(R.id.tilCurrentPassword);
-
-        TextInputLayout tvNewEmail = v.findViewById(R.id.tilNewValue);
+        TextInputLayout tvNewEmail = binding.tilNewValue;
 
         EditText etCurrentPassword = tvCurrentPassword.getEditText();
         EditText etNewEmail        = tvNewEmail.getEditText();
 
-        Button btnApply = binding.getRoot().findViewById(R.id.fabApply);
+        Button btnApply = binding.fabApply;
 
         NavController navController = NavHostFragment.findNavController(this);
         btnApply.setOnClickListener(view -> {

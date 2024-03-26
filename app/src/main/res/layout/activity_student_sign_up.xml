@@ -49,9 +49,10 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupName"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.App.TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/tilSignupNameHint"
         app:counterEnabled="true"
         app:counterMaxLength="32"
         app:endIconMode="clear_text"
@@ -66,15 +67,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsername"
             android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/tilSignupNameHint" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupMajor"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.App.TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/tilSignupMajorHint"
         app:counterEnabled="true"
         app:counterMaxLength="64"
         app:endIconMode="clear_text"
@@ -88,15 +89,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etMajor"
             android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/tilSignupMajorHint" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupPronouns"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.App.TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/tilSignupPronounsHint"
         app:endIconMode="clear_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -108,15 +109,15 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPronouns"
             android:layout_width="256dp"
-            android:layout_height="wrap_content"
-            android:hint="@string/tilSignupPronounsHint" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupEmail"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.App.TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/tilSignupEmailHint"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -128,18 +129,17 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
-
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:hint="@string/tilSignupEmailHint"
             android:inputType="textEmailAddress" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSignupPassword"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        style="@style/Widget.App.TextInputLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:hint="@string/tilSignupPasswordHint"
         app:endIconMode="password_toggle"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -150,12 +150,9 @@
         app:layout_constraintVertical_bias="0">
 
         <com.google.android.material.textfield.TextInputEditText
-
             android:id="@+id/etPassword"
-
             android:layout_width="256dp"
             android:layout_height="wrap_content"
-            android:hint="@string/tilSignupPasswordHint"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

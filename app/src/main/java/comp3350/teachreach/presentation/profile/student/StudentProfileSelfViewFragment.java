@@ -36,10 +36,9 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private void fillUpProfileDetails()
     {
-        View v = binding.getRoot();
-        tvName     = v.findViewById(R.id.tvNameField);
-        tvPronouns = v.findViewById(R.id.tvPronounsField);
-        tvMajor    = v.findViewById(R.id.tvMajorField);
+        tvName     = binding.tvNameField;
+        tvPronouns = binding.tvPronounsField;
+        tvMajor    = binding.tvMajorField;
 
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
@@ -48,7 +47,7 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private void setUpEditProfileButton()
     {
-        btnEditProfile = binding.getRoot().findViewById(R.id.fabEditProfile);
+        btnEditProfile = binding.fabEditProfile;
         btnEditProfile.setOnClickListener(view -> NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.actionToEditStudentProfileFragment));
@@ -56,9 +55,7 @@ public class StudentProfileSelfViewFragment extends Fragment
 
     private void setUpTopBarMenu()
     {
-        MaterialToolbar mtTopBar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
+        MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {

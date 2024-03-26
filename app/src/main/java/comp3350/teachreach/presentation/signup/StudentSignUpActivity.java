@@ -47,8 +47,6 @@ public class StudentSignUpActivity extends AppCompatActivity
 
         Button btnCreateProfile = findViewById(R.id.btnCreateProfile);
 
-        accountCreator = new AccountCreator();
-
         btnCreateProfile.setOnClickListener(v -> createProfile());
     }
 
@@ -64,6 +62,8 @@ public class StudentSignUpActivity extends AppCompatActivity
             tilEmail.setError(null);
             tilPassword.setError(null);
             tilUsername.setError(null);
+            accountCreator = new AccountCreator();
+
             IStudent student = accountCreator.createStudentAccount(email,
                                                                    password,
                                                                    username,

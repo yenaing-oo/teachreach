@@ -20,22 +20,20 @@ import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TeachReachTest
-{
+public class TeachReachTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
             = new ActivityScenarioRule<>(MainActivity.class);
 
-    // System test for login
+    //system test for login
     @Test
-    public void testSuccessfulLogin()
-    {
+    public void testSuccessfulLogin() {
         onView(withId(R.id.btnStudentLogin)).perform(click());
         onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student@email.com"), closeSoftKeyboard());
         onView(withId(R.id.etStudentLoginPassword)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
-        onView(withId(R.id.navigation_menu)).check(matches(isDisplayed()));
+        onView(withId(R.id.navigationMenu)).check(matches(isDisplayed()));
     }
 
     // System test for account creation
@@ -56,7 +54,6 @@ public class TeachReachTest
         onView(withId(R.id.btnCreateProfile)).perform(click());
 
         // Verify successful navigation post-account creation
-        onView(withId(R.id.navigation_menu)).check(matches(isDisplayed()));
+        onView(withId(R.id.navigationMenu)).check(matches(isDisplayed()));
     }
-
 }

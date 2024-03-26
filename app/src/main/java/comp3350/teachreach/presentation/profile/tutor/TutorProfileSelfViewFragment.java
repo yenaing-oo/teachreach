@@ -31,6 +31,8 @@ public class TutorProfileSelfViewFragment extends Fragment
 {
     private TutorProfileViewModel profileViewModel;
 
+    private FragmentTutorProfileSelfViewBinding binding;
+
     private IAccount             account;
     private ITutor               tutor;
     private ITutorProfileHandler profileHandler;
@@ -41,13 +43,13 @@ public class TutorProfileSelfViewFragment extends Fragment
     {
     }
 
-    private void fillUpProfileDetails(View view)
+    private void fillUpProfileDetails()
     {
-        TextView tvName     = view.findViewById(R.id.tvNameField);
-        TextView tvPronouns = view.findViewById(R.id.tvPronounsField);
-        TextView tvMajor    = view.findViewById(R.id.tvMajorField);
-        TextView tvPrice    = view.findViewById(R.id.tvRatingField);
-        TextView tvReviews  = view.findViewById(R.id.tvReviewsField);
+        TextView tvName     = binding.tvNameField;
+        TextView tvPronouns = binding.tvPronounsField;
+        TextView tvMajor    = binding.tvMajorField;
+        TextView tvPrice    = binding.tvRatingField;
+        TextView tvReviews  = binding.tvReviewsField;
 
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
@@ -61,17 +63,17 @@ public class TutorProfileSelfViewFragment extends Fragment
                                         profileHandler.getReviewCount()));
     }
 
-    private void setUpEditProfileButton(View view)
+    private void setUpEditProfileButton()
     {
-        Button btnEditProfile = view.findViewById(R.id.fabEditProfile);
+        Button btnEditProfile = binding.fabEditProfile;
         btnEditProfile.setOnClickListener(v -> NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.actionToEditTutorProfileFragment));
     }
 
-    private void setUpTopBarMenu(View view)
+    private void setUpTopBarMenu()
     {
-        MaterialToolbar mtTopBar = view.findViewById(R.id.topAppBar);
+        MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setOnMenuItemClickListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.tbAccountSettings) {
@@ -83,11 +85,11 @@ public class TutorProfileSelfViewFragment extends Fragment
         });
     }
 
-    private void setUpTutoredCourses(View view)
+    private void setUpTutoredCourses()
     {
-        Button btnAddCourse = view.findViewById(R.id.btnAddCourse);
+        Button btnAddCourse = binding.btnAddCourse;
 
-        RecyclerView recycler = view.findViewById(R.id.rvTutoredCourses);
+        RecyclerView recycler = binding.rvTutoredCourses;
 
         profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList());
 
@@ -113,12 +115,10 @@ public class TutorProfileSelfViewFragment extends Fragment
                 "Add Course"));
     }
 
-    private void setUpPreferredLocations(View view)
+    private void setUpPreferredLocations()
     {
-        Button       btnAddLocation = view.findViewById(R.id.btnAddLocation);
-        RecyclerView recycler
-                                    =
-                view.findViewById(R.id.rvPreferredLocations);
+        Button       btnAddLocation = binding.btnAddLocation;
+        RecyclerView recycler       = binding.rvPreferredLocations;
 
         profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations());
 
@@ -157,9 +157,10 @@ public class TutorProfileSelfViewFragment extends Fragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        return FragmentTutorProfileSelfViewBinding
-                .inflate(inflater, container, false)
-                .getRoot();
+        binding = FragmentTutorProfileSelfViewBinding.inflate(inflater,
+                                                              container,
+                                                              false);
+        return binding.getRoot();
     }
 
     @Override
@@ -175,10 +176,10 @@ public class TutorProfileSelfViewFragment extends Fragment
                     =
                 config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
-        fillUpProfileDetails(view);
-        setUpEditProfileButton(view);
-        setUpTopBarMenu(view);
-        setUpTutoredCourses(view);
-        setUpPreferredLocations(view);
+        fillUpProfileDetails();
+        setUpEditProfileButton();
+        setUpTopBarMenu();
+        setUpTutoredCourses();
+        setUpPreferredLocations();
     }
 }

@@ -50,6 +50,7 @@
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint="@string/tilLoginEmailHint"
                 app:endIconMode="clear_text"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -60,9 +61,9 @@
                 app:layout_constraintVertical_bias="0.1">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStudentLoginEmail"
                     android:layout_width="256dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/tilLoginEmailHint"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,6 +72,7 @@
                 style="@style/Widget.App.TextInputLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:hint="@string/tilLoginPasswordHint"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -81,9 +83,9 @@
                 app:layout_constraintVertical_bias="0.05">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etStudentLoginPassword"
                     android:layout_width="256dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/tilLoginPasswordHint"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 

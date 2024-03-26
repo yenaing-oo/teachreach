@@ -13,16 +13,18 @@ import com.google.android.material.navigation.NavigationBarView;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.databinding.ActivityNavigationStudentBinding;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class StudentHomeActivity extends AppCompatActivity
 {
-    private static final int               BACK_DELAY = 2000;
-    private              long              backPressedTime;
-    private              NavigationBarView navigationMenu;
-    private              NavController     navController;
-    private              TRViewModel       vm;
+    private static final int BACK_DELAY = 2000;
+    ActivityNavigationStudentBinding binding;
+    private long              backPressedTime;
+    private NavigationBarView navigationMenu;
+    private NavController     navController;
+    private TRViewModel       vm;
 
     private OnBackPressedCallback onBackPressedCallback;
 
@@ -30,9 +32,11 @@ public class StudentHomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        vm = new ViewModelProvider(this).get(TRViewModel.class);
-        setContentView(R.layout.activity_navigation_student);
-        navigationMenu = findViewById(R.id.navigation_menu);
+        binding = ActivityNavigationStudentBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        vm             = new ViewModelProvider(this).get(TRViewModel.class);
+        navigationMenu = (NavigationBarView) binding.navigationMenu;
         NavHostFragment navHostFragment
                 =
                 (NavHostFragment) getSupportFragmentManager().findFragmentById(
@@ -62,11 +66,42 @@ public class StudentHomeActivity extends AppCompatActivity
             } else if (itemId == R.id.NavBarSearch) {
                 navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.NavBarProfile) {
-                navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
+                navController.navigate(R.id.studentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
             }
             return true;
         });
+        navController.addOnDestinationChangedListener((controller, dest,
+                                                       bundle) -> {
+            if (dest.getId() == R.id.studentProfileSelfViewFragment) {
+                changeNavigationMenu(NavDest.profile);
+            }
+            if (dest.getId() == R.id.searchFragment) {
+                changeNavigationMenu(NavDest.search);
+            }
+        });
+    }
+
+    private void changeNavigationMenu(NavDest n)
+    {
+        switch (n) {
+            case sessions -> navigationMenu
+                    .getMenu()
+                    .findItem(R.id.NavBarSessions)
+                    .setChecked(true);
+            case search -> navigationMenu
+                    .getMenu()
+                    .findItem(R.id.NavBarSearch)
+                    .setChecked(true);
+            case profile -> navigationMenu
+                    .getMenu()
+                    .findItem(R.id.NavBarProfile)
+                    .setChecked(true);
+            case chat -> navigationMenu
+                    .getMenu()
+                    .findItem(R.id.NavBarChats)
+                    .setChecked(true);
+        }
     }
 
     private void setUpBackButtonHandler()
@@ -94,5 +129,10 @@ public class StudentHomeActivity extends AppCompatActivity
                     .show();
         }
         backPressedTime = System.currentTimeMillis();
+    }
+
+    private enum NavDest
+    {
+        sessions, search, profile, chat
     }
 }

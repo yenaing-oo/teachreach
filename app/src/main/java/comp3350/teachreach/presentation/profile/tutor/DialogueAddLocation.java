@@ -2,7 +2,6 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
-import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.DialogAddLocationBinding;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
@@ -37,9 +35,7 @@ public class DialogueAddLocation extends AppCompatDialogFragment
                 TRViewModel.class);
         TutorProfileViewModel profileViewModel = new ViewModelProvider(
                 parentActivity).get(TutorProfileViewModel.class);
-        View bindingRoot = binding.getRoot();
-        TextInputLayout tilAddLocation
-                = bindingRoot.findViewById(R.id.tilAddLocation);
+        TextInputLayout tilAddLocation = binding.tilAddLocation;
         EditText etLocation = tilAddLocation.getEditText();
 
         return builder

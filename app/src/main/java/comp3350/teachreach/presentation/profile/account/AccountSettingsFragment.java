@@ -56,9 +56,8 @@ public class AccountSettingsFragment extends Fragment
 
     private void setUpTopBar()
     {
-        MaterialToolbar materialToolbar = binding
-                .getRoot()
-                .findViewById(R.id.topAppBar);
+        MaterialToolbar materialToolbar = binding.topAppBar;
+
         NavController navController = NavHostFragment.findNavController(this);
         View.OnClickListener listener = isTutor ?
                                         v -> navController.navigate(R.id.actionToTutorProfileSelfViewFragment) :
@@ -68,16 +67,10 @@ public class AccountSettingsFragment extends Fragment
 
     private void setUpButtons()
     {
-        TextView tvEmailField = binding
-                .getRoot()
-                .findViewById(R.id.tvEmailField);
+        TextView tvEmailField = binding.tvEmailField;
         tvEmailField.setText(account.getAccountEmail());
-        Button btnChangeEmail = binding
-                .getRoot()
-                .findViewById(R.id.btnChangeEmail);
-        Button btnChangePassword = binding
-                .getRoot()
-                .findViewById(R.id.btnChangePassword);
+        Button btnChangeEmail    = binding.btnChangeEmail;
+        Button btnChangePassword = binding.btnChangePassword;
         btnChangeEmail.setOnClickListener(v -> NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.actionToFragmentChangingEmail));
