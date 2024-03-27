@@ -1,13 +1,11 @@
 package comp3350.teachreach.presentation.communication.IndividualChat;
 
 import android.os.Bundle;
-import android.security.identity.InvalidRequestMessageException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
