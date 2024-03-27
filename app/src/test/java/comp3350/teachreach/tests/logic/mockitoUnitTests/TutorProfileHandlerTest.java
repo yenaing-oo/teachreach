@@ -4,10 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -29,16 +31,18 @@ public class TutorProfileHandlerTest {
     private AccessTutors accessTutors;
     @Mock
     private AccessTutoredCourses accessTutoredCourses;
+
     @Mock
     private AccessTutorLocation accessTutorLocation;
+
     @Mock
     private AccessCourses accessCourses;
 
     @InjectMocks
-    TutorProfileHandler tutorProfileHandler;
+    private TutorProfileHandler tutorProfileHandler;
 
-    @Test
-    public void getCourseCodeListTest() {
+    @Before
+    public void setup() {
         List<ICourse> returns = new ArrayList<>();
 
         returns.add(new Course("COMP 2080",
@@ -50,26 +54,19 @@ public class TutorProfileHandlerTest {
         returns.add(new Course("COMP 2150",
                 "Object Orientation"));
 
-        when(accessTutoredCourses.getTutoredCoursesByTutorID(anyInt())).thenReturn(returns);
 
+        when(accessTutoredCourses.getTutoredCoursesByTutorID(anyInt())).thenReturn(returns);
+        tutorProfileHandler = new TutorProfileHandler(accessTutors, accessTutoredCourses, accessCourses, accessTutorLocation);
+        MockitoAnnotations.openMocks(this);
+    }
+    @Test
+    public void getCourseCodeListTest() {
         List<String> results = tutorProfileHandler.getCourseCodeList(new Tutor(1,1));
 
         assertEquals("Issues with getCourseCodeList", 4, results.size());
     }
     @Test
     public void getCourseDescriptionListTest() {
-        List<ICourse> returns = new ArrayList<>();
-
-        returns.add(new Course("COMP 2080",
-                 "Analysis of Algorithms"));
-        returns.add(new Course("COMP 1010",
-                 "Introduction to Computer Science"));
-        returns.add(new Course("COMP 1012",
-                 "Introduction to Computer Science for Engineers"));
-        returns.add(new Course("COMP 2150",
-                 "Object Orientation"));
-        when(accessTutoredCourses.getTutoredCoursesByTutorID(anyInt())).thenReturn(returns);
-
         List<String> results = tutorProfileHandler.getCourseCodeList(new Tutor(1,1));
 
         assertEquals("Issues with getCourseDescriptionList", 4, results.size());

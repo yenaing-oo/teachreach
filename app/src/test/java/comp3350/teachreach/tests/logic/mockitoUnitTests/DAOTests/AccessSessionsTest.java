@@ -6,10 +6,12 @@ import static comp3350.teachreach.objects.SessionStatus.ACCEPTED;
 import static comp3350.teachreach.objects.SessionStatus.PENDING;
 import static comp3350.teachreach.objects.SessionStatus.REJECTED;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.threeten.bp.LocalDateTime;
 
@@ -34,8 +36,8 @@ public class AccessSessionsTest {
     @InjectMocks
     private AccessSessions accessSessions;
 
-    @Test
-    public void getSessionsTest() {
+    @Before
+    public void init() {
         Map<Integer, ISession> returns = new HashMap<>();
         returns.put(1, new Session(1, 1,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
         returns.put(2, new Session(2, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
@@ -51,6 +53,12 @@ public class AccessSessionsTest {
         returns.put(12, new Session(12, 12,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", REJECTED));
         when(sessionPersistence.getSessions()).thenReturn(returns);
 
+        accessSessions = new AccessSessions(sessionPersistence);
+        MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void getSessionsTest() {
         List<ISession> result = accessSessions.getSessions(new Tutor(1, 1));
 
         assertEquals("Issue with getSessions for tutor", 6, result.size());
@@ -67,20 +75,6 @@ public class AccessSessionsTest {
 
     @Test
     public void getPendingSessionsTest() {
-        Map<Integer, ISession> returns = new HashMap<>();
-        returns.put(1, new Session(1, 1,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(2, new Session(2, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(3, new Session(3, 3,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(4, new Session(4, 4,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(5, new Session(5, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Library", REJECTED));
-        returns.put(6, new Session(6, 6,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Library", REJECTED));
-        returns.put(7, new Session(7, 7,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(8, new Session(8, 2,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(9, new Session(9, 9,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(10, new Session(10, 10,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(11, new Session(11, 11,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", REJECTED));
-        returns.put(12, new Session(12, 12,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", REJECTED));
-        when(sessionPersistence.getSessions()).thenReturn(returns);
 
         List<ISession> result = accessSessions.getPendingSessions(new Tutor(1, 1));
 
@@ -98,20 +92,6 @@ public class AccessSessionsTest {
 
     @Test
     public void getAcceptedSessionsTest() {
-        Map<Integer, ISession> returns = new HashMap<>();
-        returns.put(1, new Session(1, 1,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(2, new Session(2, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(3, new Session(3, 3,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(4, new Session(4, 4,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(5, new Session(5, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Library", REJECTED));
-        returns.put(6, new Session(6, 6,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Library", REJECTED));
-        returns.put(7, new Session(7, 7,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(8, new Session(8, 2,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(9, new Session(9, 9,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(10, new Session(10, 10,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(11, new Session(11, 11,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", REJECTED));
-        returns.put(12, new Session(12, 12,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", REJECTED));
-        when(sessionPersistence.getSessions()).thenReturn(returns);
 
         List<ISession> result = accessSessions.getAcceptedSessions(new Tutor(1, 1));
 
@@ -129,20 +109,6 @@ public class AccessSessionsTest {
 
     @Test
     public void getRejectedSessionsTest() {
-        Map<Integer, ISession> returns = new HashMap<>();
-        returns.put(1, new Session(1, 1,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(2, new Session(2, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(3, new Session(3, 3,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(4, new Session(4, 4,1, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(5, new Session(5, 2,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Library", REJECTED));
-        returns.put(6, new Session(6, 6,1, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Library", REJECTED));
-        returns.put(7, new Session(7, 7,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(8, new Session(8, 2,4, new TimeSlice(LocalDateTime.of(2100, 12, 1, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", PENDING));
-        returns.put(9, new Session(9, 9,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 12, 0 ), LocalDateTime.of(2100, 1, 2, 13, 0)), 15, "Library", ACCEPTED));
-        returns.put(10, new Session(10, 10,5, new TimeSlice(LocalDateTime.of(2100, 12, 2, 10, 0 ), LocalDateTime.of(2100, 1, 2, 11, 0)), 15, "Library", ACCEPTED));
-        returns.put(11, new Session(11, 11,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 12, 0 ), LocalDateTime.of(2100, 1, 1, 13, 0)), 15, "Coffee Shop", REJECTED));
-        returns.put(12, new Session(12, 12,6, new TimeSlice(LocalDateTime.of(2100, 12, 3, 10, 0 ), LocalDateTime.of(2100, 1, 1, 11, 0)), 15, "Coffee Shop", REJECTED));
-        when(sessionPersistence.getSessions()).thenReturn(returns);
 
         List<ISession> result = accessSessions.getRejectedSessions(new Tutor(1, 1));
 

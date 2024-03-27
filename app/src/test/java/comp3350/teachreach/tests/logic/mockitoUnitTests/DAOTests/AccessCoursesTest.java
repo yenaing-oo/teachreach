@@ -3,14 +3,18 @@ package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,28 +30,42 @@ public class AccessCoursesTest
 {
 
     @Mock
-    private static ICoursePersistence coursePersistence;
+    private ICoursePersistence coursePersistence;
 
     @InjectMocks
     private AccessCourses accessCourses;
 
+
+    @Before
+    public void init() {
+        Map<String, ICourse> returns = new HashMap<>();
+        returns.put("COMP 2080",
+                new Course("COMP 2080", "Analysis of Algorithms"));
+        returns.put("COMP 1010",
+                new Course("COMP 1010",
+                        "Introduction to Computer Science"));
+        returns.put("COMP 1012",
+                new Course("COMP 1012",
+                        "Introduction to Computer Science " +
+                                "for Engineers"));
+        returns.put("COMP 2150", new Course("COMP 2150", "Object Orientation"));
+        returns.put("COMP 3380",
+                new Course("COMP 3380", "Databases Concepts and Usage"));
+        doReturn(returns).when(coursePersistence).getCourses();
+
+        List<ICourse> results = new ArrayList<>();
+        results.add(new Course("COMP 2150", "Object Orientation"));
+        when(coursePersistence.getCoursesByName("Object Orientation")).thenReturn(results);
+
+        accessCourses = new AccessCourses(coursePersistence);
+        MockitoAnnotations.openMocks(this);
+
+
+    }
     @Test
     public void getCoursesTest()
     {
-        Map<String, ICourse> returns = new HashMap<>();
-        returns.put("COMP 2080",
-                    new Course("COMP 2080", "Analysis of Algorithms"));
-        returns.put("COMP 1010",
-                    new Course("COMP 1010",
-                               "Introduction to Computer Science"));
-        returns.put("COMP 1012",
-                    new Course("COMP 1012",
-                               "Introduction to Computer Science " +
-                               "for Engineers"));
-        returns.put("COMP 2150", new Course("COMP 2150", "Object Orientation"));
-        returns.put("COMP 3380",
-                    new Course("COMP 3380", "Databases Concepts and Usage"));
-        when(coursePersistence.getCourses()).thenReturn(returns);
+
 
         Map<String, ICourse> result = accessCourses.getCourses();
 
@@ -80,28 +98,14 @@ public class AccessCoursesTest
     }
 
     @Test
-    public void getCourseByCodeTest()
+    public void getCoursesByCodeTest()
     {
-        Map<String, ICourse> returns = new HashMap<>();
-        returns.put("COMP 2080",
-                    new Course("COMP 2080", "Analysis of Algorithms"));
-        returns.put("COMP 1010",
-                    new Course("COMP 1010",
-                               "Introduction to Computer Science"));
-        returns.put("COMP 1012",
-                    new Course("COMP 1012",
-                               "Introduction to Computer Science " +
-                               "for Engineers"));
-        returns.put("COMP 2150", new Course("COMP 2150", "Object Orientation"));
-        returns.put("COMP 3380",
-                    new Course("COMP 3380", "Databases Concepts and Usage"));
-        when(coursePersistence.getCourses()).thenReturn(returns);
 
-        ICourse result = accessCourses.getCourseByCode("COMP 1012");
+        List<ICourse> result = accessCourses.getCoursesByCode("COMP 1012");
 
         assertEquals("Issue with getCourseByCode result",
                 "Introduction to Computer Science for Engineers",
-                     result.getCourseName());
+                     result.get(0).getCourseName());
         assertThrows("DataAccessException expected from getCourseByCode",
                      DataAccessException.class,
                      () -> accessCourses.getCourseByCode("HelloWorld"));
@@ -110,27 +114,13 @@ public class AccessCoursesTest
     @Test
     public void getCoursesByNameTest()
     {
-        Map<String, ICourse> returns = new HashMap<>();
-        returns.put("COMP 2080",
-                    new Course("COMP 2080", "Analysis of Algorithms"));
-        returns.put("COMP 1010",
-                    new Course("COMP 1010",
-                               "Introduction to Computer Science"));
-        returns.put("COMP 1012",
-                    new Course("COMP 1012",
-                               "Introduction to Computer Science " +
-                               "for Engineers"));
-        returns.put("COMP 2150", new Course("COMP 2150", "Object Orientation"));
-        returns.put("COMP 3380",
-                    new Course("COMP 3380", "Databases Concepts and Usage"));
-        when(coursePersistence.getCourses()).thenReturn(returns);
 
         List<ICourse> result = accessCourses.getCoursesByName(
                 "Object Orientation");
 
         assertEquals("Issue with getCoursesByName result",
                 "COMP 2150",
-                     result.get(0).getCourseName());
+                     result.get(0).getCourseCode());
 
         assertEquals("Unexpected result from getCoursesByName", 0,
                      accessCourses.getCoursesByName("HelloWorld").size());

@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.HashMap;
@@ -24,24 +26,30 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 @RunWith(MockitoJUnitRunner.class)
 public class AccessTutorsTest {
 
-    @Mock
-    private ITutorPersistence tutorPersistence;
 
     @InjectMocks
     private AccessTutors accessTutors;
+    @Mock
+    private static ITutorPersistence tutorPersistence;
 
-    @Test
-    public void getTutorsTest() {
-        Map<Integer, ITutor> returns = new HashMap<>();
-
+    @Before
+    public void init() {
+        Map<Integer, ITutor> returns;
+        returns = new HashMap<>();
         returns.put(1, new Tutor(1, 6));
         returns.put(2, new Tutor(2, 7));
         returns.put(3, new Tutor(3, 8));
         returns.put(4, new Tutor(4, 9));
         returns.put(5, new Tutor(5, 10));
+        doReturn(returns).when(tutorPersistence).getTutors();
+        //when(tutorPersistence.getTutors()).thenReturn(returns);
 
-        when(tutorPersistence.getTutors()).thenReturn(returns);
+        accessTutors = new AccessTutors(tutorPersistence);
+        MockitoAnnotations.openMocks(this);
 
+    }
+    @Test
+    public void getTutorsTest() {
         Map<Integer, ITutor> results = accessTutors.getTutors();
 
         try {
@@ -61,16 +69,6 @@ public class AccessTutorsTest {
 
     @Test
     public void getTutorByAccountIDTest() {
-        Map<Integer, ITutor> returns = new HashMap<>();
-
-        returns.put(1, new Tutor(1, 6));
-        returns.put(2, new Tutor(2, 7));
-        returns.put(3, new Tutor(3, 8));
-        returns.put(4, new Tutor(4, 9));
-        returns.put(5, new Tutor(5, 10));
-
-        when(tutorPersistence.getTutors()).thenReturn(returns);
-
         ITutor result = accessTutors.getTutorByAccountID(8);
 
         assertEquals("Incorrect result from getTutorByAccountID", 3, result.getTutorID());
@@ -80,17 +78,8 @@ public class AccessTutorsTest {
 
     @Test
     public void getTutorByTutorIDTest() {
-        Map<Integer, ITutor> returns = new HashMap<>();
-
-        returns.put(1, new Tutor(1, 6));
-        returns.put(2, new Tutor(2, 7));
-        returns.put(3, new Tutor(3, 8));
-        returns.put(4, new Tutor(4, 9));
-        returns.put(5, new Tutor(5, 10));
-
-        when(tutorPersistence.getTutors()).thenReturn(returns);
-
         ITutor result = accessTutors.getTutorByTutorID(3);
+
 
         assertEquals("Incorrect result from getTutorByAccountID", 8, result.getAccountID());
 

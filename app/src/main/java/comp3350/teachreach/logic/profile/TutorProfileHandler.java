@@ -3,10 +3,6 @@ package comp3350.teachreach.logic.profile;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import comp3350.teachreach.data.interfaces.ICoursePersistence;
-import comp3350.teachreach.data.interfaces.ITutorLocationPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.data.interfaces.ITutoredCoursesPersistence;
 import comp3350.teachreach.logic.DAOs.AccessCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
@@ -43,19 +39,6 @@ class TutorProfileHandler implements ITutorProfileHandler
         this.accessTutoredCourses = accessTutoredCourses;
         this.accessCourses        = accessCourses;
         this.accessTutorLocation  = accessTutorLocation;
-    }
-
-
-    public
-    TutorProfileHandler(ITutorPersistence tutorPersistence,
-                        ICoursePersistence coursePersistence,
-                        ITutoredCoursesPersistence tutoredCoursesPersistence,
-                        ITutorLocationPersistence locationPersistence)
-    {
-        accessTutors         = new AccessTutors(tutorPersistence);
-        accessTutoredCourses = new AccessTutoredCourses(tutoredCoursesPersistence);
-        accessTutorLocation  = new AccessTutorLocation(locationPersistence);
-        accessCourses        = new AccessCourses(coursePersistence);
     }
 
     @Override

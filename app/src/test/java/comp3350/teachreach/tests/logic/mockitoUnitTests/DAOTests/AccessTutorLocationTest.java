@@ -4,10 +4,12 @@ import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -27,8 +29,8 @@ public class AccessTutorLocationTest {
     @InjectMocks
     private AccessTutorLocation accessTutorLocation;
 
-    @Test
-    public void getTutorLocationByTutorIDTest() {
+    @Before
+    public void init() {
         List<String> returns = new ArrayList<>();
 
         returns.add("Library");
@@ -37,6 +39,12 @@ public class AccessTutorLocationTest {
 
         when(tutorLocationPersistence.getTutorLocationByTutorID(1)).thenReturn(returns);
         when(tutorLocationPersistence.getTutorLocationByTutorID(2)).thenThrow(PersistenceException.class);
+
+        accessTutorLocation = new AccessTutorLocation(tutorLocationPersistence);
+        MockitoAnnotations.openMocks(this);
+    }
+    @Test
+    public void getTutorLocationByTutorIDTest() {
 
         List<String> results = accessTutorLocation.getTutorLocationByTutorID(1);
 
