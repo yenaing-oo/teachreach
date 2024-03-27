@@ -2,8 +2,6 @@ package comp3350.teachreach.logic.session;
 
 import java.util.List;
 
-import comp3350.teachreach.data.interfaces.ISessionPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
 import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
@@ -29,12 +27,12 @@ class SessionHandler implements ISessionHandler {
     }
 
     public SessionHandler(ITutorAvailabilityManager tutorAvailabilityManager,
-                          ISessionPersistence sessions,
-                          ITutorPersistence tutors
+                          AccessSessions accessSessions,
+                          AccessTutors accessTutors
     ) {
-        this.accessSessions = new AccessSessions(sessions);
-        this.accessTutors = new AccessTutors(tutors);
         this.tutorAvailabilityManager = tutorAvailabilityManager;
+        this.accessSessions = accessSessions;
+        this.accessTutors = accessTutors;
     }
 
     public ISession bookSession(ISession session) throws TutorAvailabilityManagerException {
