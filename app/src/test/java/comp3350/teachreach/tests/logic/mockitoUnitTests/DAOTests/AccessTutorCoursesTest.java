@@ -2,11 +2,15 @@ package comp3350.teachreach.tests.logic.mockitoUnitTests.DAOTests;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +22,17 @@ import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.objects.Course;
 import comp3350.teachreach.objects.interfaces.ICourse;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AccessTutorCoursesTest {
 
     @Mock
-    ITutoredCoursesPersistence tutoredCoursesPersistence;
+    private ITutoredCoursesPersistence tutoredCoursesPersistence;
 
     @InjectMocks
-    AccessTutoredCourses accessTutoredCourses;
+    private AccessTutoredCourses accessTutoredCourses;
 
-    @Test
-    public void getTutoredCoursesByTutorIDTest() {
+    @Before
+    public void init() {
         List<ICourse> returns = new ArrayList<>();
 
         returns.add(new Course("COMP1012", "Introduction to Computer Science for Engineers"));
@@ -36,10 +41,14 @@ public class AccessTutorCoursesTest {
         when(tutoredCoursesPersistence.getTutorCourseByTutorID(1)).thenReturn(returns);
         when(tutoredCoursesPersistence.getTutorCourseByTutorID(2)).thenThrow(new PersistenceException("Error in test, intentional"));
 
-        List<ICourse> results = accessTutoredCourses.getTutoredCoursesByTutorID(1);
+        MockitoAnnotations.openMocks(this);
+    }
+    @Test
+    public void getTutoredCoursesByTutorIDTest() {
+List<ICourse> results = accessTutoredCourses.getTutoredCoursesByTutorID(1);
 
-        assertEquals("Error in results from getTutoredCoursesByTutorID", results.size(), 2);
-        assertEquals("Error in results from getTutoredCoursesByTutorID", results.get(0).getCourseCode(), "COMP 1012");
+        assertEquals("Error in results from getTutoredCoursesByTutorID", 2, results.size());
+        assertEquals("Error in results from getTutoredCoursesByTutorID", "COMP1012", results.get(0).getCourseCode());
 
         assertThrows("Expected DataAccessException expected but was not thrown", DataAccessException.class, () -> accessTutoredCourses.getTutoredCoursesByTutorID(2));
 
