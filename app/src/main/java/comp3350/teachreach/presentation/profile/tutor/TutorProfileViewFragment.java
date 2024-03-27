@@ -53,6 +53,7 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
+import comp3350.teachreach.presentation.communication.Groups.GroupModel;
 import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
@@ -74,6 +75,7 @@ class TutorProfileViewFragment extends Fragment
 
 
     private MessageModel messageModel;
+    private GroupModel groupModel;
 
 
 
@@ -95,6 +97,8 @@ class TutorProfileViewFragment extends Fragment
         bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
         messageModel = new ViewModelProvider(requireActivity()).get(
                 MessageModel.class);
+        groupModel = new ViewModelProvider(requireActivity()).get(
+                GroupModel.class);
     }
 
     @Override
@@ -250,21 +254,23 @@ class TutorProfileViewFragment extends Fragment
         AccessAccounts accessAccounts = new AccessAccounts();
 
         messageModel.setOtherUser( accessAccounts.getAccountByAccountID( accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
-
+        groupModel.addAccountToContactList(accessAccounts.getAccountByAccountID( accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
                 //tutorProfileViewModel.getTutor().getValue().getTutorID();
                 //this.tutor.getTutorID();
 
         floatingButton.setError(null);
         try {
-            int groupID = messageHandler.createGroup(studentID, tutorID);
             MessageModel messageModel
                     =
                     new ViewModelProvider(requireActivity()).get(MessageModel.class);
-            if(groupID>0) {
-                messageModel.setGroupID(groupID);
+            int groupID = messageHandler.searchGroupByIDs(studentID,tutorID);
+            if(groupID<0) {
+                groupID = messageHandler.createGroup(studentID, tutorID);
             }
+                    messageModel.setGroupID(groupID);
 
-            messageModel.setMessageByID(messageHandler.chatHistoryOfGroupV1(groupID));
+
+            //essageModel.setMessageByID(messageHandler.chatHistoryOfGroupV1(groupID));
             messageModel.setMessageList(messageHandler.retrieveAllMessageByGroupID(groupID));   //try it
 
             //trViewModel.setUsers(this.tutorAccount);

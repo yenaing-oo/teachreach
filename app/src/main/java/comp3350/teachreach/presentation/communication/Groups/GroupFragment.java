@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDirections;
@@ -28,10 +29,14 @@ import java.util.Objects;
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentGroupBinding;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessStudents;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
@@ -48,10 +53,9 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
     private List<IAccount>       users;
     private Fragment             chatGroupView;
 
-
-
     private int          accountID;
     private RecyclerView recyclerView;
+    private GroupModel gm;
 
     public GroupFragment()
     {
@@ -66,17 +70,19 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
                 TRViewModel.class);
         mm              = new ViewModelProvider(requireActivity()).get(
                 MessageModel.class);
+        gm              = new ViewModelProvider(requireActivity()).get(
+            GroupModel.class);
         contactAccounts = messageHandler.retrieveAllChatAccountsByAccountID(
                 Objects
                         .requireNonNull(vm.getAccount().getValue())
                         .getAccountID());
-        //        LiveData<IAccount> accountLiveData = vm.getAccount();
-        //        accountLiveData.observe(this, account -> {
-        //            // Extract the int value from the IAccount object
-        //            accountID = account.getAccountID();});
-        //        users = messageHandler.retrieveAllChatAccountsByAccountID
-        //        (accountID);
-        //users = vm.getUsers();
+                LiveData<IAccount> accountLiveData = vm.getAccount();
+                accountLiveData.observe(this, account -> {
+                    // Extract the int value from the IAccount object
+                    accountID = account.getAccountID();});
+                users = messageHandler.retrieveAllChatAccountsByAccountID
+                (accountID);
+        users = gm.getContactList().getValue();
 
     }
 
@@ -98,57 +104,72 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView(recyclerView);
 
-        //        vm.getUsers().observe(getViewLifecycleOwner(), new
-        //        Observer<List<IAccount>>() {
-        //            @Override
-        //            public void onChanged(List<IAccount> userList) {
-        //                // Update the RecyclerView adapter with the new
-        //                list of users
-        //                UsersAdapter usersAdapter = new UsersAdapter
-        //                (userList);
-        //                recyclerView.setAdapter(usersAdapter);
-        //            }
-        //        });
+                gm.getContactList().observe(getViewLifecycleOwner(), new
+                Observer<List<IAccount>>() {
+                    @Override
+                    public void onChanged(List<IAccount> userList) {
+                        // Update the RecyclerView adapter with the new
+                        //list of users
+                        contactAccounts = gm.getContactList().getValue();
+                        setUpRecyclerView(recyclerView);
+                    }
+                });
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView)
     {
-        contactAccounts =
+        contactAccounts = //gm.getContactList().getValue();
                 messageHandler.retrieveAllChatAccountsByAccountID(
                         Objects
                                 .requireNonNull(vm.getAccount().getValue())
                                 .getAccountID());
+
         //        vm.setUsers(contactAccounts);
         UsersAdapter usersAdapter = new UsersAdapter(contactAccounts,this );
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
+
     @Override
     public void onItemClicked(IAccount account) {
         int tutorID, studentID;
+        assert(account != null);
+        assert (account.getAccountID()>0);
         // Step 1: Get the Account ID
-        if (vm.getIsTutor().getValue()) {
+
+        if (Boolean.TRUE.equals(vm.getIsTutor().getValue())) {
             tutorID = vm.getTutor().getValue().getTutorID();
-            studentID = account.getStudentID();
+            AccessStudents accessStudents = new AccessStudents();
+            IStudent student = accessStudents.getStudentByAccountID(account.getAccountID());
+            studentID = student.getStudentID();
             mm.setOtherUser(account);
+            assert (studentID>0);
+
+            assert (tutorID>0);
+
         } else {
             studentID = vm.getStudent().getValue().getStudentID();
-            tutorID = account.getTutorID();
+            AccessTutors accessTutors = new AccessTutors();
+            ITutor tutor = accessTutors.getTutorByAccountID(account.getAccountID());
+            tutorID = tutor.getTutorID();
             mm.setOtherUser(account);
+            assert (studentID>0);
 
+            assert (tutorID>0);
         }
 
         //account.getAccountID();
 
+
         // Step 2: Retrieve Group ID using the Account ID
         int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
-
+        assert(groupID>0);
         // Step 3: Retrieve Message History using the Group ID
         List<IMessage> messageHistory = messageHandler.retrieveAllMessageByGroupID(groupID);
-        Map<Integer, Map<Timestamp, String>> messageHistoryV1 = messageHandler.chatHistoryOfGroupV1(groupID);
+        //Map<Integer, Map<Timestamp, String>> messageHistoryV1 = messageHandler.chatHistoryOfGroupV1(groupID);
         mm.setGroupID(groupID);
-        mm.setMessageByID(messageHistoryV1);
+        //mm.setMessageByID(messageHistoryV1);
         mm.setMessageList(messageHistory);
 
         // Step 4: Pass necessary data to Individual Chat Fragment

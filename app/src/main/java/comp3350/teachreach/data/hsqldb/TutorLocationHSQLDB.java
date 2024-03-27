@@ -43,7 +43,7 @@ public class TutorLocationHSQLDB implements ITutorLocationPersistence
         final List<String> tutorLocation = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    "SELECT * FROM tutor_locations WHERE tutor_id = ?");
+                    "SELECT * FROM TUTOR_LOCATIONS WHERE tutor_id = ?");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {

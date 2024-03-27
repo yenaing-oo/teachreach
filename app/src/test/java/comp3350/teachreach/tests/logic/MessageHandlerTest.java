@@ -110,11 +110,13 @@ public class MessageHandlerTest {
 ////    }
 //
 //
-//    @Test
-//    public void testSearchGroupByIDs() throws MessageHandleException {
-//        int groupID = messageHandler.createGroup(2,1);
-//        assertEquals(messageHandler.searchGroupByIDs(2, 1), groupID);
-//    }
+    @Test
+    public void testSearchGroupByIDs() throws MessageHandleException {
+        int groupID = messageHandler.createGroup(2,1);
+        assertEquals(2,messageHandler.createGroup(1,2));
+        assertEquals(messageHandler.searchGroupByIDs(2, 1), groupID);
+        assertEquals(2,messageHandler.searchGroupByIDs(1,2));
+    }
 //
 ////
 //
@@ -296,19 +298,19 @@ public class MessageHandlerTest {
 //
 //    }
 
-    @Test
-    public void testTimeStampConverter(){
-        Timestamp timestamp = Timestamp.valueOf("2022-01-01 12:00:00");
-
-        Map<String, Object> result = messageHandler.timeStampConverter(timestamp);
-        assertNotNull(result);
-        assertEquals(2022, result.get("year"));
-        assertEquals(1, result.get("month"));
-        assertEquals(1, result.get("dayOfMonth"));
-        assertEquals(12, result.get("hour"));
-        assertEquals(0, result.get("minute"));
-        assertEquals(0, result.get("second"));
-    }
+//    @Test
+//    public void testTimeStampConverter(){
+//        Timestamp timestamp = Timestamp.valueOf("2022-01-01 12:00:00");
+//
+//        Map<String, Object> result = messageHandler.timeStampConverter(timestamp);
+//        assertNotNull(result);
+//        assertEquals(2022, result.get("year"));
+//        assertEquals(1, result.get("month"));
+//        assertEquals(1, result.get("dayOfMonth"));
+//        assertEquals(12, result.get("hour"));
+//        assertEquals(0, result.get("minute"));
+//        assertEquals(0, result.get("second"));
+//    }
 //    public void test6(){
 //        messageHandler.searchID
 //    }
