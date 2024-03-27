@@ -35,10 +35,6 @@ public class TutorAvailabilityHSQLDB implements ITutorAvailabilityPersistence
                 dbPath), "SA", "");
     }
 
-    //TUTOR_ID INTEGER NOT NULL, START_DATE_TIME TIMESTAMP WITH TIME ZONE NOT
-    // NULL, END_DATE_TIME TIMESTAMP WITH TIME ZONE NOT NULL, CONSTRAINT
-    // TA_PK PRIMARY KEY(TUTOR_ID, START_DATE_TIME, END_DATE_TIME),
-    // CONSTRAINT TA_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID))
     private TimeSlice fromResultSet(final ResultSet rs) throws SQLException
     {
         final LocalDateTime startDateTime

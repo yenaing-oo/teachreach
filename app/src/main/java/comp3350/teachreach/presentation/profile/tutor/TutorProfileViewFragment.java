@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
@@ -227,8 +228,7 @@ class TutorProfileViewFragment extends Fragment {
                 groupID = messageHandler.createGroup(studentID, tutorID);
             }
             messageModel.setGroupID(groupID);
-            messageModel.setMessageList(
-                    messageHandler.retrieveAllMessageByGroupID(groupID));   //try it
+            messageModel.setMessageList(messageHandler.retrieveAllMessageByGroupID(groupID));
 
         } catch (final Exception e) {
             floatingButton.setError(e.getMessage());

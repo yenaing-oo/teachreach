@@ -108,21 +108,26 @@ public class PaymentFragment extends Fragment {
             IStudent                  student             = bookingViewModel.getStudent()
                                                                             .getValue();
             ITutor                    tutor               = bookingViewModel.getTutor().getValue();
-            ITimeSlice                sessionTime         = bookingViewModel.getSessionTime()
-                                                                            .getValue();
-            String                    location            = bookingViewModel.getSessionLocation()
-                                                                            .getValue();
-            sessionHandler.bookSession(
-                    new Session(student.getStudentID(), tutor.getTutorID(), sessionTime, grandTotal,
-                                location));
-            AlertDialog doneDialog = makeDoneDialog("Congratulations!", "Booking request has been" +
-                    " sent to your tutor!", "View My Sessions", (dialog, which) -> {
-                NavHostFragment.findNavController(requireParentFragment().requireParentFragment())
-                               .navigate(R.id.sessionFragment);
-            }, "Done", (dialog, which) -> dialog.dismiss());
-            doneDialog.setOnDismissListener(dialog -> NavHostFragment.findNavController(this)
-                                                                     .navigate(
-                                                                             R.id.actionToTutorProfileViewFragment));
+            ITimeSlice                sessionTime         = bookingViewModel.getSessionTime().getValue();
+            String                    location            = bookingViewModel.getSessionLocation().getValue();
+            sessionHandler.bookSession(new Session(student.getStudentID(),
+                                                   tutor.getTutorID(),
+                                                   sessionTime,
+                                                   grandTotal,
+                                                   location));
+            AlertDialog doneDialog = makeDoneDialog("Congratulations!",
+                                                    "Booking request has been" + " sent to your tutor!",
+                                                    "View My Sessions",
+                                                    (dialog, which) -> {
+                                                        NavHostFragment
+                                                                .findNavController(requireParentFragment().requireParentFragment())
+                                                                .navigate(R.id.actionToStudentProfileSelfViewFragment);
+                                                    },
+                                                    "Done",
+                                                    (dialog, which) -> dialog.dismiss());
+            doneDialog.setOnDismissListener(dialog -> NavHostFragment
+                    .findNavController(this)
+                    .navigate(R.id.actionToTutorProfileViewFragment));
             doneDialog.show();
         } catch (InvalidCardNumberException e) {
             tilCardNumber.setError(e.getMessage());

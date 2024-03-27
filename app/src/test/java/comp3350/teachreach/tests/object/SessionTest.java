@@ -1,97 +1,107 @@
 package comp3350.teachreach.tests.object;
 
-import comp3350.teachreach.objects.Session;
-import comp3350.teachreach.objects.Student;
-import comp3350.teachreach.objects.Tutor;
+import static org.junit.Assert.assertEquals;
 
-
+import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import org.threeten.bp.LocalDate;
+
+import comp3350.teachreach.application.TRData;
+import comp3350.teachreach.objects.Session;
+import comp3350.teachreach.objects.SessionStatus;
+import comp3350.teachreach.objects.TimeSlice;
+import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 
 public class SessionTest {
-/*
-    public void testCreateSession(){
-        Session session = new Session(students.get(1), tutors.get(3), 26, 5, 11, 3,"Library");
-    }
+
+    private static ISession session;
+    private static int sessionID;
+    private static int studentID;
+    private static int tutorID;
+    private static ITimeSlice timeRange;
+    private static double sessionCost;
+    private static String atLocation;
 
 
-    public Session(Student student, Tutor tutor, int day, int month, int year, int hour, String location) {
-        this.student = student;
-        this.tutor = tutor;
-        this.day = day;
-        this.month = month;
-        this.year = year;
-        this.hour = hour;
-        this.accepted = false;
-        this.location = location;
+    @BeforeClass
+    public static void setUp() {
+        TRData.setDefaultEnums();
+        sessionID = -1;
+        studentID = 123;
+        tutorID = 456;
+        LocalDate date = LocalDate.of(2021, 1, 1);
+        timeRange = new TimeSlice(date.atTime(10, 0), date.atTime(10, 30));
+        sessionCost = 50.0;
+        atLocation = "Library";
+        session = new Session(sessionID, studentID, tutorID, timeRange, sessionCost, atLocation, SessionStatus.PENDING);
     }
 
-    public void acceptSession() {
-        this.accepted = true;
+    @Test
+    public void testSessionInitialization() {
+        assertEquals(sessionID, session.getSessionID());
+        assertEquals(studentID, session.getSessionStudentID());
+        assertEquals(tutorID, session.getSessionTutorID());
+        assertEquals(timeRange, session.getTimeRange());
+        assertEquals(sessionCost, session.getSessionCost(), 0.001);
+        assertEquals(atLocation, session.getSessionLocation());
+        assertEquals(SessionStatus.PENDING, session.getStatus());
     }
 
-    public Student getStudent() {
-        return this.student;
+    @Test
+    public void testSessionStatusChange() {
+        session.approve();
+        assertEquals(SessionStatus.ACCEPTED, session.getStatus());
+
+        session.reject();
+        assertEquals(SessionStatus.REJECTED, session.getStatus());
+
+        session.pend();
+        assertEquals(SessionStatus.PENDING, session.getStatus());
     }
 
-    public void setStudent(Student newstudent) {
-        this.student = newstudent;
+    @Test
+    public void testSessionID() {
+        assertEquals(-1, session.getSessionID());
+        session.setSessionID(100);
+        assertEquals(100, session.getSessionID());
     }
 
-    public Tutor getTutor() {
-        return this.tutor;
+    @Test
+    public void testSessionCost() {
+        assertEquals(sessionCost, session.getSessionCost(), 0.001);
+        session.setSessionCost(75.0);
+        assertEquals(75.0, session.getSessionCost(), 0.001);
     }
 
-    public void setTutor(Tutor newtutor) {
-        this.tutor = newtutor;
+    @Test
+    public void testSessionStudentID() {
+        assertEquals(studentID, session.getSessionStudentID());
+        session.setSessionStudentID(999);
+        assertEquals(999, session.getSessionStudentID());
     }
 
-
-    public int getDay() {
-        return this.day;
-    }
-    public int getMonth() {
-        return this.month;
-    }
-    public int getYear() {
-        return this.year;
+    @Test
+    public void testSessionTutorID() {
+        assertEquals(tutorID, session.getSessionTutorID());
+        session.setSessionTutorID(888);
+        assertEquals(888, session.getSessionTutorID());
     }
 
-    public void setDay(int newDay) {
-        this.day = newDay;
+    @Test
+    public void testSessionTimeRange() {
+        LocalDate date = LocalDate.of(2021, 1, 1);
+        ITimeSlice newTimeRange = new TimeSlice(date.atTime(12, 0), date.atTime(12, 30));
+        assertEquals(timeRange, session.getTimeRange());
+        session.setTime(newTimeRange);
+        assertEquals(newTimeRange, session.getTimeRange());
     }
 
-    public void setMonth(int newMonth) {
-        this.month = newMonth;
+    @Test
+    public void testSessionLocation() {
+        assertEquals(atLocation, session.getSessionLocation());
+        session.setSessionLocation("Home");
+        assertEquals("Home", session.getSessionLocation());
     }
-
-    public void setYear(int newYear) {
-        this.year = newYear;
-    }
-
-    public void setHour(int newHour) {
-        this.hour = newHour;
-    }
-
-    public boolean getStage() {
-        return this.accepted;
-    }
-
-    public void setStage(boolean decision) {
-        this.accepted = decision;
-    }
-
-    public String getLocation() {
-        return this.location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public int getHour() {
-        return this.hour;
-    }
-    */
 
 }

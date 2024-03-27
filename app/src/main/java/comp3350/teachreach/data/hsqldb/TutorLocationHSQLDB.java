@@ -26,10 +26,6 @@ public class TutorLocationHSQLDB implements ITutorLocationPersistence
                 dbPath), "SA", "");
     }
 
-    //TUTOR_ID INTEGER NOT NULL, LOCATION_NAME VARCHAR(32) NOT NULL,
-    // CONSTRAINT TL_PK PRIMARY KEY(TUTOR_ID, LOCATION_NAME), CONSTRAINT
-    // TL_FK FOREIGN KEY(TUTOR_ID) REFERENCES TUTORS(TUTOR_ID) ON DELETE
-    // CASCADE)
     private String fromResultSet(final ResultSet rs) throws SQLException
     {
         final String location = rs.getString("location_name");

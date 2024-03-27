@@ -1,7 +1,5 @@
 package comp3350.teachreach.objects.interfaces;
 
-import comp3350.teachreach.objects.TimeSlice;
-
 public
 interface ISession
 {
@@ -19,7 +17,7 @@ interface ISession
 
     ITimeSlice getTimeRange();
 
-    ISession setTime(TimeSlice time);
+    ISession setTime(ITimeSlice time);
 
     double getSessionCost();
 

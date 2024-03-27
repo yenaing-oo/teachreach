@@ -44,7 +44,7 @@ class AccessAccountsIT {
     }
 
     @Test
-    public void testGetAccountByEmail() {//NO EMAIL ANYMORE
+    public void testGetAccountByEmail() {
         final Optional<IAccount> account = accessAccounts.getAccountByEmail(
                 "student@email.com");
         assertTrue(account.isPresent());
@@ -68,7 +68,7 @@ class AccessAccountsIT {
         assertEquals(5,
                 accessAccounts
                         .getAccounts()
-                        .size()); //Change number base on database
+                        .size());
     }
 
     @Test

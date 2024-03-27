@@ -45,7 +45,6 @@ public class StudentHomeActivity extends AppCompatActivity {
         navController = navHostFragment.getNavController();
 
         int accountId = getIntent().getIntExtra("ACCOUNT_ID", -1);
-        int studentId = getIntent().getIntExtra("STUDENT_ID", -1);
         vm.setAccount(Server.getAccountDataAccess().getAccounts().get(accountId));
         AccessStudents accessStudents = new AccessStudents();
         vm.setStudent(accessStudents.getStudentByAccountID(accountId));
