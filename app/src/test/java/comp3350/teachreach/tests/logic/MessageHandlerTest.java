@@ -317,10 +317,10 @@ public class MessageHandlerTest {
 
     @Test
     public void test(){
-        //assertEquals (1,messageHandler.createGroup(1,2));
-        //assertEquals(2,messageHandler.createGroup(1,1));
-        //assertEquals (3,messageHandler.createGroup(2,2));
-        //assertEquals(4,messageHandler.createGroup(2,1));
+        assertEquals (1,messageHandler.createGroup(1,2));
+        assertEquals(2,messageHandler.createGroup(1,1));
+        assertEquals (3,messageHandler.createGroup(2,2));
+        assertEquals(4,messageHandler.createGroup(2,1));
         List<IAccount> contactAccounts = messageHandler.retrieveAllChatAccountsByAccountID(1);
         assertEquals(2,contactAccounts.size());
        //System.out.println(contactAccounts.get(0).getAccountID());

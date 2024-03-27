@@ -13,16 +13,26 @@ import java.util.List;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.CardChatUserBinding;
+import comp3350.teachreach.logic.communication.MessageHandler;
+import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
+import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder> {
     private List<IAccount> users;
     private CardChatUserBinding binding;
     private ISelectAccountListener listener;
 
-    public UsersAdapter(List<IAccount> users, ISelectAccountListener listener){
+    private TRViewModel vm;
+
+    private GroupModel gm;
+
+    public UsersAdapter(List<IAccount> users, ISelectAccountListener listener, TRViewModel vm, GroupModel gm ){
         this.users = users;
         this.listener = listener;
+        this.vm = vm;
+        this.gm = gm;
     }
 
     @NonNull
@@ -64,7 +74,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     @Override
     public int getItemCount() {
-        return users.size();
+        IMessageHandler messageHandler = new MessageHandler();
+
+        return  messageHandler.retrieveAllChatAccountsByAccountID(vm.getAccount().getValue().getAccountID()).size();
+                //users.size();
     }
 
 

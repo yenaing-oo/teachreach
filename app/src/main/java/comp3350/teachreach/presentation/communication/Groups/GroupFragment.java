@@ -76,13 +76,15 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
                 Objects
                         .requireNonNull(vm.getAccount().getValue())
                         .getAccountID());
-                LiveData<IAccount> accountLiveData = vm.getAccount();
-                accountLiveData.observe(this, account -> {
-                    // Extract the int value from the IAccount object
-                    accountID = account.getAccountID();});
-                users = messageHandler.retrieveAllChatAccountsByAccountID
-                (accountID);
-        users = gm.getContactList().getValue();
+
+
+//                LiveData<IAccount> accountLiveData = vm.getAccount();
+//                accountLiveData.observe(this, account -> {
+//                    // Extract the int value from the IAccount object
+//                    accountID = account.getAccountID();});
+//                users = messageHandler.retrieveAllChatAccountsByAccountID
+//                (accountID);
+//        users = gm.getContactList().getValue();
 
     }
 
@@ -125,7 +127,7 @@ public class GroupFragment extends Fragment implements ISelectAccountListener
                                 .getAccountID());
 
         //        vm.setUsers(contactAccounts);
-        UsersAdapter usersAdapter = new UsersAdapter(contactAccounts,this );
+        UsersAdapter usersAdapter = new UsersAdapter(contactAccounts,this, vm, gm );
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }

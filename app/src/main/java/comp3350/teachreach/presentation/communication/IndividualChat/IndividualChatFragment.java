@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,7 +55,7 @@ public class IndividualChatFragment extends Fragment
     //private Map<Integer, Map<Timestamp, String>> messages;
 
     private EditText inputMessage;
-    private FrameLayout sendButton;
+    private ImageButton sendButton;
 
     public IndividualChatFragment()
     {
