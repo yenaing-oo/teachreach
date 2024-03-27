@@ -44,6 +44,9 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToSessionFragment"
+            app:destination="@id/sessionFragment" />
 
     </fragment>
 
@@ -94,6 +97,9 @@
             app:exitAnim="@animator/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToSessionFragment"
+            app:destination="@id/sessionFragment" />
 
     </fragment>
     <fragment
@@ -410,5 +416,19 @@
         <action
             android:id="@+id/actionToSessionFragment"
             app:destination="@id/sessionFragment" />
+        <action
+            android:id="@+id/actionToGroupFragment"
+            app:destination="@id/groupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/actionToIndividualChatFragment"
+            app:destination="@id/IndividualChatFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@animator/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 </navigation>
