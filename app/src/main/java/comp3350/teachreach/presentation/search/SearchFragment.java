@@ -45,10 +45,6 @@ public class SearchFragment extends Fragment {
     CheckBox priceMinSwitch;
     SlidingPaneLayout slidingPaneLayout;
     private FragmentSearchBinding binding;
-    private double prevMaxPrice = -1.0;
-    private double prevMinPrice = -1.0;
-    private int selectedReview = -1;
-    private String selectedCourse;
     private TRViewModel viewModel;
     private List<ITutor> tutorList;
     private List<String> courseList;
@@ -116,10 +112,6 @@ public class SearchFragment extends Fragment {
                                                             onSearchClick(searchEditText);
                                                         })
                                                         .setNeutralButton("Reset", (d, i) -> {
-                                                            prevMinPrice = -1.0;
-                                                            prevMaxPrice = -1.0;
-                                                            selectedReview = -1;
-                                                            selectedCourse = null;
                                                             searchViewModel.resetFilter();
                                                         })
                                                         .setNegativeButton("Cancel",
@@ -140,23 +132,24 @@ public class SearchFragment extends Fragment {
         reviewsField.setThreshold(1);
         reviewsField.setLongClickable(true);
         reviewsField.setOnLongClickListener(v -> {
-            reviewsField.setText("");
-            selectedReview = -1;
+            searchViewModel.clearMinimumAvgRating();
             return true;
         });
         reviewsField.setOnItemClickListener((p, v, pos, id) -> {
             reviewsField.clearFocus();
-            selectedReview = intList.get(pos);
-            reviewsField.setText("⭐️".repeat(selectedReview));
+            searchViewModel.setMinimumAvgRating(intList.get(pos));
         });
         reviewsSwitch.setOnCheckedChangeListener((d, checked) -> {
             tilMinReviews.setEnabled(checked);
-            if (!checked) selectedReview = -1;
+            if (!checked) searchViewModel.clearMinimumAvgRating();
         });
-        if (selectedReview > 0) reviewsField.setText("⭐️".repeat(selectedReview));
         searchViewModel.getFilteringByRatings().observe(getViewLifecycleOwner(), checked -> {
             reviewsSwitch.setChecked(checked);
             tilMinReviews.setEnabled(checked);
+        });
+        searchViewModel.getSelectedReview().observe(getViewLifecycleOwner(), r -> {
+            if (r != null) reviewsField.setText("⭐️".repeat(r.intValue()));
+            else reviewsField.setText("");
         });
     }
 
@@ -194,11 +187,14 @@ public class SearchFragment extends Fragment {
         });
         priceMinSwitch.setOnCheckedChangeListener((d, checked) -> tilMinPrice.setEnabled(checked));
         priceMaxSwitch.setOnCheckedChangeListener((d, checked) -> tilMaxPrice.setEnabled(checked));
-        if (prevMinPrice != -1.0)
-            minPrice.setText(String.format(Locale.getDefault(), "%.2f", prevMinPrice));
-
-        if (prevMaxPrice != -1.0)
-            maxPrice.setText(String.format(Locale.getDefault(), "%.2f", prevMaxPrice));
+        searchViewModel.getPrevMinPrice().observe(getViewLifecycleOwner(), min -> {
+            if (min != null)
+                minPrice.setText(String.format(Locale.getDefault(), "%.2f", min));
+        });
+        searchViewModel.getPrevMaxPrice().observe(getViewLifecycleOwner(), max -> {
+            if (max != null)
+                maxPrice.setText(String.format(Locale.getDefault(), "%.2f", max));
+        });
     }
 
     private void setUpCourseCodeField(DialogFiltersBinding b) {
@@ -212,22 +208,24 @@ public class SearchFragment extends Fragment {
         courseCodes.setThreshold(1);
         courseCodes.setLongClickable(true);
         courseCodes.setOnLongClickListener(v -> {
-            courseCodes.setText("");
-            selectedCourse = null;
+            searchViewModel.clearCourseCode();
             return true;
         });
         courseCodes.setOnItemClickListener((p, v, pos, id) -> {
             courseCodes.clearFocus();
-            selectedCourse = courseList.get(pos);
+            searchViewModel.setCourseCode(courseList.get(pos));
         });
-        if (selectedCourse != null) courseCodes.setText(selectedCourse);
         courseSwitch.setOnCheckedChangeListener((d, checked) -> {
             tilCourseCodes.setEnabled(checked);
-            if (!checked) selectedCourse = null;
+            if (!checked) searchViewModel.clearCourseCode();
         });
         searchViewModel.getFilteringByCourse().observe(getViewLifecycleOwner(), checked -> {
             tilCourseCodes.setEnabled(checked);
             courseSwitch.setChecked(checked);
+        });
+        searchViewModel.getSelectedCourse().observe(getViewLifecycleOwner(), c -> {
+            if (c != null) courseCodes.setText(c);
+            else courseCodes.setText("");
         });
     }
 
@@ -235,29 +233,14 @@ public class SearchFragment extends Fragment {
         String searchString = searchEditText.getText().toString().trim();
         if (priceMinSwitch != null && priceMinSwitch.isChecked()) {
             String s = minPrice.getText().toString().trim();
-            if (!s.isEmpty()) {
-                prevMinPrice = Double.parseDouble(s);
-                searchViewModel.setMinimumHourlyRate(prevMinPrice);
-            }
-        } else {
-            prevMinPrice = -1.0;
-            searchViewModel.clearMinimumHourlyRate();
-        }
+            if (!s.isEmpty()) searchViewModel.setMinimumHourlyRate(Double.parseDouble(s));
+        } else searchViewModel.clearMinimumHourlyRate();
+
         if (priceMaxSwitch != null && priceMaxSwitch.isChecked()) {
             String s = maxPrice.getText().toString().trim();
-            if (!s.isEmpty()) {
-                prevMaxPrice = Double.parseDouble(s);
-                searchViewModel.setMaximumHourlyRate(prevMaxPrice);
-            }
-        } else {
-            prevMaxPrice = -1.0;
-            searchViewModel.clearMaximumHourlyRate();
-        }
-        if (selectedReview == -1) searchViewModel.clearMinimumAvgRating();
-        else searchViewModel.setMinimumAvgRating(selectedReview);
+            if (!s.isEmpty()) searchViewModel.setMaximumHourlyRate(Double.parseDouble(s));
 
-        if (selectedCourse == null) searchViewModel.clearCourseCode();
-        else searchViewModel.setCourseCode(selectedCourse);
+        } else searchViewModel.clearMaximumHourlyRate();
 
         if (searchString.isEmpty()) searchViewModel.resetSearchString();
         else searchViewModel.setSearchFilter(searchString);

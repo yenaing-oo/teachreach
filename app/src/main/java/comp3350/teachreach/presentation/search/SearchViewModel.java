@@ -4,8 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.common.util.concurrent.Callables;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.TutorFilter;
@@ -17,10 +26,12 @@ import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchViewModel extends ViewModel {
+    private final ExecutorService threadPool = Executors.newCachedThreadPool();
+    private final ListeningExecutorService listeningExecutorService = MoreExecutors.listeningDecorator(
+            threadPool);
     private final IUserProfileHandler<ITutor> userFetcher = new UserProfileFetcher<>();
     private final ITutorProfileHandler tutorFetcher = new TutorProfileHandler();
     private final ITutorFilter tutorFilter = new TutorFilter(userFetcher, tutorFetcher);
-
     private final MutableLiveData<Boolean> sortingByPrice = new MutableLiveData<>(
             tutorFilter.getSortByPriceState());
     private final MutableLiveData<Boolean> sortingByReviews = new MutableLiveData<>(
@@ -33,6 +44,10 @@ public class SearchViewModel extends ViewModel {
             tutorFilter.getMinimumAvgRatingState());
     private final MutableLiveData<Boolean> filteringByCourse = new MutableLiveData<>(
             tutorFilter.getCourseCodeState());
+    private final MutableLiveData<Double> prevMaxPrice = new MutableLiveData<>(null);
+    private final MutableLiveData<Double> prevMinPrice = new MutableLiveData<>(null);
+    private final MutableLiveData<Double> selectedReview = new MutableLiveData<>(null);
+    private final MutableLiveData<String> selectedCourse = new MutableLiveData<>(null);
     private final List<ITutor> tutors = new CopyOnWriteArrayList<>(
             Server.getTutorDataAccess().getTutors().values());
     private final List<String> courses = new CopyOnWriteArrayList<>(
@@ -68,7 +83,14 @@ public class SearchViewModel extends ViewModel {
     }
 
     public void resetFilter() {
-        tutorsFiltered.postValue(tutorFilter.Reset().filterFunc().apply(tutors));
+        tutorFilter.Reset();
+        applyFilters();
+
+        prevMinPrice.postValue(null);
+        prevMaxPrice.postValue(null);
+        selectedCourse.postValue(null);
+        selectedReview.postValue(null);
+
         sortingByReviews.postValue(tutorFilter.getSortByReviewsState());
         sortingByPrice.postValue(tutorFilter.getSortByPriceState());
         filteringByMaxPrice.postValue(tutorFilter.getMaximumHourlyRateState());
@@ -78,72 +100,95 @@ public class SearchViewModel extends ViewModel {
     }
 
     public void setSortByReviews() {
-        tutorsFiltered.postValue(tutorFilter.setSortByReviews().filterFunc().apply(tutors));
-        sortingByReviews.postValue(tutorFilter.getSortByReviewsState());
+        sortingByReviews.postValue(tutorFilter.setSortByReviews().getSortByReviewsState());
+        applyFilters();
     }
 
     public void resetSortByReviews() {
-        tutorsFiltered.postValue(tutorFilter.clearSortByReviews().filterFunc().apply(tutors));
-        sortingByReviews.postValue(tutorFilter.getSortByReviewsState());
+        sortingByReviews.postValue(tutorFilter.clearSortByReviews().getSortByReviewsState());
+        applyFilters();
     }
 
     public void setSortByPrice() {
-        tutorsFiltered.postValue(tutorFilter.setSortByPrice().filterFunc().apply(tutors));
-        sortingByPrice.postValue(tutorFilter.getSortByPriceState());
+        sortingByPrice.postValue(tutorFilter.setSortByPrice().getSortByPriceState());
+        applyFilters();
     }
 
     public void resetSortByPrice() {
-        tutorsFiltered.postValue(tutorFilter.clearSortByPrice().filterFunc().apply(tutors));
-        sortingByPrice.postValue(tutorFilter.getSortByPriceState());
+        sortingByPrice.postValue(tutorFilter.clearSortByPrice().getSortByPriceState());
+        applyFilters();
     }
 
     public void setMinimumAvgRating(double minimumAvgRating) {
-        tutorFilter.setMinimumAvgRating(minimumAvgRating);
-        filteringByRatings.postValue(tutorFilter.getMinimumAvgRatingState());
+        selectedReview.postValue(minimumAvgRating);
+        filteringByRatings.postValue(
+                tutorFilter.setMinimumAvgRating(minimumAvgRating).getMinimumAvgRatingState());
     }
 
     public void setMinimumHourlyRate(double desiredHourlyRate) {
-        tutorFilter.setMinimumHourlyRate(desiredHourlyRate);
-        filteringByMinPrice.postValue(tutorFilter.getMinimumHourlyRateState());
+        prevMinPrice.postValue(desiredHourlyRate);
+        filteringByMinPrice.postValue(
+                tutorFilter.setMinimumHourlyRate(desiredHourlyRate).getMinimumHourlyRateState());
     }
 
     public void setMaximumHourlyRate(double desiredHourlyRate) {
-        tutorFilter.setMaximumHourlyRate(desiredHourlyRate);
-        filteringByMaxPrice.postValue(tutorFilter.getMaximumHourlyRateState());
+        prevMaxPrice.postValue(desiredHourlyRate);
+        filteringByMaxPrice.postValue(
+                tutorFilter.setMaximumHourlyRate(desiredHourlyRate).getMaximumHourlyRateState());
     }
 
     public void setCourseCode(String courseCode) {
-        tutorFilter.setCourseCode(courseCode);
-        filteringByCourse.postValue(tutorFilter.getCourseCodeState());
+        selectedCourse.postValue(courseCode);
+        filteringByCourse.postValue(tutorFilter.setCourseCode(courseCode).getCourseCodeState());
     }
 
     public void setSearchFilter(String searchString) {
-        tutorsFiltered.postValue(
-                tutorFilter.setSearchFilter(searchString).filterFunc().apply(tutors));
+        tutorFilter.setSearchFilter(searchString);
+        applyFilters();
     }
 
     public void resetSearchString() {
-        tutorsFiltered.postValue(tutorFilter.resetSearchString().filterFunc().apply(tutors));
+        tutorFilter.resetSearchString().filterFunc().apply(tutors);
+        applyFilters();
     }
 
     public void clearMinimumAvgRating() {
-        tutorFilter.clearMinimumAvgRating();
-        filteringByRatings.postValue(tutorFilter.getMinimumAvgRatingState());
+        selectedReview.postValue(null);
+        filteringByRatings.postValue(
+                tutorFilter.clearMinimumAvgRating().getMinimumAvgRatingState());
     }
 
     public void clearMinimumHourlyRate() {
-        tutorFilter.clearMinimumHourlyRate();
-        filteringByMinPrice.postValue(tutorFilter.getMinimumHourlyRateState());
+        prevMinPrice.postValue(null);
+        filteringByMinPrice.postValue(
+                tutorFilter.clearMinimumHourlyRate().getMinimumHourlyRateState());
     }
 
     public void clearMaximumHourlyRate() {
-        tutorFilter.clearMaximumHourlyRate();
-        filteringByMaxPrice.postValue(tutorFilter.getMaximumHourlyRateState());
+        prevMaxPrice.postValue(null);
+        filteringByMaxPrice.postValue(
+                tutorFilter.clearMaximumHourlyRate().getMaximumHourlyRateState());
     }
 
     public void clearCourseCode() {
-        tutorFilter.clearCourseCode();
-        filteringByCourse.postValue(tutorFilter.getCourseCodeState());
+        selectedCourse.postValue(null);
+        filteringByCourse.postValue(tutorFilter.clearCourseCode().getCourseCodeState());
+    }
+
+    public LiveData<Double> getPrevMaxPrice() {
+        return prevMaxPrice;
+    }
+
+    public LiveData<Double> getPrevMinPrice() {
+        return prevMinPrice;
+    }
+
+    public LiveData<Double> getSelectedReview() {
+        return selectedReview;
+    }
+
+    public LiveData<String> getSelectedCourse() {
+        return selectedCourse;
     }
 
     public List<String> getCourses() {
@@ -160,5 +205,29 @@ public class SearchViewModel extends ViewModel {
 
     public ITutorProfileHandler getTutorFetcher() {
         return tutorFetcher;
+    }
+
+    private void applyFilters() {
+        ListenableFuture<List<ITutor>> futureList = Futures.submitAsync(
+                Callables.asAsyncCallable(() -> tutorFilter.filterFunc().apply(tutors),
+                                          listeningExecutorService), listeningExecutorService);
+        Futures.addCallback(futureList, new FutureCallback<>() {
+            @Override
+            public void onSuccess(List<ITutor> result) {
+                tutorsFiltered.postValue(result);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.getCause();
+            }
+        }, listeningExecutorService);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        threadPool.shutdown();
+        listeningExecutorService.shutdown();
     }
 }
