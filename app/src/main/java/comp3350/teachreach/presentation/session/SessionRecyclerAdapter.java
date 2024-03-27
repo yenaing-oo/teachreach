@@ -65,7 +65,7 @@ public class SessionRecyclerAdapter extends
         TextView accepted       = holder.getAccepted();
         Button   acceptedButton = holder.getAcceptedButton();
 
-        acceptedButton.setOnClickListener(v -> listener.onAcceptedClick(session));
+        acceptedButton.setOnClickListener(v -> listener.onAcceptedClick(session.approve()));
 
         String withUser = isTutor
                 ? new UserProfileFetcher<IStudent>().getUserName(
@@ -81,16 +81,20 @@ public class SessionRecyclerAdapter extends
         duration.setText(String.format(Locale.getDefault(), "%d minutes",
                                        sessionTime.getDuration().toMinutes()));
         price.setText(String.format(Locale.getDefault(), "$%.2f", session.getSessionCost()));
-        accepted.setText(isTutor ? "Accept? " : "Accepted?");
-        boolean pending = isTutor && session.getStatus() == SessionStatus.PENDING;
-        acceptedButton.setEnabled(pending);
-        acceptedButton.setText(pending
-                                       ? "Accept"
-                                       : session.getStatus() == SessionStatus.ACCEPTED
-                                               ? "Accepted!"
-                                               : session.getStatus() == SessionStatus.REJECTED
-                                                       ? "Rejected"
-                                                       : "Pending");
+
+        boolean      pen    = session.getStatus() == SessionStatus.PENDING;
+        boolean      acc    = session.getStatus() == SessionStatus.ACCEPTED;
+        boolean      rej    = session.getStatus() == SessionStatus.REJECTED;
+        CharSequence reject = "Reject";
+        CharSequence status = "Status: ";
+
+        if (isTutor && pen) {
+            accepted.setText(reject);
+            accepted.setOnClickListener(v -> listener.onAcceptedClick(session.reject()));
+        } else accepted.setText(status);
+        acceptedButton.setEnabled(isTutor && pen);
+        acceptedButton.setText(
+                pen && isTutor ? "Accept" : acc ? "Accepted!" : rej ? "Rejected" : "Pending");
     }
 
     @Override

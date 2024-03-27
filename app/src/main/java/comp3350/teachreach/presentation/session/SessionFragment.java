@@ -88,7 +88,10 @@ public class SessionFragment extends Fragment {
                 : accessSessions.getPendingSessions(student);
         SessionRecyclerAdapter adapter = new SessionRecyclerAdapter(
                 sessionViewModel.getStudents().getValue(), sessionViewModel.getTutors().getValue(),
-                sessionList, isTutor, s -> accessSessions.updateSession(s.approve()));
+                sessionList, isTutor, s -> {
+            accessSessions.updateSession(s);
+            this.onResume();
+        });
         int spanCount = isLarge && isLandscape ? 3 : isLarge || isLandscape ? 2 : 1;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(),
                                                                          spanCount);
