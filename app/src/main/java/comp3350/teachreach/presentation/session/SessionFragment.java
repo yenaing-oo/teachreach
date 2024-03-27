@@ -24,6 +24,7 @@ class SessionFragment extends Fragment {
     private SlidingPaneLayout       slidingPaneLayout;
     private TabLayout               tabLayout;
     private TRViewModel             viewModel;
+    private boolean                 isTutor;
 
     public SessionFragment() {
     }
@@ -32,6 +33,7 @@ class SessionFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        isTutor   = Boolean.TRUE.equals(viewModel.getIsTutor().getValue());
     }
 
     @Override

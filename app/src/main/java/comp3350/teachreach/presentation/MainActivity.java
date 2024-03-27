@@ -23,13 +23,10 @@ import comp3350.teachreach.presentation.login.StudentLoginActivity;
 import comp3350.teachreach.presentation.login.TutorLoginActivity;
 
 public
-class MainActivity extends AppCompatActivity
-{
+class MainActivity extends AppCompatActivity {
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         copyDatabaseToDevice();
@@ -56,9 +53,7 @@ class MainActivity extends AppCompatActivity
         });
     }
 
-    private
-    void copyDatabaseToDevice()
-    {
+    private void copyDatabaseToDevice() {
         final String DB_PATH = "db";
 
         String[]     assetNames;
@@ -76,13 +71,12 @@ class MainActivity extends AppCompatActivity
 
             TRData.setDBPathName(dataDirectory.toString() + "/" + TRData.getDBPathName());
         } catch (final IOException ioe) {
-            Toast.makeText(this, "Unable to access application data: " + ioe.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Unable to access application data: " + ioe.getMessage(),
+                           Toast.LENGTH_SHORT).show();
         }
     }
 
-    public
-    void copyAssetsToDirectory(String[] assets, File directory) throws IOException
-    {
+    public void copyAssetsToDirectory(String[] assets, File directory) throws IOException {
         AssetManager assetManager = getAssets();
 
         for (String asset : assets) {
