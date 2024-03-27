@@ -19,13 +19,19 @@ SET WRITE_DELAY 20
 SET FILES SCALE 32
 SET SCHEMA PUBLIC
 GRANT ALL PRIVILEGES ON SCHEMA TO public;
-INSERT INTO ACCOUNTS VALUES(1,'student1@myumanitoba.ca','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Robert Guderian",'He/Him','Computer Science')
-INSERT INTO ACCOUNTS VALUES(2,'student2@myumanitoba.ca','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Camryn Mcmillan', 'She/Her','Computer Science')
+INSERT INTO ACCOUNTS VALUES(1,'student1@email.com','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Robert Guderian','He/Him','Computer Science')
+INSERT INTO ACCOUNTS VALUES(2,'student2@email.com','$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Jo Marma', 'She/Her','Computer Science')
 INSERT INTO ACCOUNTS VALUES(3,'tutor1@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','John Doe','They/Them','Computer Science')
-INSERT INTO ACCOUNTS VALUES(4,'tutor2@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Jane Doe2','She/Her','Computer Science')
+INSERT INTO ACCOUNTS VALUES(4,'tutor2@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Jane Doe','She/Her','Computer Science')
+INSERT INTO ACCOUNTS VALUES(5,'tutor3@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Yuri Dopted','He/Him','Biology')
+INSERT INTO ACCOUNTS VALUES(6,'tutor4@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Anita Maxwynn','She/Her','Business')
+INSERT INTO ACCOUNTS VALUES(7,'tutor5@email.com', '$2a$12$soZ4n.UxlMTaJNwS/zZQzeRKipEbQ0.gii9BV344oGds6T008.82K','Dylan Weed','He/Him','Fine Arts')
 INSERT INTO STUDENTS VALUES (1,1)
 INSERT INTO STUDENTS VALUES (2,2)
 INSERT INTO TUTORS VALUES(1,3)
 INSERT INTO TUTORS VALUES(2,4)
+INSERT INTO TUTORS VALUES(3,5)
+INSERT INTO TUTORS VALUES(4,6)
+INSERT INTO TUTORS VALUES(5,7)
 INSERT INTO CHAT_GROUPS VALUES(1,1,1)
 INSERT INTO TUTOR_AVAILABILITY VALUES(1,'2024-03-30 08:51:00','2024-03-30 16:05:00')

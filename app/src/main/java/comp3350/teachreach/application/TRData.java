@@ -12,20 +12,18 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.Map;
 
-public class TRData
-{
-    private static String               dbName           = "TR";
+public class TRData {
+    private static String dbName = "TR";
     private static Map<String, Integer> SessionStatus;
-    private static int                  currentStudentID = -1;
-    private static int                  currentTutorID   = -1;
+    private static int TimeSlotLength;
+    private static int currentStudentID = -1;
+    private static int currentTutorID = -1;
 
-    public static String getDBPathName()
-    {
+    public static String getDBPathName() {
         return dbName;
     }
 
-    public static void setDBPathName(final String name)
-    {
+    public static void setDBPathName(final String name) {
         try {
             Class.forName("org.hsqldb.jdbcDriver").newInstance();
         } catch (InstantiationException |
@@ -36,18 +34,17 @@ public class TRData
         dbName = name;
     }
 
-    public static void loadEnums(Context context)
-    {
+    public static void loadEnums(Context context) {
         try {
-            InputStream    inputStream   = context
+            InputStream inputStream = context
                     .getAssets()
                     .open("enums/enums_config.json");
             BufferedReader reader
-                                         =
+                    =
                     new BufferedReader(new InputStreamReader(
-                    inputStream));
-            StringBuilder  stringBuilder = new StringBuilder();
-            String         line;
+                            inputStream));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line;
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
             }
@@ -60,18 +57,20 @@ public class TRData
                     stringBuilder.toString(),
                     mapType);
             SessionStatus = enumMap.get("sessionStatus");
+            TimeSlotLength = enumMap.get("timeSlotLength").get("minutes");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // for testing purposes only
+    // for testing purposes only, actual enum data is loaded from config file
     public static void setDefaultEnums() {
         SessionStatus = Map.of(
                 "PENDING", 0,
                 "ACCEPTED", 1,
                 "REJECTED", 2
         );
+        TimeSlotLength = 30;
     }
 
     public static int getSessionStatusEnumValue(String key) {
@@ -86,23 +85,23 @@ public class TRData
         return value;
     }
 
-    public static int getCurrentStudentID()
-    {
+    public static int getTimeSlotLength() {
+        return TimeSlotLength;
+    }
+
+    public static int getCurrentStudentID() {
         return currentStudentID;
     }
 
-    public static void setCurrentStudentID(int studentID)
-    {
+    public static void setCurrentStudentID(int studentID) {
         currentStudentID = studentID;
     }
 
-    public static int getCurrentTutorID()
-    {
+    public static int getCurrentTutorID() {
         return currentTutorID;
     }
 
-    public static void setCurrentTutorID(int tutorID)
-    {
+    public static void setCurrentTutorID(int tutorID) {
         currentTutorID = tutorID;
     }
 }

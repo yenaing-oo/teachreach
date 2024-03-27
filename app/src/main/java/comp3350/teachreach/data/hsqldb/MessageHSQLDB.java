@@ -31,22 +31,9 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
     private IMessage fromResultSet(final ResultSet rs) throws SQLException {
         final int senderAccountID = rs.getInt("SENDER_ID");
         final Timestamp time = rs.getTimestamp("TIME_SENT");
-        //if (rs.wasNull()) {
-        //  throw new PersistenceException("Timestamp is null");
-        //}
         final String message = rs.getString("MESSAGE");
 
         return new Message(senderAccountID, time, message);
-        /*final int       senderAccountID      = rs.getInt("SENDER_ID");
-        final Timestamp     time   = rs.getTimestamp("TIME_SENT");
-       //if(time == null){
-         //   throw new PersistenceException("timeStamp not retrieved!");
-        //}
-        final String    message      = rs.getString("MESSAGE");
-
-        return  new Message(senderAccountID,
-                time,
-                message);*/
     }
 
 
@@ -122,7 +109,6 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM CHAT_GROUPS WHERE STUDENT_ID = ? AND TUTOR_ID = ?");
-            //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
             pst.setInt(1, studentID);
             pst.setInt(2, tutorID);
             final ResultSet rs = pst.executeQuery();
@@ -146,7 +132,6 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM CHAT_GROUPS WHERE GROUP_ID = ?");
-            //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
             pst.setInt(1, groupID);
 
             final ResultSet rs = pst.executeQuery();
@@ -231,8 +216,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> studentIDs = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-                    //"SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID where CHAT_GROUPS.tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
-                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS where tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS where tutor_ID = ? ");
             pst.setInt(1, tutorID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -251,17 +235,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         List<Integer> tutorIDs = new ArrayList<>();
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
-//                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID "+
-//                    "FROM CHAT_GROUPS "+
-//                    "JOIN ("+
-//                    "      SELECT Group_ID, MAX(MESSAGE_ID) AS MAX_MESSAGE_ID "+
-//                    "       FROM MESSAGES "+
-//                     "       GROUP BY Group_ID "+
-//                    ") AS recent_messages ON CHAT_GROUPS.Group_ID = recent_messages.Group_ID "+
-//                    "WHERE tutor_ID = ? "+
-//                    "ORDER BY recent_messages.MAX_MESSAGE_ID DESC");
-                    //"SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
-                    "SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS WHERE CHAT_GROUPS.student_ID = ? ");
             pst.setInt(1, studentID);
             final ResultSet rs = pst.executeQuery();
             while (rs.next()) {
@@ -275,13 +249,5 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         }
     }
 }
-
-    //public void deleteMessage(){}
-
-
-///Modifies Message
-
-
- //   public void deleteGroup(){}
 
 

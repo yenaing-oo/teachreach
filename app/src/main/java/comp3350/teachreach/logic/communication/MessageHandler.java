@@ -3,16 +3,13 @@ package comp3350.teachreach.logic.communication;
 import androidx.annotation.NonNull;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessMessage;
@@ -34,8 +31,6 @@ public class MessageHandler implements IMessageHandler
 
     private final AccessTutors accessTutors;
 
-    //need change for test
-    //implement method
     private AccessAccounts accessAccounts = null;
 
     public MessageHandler(){
@@ -61,18 +56,13 @@ public class MessageHandler implements IMessageHandler
 
     }
 
-    //make IT test constructor
-    public boolean validateReceivedMessage(IMessage message){
-        return message.getMessage() != null && message.getTime() != null && message.getSenderID() > 0;
-    }
-
-    public boolean validateSentMessage(int groupID, int senderAccountID, String message){
+    private boolean validateSentMessage(int groupID, int senderAccountID, String message) {
         boolean valid = true;
         boolean account = false;
         int findStudentID = 0;
         int findTutorID = 0;
 
-        Map<String, Integer> resultIDs = new HashMap<>();
+        Map<String, Integer> resultIDs;
         resultIDs = accessMessage.searchIDsByGroupID(groupID);
 
         try {
@@ -104,10 +94,9 @@ public class MessageHandler implements IMessageHandler
     }
 
 
-    public boolean checkExistGroup(int studentID, int tutorID){
-        return (accessMessage.searchGroupByIDs(studentID,tutorID)> 0);
+    private boolean checkExistGroup(int studentID, int tutorID) {
+        return (accessMessage.searchGroupByIDs(studentID, tutorID) > 0);
     }
-
 
 
     @Override
@@ -138,124 +127,7 @@ public class MessageHandler implements IMessageHandler
         return accessMessage.retrieveAllMessageByGroupID(groupID);
     }
 
-    //custom function1
     @Override
-    public Map<Integer, Map<java.sql.Timestamp, String>> chatHistoryOfGroupV1(int groupID){
-        List<IMessage> messages = accessMessage.retrieveAllMessageByGroupID(groupID);
-        Map<Integer, Map<java.sql.Timestamp, String>> chatHistory = new HashMap<>();
-
-        for (IMessage message : messages) {
-            if(validateReceivedMessage(message)){
-            int senderID = message.getSenderID();
-            java.sql.Timestamp timestamp = message.getTime();
-            String content = message.getMessage();
-
-            if (!chatHistory.containsKey(senderID)) {
-                chatHistory.put(senderID, new HashMap<>());
-            }
-
-            chatHistory.get(senderID).put(timestamp, content);
-            }
-
-        }
-
-        return chatHistory;
-    }
-
-
-    @Override
-    public Map<java.sql.Timestamp, Map<Integer, String>> chatHistoryOfGroupV2(int groupID){
-        List<IMessage> messages = accessMessage.retrieveAllMessageByGroupID(groupID);
-        Map<java.sql.Timestamp, Map<Integer, String>> chatHistory = new TreeMap<>();
-
-        for (IMessage message : messages) {
-            if(validateReceivedMessage(message)) {
-                int senderID = message.getSenderID();
-                java.sql.Timestamp timestamp = message.getTime();
-                String content = message.getMessage();
-
-                if (!chatHistory.containsKey(timestamp)) {
-                    chatHistory.put(timestamp, new HashMap<>());
-                }
-                chatHistory.get(timestamp).put(senderID, content);
-            }
-        }
-
-        return chatHistory;
-
-
-    }
-    @Override
-    public Map<Integer, Map<java.sql.Timestamp, String>> chatHistoryOfGroupV3(List<IMessage> messages){
-        Map<Integer, Map<java.sql.Timestamp, String>> chatHistory = new HashMap<>();
-
-        for (IMessage message : messages) {
-            if(validateReceivedMessage(message)) {
-                int senderID = message.getSenderID();
-                java.sql.Timestamp timestamp = message.getTime();
-                String content = message.getMessage();
-
-                if (!chatHistory.containsKey(senderID)) {
-                    chatHistory.put(senderID, new HashMap<>());
-                }
-                chatHistory.get(senderID).put(timestamp, content);
-            }
-        }
-
-        return chatHistory;
-    }
-
-    @Override
-    public Map<java.sql.Timestamp, Map<Integer, String>> chatHistoryOfGroupV4(List<IMessage> messages){
-        Map<java.sql.Timestamp, Map<Integer, String>> chatHistory = new TreeMap<>();
-
-        for (IMessage message : messages) {
-            if(validateReceivedMessage(message)) {
-                int senderID = message.getSenderID();
-                java.sql.Timestamp timestamp = message.getTime();
-                String content = message.getMessage();
-
-                if (!chatHistory.containsKey(timestamp)) {
-                    chatHistory.put(timestamp, new HashMap<>());
-                }
-                chatHistory.get(timestamp).put(senderID, content);
-            }
-        }
-
-        return chatHistory;
-
-
-    }
-
-//    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
-//
-//            Map<String, Object> result = new HashMap<>();
-//
-//        LocalDateTime localDateTime = null; // Initialize localDateTime to null
-//
-//        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
-//             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-//
-//            // Extract various date-related components
-//            int year = localDateTime.getYear();
-//            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
-//            int dayOfMonth = localDateTime.getDayOfMonth();
-//            int hour = localDateTime.getHour();
-//            int minute = localDateTime.getMinute();
-//            int second = localDateTime.getSecond();
-//
-//            // Store the components and value in the result map
-//            result.put("year", year);
-//            result.put("month", month);
-//            result.put("dayOfMonth", dayOfMonth);
-//            result.put("hour", hour);
-//            result.put("minute", minute);
-//            result.put("second", second);
-//
-//
-//            return result;
-//    }
-
     public String timeStampConverter(@NonNull Timestamp timestamp) {
         LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -270,99 +142,7 @@ public class MessageHandler implements IMessageHandler
         return accessMessage.retrieveAllGroupsByStudentID(studentID);
     }
 
-//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID){
-//        List<IAccount> users = new ArrayList<>();
-//        List<Integer> groups = new ArrayList<>();
-//
-//        int findStudentID = -1;
-//        int findTutorID = -1;
-//        //find out the original account is a student/tutor
-//        try {
-//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
-//            findStudentID = findStudent.getStudentID();
-//        }
-//        catch(DataAccessException ignored){
-//        }
-//
-//        try {
-//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
-//            findTutorID = findTutor.getTutorID();
-//        }
-//        catch(DataAccessException ignored) {
-//        }
-//
-//        //find all chat groups (Accounts)
-//        if (findStudentID>0){
-//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
-//
-//            if(groups!= null){
-//                for (int group: groups
-//                ) {
-//                    ITutor tutor = accessTutors.getTutorByTutorID(group);
-//                    int tutorAccountID = tutor.getAccountID();
-//
-//                    IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
-//                    users.add(user);
-//
-//                }
-//            }
-//
-//        }
-//        else if (findTutorID>0){
-//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
-//
-//            if(groups!= null){
-//                for (int group: groups
-//                ) {
-//                    IStudent student = accessStudents.getStudentByStudentID(group);
-//                    int studentAccountID = student.getAccountID();
-//                    IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
-//                    users.add(user);
-//
-//                }
-//            }
-//        }
-//
-//        return users;
-//
-//    }
-//
-//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
-//        List<IAccount> users = new ArrayList<>();
-//        List<Integer> groups = new ArrayList<>();
-//
-//        // Initialize findStudentID and findTutorID to 0
-//        int findStudentID = 0;
-//        int findTutorID = 0;
-//
-//        // Initialize users and groups lists where they are declared
-//        try {
-//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
-//            findStudentID = findStudent.getStudentID();
-//        } catch (DataAccessException ignored) {
-//        }
-//
-//        try {
-//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
-//            findTutorID = findTutor.getTutorID();
-//        } catch (DataAccessException ignored) {
-//        }
-//
-//        //find all chat groups (Accounts)
-//        if (findStudentID > 0) {
-//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
-//        } else if (findTutorID > 0) {
-//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
-//        }
-//
-//        // Process retrieved groups
-//        for (int group : groups) {
-//            accessAccounts.getAccountByAccountID(group).ifPresent(users::add);
-//        }
-//
-//        return users;
-//    }
-
+    @Override
     public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
         List<IAccount> users = new ArrayList<>();
 
@@ -384,7 +164,7 @@ public class MessageHandler implements IMessageHandler
         if (findStudent != null && findStudent.getAccountID() == accountID) {
             List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
             for (int tutorID : tutorIDs) {
-                //???
+
                 ITutor tutor = accessTutors.getTutorByTutorID(tutorID);
                 int tutorAccountID = tutor.getAccountID();
                 IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
@@ -395,7 +175,7 @@ public class MessageHandler implements IMessageHandler
         } else if (findTutor != null && findTutor.getAccountID() == accountID) {
             List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
             for (int studentID : studentIDs) {
-                //???
+
                 IStudent student = accessStudents.getStudentByStudentID(studentID);
                 int studentAccountID = student.getAccountID();
                 IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
@@ -407,6 +187,5 @@ public class MessageHandler implements IMessageHandler
 
         return users;
     }
-
 
 }

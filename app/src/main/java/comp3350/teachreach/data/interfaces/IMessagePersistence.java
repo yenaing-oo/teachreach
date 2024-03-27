@@ -22,6 +22,4 @@ public interface IMessagePersistence {
     List<Integer> retrieveAllTutorIDsByStudentID(int studentID);
     List<Integer> retrieveAllStudentIDsByTutorID(int tutorID);
 
-
-   // void deleteGroup();
 }

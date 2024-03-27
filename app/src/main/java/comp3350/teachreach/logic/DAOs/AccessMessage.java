@@ -12,8 +12,6 @@ public class AccessMessage {
 
     private static IMessagePersistence messagePersistence;
 
-
-
     public
     AccessMessage ()
     {
@@ -28,15 +26,12 @@ public class AccessMessage {
     }
 
     public int createGroup(int studentID, int tutorID){
-        //try{
-             return messagePersistence.createGroup(studentID,tutorID);
-        //}
-        //catch (final Exception e) {
-        //    throw new DataAccessException("Group might've already exist!", e);
-        //}
+        try {
+            return messagePersistence.createGroup(studentID, tutorID);
+        } catch (final Exception e) {
+            throw new DataAccessException("Group might've already exist!", e);
+        }
     }
-
-
 
     public int storeMessage(int groupID, int senderAccountID, String message){
         try{
