@@ -50,16 +50,6 @@ public class StudentHomeActivity extends AppCompatActivity {
         AccessStudents accessStudents = new AccessStudents();
         vm.setStudent(accessStudents.getStudentByAccountID(accountId));
         assert vm.getStudent() != null;
-
-        //        IMessageHandler messageHandler = new MessageHandler();
-        //AtomicInteger accountID = new AtomicInteger();
-        //vm.getAccount().observe(this, account->{ accountID.set(account
-        // .getAccountID());});
-        //        List<IAccount> users = messageHandler
-        //        .retrieveAllChatAccountsByAccountID(accountId);
-        //        vm.setUsers(users);
-        //messageHandler.
-        //set up sender and received message!
         setUpNavigationMenu();
         setUpBackButtonHandler();
     }
@@ -75,8 +65,7 @@ public class StudentHomeActivity extends AppCompatActivity {
             } else if (itemId == R.id.NavBarProfile) {
                 navController.navigate(R.id.studentProfileSelfViewFragment);
             } else if (itemId == R.id.NavBarChats) {
-                navController.navigate(R.id.actionToGroupFragment);// i need it work
-                //navController.navigate(R.id.actionToIndividualChatFragment);
+                navController.navigate(R.id.actionToGroupFragment);
             }
             return true;
         });
@@ -89,6 +78,9 @@ public class StudentHomeActivity extends AppCompatActivity {
             }
             if (dest.getId() == R.id.sessionFragment) {
                 changeNavigationMenu(NavDest.sessions);
+            }
+            if (dest.getId() == R.id.groupFragment) {
+                changeNavigationMenu(NavDest.chat);
             }
         });
     }

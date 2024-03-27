@@ -7,43 +7,93 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ConcurrentMap;
 
 import comp3350.teachreach.R;
-import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
-import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
+import comp3350.teachreach.logic.profile.UserProfileFetcher;
+import comp3350.teachreach.objects.SessionStatus;
 import comp3350.teachreach.objects.interfaces.ISession;
+import comp3350.teachreach.objects.interfaces.IStudent;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
+import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SessionRecyclerAdapter<T> extends
+public class SessionRecyclerAdapter extends
         RecyclerView.Adapter<SessionRecyclerAdapter.ViewHolder> {
-    private static List<ISession>         sessionList;
-    private static View.OnClickListener   listener;
-    private        IUserProfileHandler<T> profileHandler;
-    private        ITutorProfileHandler   tutorProfileHandler;
+    private static List<ISession>          sessionList;
+    private static IOnSessionClickListener listener;
 
-    public SessionRecyclerAdapter(IUserProfileHandler<T> profileHandler,
-                                  ITutorProfileHandler tutorProfileHandler,
-                                  List<ISession> sessions, boolean isTutor,
-                                  View.OnClickListener listener) {
+    private static ConcurrentMap<Integer, IStudent> students;
+    private static ConcurrentMap<Integer, ITutor>   tutors;
+    private static DateTimeFormatter                timeFormatter = DateTimeFormatter.ofPattern(
+            "h:mm a, d/M/yy");
+
+
+    private boolean isTutor;
+
+    public SessionRecyclerAdapter(ConcurrentMap<Integer, IStudent> studentMap,
+                                  ConcurrentMap<Integer, ITutor> tutorMap, List<ISession> sessions,
+                                  boolean isTutor, IOnSessionClickListener listener) {
         SessionRecyclerAdapter.sessionList = sessions;
         SessionRecyclerAdapter.listener    = listener;
-        this.profileHandler                = profileHandler;
-        this.tutorProfileHandler           = tutorProfileHandler;
+        students                           = studentMap;
+        tutors                             = tutorMap;
+        this.isTutor                       = isTutor;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.card_row_tutor, parent, false);
+                                  .inflate(R.layout.card_session, parent, false);
         return new SessionRecyclerAdapter.ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (position == RecyclerView.NO_POSITION) return;
 
+        ISession session        = sessionList.get(position);
+        TextView withWhom       = holder.getWithWhom();
+        TextView startTime      = holder.getStartTime();
+        TextView endTime        = holder.getEndTime();
+        TextView duration       = holder.getDuration();
+        TextView price          = holder.getPrice();
+        TextView accepted       = holder.getAccepted();
+        Button   acceptedButton = holder.getAcceptedButton();
+
+        acceptedButton.setOnClickListener(v -> listener.onAcceptedClick(session));
+
+        String withUser = isTutor
+                ? new UserProfileFetcher<IStudent>().getUserName(
+                students.get(session.getSessionStudentID()))
+                : new UserProfileFetcher<ITutor>().getUserName(
+                        tutors.get(session.getSessionTutorID()));
+
+        withWhom.setText(withUser);
+
+        ITimeSlice sessionTime = session.getTimeRange();
+        startTime.setText(sessionTime.getStartTime().format(timeFormatter));
+        endTime.setText(sessionTime.getEndTime().format(timeFormatter));
+        duration.setText(String.format(Locale.getDefault(), "%d minutes",
+                                       sessionTime.getDuration().toMinutes()));
+        price.setText(String.format(Locale.getDefault(), "$%.2f", session.getSessionCost()));
+        accepted.setText(isTutor ? "Accept? " : "Accepted?");
+        boolean pending = isTutor && session.getStatus() == SessionStatus.PENDING;
+        acceptedButton.setEnabled(pending);
+        acceptedButton.setText(pending
+                                       ? "Accept"
+                                       : session.getStatus() == SessionStatus.ACCEPTED
+                                               ? "Accepted!"
+                                               : session.getStatus() == SessionStatus.REJECTED
+                                                       ? "Rejected"
+                                                       : "Pending");
     }
 
     @Override
@@ -51,8 +101,38 @@ public class SessionRecyclerAdapter<T> extends
         return sessionList.size();
     }
 
-    public static
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public void updateData(List<ISession> newList) {
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return sessionList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return sessionList.get(oldItemPosition).getSessionID() ==
+                        newList.get(newItemPosition).getSessionID();
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                ISession old = sessionList.get(oldItemPosition);
+                ISession niu = newList.get(newItemPosition);
+                return old.getSessionStudentID() == niu.getSessionStudentID() &&
+                        old.getSessionTutorID() == niu.getSessionTutorID() &&
+                        old.getSessionLocation().equals(niu.getSessionLocation());
+            }
+        });
+        sessionList = newList;
+        diffResult.dispatchUpdatesTo(this);
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView withWhom, startTime, endTime, duration, price, accepted;
         private final Button acceptedButton;
 

@@ -1,6 +1,7 @@
 package comp3350.teachreach.presentation.session;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -12,9 +13,12 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
@@ -31,6 +35,14 @@ public class SessionViewModel extends ViewModel {
     private final ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
     private final ISessionHandler           sessionHandler      = new SessionHandler(
             availabilityManager);
+
+    private final MutableLiveData<ConcurrentMap<Integer, IStudent>> studentMap = new MutableLiveData<>(
+            new ConcurrentHashMap<>(Server.getStudentDataAccess()
+                                          .getStudents()));
+
+    private final MutableLiveData<ConcurrentMap<Integer, ITutor>> tutorMap = new MutableLiveData<>(
+            new ConcurrentHashMap<>(Server.getTutorDataAccess()
+                                          .getTutors()));
 
     private final MutableLiveData<List<ISession>> sessionsBeingViewed = new MutableLiveData<>();
 
@@ -78,6 +90,18 @@ public class SessionViewModel extends ViewModel {
         waitForUpdate(futureList);
     }
 
+    public LiveData<ConcurrentMap<Integer, IStudent>> getStudents() {
+        return studentMap;
+    }
+
+    public LiveData<ConcurrentMap<Integer, ITutor>> getTutors() {
+        return tutorMap;
+    }
+
+    public LiveData<List<ISession>> getSessionsBeingViewed() {
+        return sessionsBeingViewed;
+    }
+
     private void waitForUpdate(@NonNull ListenableFuture<List<ISession>> future) {
         Futures.addCallback(future, new FutureCallback<>() {
             @Override
@@ -102,6 +126,7 @@ public class SessionViewModel extends ViewModel {
     public enum SessionType {
         pending,
         accepted,
-        rejected
+        rejected,
+        others
     }
 }
