@@ -10,97 +10,112 @@
         android:id="@+id/cardTutor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="4dp"
         app:cardCornerRadius="16dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
 
             <ImageView
                 android:id="@+id/tutorImage"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
+                android:layout_gravity="start|center"
                 android:layout_margin="4dp"
                 android:contentDescription="@string/tvTutorImage"
-                android:src="@drawable/user_icon"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:src="@drawable/user_icon" />
 
-            <TextView
-                android:id="@+id/tvNameField"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/tvNameField"
-                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                app:layout_constraintLeft_toRightOf="@+id/tutorImage"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0" />
+                android:layout_gravity="center|end"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvMajorField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:text="@string/tvMajorField"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                app:layout_constraintHorizontal_bias="0.1"
-                app:layout_constraintLeft_toRightOf="@+id/tutorImage"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvNameField"
-                app:layout_constraintVertical_bias="0.5" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|end"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvRatings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/tvRatings"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                app:layout_constraintLeft_toRightOf="@+id/tutorImage"
-                app:layout_constraintTop_toBottomOf="@+id/tvMajorField" />
+                    <TextView
+                        android:id="@+id/tvNameField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="@string/tvNameField"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium" />
 
-            <TextView
-                android:id="@+id/tvHourlyRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/tvHourlyRate"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                app:layout_constraintLeft_toRightOf="@+id/tutorImage"
-                app:layout_constraintTop_toBottomOf="@+id/tvRatings" />
+                    <TextView
+                        android:id="@+id/tvMajorField"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="@string/tvMajorField"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
 
 
-            <TextView
-                android:id="@+id/tvRatingsField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/tvRatingsField"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                app:layout_constraintBottom_toBottomOf="@id/tvRatings"
-                app:layout_constraintHorizontal_bias="0.9"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvRatings"
-                app:layout_constraintVertical_bias="0.5" />
+                    <TextView
+                        android:id="@+id/tvHourlyRate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="end|center"
+                        android:text="@string/tvHourlyRate"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
-            <TextView
-                android:id="@+id/tvHourlyRateField"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="@string/tvHourlyRateField"
-                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-                app:layout_constraintBottom_toBottomOf="@id/tvHourlyRate"
-                app:layout_constraintHorizontal_bias="0.9"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tvHourlyRate"
-                app:layout_constraintVertical_bias="0.5" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tvHourlyRateField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.5"
+                        android:gravity="end|center"
+                        android:text="@string/tvHourlyRateField"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvRatings"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="end|center"
+                        android:text="@string/tvRatings"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
+
+                    <TextView
+                        android:id="@+id/tvRatingsField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="0.5"
+                        android:gravity="end|center"
+                        android:text="@string/tvRatingsField"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 </FrameLayout>
