@@ -60,10 +60,6 @@ public class FullMessageAdaptor
         notifyDataSetChanged();
     }
 
-    private int getCurrentUserID() {
-        return vm.getAccount().getValue().getAccountID();
-    }
-
 
     @NonNull
     @Override
