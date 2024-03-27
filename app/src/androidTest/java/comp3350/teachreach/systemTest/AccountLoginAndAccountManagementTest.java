@@ -22,7 +22,7 @@ import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TeachReachTest {
+public class AccountLoginAndAccountManagementTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule

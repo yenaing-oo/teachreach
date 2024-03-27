@@ -10,16 +10,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 
-import comp3350.teachreach.systemTest.TeachReachTest;
-import comp3350.teachreach.systemTest.EditStudentProfileTest;
-import comp3350.teachreach.systemTest.SearchTutorByCourseTest;
+import comp3350.teachreach.systemTest.AccountLoginAndAccountManagementTest;
+import comp3350.teachreach.systemTest.EditProfileTest;
+import comp3350.teachreach.systemTest.SearchAndSortTest;
 
 @LargeTest
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        TeachReachTest.class,
-        EditStudentProfileTest.class,
-        SearchTutorByCourseTest.class
+        AccountLoginAndAccountManagementTest.class,
+        EditProfileTest.class,
+        SearchAndSortTest.class
 
 })
 
