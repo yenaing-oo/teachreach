@@ -26,16 +26,13 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SessionRecyclerAdapter extends
         RecyclerView.Adapter<SessionRecyclerAdapter.ViewHolder> {
-    private static List<ISession>          sessionList;
-    private static IOnSessionClickListener listener;
-
-    private static ConcurrentMap<Integer, IStudent> students;
-    private static ConcurrentMap<Integer, ITutor>   tutors;
-    private static DateTimeFormatter                timeFormatter = DateTimeFormatter.ofPattern(
+    private static final DateTimeFormatter                timeFormatter = DateTimeFormatter.ofPattern(
             "h:mm a, d/M/yy");
-
-
-    private boolean isTutor;
+    private static       List<ISession>                   sessionList;
+    private static       IOnSessionClickListener          listener;
+    private static       ConcurrentMap<Integer, IStudent> students;
+    private static       ConcurrentMap<Integer, ITutor>   tutors;
+    private final        boolean                          isTutor;
 
     public SessionRecyclerAdapter(ConcurrentMap<Integer, IStudent> studentMap,
                                   ConcurrentMap<Integer, ITutor> tutorMap, List<ISession> sessions,

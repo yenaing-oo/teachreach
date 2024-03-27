@@ -68,15 +68,15 @@ public class SessionFragment extends Fragment {
         config      = getResources().getConfiguration();
         isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
         isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
-        setUpTabBar();
         setUpRecycler();
+        setUpTabBar();
     }
 
     private void setUpRecycler() {
         RecyclerView recyclerView = binding.rvSessionResult;
         List<ISession> sessionList = isTutor
-                ? accessSessions.getSessions(tutor)
-                : accessSessions.getSessions(student);
+                ? accessSessions.getPendingSessions(tutor)
+                : accessSessions.getPendingSessions(student);
         SessionRecyclerAdapter adapter = new SessionRecyclerAdapter(
                 sessionViewModel.getStudents().getValue(), sessionViewModel.getTutors().getValue(),
                 sessionList, isTutor, s -> accessSessions.updateSession(s.approve()));
