@@ -54,9 +54,9 @@ class SessionFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch (tab.getPosition()) {
-                    case 0 -> Toast.makeText(requireContext(), "Upcoming", Toast.LENGTH_SHORT)
+                    case 0 -> Toast.makeText(requireContext(), "Pending", Toast.LENGTH_SHORT)
                                    .show();
-                    case 1 -> Toast.makeText(requireContext(), "Pending", Toast.LENGTH_SHORT)
+                    case 1 -> Toast.makeText(requireContext(), "Upcoming", Toast.LENGTH_SHORT)
                                    .show();
                     case 2 -> Toast.makeText(requireContext(), "Previous", Toast.LENGTH_SHORT)
                                    .show();

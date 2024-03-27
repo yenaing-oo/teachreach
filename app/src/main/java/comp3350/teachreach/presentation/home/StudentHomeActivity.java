@@ -17,16 +17,19 @@ import comp3350.teachreach.databinding.ActivityNavigationStudentBinding;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public
-class StudentHomeActivity extends AppCompatActivity {
-    private static final int                              BACK_DELAY = 2000;
-    private              ActivityNavigationStudentBinding binding;
-    private              long                             backPressedTime;
-    private              NavigationBarView                navigationMenu;
-    private              NavController                    navController;
-    private              TRViewModel                      vm;
+public class StudentHomeActivity extends AppCompatActivity {
+    private static final int  BACK_DELAY = 2000;
+    private              long backPressedTime;
 
     private OnBackPressedCallback onBackPressedCallback;
+
+    private ActivityNavigationStudentBinding binding;
+
+    private NavigationBarView navigationMenu;
+    private NavController     navController;
+
+    private TRViewModel vm;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,7 @@ class StudentHomeActivity extends AppCompatActivity {
 
         vm             = new ViewModelProvider(this).get(TRViewModel.class);
         navigationMenu = (NavigationBarView) binding.navigationMenu;
-        NavHostFragment
-                navHostFragment
-                = (NavHostFragment) getSupportFragmentManager().findFragmentById(
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(
                 R.id.nav_host_fragment_student);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
@@ -74,6 +75,9 @@ class StudentHomeActivity extends AppCompatActivity {
             if (dest.getId() == R.id.searchFragment) {
                 changeNavigationMenu(NavDest.search);
             }
+            if (dest.getId() == R.id.sessionFragment) {
+                changeNavigationMenu(NavDest.sessions);
+            }
         });
     }
 
@@ -107,8 +111,7 @@ class StudentHomeActivity extends AppCompatActivity {
         backPressedTime = System.currentTimeMillis();
     }
 
-    private
-    enum NavDest {
+    private enum NavDest {
         sessions,
         search,
         profile,

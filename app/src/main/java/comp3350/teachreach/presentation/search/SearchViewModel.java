@@ -31,23 +31,24 @@ public class SearchViewModel extends ViewModel {
     private final ListeningExecutorService service    = MoreExecutors.listeningDecorator(
             threadPool);
 
-    private final IUserProfileHandler<ITutor> userFetcher      = new UserProfileFetcher<>();
-    private final ITutorProfileHandler        tutorFetcher     = new TutorProfileHandler();
-    private final ITutorFilter                tutorFilter      = new TutorFilter(userFetcher,
-                                                                                 tutorFetcher);
-    private final MutableLiveData<Boolean>    sortingByPrice   = new MutableLiveData<>(
+    private final IUserProfileHandler<ITutor> userFetcher         = new UserProfileFetcher<>();
+    private final ITutorProfileHandler        tutorFetcher        = new TutorProfileHandler();
+    private final ITutorFilter                tutorFilter         = new TutorFilter(userFetcher,
+                                                                                    tutorFetcher);
+    private final MutableLiveData<Boolean>    sortingByPrice      = new MutableLiveData<>(
             tutorFilter.getSortByPriceState());
-    private final MutableLiveData<Boolean>    sortingByReviews = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    sortingByReviews    = new MutableLiveData<>(
             tutorFilter.getSortByReviewsState());
-
-    private final MutableLiveData<Boolean> filteringByMinPrice = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    filteringByMinPrice = new MutableLiveData<>(
             tutorFilter.getMinimumHourlyRateState());
-    private final MutableLiveData<Boolean> filteringByMaxPrice = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    filteringByMaxPrice = new MutableLiveData<>(
             tutorFilter.getMaximumHourlyRateState());
-    private final MutableLiveData<Boolean> filteringByRatings  = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    filteringByRatings  = new MutableLiveData<>(
             tutorFilter.getMinimumAvgRatingState());
-    private final MutableLiveData<Boolean> filteringByCourse   = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    filteringByCourse   = new MutableLiveData<>(
             tutorFilter.getCourseCodeState());
+
+    private final MutableLiveData<String> err = new MutableLiveData<>(null);
 
     private final MutableLiveData<Double> prevMaxPrice   = new MutableLiveData<>(null);
     private final MutableLiveData<Double> prevMinPrice   = new MutableLiveData<>(null);
@@ -144,12 +145,12 @@ public class SearchViewModel extends ViewModel {
                 tutorFilter.setMaximumHourlyRate(desiredHourlyRate).getMaximumHourlyRateState());
     }
 
-    public void setCourseCode(String courseCode) {
+    public void setCourseCode(@NonNull String courseCode) {
         selectedCourse.postValue(courseCode);
         filteringByCourse.postValue(tutorFilter.setCourseCode(courseCode).getCourseCodeState());
     }
 
-    public void setSearchFilter(String searchString) {
+    public void setSearchFilter(@NonNull String searchString) {
         tutorFilter.setSearchFilter(searchString);
         applyFilters();
     }
@@ -214,6 +215,14 @@ public class SearchViewModel extends ViewModel {
         return tutorFetcher;
     }
 
+    public void resetErr() {
+        err.postValue(null);
+    }
+
+    public LiveData<String> getErr() {
+        return err;
+    }
+
     private void applyFilters() {
         ListenableFuture<List<ITutor>> futureList = Futures.submitAsync(
                 Callables.asAsyncCallable(() -> tutorFilter.filterFunc().apply(tutors), service),
@@ -226,7 +235,7 @@ public class SearchViewModel extends ViewModel {
 
             @Override
             public void onFailure(@NonNull Throwable t) {
-                t.getCause();
+                err.postValue(t.getMessage());
             }
         }, service);
     }

@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -75,13 +76,18 @@ public class SearchFragment extends Fragment {
         slidingPaneLayout = binding.searchFragment;
         setUpRecyclerView();
         setUpSearchBar();
+        searchViewModel.getErr().observe(getViewLifecycleOwner(), err -> {
+            if (err == null) return;
+            Toast.makeText(requireContext(), "Something went wrong!",
+                           Toast.LENGTH_SHORT).show();
+            searchViewModel.resetErr();
+        });
     }
 
     private void setUpSearchBar() {
-        TextInputLayout searchTextInput = binding.textField;
-        EditText        searchEditText  = searchTextInput.getEditText();
-        Button          filterButton    = binding.btnFilter;
-        Button          searchButton    = binding.btnSearch;
+        EditText searchEditText = binding.searchField;
+        Button   filterButton   = binding.btnFilter;
+        Button   searchButton   = binding.btnSearch;
 
         searchEditText.setOnEditorActionListener((v, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
@@ -237,7 +243,6 @@ public class SearchFragment extends Fragment {
         if (priceMaxSwitch != null && priceMaxSwitch.isChecked()) {
             String s = maxPrice.getText().toString().trim();
             if (!s.isEmpty()) searchViewModel.setMaximumHourlyRate(Double.parseDouble(s));
-
         } else searchViewModel.clearMaximumHourlyRate();
 
         if (searchString.isEmpty()) searchViewModel.resetSearchString();

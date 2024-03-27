@@ -40,12 +40,12 @@
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tabUpcoming" />
+                    android:text="@string/tabPending" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/tabPending" />
+                    android:text="@string/tabUpcoming" />
 
                 <com.google.android.material.tabs.TabItem
                     android:layout_width="wrap_content"
