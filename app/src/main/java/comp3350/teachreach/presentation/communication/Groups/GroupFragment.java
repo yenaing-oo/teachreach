@@ -79,7 +79,6 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-
         binding = FragmentGroupBinding.inflate(inflater, container, false);
         recyclerView = binding.chatsRecycleViewFragment;
         return binding.getRoot();
@@ -90,7 +89,6 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setUpRecyclerView(recyclerView);
-
         gm.getContactList().observe(getViewLifecycleOwner(), new
                 Observer<List<IAccount>>() {
                     @Override
@@ -108,8 +106,6 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
                         Objects
                                 .requireNonNull(vm.getAccount().getValue())
                                 .getAccountID());
-
-
         UsersAdapter usersAdapter = new UsersAdapter(contactAccounts, this, vm, gm);
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -121,8 +117,6 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
         int tutorID, studentID;
         assert (account != null);
         assert (account.getAccountID() > 0);
-
-
         if (Boolean.TRUE.equals(vm.getIsTutor().getValue())) {
             tutorID = vm.getTutor().getValue().getTutorID();
             AccessStudents accessStudents = new AccessStudents();
@@ -130,9 +124,7 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
             studentID = student.getStudentID();
             mm.setOtherUser(account);
             assert (studentID > 0);
-
             assert (tutorID > 0);
-
         } else {
             studentID = vm.getStudent().getValue().getStudentID();
             AccessTutors accessTutors = new AccessTutors();
@@ -140,19 +132,13 @@ public class GroupFragment extends Fragment implements ISelectAccountListener {
             tutorID = tutor.getTutorID();
             mm.setOtherUser(account);
             assert (studentID > 0);
-
             assert (tutorID > 0);
         }
-
-
         int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
         assert (groupID > 0);
-
         List<IMessage> messageHistory = messageHandler.retrieveAllMessageByGroupID(groupID);
         mm.setGroupID(groupID);
         mm.setMessageList(messageHistory);
-
-
         NavHostFragment
                 .findNavController(this)
                 .navigate(R.id.actionToIndividualChatFragment);
