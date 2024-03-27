@@ -28,21 +28,21 @@ class DialogueAddCourse extends AppCompatDialogFragment
     public
     Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
     {
-        FragmentActivity parentActivity = requireActivity();
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(parentActivity);
-
-        DialogAddCourseBinding binding = DialogAddCourseBinding.inflate(parentActivity.getLayoutInflater());
-
-        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(TRViewModel.class);
-
-        TutorProfileViewModel profileViewModel = new ViewModelProvider(parentActivity).get(TutorProfileViewModel.class);
-
-        TextInputLayout tilCourseCode = binding.tilCourseCode;
-        EditText        etCourseCode  = tilCourseCode.getEditText();
-
-        TextInputLayout tilCourseName = binding.tilCourseName;
-        EditText        etCourseName  = tilCourseName.getEditText();
+        FragmentActivity           parentActivity   = requireActivity();
+        MaterialAlertDialogBuilder builder          = new MaterialAlertDialogBuilder(parentActivity);
+        DialogAddCourseBinding
+                                   binding
+                                                    =
+                DialogAddCourseBinding.inflate(parentActivity.getLayoutInflater());
+        TRViewModel                trViewModel      = new ViewModelProvider(parentActivity).get(TRViewModel.class);
+        TutorProfileViewModel
+                                   profileViewModel
+                                                    =
+                new ViewModelProvider(parentActivity).get(TutorProfileViewModel.class);
+        TextInputLayout            tilCourseCode    = binding.tilCourseCode;
+        EditText                   etCourseCode     = tilCourseCode.getEditText();
+        TextInputLayout            tilCourseName    = binding.tilCourseName;
+        EditText                   etCourseName     = tilCourseName.getEditText();
 
         return builder.setTitle("Adding New Course").setPositiveButton("Add", (d, w) -> {
             try {
