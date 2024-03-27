@@ -40,7 +40,7 @@ public class SearchTutorByCourseTest {
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
         onView(withId(R.id.NavBarSearch)).perform(click());
 
-        onView(withId(R.id.searchField)).perform(typeText("Biology"), closeSoftKeyboard());
+        onView(withId(R.id.searchField)).perform(typeText("COMP 3010"), closeSoftKeyboard());
         onView(withId(R.id.btnSearch)).perform(click());
 
         onView(withId(R.id.rvSearchResult)).check(matches(isDisplayed()));
