@@ -72,6 +72,15 @@ public class SessionFragment extends Fragment {
         setUpTabBar();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isTutor) sessionViewModel.setSessionsTutor(
+                SessionViewModel.SessionType.pending, tutor);
+        else sessionViewModel.setSessionsStudent(
+                SessionViewModel.SessionType.pending, student);
+    }
+
     private void setUpRecycler() {
         RecyclerView recyclerView = binding.rvSessionResult;
         List<ISession> sessionList = isTutor
