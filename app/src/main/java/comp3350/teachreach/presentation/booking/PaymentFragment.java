@@ -133,8 +133,6 @@ class PaymentFragment extends Fragment
                                                     "Booking request has been" + " sent to your tutor!",
                                                     "View My Sessions",
                                                     (dialog, which) -> {
-                                                        // TO-DO: Jump to
-                                                        // view session
                                                         NavHostFragment
                                                                 .findNavController(requireParentFragment().requireParentFragment())
                                                                 .navigate(R.id.actionToStudentProfileSelfViewFragment);

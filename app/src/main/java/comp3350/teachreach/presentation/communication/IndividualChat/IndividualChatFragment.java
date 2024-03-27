@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -22,19 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentIndividualChatBinding;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.exceptions.MessageHandleException;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
-import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.presentation.utils.TRViewModel;
-//import comp3350.teachreach.presentation.TRViewModel;
 
 public class IndividualChatFragment extends Fragment {
 
@@ -84,13 +79,7 @@ public class IndividualChatFragment extends Fragment {
         LiveData<List<IMessage>> messagesLiveData
                 = mm.getMessageList();
         messagesLiveData.observe(getViewLifecycleOwner(),
-                new Observer<List<IMessage>>() {
-                    @Override
-                    public void onChanged(List<IMessage> messageList) {
-
-                        fullMessageAdaptor.setMessages();
-                    }
-                });
+                messageList -> fullMessageAdaptor.setMessages());
     }
 
 
@@ -134,7 +123,7 @@ public class IndividualChatFragment extends Fragment {
 
             Integer groupIDInteger = mm.getGroupID().getValue();
             if (groupIDInteger != null) {
-                int groupID = groupIDInteger.intValue();
+                int groupID = groupIDInteger;
 
                 int senderAccountID = vm.getAccount().getValue().getAccountID();
                 messageHandler.storeMessage(groupID, senderAccountID, messages);

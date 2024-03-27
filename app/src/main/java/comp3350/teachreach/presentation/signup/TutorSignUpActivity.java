@@ -89,7 +89,6 @@ class TutorSignUpActivity extends AppCompatActivity
         if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == RESULT_OK) {
             if (data != null) {
                 Uri transcriptUri = data.getData();
-                // Handle the transcript file.
             }
         }
     }

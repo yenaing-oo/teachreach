@@ -146,7 +146,6 @@ public class MessageHandler implements IMessageHandler
     public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
         List<IAccount> users = new ArrayList<>();
 
-        // Determine if the accountID belongs to a student or a tutor
         IStudent findStudent = null;
         ITutor findTutor = null;
 
@@ -160,17 +159,13 @@ public class MessageHandler implements IMessageHandler
         } catch (DataAccessException ignored) {
         }
 
-        // Find chat accounts based on the type of the account (student or tutor)
         if (findStudent != null && findStudent.getAccountID() == accountID) {
             List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
             for (int tutorID : tutorIDs) {
 
                 ITutor tutor = accessTutors.getTutorByTutorID(tutorID);
                 int tutorAccountID = tutor.getAccountID();
-                IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
-                if (user != null) {
-                    users.add(user);
-                }
+                accessAccounts.getAccountByAccountID(tutorAccountID).ifPresent(users::add);
             }
         } else if (findTutor != null && findTutor.getAccountID() == accountID) {
             List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
@@ -178,10 +173,7 @@ public class MessageHandler implements IMessageHandler
 
                 IStudent student = accessStudents.getStudentByStudentID(studentID);
                 int studentAccountID = student.getAccountID();
-                IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
-                if (user != null) {
-                    users.add(user);
-                }
+                accessAccounts.getAccountByAccountID(studentAccountID).ifPresent(users::add);
             }
         }
 
