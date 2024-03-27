@@ -60,9 +60,9 @@ public class SearchTutorRecyclerAdapter extends
         tutorCard.setOnClickListener(v -> listener.onTutorClick(tutor));
         tvName.setText(profileHandler.getUserName(tutor));
         tvMajor.setText(profileHandler.getUserMajor(tutor));
-        tvRatings.setText(String.format(Locale.getDefault(), "%.2f",
+        tvRatings.setText(String.format(Locale.getDefault(), "%.2f ⭐️",
                                         tutorProfileHandler.getAvgReview(tutor)));
-        tvPrice.setText(String.format(Locale.getDefault(), "%.2f", tutor.getHourlyRate()));
+        tvPrice.setText(String.format(Locale.getDefault(), "$%.2f", tutor.getHourlyRate()));
     }
 
     @Override

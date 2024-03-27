@@ -11,7 +11,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,10 +77,14 @@ public class SearchFragment extends Fragment {
         setUpSearchBar();
         searchViewModel.getErr().observe(getViewLifecycleOwner(), err -> {
             if (err == null) return;
-            Toast.makeText(requireContext(), "Something went wrong!",
-                           Toast.LENGTH_SHORT).show();
             searchViewModel.resetErr();
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        searchViewModel.resetFilter();
     }
 
     private void setUpSearchBar() {
