@@ -57,6 +57,7 @@
                     app:layout_constraintVertical_bias="0">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etUsername"
                         android:layout_width="256dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/tilEditNameHint" />
@@ -79,6 +80,7 @@
                     app:layout_constraintVertical_bias="0">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMajor"
                         android:layout_width="256dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/tilEditMajorHint" />
@@ -99,6 +101,7 @@
                     app:layout_constraintVertical_bias="0">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPronouns"
                         android:layout_width="256dp"
                         android:layout_height="wrap_content"
                         android:hint="@string/tilEditPronounsHint" />
