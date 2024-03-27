@@ -11,10 +11,8 @@ class SessionCostCalculator implements comp3350.teachreach.logic.interfaces.ISes
     }
 
     @Override
-    public
-    double calculateSessionCost(ITutor t, int sessionDuration)
-    {
+    public double calculateSessionCost(ITutor t, int sessionDurationInMinutes) {
         double tutorHourlyRate = t.getHourlyRate();
-        return tutorHourlyRate * sessionDuration;
+        return tutorHourlyRate * sessionDurationInMinutes / 60.0;
     }
 }

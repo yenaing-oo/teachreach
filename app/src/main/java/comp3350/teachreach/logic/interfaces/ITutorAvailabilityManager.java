@@ -9,7 +9,6 @@ import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public interface ITutorAvailabilityManager {
-    List<ITimeSlice> getAvailability(ITutor tutor);
 
     List<ITimeSlice> getAvailabilityAsSlots(ITutor tutor, LocalDate date);
 
