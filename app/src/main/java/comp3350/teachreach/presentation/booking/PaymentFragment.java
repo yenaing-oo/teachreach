@@ -105,23 +105,25 @@ public class PaymentFragment extends Fragment {
             PaymentValidator.validatePaymentInfo(strCardNumber, strExpDate, strCVC);
             ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
             ISessionHandler           sessionHandler      = new SessionHandler(availabilityManager);
-            IStudent                  student             = bookingViewModel.getStudent()
-                                                                            .getValue();
-            ITutor                    tutor               = bookingViewModel.getTutor().getValue();
-            ITimeSlice                sessionTime         = bookingViewModel.getSessionTime().getValue();
-            String                    location            = bookingViewModel.getSessionLocation().getValue();
+            IStudent student = bookingViewModel.getStudent()
+                                               .getValue();
+            ITutor     tutor       = bookingViewModel.getTutor().getValue();
+            ITimeSlice sessionTime = bookingViewModel.getSessionTime().getValue();
+            String     location    = bookingViewModel.getSessionLocation().getValue();
             sessionHandler.bookSession(new Session(student.getStudentID(),
                                                    tutor.getTutorID(),
                                                    sessionTime,
                                                    grandTotal,
                                                    location));
             AlertDialog doneDialog = makeDoneDialog("Congratulations!",
-                                                    "Booking request has been" + " sent to your tutor!",
+                                                    "Booking request has been" +
+                                                            " sent to your tutor!",
                                                     "View My Sessions",
                                                     (dialog, which) -> {
                                                         NavHostFragment
-                                                                .findNavController(requireParentFragment().requireParentFragment())
-                                                                .navigate(R.id.actionToStudentProfileSelfViewFragment);
+                                                                .findNavController(
+                                                                        requireParentFragment().requireParentFragment())
+                                                                .navigate(R.id.sessionFragment);
                                                     },
                                                     "Done",
                                                     (dialog, which) -> dialog.dismiss());
