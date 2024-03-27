@@ -2,6 +2,7 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.slidingpanelayout.widget.SlidingPaneLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -31,7 +34,11 @@ import java.util.Locale;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
+import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.communication.MessageHandler;
+import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
@@ -42,6 +49,8 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.booking.BookingViewModel;
+import comp3350.teachreach.presentation.communication.Groups.GroupModel;
+import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
@@ -49,6 +58,7 @@ class TutorProfileViewFragment extends Fragment {
     private static final IUserProfileHandler<ITutor> profileFetcher      = new UserProfileFetcher<>();
     private static final ITutorProfileHandler        profileHandler      = new TutorProfileHandler();
     private static final ITutorAvailabilityManager   availabilityManager = new TutorAvailabilityManager();
+    private static final IMessageHandler             messageHandler      = new MessageHandler();
     private              TRViewModel                 trViewModel;
     private              BookingViewModel            bookingViewModel;
     private              FragmentTutorProfileBinding binding;
@@ -57,6 +67,11 @@ class TutorProfileViewFragment extends Fragment {
     private              IStudent                    student;
     private              IAccount                    tutorAccount;
     private              List<String>                prefLocation;
+
+
+    private MessageModel messageModel;
+    private GroupModel   groupModel;
+
 
     private Configuration config;
     private boolean       isLarge, isLandscape;
@@ -70,6 +85,10 @@ class TutorProfileViewFragment extends Fragment {
 
         trViewModel      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
+        messageModel     = new ViewModelProvider(requireActivity()).get(
+                MessageModel.class);
+        groupModel       = new ViewModelProvider(requireActivity()).get(
+                GroupModel.class);
     }
 
     @Override
@@ -95,6 +114,7 @@ class TutorProfileViewFragment extends Fragment {
             setUpTutoredCourses();
             setUpPreferredLocations();
             setUpCalendarView();
+            chatGroupIntent(view);
         } catch (final Throwable e) {
             Toast.makeText(requireContext(), "Not so fast!", Toast.LENGTH_SHORT).show();
             slidingPaneLayout.close();
@@ -185,5 +205,52 @@ class TutorProfileViewFragment extends Fragment {
             Toast.makeText(requireContext(), "Something Happened! Please try again!",
                            Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void createGroup(ExtendedFloatingActionButton floatingButton) {
+        int studentID, tutorID;
+        studentID = trViewModel.getStudent().getValue().getStudentID();
+        tutorID   = trViewModel.getTutor().getValue().getTutorID();
+        AccessTutors   accessTutors   = new AccessTutors();
+        AccessAccounts accessAccounts = new AccessAccounts();
+        messageModel.setOtherUser(accessAccounts.getAccountByAccountID(
+                accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
+        groupModel.addAccountToContactList(accessAccounts.getAccountByAccountID(
+                accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
+        floatingButton.setError(null);
+        try {
+            MessageModel messageModel
+                    =
+                    new ViewModelProvider(requireActivity()).get(MessageModel.class);
+            int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
+            if (groupID < 0) {
+                groupID = messageHandler.createGroup(studentID, tutorID);
+            }
+            messageModel.setGroupID(groupID);
+            messageModel.setMessageList(
+                    messageHandler.retrieveAllMessageByGroupID(groupID));   //try it
+
+        } catch (final Exception e) {
+            floatingButton.setError(e.getMessage());
+            Log.e("GroupCreation", "Error creating group: " + e.getMessage());
+            Toast
+                    .makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
+            Snackbar
+                    .make(floatingButton,  e.getMessage(), Snackbar.LENGTH_LONG)
+                    .show();
+        }
+    }
+
+
+    private void chatGroupIntent(View v) {
+        ExtendedFloatingActionButton floatingButton
+                = v.findViewById(R.id.fabMsg);
+        floatingButton.setOnClickListener(view -> {
+            createGroup(floatingButton);
+            NavHostFragment
+                    .findNavController(requireParentFragment().requireParentFragment())
+                    .navigate(R.id.actionToIndividualChatFragment);
+        });
     }
 }
