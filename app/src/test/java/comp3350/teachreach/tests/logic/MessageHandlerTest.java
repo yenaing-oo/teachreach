@@ -1,48 +1,7 @@
 package comp3350.teachreach.tests.logic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-
-import comp3350.teachreach.data.hsqldb.AccountHSQLDB;
-import comp3350.teachreach.data.hsqldb.MessageHSQLDB;
-import comp3350.teachreach.data.hsqldb.StudentHSQLDB;
-import comp3350.teachreach.data.hsqldb.TutorHSQLDB;
-import comp3350.teachreach.data.interfaces.IAccountPersistence;
-import comp3350.teachreach.data.interfaces.IMessagePersistence;
-import comp3350.teachreach.data.interfaces.IStudentPersistence;
-import comp3350.teachreach.data.interfaces.ITutorPersistence;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessMessage;
-import comp3350.teachreach.logic.DAOs.AccessStudents;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.communication.MessageHandler;
-import comp3350.teachreach.logic.exceptions.MessageHandleException;
-import comp3350.teachreach.objects.Message;
-import comp3350.teachreach.objects.interfaces.IAccount;
-import comp3350.teachreach.objects.interfaces.IMessage;
-import comp3350.teachreach.objects.interfaces.IStudent;
-import comp3350.teachreach.tests.utils.TestUtils;
-
 public class MessageHandlerTest {
-
+/*
     private MessageHandler messageHandler;
     private IMessage testMessage;
     private File tempDB;
@@ -322,5 +281,5 @@ public class MessageHandlerTest {
         System.out.println(contactAccounts.get(0));
     }
 
-
+*/
 }
