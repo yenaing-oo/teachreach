@@ -2,8 +2,6 @@ package comp3350.teachreach.presentation.profile.tutor;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
@@ -48,8 +45,7 @@ import comp3350.teachreach.presentation.booking.BookingViewModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class TutorProfileViewFragment extends Fragment
-{
+class TutorProfileViewFragment extends Fragment {
     private static final IUserProfileHandler<ITutor> profileFetcher      = new UserProfileFetcher<>();
     private static final ITutorProfileHandler        profileHandler      = new TutorProfileHandler();
     private static final ITutorAvailabilityManager   availabilityManager = new TutorAvailabilityManager();
@@ -65,15 +61,11 @@ class TutorProfileViewFragment extends Fragment
     private Configuration config;
     private boolean       isLarge, isLandscape;
 
-    public
-    TutorProfileViewFragment()
-    {
+    public TutorProfileViewFragment() {
     }
 
     @Override
-    public
-    void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         trViewModel      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
@@ -81,17 +73,14 @@ class TutorProfileViewFragment extends Fragment
     }
 
     @Override
-    public
-    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentTutorProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public
-    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         config            = getResources().getConfiguration();
         isLarge           = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -114,29 +103,19 @@ class TutorProfileViewFragment extends Fragment
     }
 
 
-    private
-    void setUpTutoredCourses()
-    {
-        RecyclerView               recyclerView  = binding.rvTutoredCourses;
-        int                        spanCount     = isLarge || isLandscape ? 6 : 3;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+    private void setUpTutoredCourses() {
+        RecyclerView recyclerView = binding.rvTutoredCourses;
+        int          spanCount    = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(),
+                                                                         spanCount);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                List<String> coursesCodes = profileHandler.getCourseCodeList(tutor);
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    StringRecyclerAdapter adapter = new StringRecyclerAdapter(coursesCodes);
-                    recyclerView.setAdapter(adapter);
-                });
-            } catch (final Throwable ignored) {
-            }
-        });
+        List<String>          coursesCodes = profileHandler.getCourseCodeList(tutor);
+        StringRecyclerAdapter adapter      = new StringRecyclerAdapter(coursesCodes);
+        recyclerView.setAdapter(adapter);
     }
 
-    private
-    void setUpTopBar()
-    {
+    private void setUpTopBar() {
         MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle(tutorAccount.getUserName());
         materialToolbar.setNavigationOnClickListener(view -> {
@@ -145,9 +124,7 @@ class TutorProfileViewFragment extends Fragment
         });
     }
 
-    private
-    void setUpProfile()
-    {
+    private void setUpProfile() {
         TextView tvPronouns = binding.tvPronounsField;
         TextView tvMajor    = binding.tvMajorField;
         TextView tvPrice    = binding.tvRatingField;
@@ -162,43 +139,32 @@ class TutorProfileViewFragment extends Fragment
                                         tutor.getReviewCount()));
     }
 
-    private
-    void setUpPreferredLocations()
-    {
-        RecyclerView               recycler      = binding.rvPreferredLocations;
-        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+    private void setUpPreferredLocations() {
+        RecyclerView recycler  = binding.rvPreferredLocations;
+        int          spanCount = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(),
+                                                                         spanCount);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
-        Executors.newSingleThreadExecutor().execute(() -> {
-            try {
-                prefLocation = profileHandler.getPreferredLocations(tutor);
-                new Handler(Looper.getMainLooper()).post(() -> {
-                    StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
-                    recycler.setAdapter(adapter);
-                });
-            } catch (final Throwable ignored) {
-            }
-        });
+        prefLocation = profileHandler.getPreferredLocations(tutor);
+        StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
+        recycler.setAdapter(adapter);
     }
 
-    private
-    void setUpCalendarView()
-    {
+    private void setUpCalendarView() {
         CalendarView calendarView = binding.cvCalendarBook;
         Date         date         = Date.from(Instant.now());
         calendarView.setMinDate(date.getTime());
         calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y, m, d));
     }
 
-    private
-    void goToDayFragment(int y, int m, int d)
-    {
+    private void goToDayFragment(int y, int m, int d) {
         try {
-            LocalDate        calDate      = LocalDate.of(y, m + 1, d);
-            List<ITimeSlice> slots        = availabilityManager.getAvailabilityAsSlots(tutor, calDate);
-            boolean          notAvailable = slots.isEmpty();
-            LocalDate        now          = LocalDate.now();
+            LocalDate calDate = LocalDate.of(y, m + 1, d);
+            List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(tutor,
+                                                                                calDate);
+            boolean   notAvailable = slots.isEmpty();
+            LocalDate now          = LocalDate.now();
             if (calDate.isBefore(now) || notAvailable) {
                 String toastMsg = String.format(Locale.getDefault(),
                                                 "%s is not available on %s",
@@ -213,9 +179,11 @@ class TutorProfileViewFragment extends Fragment
             bookingViewModel.setTutor(tutor);
             bookingViewModel.setStudent(student);
             bookingViewModel.setTutorLocations(prefLocation);
-            NavHostFragment.findNavController(this).navigate(R.id.actionToTimeSlotSelectionFragment);
+            NavHostFragment.findNavController(this)
+                           .navigate(R.id.actionToTimeSlotSelectionFragment);
         } catch (final Throwable e) {
-            Toast.makeText(requireContext(), "Something Happened! Please try again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Something Happened! Please try again!",
+                           Toast.LENGTH_SHORT).show();
         }
     }
 }

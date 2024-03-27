@@ -1,5 +1,6 @@
 package comp3350.teachreach.presentation.search;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -26,32 +27,38 @@ import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class SearchViewModel extends ViewModel {
-    private final ExecutorService threadPool = Executors.newCachedThreadPool();
-    private final ListeningExecutorService listeningExecutorService = MoreExecutors.listeningDecorator(
+    private final ExecutorService          threadPool = Executors.newCachedThreadPool();
+    private final ListeningExecutorService service    = MoreExecutors.listeningDecorator(
             threadPool);
-    private final IUserProfileHandler<ITutor> userFetcher = new UserProfileFetcher<>();
-    private final ITutorProfileHandler tutorFetcher = new TutorProfileHandler();
-    private final ITutorFilter tutorFilter = new TutorFilter(userFetcher, tutorFetcher);
-    private final MutableLiveData<Boolean> sortingByPrice = new MutableLiveData<>(
+
+    private final IUserProfileHandler<ITutor> userFetcher      = new UserProfileFetcher<>();
+    private final ITutorProfileHandler        tutorFetcher     = new TutorProfileHandler();
+    private final ITutorFilter                tutorFilter      = new TutorFilter(userFetcher,
+                                                                                 tutorFetcher);
+    private final MutableLiveData<Boolean>    sortingByPrice   = new MutableLiveData<>(
             tutorFilter.getSortByPriceState());
-    private final MutableLiveData<Boolean> sortingByReviews = new MutableLiveData<>(
+    private final MutableLiveData<Boolean>    sortingByReviews = new MutableLiveData<>(
             tutorFilter.getSortByReviewsState());
+
     private final MutableLiveData<Boolean> filteringByMinPrice = new MutableLiveData<>(
             tutorFilter.getMinimumHourlyRateState());
     private final MutableLiveData<Boolean> filteringByMaxPrice = new MutableLiveData<>(
             tutorFilter.getMaximumHourlyRateState());
-    private final MutableLiveData<Boolean> filteringByRatings = new MutableLiveData<>(
+    private final MutableLiveData<Boolean> filteringByRatings  = new MutableLiveData<>(
             tutorFilter.getMinimumAvgRatingState());
-    private final MutableLiveData<Boolean> filteringByCourse = new MutableLiveData<>(
+    private final MutableLiveData<Boolean> filteringByCourse   = new MutableLiveData<>(
             tutorFilter.getCourseCodeState());
-    private final MutableLiveData<Double> prevMaxPrice = new MutableLiveData<>(null);
-    private final MutableLiveData<Double> prevMinPrice = new MutableLiveData<>(null);
+
+    private final MutableLiveData<Double> prevMaxPrice   = new MutableLiveData<>(null);
+    private final MutableLiveData<Double> prevMinPrice   = new MutableLiveData<>(null);
     private final MutableLiveData<Double> selectedReview = new MutableLiveData<>(null);
     private final MutableLiveData<String> selectedCourse = new MutableLiveData<>(null);
-    private final List<ITutor> tutors = new CopyOnWriteArrayList<>(
+
+    private final List<ITutor> tutors  = new CopyOnWriteArrayList<>(
             Server.getTutorDataAccess().getTutors().values());
     private final List<String> courses = new CopyOnWriteArrayList<>(
             Server.getCourseDataAccess().getCourses().keySet());
+
     private final MutableLiveData<List<ITutor>> tutorsFiltered = new MutableLiveData<>();
 
     public LiveData<Boolean> getSortingByPrice() {
@@ -209,8 +216,8 @@ public class SearchViewModel extends ViewModel {
 
     private void applyFilters() {
         ListenableFuture<List<ITutor>> futureList = Futures.submitAsync(
-                Callables.asAsyncCallable(() -> tutorFilter.filterFunc().apply(tutors),
-                                          listeningExecutorService), listeningExecutorService);
+                Callables.asAsyncCallable(() -> tutorFilter.filterFunc().apply(tutors), service),
+                service);
         Futures.addCallback(futureList, new FutureCallback<>() {
             @Override
             public void onSuccess(List<ITutor> result) {
@@ -218,16 +225,16 @@ public class SearchViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(@NonNull Throwable t) {
                 t.getCause();
             }
-        }, listeningExecutorService);
+        }, service);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
         threadPool.shutdown();
-        listeningExecutorService.shutdown();
+        service.shutdown();
     }
 }

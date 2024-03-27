@@ -39,16 +39,16 @@ import comp3350.teachreach.presentation.profile.tutor.StringRecyclerAdapter;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class SearchFragment extends Fragment {
-    EditText maxPrice;
-    EditText minPrice;
-    CheckBox priceMaxSwitch;
-    CheckBox priceMinSwitch;
-    SlidingPaneLayout slidingPaneLayout;
+    private EditText              maxPrice;
+    private EditText              minPrice;
+    private CheckBox              priceMaxSwitch;
+    private CheckBox              priceMinSwitch;
+    private SlidingPaneLayout     slidingPaneLayout;
     private FragmentSearchBinding binding;
-    private TRViewModel viewModel;
-    private List<ITutor> tutorList;
-    private List<String> courseList;
-    private SearchViewModel searchViewModel;
+    private TRViewModel           viewModel;
+    private List<ITutor>          tutorList;
+    private List<String>          courseList;
+    private SearchViewModel       searchViewModel;
 
     public SearchFragment() {
     }
@@ -56,10 +56,10 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        viewModel       = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         searchViewModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
-        tutorList = searchViewModel.getTutors();
-        courseList = searchViewModel.getCourses();
+        tutorList       = searchViewModel.getTutors();
+        courseList      = searchViewModel.getCourses();
     }
 
     @Override
@@ -79,9 +79,9 @@ public class SearchFragment extends Fragment {
 
     private void setUpSearchBar() {
         TextInputLayout searchTextInput = binding.textField;
-        EditText searchEditText = searchTextInput.getEditText();
-        Button filterButton = binding.btnFilter;
-        Button searchButton = binding.btnSearch;
+        EditText        searchEditText  = searchTextInput.getEditText();
+        Button          filterButton    = binding.btnFilter;
+        Button          searchButton    = binding.btnSearch;
 
         searchEditText.setOnEditorActionListener((v, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE ||
@@ -122,12 +122,12 @@ public class SearchFragment extends Fragment {
 
     private void setUpReviewFilterField(DialogFiltersBinding b) {
         TextInputLayout tilMinReviews = b.tilMinReviews;
-        List<Integer> intList = List.of(1, 2, 3, 4);
+        List<Integer>   intList       = List.of(1, 2, 3, 4);
         ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(requireActivity(),
                                                                 android.R.layout.simple_list_item_1,
                                                                 intList);
-        AutoCompleteTextView reviewsField = b.starField;
-        CheckBox reviewsSwitch = b.reviewsSwitch;
+        AutoCompleteTextView reviewsField  = b.starField;
+        CheckBox             reviewsSwitch = b.reviewsSwitch;
         reviewsField.setAdapter(arrayAdapter);
         reviewsField.setThreshold(1);
         reviewsField.setLongClickable(true);
@@ -154,7 +154,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void setUpSortSwitches(DialogFiltersBinding b) {
-        MaterialSwitch sortByPriceSwitch = b.sortByPriceSwitch;
+        MaterialSwitch sortByPriceSwitch   = b.sortByPriceSwitch;
         MaterialSwitch sortByRatingsSwitch = b.sortByReviewsSwitch;
         sortByPriceSwitch.setOnCheckedChangeListener((c, checked) -> {
             if (checked) searchViewModel.setSortByPrice();
@@ -173,8 +173,8 @@ public class SearchFragment extends Fragment {
     private void setUpPriceFilterField(DialogFiltersBinding b) {
         TextInputLayout tilMinPrice = b.tilMinPrice;
         TextInputLayout tilMaxPrice = b.tilMaxPrice;
-        minPrice = tilMinPrice.getEditText();
-        maxPrice = tilMaxPrice.getEditText();
+        minPrice       = tilMinPrice.getEditText();
+        maxPrice       = tilMaxPrice.getEditText();
         priceMinSwitch = b.priceMinSwitch;
         priceMaxSwitch = b.priceMaxSwitch;
         searchViewModel.getFilteringByMaxPrice().observe(getViewLifecycleOwner(), enabled -> {
@@ -188,12 +188,10 @@ public class SearchFragment extends Fragment {
         priceMinSwitch.setOnCheckedChangeListener((d, checked) -> tilMinPrice.setEnabled(checked));
         priceMaxSwitch.setOnCheckedChangeListener((d, checked) -> tilMaxPrice.setEnabled(checked));
         searchViewModel.getPrevMinPrice().observe(getViewLifecycleOwner(), min -> {
-            if (min != null)
-                minPrice.setText(String.format(Locale.getDefault(), "%.2f", min));
+            if (min != null) minPrice.setText(String.format(Locale.getDefault(), "%.2f", min));
         });
         searchViewModel.getPrevMaxPrice().observe(getViewLifecycleOwner(), max -> {
-            if (max != null)
-                maxPrice.setText(String.format(Locale.getDefault(), "%.2f", max));
+            if (max != null) maxPrice.setText(String.format(Locale.getDefault(), "%.2f", max));
         });
     }
 
@@ -202,8 +200,8 @@ public class SearchFragment extends Fragment {
         ArrayAdapter<String> coursesArrayAdapter = new ArrayAdapter<>(requireActivity(),
                                                                       android.R.layout.simple_list_item_1,
                                                                       courseList);
-        AutoCompleteTextView courseCodes = b.courseCodeField;
-        CheckBox courseSwitch = b.courseSwitch;
+        AutoCompleteTextView courseCodes  = b.courseCodeField;
+        CheckBox             courseSwitch = b.courseSwitch;
         courseCodes.setAdapter(coursesArrayAdapter);
         courseCodes.setThreshold(1);
         courseCodes.setLongClickable(true);
@@ -260,7 +258,7 @@ public class SearchFragment extends Fragment {
 
     private void openDetails(ITutor t) {
         viewModel.setTutor(t);
-        FragmentManager fm = getChildFragmentManager();
+        FragmentManager fm              = getChildFragmentManager();
         NavHostFragment navHostFragment = (NavHostFragment) fm.findFragmentById(R.id.rightSide);
         assert navHostFragment != null;
         slidingPaneLayout.open();

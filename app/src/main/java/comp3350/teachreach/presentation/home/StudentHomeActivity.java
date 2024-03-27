@@ -18,21 +18,18 @@ import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class StudentHomeActivity extends AppCompatActivity
-{
-    private static final int BACK_DELAY = 2000;
-    ActivityNavigationStudentBinding binding;
-    private long              backPressedTime;
-    private NavigationBarView navigationMenu;
-    private NavController     navController;
-    private TRViewModel       vm;
+class StudentHomeActivity extends AppCompatActivity {
+    private static final int                              BACK_DELAY = 2000;
+    private              ActivityNavigationStudentBinding binding;
+    private              long                             backPressedTime;
+    private              NavigationBarView                navigationMenu;
+    private              NavController                    navController;
+    private              TRViewModel                      vm;
 
     private OnBackPressedCallback onBackPressedCallback;
 
     @Override
-    protected
-    void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNavigationStudentBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -41,7 +38,8 @@ class StudentHomeActivity extends AppCompatActivity
         navigationMenu = (NavigationBarView) binding.navigationMenu;
         NavHostFragment
                 navHostFragment
-                = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_student);
+                = (NavHostFragment) getSupportFragmentManager().findFragmentById(
+                R.id.nav_host_fragment_student);
         assert navHostFragment != null;
         navController = navHostFragment.getNavController();
 
@@ -55,13 +53,12 @@ class StudentHomeActivity extends AppCompatActivity
         setUpBackButtonHandler();
     }
 
-    private
-    void setUpNavigationMenu()
-    {
+    private void setUpNavigationMenu() {
         navigationMenu.setSelectedItemId(R.id.NavBarSearch);
         navigationMenu.setOnItemSelectedListener(i -> {
             int itemId = i.getItemId();
             if (itemId == R.id.NavBarSessions) {
+                navController.navigate(R.id.sessionFragment);
             } else if (itemId == R.id.NavBarSearch) {
                 navController.navigate(R.id.searchFragment);
             } else if (itemId == R.id.NavBarProfile) {
@@ -80,35 +77,28 @@ class StudentHomeActivity extends AppCompatActivity
         });
     }
 
-    private
-    void changeNavigationMenu(NavDest n)
-    {
+    private void changeNavigationMenu(NavDest n) {
         switch (n) {
-            case sessions -> navigationMenu.getMenu().findItem(R.id.NavBarSessions).setChecked(true);
+            case sessions -> navigationMenu.getMenu()
+                                           .findItem(R.id.NavBarSessions)
+                                           .setChecked(true);
             case search -> navigationMenu.getMenu().findItem(R.id.NavBarSearch).setChecked(true);
             case profile -> navigationMenu.getMenu().findItem(R.id.NavBarProfile).setChecked(true);
             case chat -> navigationMenu.getMenu().findItem(R.id.NavBarChats).setChecked(true);
         }
     }
 
-    private
-    void setUpBackButtonHandler()
-    {
-        onBackPressedCallback = new OnBackPressedCallback(true)
-        {
+    private void setUpBackButtonHandler() {
+        onBackPressedCallback = new OnBackPressedCallback(true) {
             @Override
-            public
-            void handleOnBackPressed()
-            {
+            public void handleOnBackPressed() {
                 backIsPressed();
             }
         };
         getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
     }
 
-    private
-    void backIsPressed()
-    {
+    private void backIsPressed() {
         if (backPressedTime + BACK_DELAY > System.currentTimeMillis()) {
             finishAffinity();
         } else {
@@ -118,8 +108,10 @@ class StudentHomeActivity extends AppCompatActivity
     }
 
     private
-    enum NavDest
-    {
-        sessions, search, profile, chat
+    enum NavDest {
+        sessions,
+        search,
+        profile,
+        chat
     }
 }

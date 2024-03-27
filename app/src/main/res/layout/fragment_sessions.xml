@@ -24,6 +24,7 @@
                 android:id="@+id/topAppBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:minHeight="?attr/actionBarSize"
                 app:forceDefaultNavigationOnClickListener="true"
                 app:menu="@menu/top_app_bar_session"
@@ -31,6 +32,7 @@
                 app:title="@string/fabSessionsTitle" />
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/sessionTabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabMode="fixed">

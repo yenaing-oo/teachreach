@@ -17,18 +17,16 @@ import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class TutorFilter implements ITutorFilter {
-    Map<ConditionFilterTag, Predicate<ITutor>> cond = new HashMap<>();
+    Map<ConditionFilterTag, Predicate<ITutor>> cond            = new HashMap<>();
+    List<SortConditionTag>                     sortCondSet     = new ArrayList<>();
+    Predicate<ITutor>                          searchCondition = t -> true;
 
-    List<SortConditionTag> sortCondSet = new ArrayList<>();
-
-    Predicate<ITutor> searchCondition = t -> true;
     IUserProfileHandler<ITutor> userProfileHandler;
-
-    ITutorProfileHandler tutorProfileHandler;
+    ITutorProfileHandler        tutorProfileHandler;
 
     public TutorFilter(IUserProfileHandler<ITutor> userInfoFetcher,
                        ITutorProfileHandler tutorInfoFetcher) {
-        userProfileHandler = userInfoFetcher;
+        userProfileHandler  = userInfoFetcher;
         tutorProfileHandler = tutorInfoFetcher;
     }
 
@@ -153,18 +151,14 @@ public class TutorFilter implements ITutorFilter {
 
     @Override
     public TutorFilter setSortByPrice() {
-        if (sortCondSet.contains(SortConditionTag.byPrice)) {
-            return this;
-        }
+        if (sortCondSet.contains(SortConditionTag.byPrice)) return this;
         sortCondSet.add(SortConditionTag.byPrice);
         return this;
     }
 
     @Override
     public TutorFilter setSortByReviews() {
-        if (sortCondSet.contains(SortConditionTag.byReviews)) {
-            return this;
-        }
+        if (sortCondSet.contains(SortConditionTag.byReviews)) return this;
         sortCondSet.add(SortConditionTag.byReviews);
         return this;
     }
@@ -200,10 +194,8 @@ public class TutorFilter implements ITutorFilter {
     }
 
     private Comparator<ITutor> sortBy() {
-        Comparator<ITutor> result = null;
-
+        Comparator<ITutor> result  = null;
         Comparator<ITutor> byPrice = Comparator.comparingDouble(ITutor::getHourlyRate);
-
         Comparator<ITutor> byReviews = Comparator.comparingDouble(
                 t -> tutorProfileHandler.getAvgReview(t));
         byReviews = byReviews.reversed();
@@ -211,8 +203,9 @@ public class TutorFilter implements ITutorFilter {
         for (SortConditionTag t : sortCondSet) {
             switch (t) {
                 case byPrice -> result = (result == null) ? byPrice : result.thenComparing(byPrice);
-                case byReviews ->
-                        result = (result == null) ? byReviews : result.thenComparing(byReviews);
+                case byReviews -> result = (result == null)
+                        ? byReviews
+                        : result.thenComparing(byReviews);
             }
         }
 
