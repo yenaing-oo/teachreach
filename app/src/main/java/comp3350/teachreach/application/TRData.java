@@ -54,8 +54,7 @@ public class TRData
             reader.close();
 
             Gson gson = new Gson();
-            Type mapType = new TypeToken<Map<String, Map<String, Integer>>>()
-            {
+            Type mapType = new TypeToken<Map<String, Map<String, Integer>>>() {
             }.getType();
             Map<String, Map<String, Integer>> enumMap = gson.fromJson(
                     stringBuilder.toString(),
@@ -66,8 +65,16 @@ public class TRData
         }
     }
 
-    public static int getSessionStatusEnumValue(String key)
-    {
+    // for testing purposes only
+    public static void setDefaultEnums() {
+        SessionStatus = Map.of(
+                "PENDING", 0,
+                "ACCEPTED", 1,
+                "REJECTED", 2
+        );
+    }
+
+    public static int getSessionStatusEnumValue(String key) {
         if (SessionStatus == null) {
             throw new IllegalStateException("Enums have not been loaded yet");
         }

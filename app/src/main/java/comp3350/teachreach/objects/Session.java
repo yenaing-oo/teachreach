@@ -81,7 +81,7 @@ public class Session implements ISession {
     }
 
     @Override
-    public Session setTime(TimeSlice time) {
+    public Session setTime(ITimeSlice time) {
         timeRange = time;
         return this;
     }
