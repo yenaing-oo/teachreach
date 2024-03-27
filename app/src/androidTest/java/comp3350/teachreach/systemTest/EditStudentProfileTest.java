@@ -1,4 +1,4 @@
-package comp3350.teachreach;
+package comp3350.teachreach.systemTest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -10,6 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -18,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import comp3350.teachreach.R;
 import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
@@ -33,7 +35,7 @@ public class EditStudentProfileTest {
     @Test
     public void testSuccessfulProfileEdit() {
         // Navigate to the edit profile page
-        onView(withId(R.id.btnStudentLogin)).perform(click());
+        onView(ViewMatchers.withId(R.id.btnStudentLogin)).perform(click());
         onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student@email.com"), closeSoftKeyboard());
         onView(withId(R.id.etStudentLoginPassword)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
