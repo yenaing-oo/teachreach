@@ -71,13 +71,7 @@ public class IndividualChatFragment extends Fragment
         mm             = new ViewModelProvider(requireActivity()).get(
                 MessageModel.class);
     }
-        //        LiveData<IAccount> accountLiveData = vm.getAccount();
-        //        accountLiveData.observe(this, account -> {
-        //            // Extract the int value from the IAccount object
-        //            accountID = account.getAccountID();});
-        //        users = messageHandler.retrieveAllChatAccountsByAccountID
-        //        (accountID);
-        //users = vm.getUsers();
+
 
 
 
