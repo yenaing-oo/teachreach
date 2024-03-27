@@ -6,18 +6,22 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessMessage;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
 import comp3350.teachreach.logic.exceptions.MessageHandleException;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
+import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
@@ -30,10 +34,15 @@ public class MessageHandler implements IMessageHandler
 
     private final AccessTutors accessTutors;
 
+    //need change for test
+    //implement method
+    private AccessAccounts accessAccounts = null;
+
     public MessageHandler(){
         accessMessage = new AccessMessage();
         accessStudents = new AccessStudents();
         accessTutors = new AccessTutors();
+        accessAccounts = new AccessAccounts();
 
     }
 
@@ -41,6 +50,14 @@ public class MessageHandler implements IMessageHandler
         this.accessMessage =  accessMessage;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
+
+    }
+
+    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts){
+        this.accessMessage =  accessMessage;
+        this.accessStudents = accessStudents;
+        this.accessTutors = accessTutors;
+        this.accessAccounts = accessAccounts;
 
     }
 
@@ -85,7 +102,7 @@ public class MessageHandler implements IMessageHandler
         }
         return account && valid;
     }
-    //public boolean validateSenderIDInGroup(){}// do it in database?
+
 
     public boolean checkExistGroup(int studentID, int tutorID){
         return (accessMessage.searchGroupByIDs(studentID,tutorID)> 0);
@@ -94,7 +111,7 @@ public class MessageHandler implements IMessageHandler
 
 
     @Override
-    public int createGroup(int studentID, int tutorID) throws MessageHandleException {
+    public int createGroup(int studentID, int tutorID)  {
 
         return !checkExistGroup(studentID, tutorID) ? accessMessage.createGroup(studentID, tutorID) : -1;
     }
@@ -105,10 +122,10 @@ public class MessageHandler implements IMessageHandler
           if (validateSentMessage(groupID, senderAccountID, message)) {
               return accessMessage.storeMessage(groupID, senderAccountID, message);
           }
-      } catch(final Exception e){
+     } catch(final Exception e){
           throw new MessageHandleException("Invalid Message.",e);
       }
-    return -1;
+     return -1;
     }
 
     @Override
@@ -210,32 +227,186 @@ public class MessageHandler implements IMessageHandler
 
     }
 
-    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
+//    public Map<String,Object> timeStampConverter(@NonNull Timestamp timestamp){
+//
+//            Map<String, Object> result = new HashMap<>();
+//
+//        LocalDateTime localDateTime = null; // Initialize localDateTime to null
+//
+//        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
+//             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+//
+//            // Extract various date-related components
+//            int year = localDateTime.getYear();
+//            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
+//            int dayOfMonth = localDateTime.getDayOfMonth();
+//            int hour = localDateTime.getHour();
+//            int minute = localDateTime.getMinute();
+//            int second = localDateTime.getSecond();
+//
+//            // Store the components and value in the result map
+//            result.put("year", year);
+//            result.put("month", month);
+//            result.put("dayOfMonth", dayOfMonth);
+//            result.put("hour", hour);
+//            result.put("minute", minute);
+//            result.put("second", second);
+//
+//
+//            return result;
+//    }
 
-            Map<String, Object> result = new HashMap<>();
-
-        LocalDateTime localDateTime = null; // Initialize localDateTime to null
-
-        Instant instant = Instant.ofEpochMilli(timestamp.getTime());
-             localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-
-            // Extract various date-related components
-            int year = localDateTime.getYear();
-            int month = localDateTime.getMonthValue(); // Month is from 1 to 12
-            int dayOfMonth = localDateTime.getDayOfMonth();
-            int hour = localDateTime.getHour();
-            int minute = localDateTime.getMinute();
-            int second = localDateTime.getSecond();
-
-            // Store the components and value in the result map
-            result.put("year", year);
-            result.put("month", month);
-            result.put("dayOfMonth", dayOfMonth);
-            result.put("hour", hour);
-            result.put("minute", minute);
-            result.put("second", second);
-
-
-            return result;
+    public String timeStampConverter(@NonNull Timestamp timestamp) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(timestamp.toInstant(), ZoneId.systemDefault());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return localDateTime.format(formatter);
     }
+    @Override
+    public List<Integer> retrieveAllGroupsByTutorID(int tutorID){
+        return accessMessage.retrieveAllGroupsByTutorID(tutorID);
+    }
+    @Override
+    public List<Integer> retrieveAllGroupsByStudentID(int studentID){
+        return accessMessage.retrieveAllGroupsByStudentID(studentID);
+    }
+
+//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID){
+//        List<IAccount> users = new ArrayList<>();
+//        List<Integer> groups = new ArrayList<>();
+//
+//        int findStudentID = -1;
+//        int findTutorID = -1;
+//        //find out the original account is a student/tutor
+//        try {
+//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
+//            findStudentID = findStudent.getStudentID();
+//        }
+//        catch(DataAccessException ignored){
+//        }
+//
+//        try {
+//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
+//            findTutorID = findTutor.getTutorID();
+//        }
+//        catch(DataAccessException ignored) {
+//        }
+//
+//        //find all chat groups (Accounts)
+//        if (findStudentID>0){
+//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
+//
+//            if(groups!= null){
+//                for (int group: groups
+//                ) {
+//                    ITutor tutor = accessTutors.getTutorByTutorID(group);
+//                    int tutorAccountID = tutor.getAccountID();
+//
+//                    IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
+//                    users.add(user);
+//
+//                }
+//            }
+//
+//        }
+//        else if (findTutorID>0){
+//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
+//
+//            if(groups!= null){
+//                for (int group: groups
+//                ) {
+//                    IStudent student = accessStudents.getStudentByStudentID(group);
+//                    int studentAccountID = student.getAccountID();
+//                    IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
+//                    users.add(user);
+//
+//                }
+//            }
+//        }
+//
+//        return users;
+//
+//    }
+//
+//    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
+//        List<IAccount> users = new ArrayList<>();
+//        List<Integer> groups = new ArrayList<>();
+//
+//        // Initialize findStudentID and findTutorID to 0
+//        int findStudentID = 0;
+//        int findTutorID = 0;
+//
+//        // Initialize users and groups lists where they are declared
+//        try {
+//            IStudent findStudent = accessStudents.getStudentByAccountID(accountID);
+//            findStudentID = findStudent.getStudentID();
+//        } catch (DataAccessException ignored) {
+//        }
+//
+//        try {
+//            ITutor findTutor = accessTutors.getTutorByAccountID(accountID);
+//            findTutorID = findTutor.getTutorID();
+//        } catch (DataAccessException ignored) {
+//        }
+//
+//        //find all chat groups (Accounts)
+//        if (findStudentID > 0) {
+//            groups = accessMessage.retrieveAllTutorIDsByStudentID(findStudentID);
+//        } else if (findTutorID > 0) {
+//            groups = accessMessage.retrieveAllStudentIDsByTutorID(findTutorID);
+//        }
+//
+//        // Process retrieved groups
+//        for (int group : groups) {
+//            accessAccounts.getAccountByAccountID(group).ifPresent(users::add);
+//        }
+//
+//        return users;
+//    }
+
+    public List<IAccount> retrieveAllChatAccountsByAccountID(int accountID) {
+        List<IAccount> users = new ArrayList<>();
+
+        // Determine if the accountID belongs to a student or a tutor
+        IStudent findStudent = null;
+        ITutor findTutor = null;
+
+        try {
+            findStudent = accessStudents.getStudentByAccountID(accountID);
+        } catch (DataAccessException ignored) {
+        }
+
+        try {
+            findTutor = accessTutors.getTutorByAccountID(accountID);
+        } catch (DataAccessException ignored) {
+        }
+
+        // Find chat accounts based on the type of the account (student or tutor)
+        if (findStudent != null && findStudent.getAccountID() == accountID) {
+            List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
+            for (int tutorID : tutorIDs) {
+                //???
+                ITutor tutor = accessTutors.getTutorByTutorID(tutorID);
+                int tutorAccountID = tutor.getAccountID();
+                IAccount user = accessAccounts.getAccountByAccountID(tutorAccountID).orElse(null);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+        } else if (findTutor != null && findTutor.getAccountID() == accountID) {
+            List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
+            for (int studentID : studentIDs) {
+                //???
+                IStudent student = accessStudents.getStudentByStudentID(studentID);
+                int studentAccountID = student.getAccountID();
+                IAccount user = accessAccounts.getAccountByAccountID(studentAccountID).orElse(null);
+                if (user != null) {
+                    users.add(user);
+                }
+            }
+        }
+
+        return users;
+    }
+
+
 }

@@ -18,25 +18,21 @@ import comp3350.teachreach.objects.interfaces.IMessage;
 public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessagePersistence {
     private final String dbPath;
 
-    public
-    MessageHSQLDB(final String dbPath)
-    {
+    public MessageHSQLDB(final String dbPath) {
         this.dbPath = dbPath;
     }
 
-    private Connection connection() throws SQLException
-    {
+    private Connection connection() throws SQLException {
         return DriverManager.getConnection(String.format(
                 "jdbc:hsqldb:file:%s;shutdown=true",
                 dbPath), "SA", "");
     }
 
-    private IMessage fromResultSet(final ResultSet rs) throws SQLException
-    {
+    private IMessage fromResultSet(final ResultSet rs) throws SQLException {
         final int senderAccountID = rs.getInt("SENDER_ID");
         final Timestamp time = rs.getTimestamp("TIME_SENT");
         //if (rs.wasNull()) {
-          //  throw new PersistenceException("Timestamp is null");
+        //  throw new PersistenceException("Timestamp is null");
         //}
         final String message = rs.getString("MESSAGE");
 
@@ -55,7 +51,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
 
     @Override
-    public int createGroup(int studentID, int tutorID){
+    public int createGroup(int studentID, int tutorID) {
         try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "INSERT INTO CHAT_GROUPS (STUDENT_ID, TUTOR_ID) VALUES(?, ?)",
@@ -100,7 +96,7 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
                 final ResultSet rs = pst.getGeneratedKeys();
                 if (rs.next()) {
-                    messageID =  rs.getInt(1);
+                    messageID = rs.getInt(1);
                     rs.close();
                     pst.close();
                     return messageID;
@@ -108,8 +104,8 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
                     rs.close();
                     pst.close();
                     throw new PersistenceException("Message mightn't be updated!");
-            }
-            }else {
+                }
+            } else {
                 pst.close();
                 throw new PersistenceException("Failed to store message");
             }
@@ -120,34 +116,33 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
     }
 
 
-
     @Override
-    public int searchGroupByIDs(int studentID, int tutorID){
+    public int searchGroupByIDs(int studentID, int tutorID) {
         final int resultGroupID;
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM CHAT_GROUPS WHERE STUDENT_ID = ? AND TUTOR_ID = ?");
-                    //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
+            //"SELECT * FROM CHAT_GROUPS WHERE student_account_id = ? AND tutor_account_id =?");
             pst.setInt(1, studentID);
             pst.setInt(2, tutorID);
             final ResultSet rs = pst.executeQuery();
             if (rs.next()) {
                 resultGroupID = rs.getInt("GROUP_ID");
-            pst.close();
-            rs.close();
-            return resultGroupID;
-            }
-            else {
+                pst.close();
+                rs.close();
+                return resultGroupID;
+            } else {
                 rs.close();
                 c.close();
                 return -1;
-        }} catch (SQLException e) {
+            }
+        } catch (SQLException e) {
             throw new PersistenceException(e);
         }
     }
 
-    public Map<String, Integer> searchIDsByGroupID(int groupID){
-        final Map<String, Integer>  resultIDs = new HashMap<>();
+    public Map<String, Integer> searchIDsByGroupID(int groupID) {
+        final Map<String, Integer> resultIDs = new HashMap<>();
         try (final Connection c = this.connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM CHAT_GROUPS WHERE GROUP_ID = ?");
@@ -158,24 +153,26 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
             if (rs.next()) {
                 int studentID = rs.getInt("STUDENT_ID");
                 int tutorID = rs.getInt("TUTOR_ID");
-                resultIDs.put("StudentID",studentID);
-                resultIDs.put("TutorID",tutorID);
+                resultIDs.put("StudentID", studentID);
+                resultIDs.put("TutorID", tutorID);
                 pst.close();
                 rs.close();
-                return resultIDs;}
-            else {
+                return resultIDs;
+            } else {
                 rs.close();
                 c.close();
                 throw new PersistenceException("GroupID not generated!");
-            }} catch (SQLException e) {
+            }
+        } catch (SQLException e) {
             throw new PersistenceException(e);
         }
 
     }
+
     @Override
-    public List<IMessage> retrieveAllMessageByGroupID(int groupID){
+    public List<IMessage> retrieveAllMessageByGroupID(int groupID) {
         List<IMessage> resultMessages = new ArrayList<>();
-        try(final Connection c = connection()){
+        try (final Connection c = connection()) {
             final PreparedStatement pst = c.prepareStatement(
                     "SELECT * FROM MESSAGES where group_id = ? ORDER BY MESSAGE_ID ASC");
             pst.setInt(1, groupID);
@@ -191,7 +188,93 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
         }
     }
 
+    @Override
+    public List<Integer> retrieveAllGroupsByStudentID(int studentID) {
+        List<Integer> groupsID = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT GROUP_ID FROM CHAT_GROUPS where student_ID = ? ");
+            pst.setInt(1, studentID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                groupsID.add(rs.getInt("GROUP_ID"));
+            }
+            pst.close();
+            rs.close();
+            return groupsID;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
 
+    @Override
+    public List<Integer> retrieveAllGroupsByTutorID(int tutorID) {
+        List<Integer> groupsID = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    "SELECT GROUP_ID FROM CHAT_GROUPS where tutor_ID = ? ");
+            pst.setInt(1, tutorID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                groupsID.add(rs.getInt("GROUP_ID"));
+            }
+            pst.close();
+            rs.close();
+            return groupsID;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> retrieveAllStudentIDsByTutorID(int tutorID) {
+        List<Integer> studentIDs = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+                    //"SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID where CHAT_GROUPS.tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID FROM CHAT_GROUPS where tutor_ID = ? ");//Order by MESSAGES.MESSAGE_ID DESC");
+            pst.setInt(1, tutorID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                studentIDs.add(rs.getInt("STUDENT_ID"));
+            }
+            pst.close();
+            rs.close();
+            return studentIDs;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+
+    @Override
+    public List<Integer> retrieveAllTutorIDsByStudentID(int studentID) {
+        List<Integer> tutorIDs = new ArrayList<>();
+        try (final Connection c = connection()) {
+            final PreparedStatement pst = c.prepareStatement(
+//                    "SELECT DISTINCT CHAT_GROUPS.STUDENT_ID "+
+//                    "FROM CHAT_GROUPS "+
+//                    "JOIN ("+
+//                    "      SELECT Group_ID, MAX(MESSAGE_ID) AS MAX_MESSAGE_ID "+
+//                    "       FROM MESSAGES "+
+//                     "       GROUP BY Group_ID "+
+//                    ") AS recent_messages ON CHAT_GROUPS.Group_ID = recent_messages.Group_ID "+
+//                    "WHERE tutor_ID = ? "+
+//                    "ORDER BY recent_messages.MAX_MESSAGE_ID DESC");
+                    //"SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS JOIN MESSAGES ON CHAT_GROUPS.Group_ID = MESSAGES.Group_ID WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
+                    "SELECT DISTINCT CHAT_GROUPS.TUTOR_ID FROM CHAT_GROUPS WHERE CHAT_GROUPS.student_ID = ? ");//ORDER BY MESSAGES.MESSAGE_ID DESC");
+            pst.setInt(1, studentID);
+            final ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                tutorIDs.add(rs.getInt("TUTOR_ID"));
+            }
+            pst.close();
+            rs.close();
+            return tutorIDs;
+        } catch (SQLException e) {
+            throw new PersistenceException(e);
+        }
+    }
+}
 
     //public void deleteMessage(){}
 
@@ -201,4 +284,4 @@ public class MessageHSQLDB implements comp3350.teachreach.data.interfaces.IMessa
 
  //   public void deleteGroup(){}
 
-}
+
