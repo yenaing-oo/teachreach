@@ -59,7 +59,6 @@
     </Profilers>
     <method v="2">
       <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      <option name="Gradle.BeforeRunTask" enabled="false" tasks="clearData" externalProjectPath="$PROJECT_DIR$/app" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>

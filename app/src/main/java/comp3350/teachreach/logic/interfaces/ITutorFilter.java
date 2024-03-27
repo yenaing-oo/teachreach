@@ -4,14 +4,10 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import comp3350.teachreach.logic.TutorFilter;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface ITutorFilter
-{
+public interface ITutorFilter {
     ITutorFilter Reset();
-
-    TutorFilter resetSearchString();
 
     boolean getMinimumAvgRatingState();
 
@@ -24,6 +20,8 @@ public interface ITutorFilter
     boolean getSortByPriceState();
 
     boolean getSortByReviewsState();
+
+    ITutorFilter resetSearchString();
 
     ITutorFilter clearMinimumAvgRating();
 

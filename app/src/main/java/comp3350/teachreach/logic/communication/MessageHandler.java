@@ -23,8 +23,7 @@ import comp3350.teachreach.objects.interfaces.IMessage;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class MessageHandler implements IMessageHandler
-{
+public class MessageHandler implements IMessageHandler {
     private final AccessMessage accessMessage;
 
     private final AccessStudents accessStudents;
@@ -33,7 +32,7 @@ public class MessageHandler implements IMessageHandler
 
     private AccessAccounts accessAccounts = null;
 
-    public MessageHandler(){
+    public MessageHandler() {
         accessMessage = new AccessMessage();
         accessStudents = new AccessStudents();
         accessTutors = new AccessTutors();
@@ -41,15 +40,15 @@ public class MessageHandler implements IMessageHandler
 
     }
 
-    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors){
-        this.accessMessage =  accessMessage;
+    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors) {
+        this.accessMessage = accessMessage;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
 
     }
 
-    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts){
-        this.accessMessage =  accessMessage;
+    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts) {
+        this.accessMessage = accessMessage;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
         this.accessAccounts = accessAccounts;
@@ -68,26 +67,24 @@ public class MessageHandler implements IMessageHandler
         try {
             IStudent findStudent = accessStudents.getStudentByAccountID(senderAccountID);
             findStudentID = findStudent.getStudentID();
-            if( findStudentID >0)
+            if (findStudentID > 0)
                 account = true;
-        }
-        catch(DataAccessException ignored){
+        } catch (DataAccessException ignored) {
         }
 
         try {
             ITutor findTutor = accessTutors.getTutorByAccountID(senderAccountID);
             findTutorID = findTutor.getTutorID();
-            if( findTutorID >0)
+            if (findTutorID > 0)
                 account = true;
-        }
-        catch(DataAccessException ignored) {
+        } catch (DataAccessException ignored) {
         }
 
 
-        if(Objects.requireNonNull(resultIDs.get("StudentID")) != findStudentID && Objects.requireNonNull(resultIDs.get("TutorID")) != findTutorID){
+        if (Objects.requireNonNull(resultIDs.get("StudentID")) != findStudentID && Objects.requireNonNull(resultIDs.get("TutorID")) != findTutorID) {
             account = false;
         }
-        if(message == null){
+        if (message == null) {
             valid = false;
         }
         return account && valid;
@@ -100,30 +97,30 @@ public class MessageHandler implements IMessageHandler
 
 
     @Override
-    public int createGroup(int studentID, int tutorID)  {
+    public int createGroup(int studentID, int tutorID) {
 
         return !checkExistGroup(studentID, tutorID) ? accessMessage.createGroup(studentID, tutorID) : -1;
     }
 
     @Override
     public int storeMessage(int groupID, int senderAccountID, String message) throws MessageHandleException {
-      try {
-          if (validateSentMessage(groupID, senderAccountID, message)) {
-              return accessMessage.storeMessage(groupID, senderAccountID, message);
-          }
-     } catch(final Exception e){
-          throw new MessageHandleException("Invalid Message.",e);
-      }
-     return -1;
+        try {
+            if (validateSentMessage(groupID, senderAccountID, message)) {
+                return accessMessage.storeMessage(groupID, senderAccountID, message);
+            }
+        } catch (final Exception e) {
+            throw new MessageHandleException("Invalid Message.", e);
+        }
+        return -1;
     }
 
     @Override
-    public int searchGroupByIDs(int studentID, int tutorID){
-        return accessMessage.searchGroupByIDs(studentID,tutorID);
+    public int searchGroupByIDs(int studentID, int tutorID) {
+        return accessMessage.searchGroupByIDs(studentID, tutorID);
     }
 
     @Override
-    public List<IMessage> retrieveAllMessageByGroupID(int groupID){
+    public List<IMessage> retrieveAllMessageByGroupID(int groupID) {
         return accessMessage.retrieveAllMessageByGroupID(groupID);
     }
 
@@ -133,12 +130,14 @@ public class MessageHandler implements IMessageHandler
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return localDateTime.format(formatter);
     }
+
     @Override
-    public List<Integer> retrieveAllGroupsByTutorID(int tutorID){
+    public List<Integer> retrieveAllGroupsByTutorID(int tutorID) {
         return accessMessage.retrieveAllGroupsByTutorID(tutorID);
     }
+
     @Override
-    public List<Integer> retrieveAllGroupsByStudentID(int studentID){
+    public List<Integer> retrieveAllGroupsByStudentID(int studentID) {
         return accessMessage.retrieveAllGroupsByStudentID(studentID);
     }
 

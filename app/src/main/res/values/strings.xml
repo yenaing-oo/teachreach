@@ -142,4 +142,15 @@
     <string name="time" />
     <string name="type_a_message">Type a message</string>
     <string name="image">Image</string>
+    <string name="sessionWith">Session With:</string>
+    <string name="sessionWithWhom">Whom</string>
+    <string name="sessionStart">Starts at:</string>
+    <string name="sessionStartDate">00:00 dd/mm/yy</string>
+    <string name="sessionEnd">Until:</string>
+    <string name="sessionDuration">xx minutes</string>
+    <string name="sessionPrice">Price:</string>
+    <string name="sessionCost">$xx.xx</string>
+    <string name="sessionStatus">Accepted?</string>
+    <string name="btnAccepted" />
+    <string name="sessionDurationText">Duration:</string>
 </resources>
