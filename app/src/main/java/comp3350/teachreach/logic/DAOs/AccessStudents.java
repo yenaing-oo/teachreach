@@ -18,7 +18,7 @@ public class AccessStudents {
         students = studentPersistence.getStudents();
     }
 
-    public AccessStudents(IStudentPersistence studentPersistence) {
+    public AccessStudents(final IStudentPersistence studentPersistence) {
         AccessStudents.studentPersistence = studentPersistence;
         students = studentPersistence.getStudents();
     }
@@ -34,7 +34,7 @@ public class AccessStudents {
         if (students == null) {
             students = studentPersistence.getStudents();
         }
-        return students
+        return AccessStudents.students
                 .values()
                 .stream()
                 .filter(s -> s.getAccountID() == studentAccountID)
