@@ -28,7 +28,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     private GroupModel gm;
 
-    public UsersAdapter(List<IAccount> users, ISelectAccountListener listener, TRViewModel vm, GroupModel gm ){
+    public UsersAdapter(List<IAccount> users, ISelectAccountListener listener, TRViewModel vm, GroupModel gm) {
         this.users = users;
         this.listener = listener;
         this.vm = vm;
@@ -39,32 +39,22 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         CardChatUserBinding cardChatUserBinding = CardChatUserBinding.inflate(
-                LayoutInflater.from(parent.getContext()),parent,false);
+                LayoutInflater.from(parent.getContext()), parent, false);
 
         return new UserViewHolder(cardChatUserBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder userViewHolder, int position) {
-      //  if (position == RecyclerView.NO_POSITION) {
-        //    return;
-        //}
+
         userViewHolder.setUserData(users.get(position));
 
-//        userViewHolder.cardView.setOnClickListener( new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                listener.onItemClicked(users.get(position));
-//            }
-//        });
-        //userViewHolder.setUserData(users.get(position));
+
         userViewHolder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Retrieve the current adapter position when the card view is clicked
                 int clickedPosition = userViewHolder.getAdapterPosition();
                 if (clickedPosition != RecyclerView.NO_POSITION) {
-                    // Pass the clicked user to the listener using the current adapter position
                     listener.onItemClicked(users.get(clickedPosition));
                 }
             }
@@ -76,22 +66,21 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     public int getItemCount() {
         IMessageHandler messageHandler = new MessageHandler();
 
-        return  messageHandler.retrieveAllChatAccountsByAccountID(vm.getAccount().getValue().getAccountID()).size();
-                //users.size();
+        return messageHandler.retrieveAllChatAccountsByAccountID(vm.getAccount().getValue().getAccountID()).size();
     }
 
 
-
-    class UserViewHolder extends RecyclerView.ViewHolder{
+    class UserViewHolder extends RecyclerView.ViewHolder {
         public CardView cardView;
-        UserViewHolder(CardChatUserBinding cardChatUserBinding){
+
+        UserViewHolder(CardChatUserBinding cardChatUserBinding) {
             super(cardChatUserBinding.getRoot());
             binding = cardChatUserBinding;
             cardView = binding.userCardView;
 
         }
 
-        void setUserData(IAccount user){
+        void setUserData(IAccount user) {
             binding.tvName.setText(user.getUserName());
             binding.tvMajorField.setText(user.getUserMajor());
             binding.emailView.setText(user.getAccountEmail());
