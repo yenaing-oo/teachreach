@@ -36,8 +36,6 @@ import java.util.stream.Collectors;
 import comp3350.teachreach.R;
 import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
-import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
@@ -248,18 +246,10 @@ class TutorProfileViewFragment extends Fragment
     void createGroup(ExtendedFloatingActionButton floatingButton)
     {
         int studentID, tutorID;
-        studentID = trViewModel.getStudent().getValue().getStudentID();
-        tutorID   = trViewModel.getTutor().getValue().getTutorID();
-        AccessTutors   accessTutors   = new AccessTutors();
-        AccessAccounts accessAccounts = new AccessAccounts();
-        messageModel.setOtherUser(accessAccounts
-                                          .getAccountByAccountID(accessTutors.getTutorByTutorID(tutorID).getAccountID())
-                                          .orElse(null));
-        groupModel.addAccountToContactList(accessAccounts
-                                                   .getAccountByAccountID(accessTutors
-                                                                                  .getTutorByTutorID(tutorID)
-                                                                                  .getAccountID())
-                                                   .orElse(null));
+        studentID = student.getStudentID();
+        tutorID   = tutor.getTutorID();
+        messageModel.setOtherUser(tutorAccount);
+        groupModel.addAccountToContactList(tutorAccount);
         floatingButton.setError(null);
         try {
             int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
