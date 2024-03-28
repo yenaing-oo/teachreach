@@ -22,3 +22,8 @@ Success evaluation:
 - Frequency of Communication: Frequency of communication among team members can be tracked. An increase in communication frequency suggests improved collaboration and transparency.
 
 - Issue Resolution Time: The average time taken to identify and resolve issues or obstacles encountered during Iteration 3 can be measured. A decrease in issue resolution time would indicatee improved responsiveness and problem-solving skills within the team.
+
+A velocity chart for the previous two iterations is attached to aid our future time estimates:
+
+Project Velocity:
+[Project Velocity Chart](velocity.png)
