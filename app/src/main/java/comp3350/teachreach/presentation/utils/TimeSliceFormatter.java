@@ -13,7 +13,7 @@ class TimeSliceFormatter
     public static
     String format(ITimeSlice timeSlot)
     {
-        return timeSlot.getStartTime().format(dateFormat) + " at " + timeSlot.getStartTime().format(formatter) + " - " +
-               timeSlot.getEndTime().format(formatter);
+        return timeSlot.getStartTime().format(dateFormat) + " from " + timeSlot.getStartTime().format(formatter) +
+               " to " + timeSlot.getEndTime().format(formatter);
     }
 }

@@ -131,9 +131,9 @@
     <string name="sortByPrice">Sort By Price</string>
     <string name="sortByReviews">Sort By Ratings</string>
     <string name="fabSessionsTitle">Sessions</string>
-    <string name="tabUpcoming">Upcoming</string>
+    <string name="tabUpcoming">Accepted</string>
     <string name="tabPending">Pending</string>
-    <string name="tabPrevious">Previous</string>
+    <string name="tabPrevious">Rejected</string>
     <string name="sessionCalendar">Calendar view</string>
     <string name="sessionList">List view</string>
     <string name="date">Date</string>
@@ -160,4 +160,6 @@
     <string name="tvMoneyEarned">Money Earned:</string>
     <string name="tvMoneyEarnedField">Not Enough</string>
     <string name="tvAvailabilityTitle">My Availability</string>
+    <string name="sessionSortAsc">Show Oldest First</string>
+    <string name="sessionSortDesc">Show Latest First</string>
 </resources>

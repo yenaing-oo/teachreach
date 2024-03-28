@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
 import comp3350.teachreach.databinding.FragmentSessionsBinding;
-import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.ISession;
@@ -102,7 +101,7 @@ class SessionFragment extends Fragment
     void setUpRecycler()
     {
         RecyclerView recyclerView = binding.rvSessionResult;
-        sessionHandler = sessionViewModel.getSessionsAccess().getValue();
+        sessionHandler = sessionViewModel.getSessionHandler().getValue();
         List<ISession> sessionList = isTutor ?
                                      sessionHandler.getPendingSessions(tutor) :
                                      sessionHandler.getPendingSessions(student);
@@ -115,8 +114,7 @@ class SessionFragment extends Fragment
                                                                                  sessionList,
                                                                                  isTutor,
                                                                                  s -> {
-                                                                                     new AccessSessions().updateSession(
-                                                                                             s);
+                                                                                     sessionHandler.updateSession(s);
                                                                                      this.onResume();
                                                                                  }) :
                                             new SessionRecyclerAdapter<ITutor>(new UserProfileFetcher<>(),
@@ -125,7 +123,7 @@ class SessionFragment extends Fragment
                                                                                sessionList,
                                                                                isTutor,
                                                                                s -> {
-                                                                                   new AccessSessions().updateSession(s);
+                                                                                   sessionHandler.updateSession(s);
                                                                                    this.onResume();
                                                                                });
         recyclerView.setAdapter(adapter);
