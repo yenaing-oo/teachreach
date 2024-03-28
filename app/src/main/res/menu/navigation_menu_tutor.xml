@@ -6,11 +6,6 @@
         android:icon="@drawable/pending_sessions_24"
         android:title="@string/NavBarStudentSessions" />
     <item
-        android:id="@+id/NavBarRequests"
-        android:enabled="true"
-        android:icon="@drawable/ic_request_24"
-        android:title="@string/NavBarStudentRequests" />
-    <item
         android:id="@+id/NavBarProfile"
         android:enabled="true"
         android:icon="@drawable/ic_profile_24"

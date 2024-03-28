@@ -21,14 +21,12 @@ public class StudentHomeActivity extends AppCompatActivity {
     private static final int  BACK_DELAY = 2000;
     private              long backPressedTime;
 
-    private OnBackPressedCallback onBackPressedCallback;
-
+    private OnBackPressedCallback            onBackPressedCallback;
     private ActivityNavigationStudentBinding binding;
 
     private NavigationBarView navigationMenu;
     private NavController     navController;
-
-    private TRViewModel vm;
+    private TRViewModel       vm;
 
 
     @Override
@@ -57,30 +55,19 @@ public class StudentHomeActivity extends AppCompatActivity {
         navigationMenu.setSelectedItemId(R.id.NavBarSearch);
         navigationMenu.setOnItemSelectedListener(i -> {
             int itemId = i.getItemId();
-            if (itemId == R.id.NavBarSessions) {
-                navController.navigate(R.id.sessionFragment);
-            } else if (itemId == R.id.NavBarSearch) {
-                navController.navigate(R.id.searchFragment);
-            } else if (itemId == R.id.NavBarProfile) {
-                navController.navigate(R.id.studentProfileSelfViewFragment);
-            } else if (itemId == R.id.NavBarChats) {
-                navController.navigate(R.id.actionToGroupFragment);
-            }
+            if (itemId == R.id.NavBarSessions) navController.navigate(R.id.sessionFragment);
+            else if (itemId == R.id.NavBarSearch) navController.navigate(R.id.searchFragment);
+            else if (itemId == R.id.NavBarProfile) navController.navigate(
+                    R.id.studentProfileSelfViewFragment);
+            else if (itemId == R.id.NavBarChats) navController.navigate(R.id.actionToGroupFragment);
             return true;
         });
         navController.addOnDestinationChangedListener((controller, dest, bundle) -> {
-            if (dest.getId() == R.id.studentProfileSelfViewFragment) {
-                changeNavigationMenu(NavDest.profile);
-            }
-            if (dest.getId() == R.id.searchFragment) {
-                changeNavigationMenu(NavDest.search);
-            }
-            if (dest.getId() == R.id.sessionFragment) {
-                changeNavigationMenu(NavDest.sessions);
-            }
-            if (dest.getId() == R.id.groupFragment) {
-                changeNavigationMenu(NavDest.chat);
-            }
+            if (dest.getId() == R.id.studentProfileSelfViewFragment) changeNavigationMenu(
+                    NavDest.profile);
+            if (dest.getId() == R.id.searchFragment) changeNavigationMenu(NavDest.search);
+            if (dest.getId() == R.id.sessionFragment) changeNavigationMenu(NavDest.sessions);
+            if (dest.getId() == R.id.groupFragment) changeNavigationMenu(NavDest.chat);
         });
     }
 
@@ -106,11 +93,8 @@ public class StudentHomeActivity extends AppCompatActivity {
     }
 
     private void backIsPressed() {
-        if (backPressedTime + BACK_DELAY > System.currentTimeMillis()) {
-            finishAffinity();
-        } else {
-            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
-        }
+        if (backPressedTime + BACK_DELAY > System.currentTimeMillis()) finishAffinity();
+        else Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
         backPressedTime = System.currentTimeMillis();
     }
 
