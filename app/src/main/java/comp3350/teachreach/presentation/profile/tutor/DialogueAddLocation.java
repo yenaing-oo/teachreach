@@ -21,26 +21,23 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class DialogueAddLocation extends AppCompatDialogFragment
-{
+class DialogueAddLocation extends AppCompatDialogFragment {
     @NonNull
     @Override
-    public
-    Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
-    {
-        FragmentActivity           parentActivity   = requireActivity();
-        MaterialAlertDialogBuilder builder          = new MaterialAlertDialogBuilder(parentActivity);
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        FragmentActivity           parentActivity = requireActivity();
+        MaterialAlertDialogBuilder builder        = new MaterialAlertDialogBuilder(parentActivity);
         DialogAddLocationBinding
-                                   binding
-                                                    =
+                binding
+                =
                 DialogAddLocationBinding.inflate(parentActivity.getLayoutInflater());
-        TRViewModel                trViewModel      = new ViewModelProvider(parentActivity).get(TRViewModel.class);
+        TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(TRViewModel.class);
         TutorProfileViewModel
-                                   profileViewModel
-                                                    =
+                profileViewModel
+                =
                 new ViewModelProvider(parentActivity).get(TutorProfileViewModel.class);
-        TextInputLayout            tilAddLocation   = binding.tilAddLocation;
-        EditText                   etLocation       = tilAddLocation.getEditText();
+        TextInputLayout tilAddLocation = binding.tilAddLocation;
+        EditText        etLocation     = tilAddLocation.getEditText();
 
         return builder.setTitle("Adding New Location").setPositiveButton("Add", (d, w) -> {
             try {
@@ -52,7 +49,8 @@ class DialogueAddLocation extends AppCompatDialogFragment
 
                 profileViewModel.addLocation(tutor, location);
             } catch (final AssertionError e) {
-                Toast.makeText(requireContext(), "Something went wrong :(", Toast.LENGTH_LONG).show();
+                Toast.makeText(requireContext(), "Something went wrong :(", Toast.LENGTH_LONG)
+                     .show();
             } catch (final InvalidInputException | DataAccessException e) {
                 Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }

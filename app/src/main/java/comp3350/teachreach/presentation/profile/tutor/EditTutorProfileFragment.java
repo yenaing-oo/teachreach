@@ -33,8 +33,7 @@ import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class EditTutorProfileFragment extends Fragment
-{
+class EditTutorProfileFragment extends Fragment {
     private final static ITutorProfileHandler            profileHandler = new TutorProfileHandler();
     private              FragmentEditTutorProfileBinding binding;
     private              TRViewModel                     vm;
@@ -45,14 +44,10 @@ class EditTutorProfileFragment extends Fragment
     private ITutor          tutor;
     private IAccountManager accountManager;
 
-    public
-    EditTutorProfileFragment()
-    {
+    public EditTutorProfileFragment() {
     }
 
-    private
-    void setUpInputBoxes()
-    {
+    private void setUpInputBoxes() {
         tilName     = binding.tilEditName;
         tilMajor    = binding.tilEditMajor;
         tilPronouns = binding.tilEditPronouns;
@@ -75,9 +70,7 @@ class EditTutorProfileFragment extends Fragment
         }
     }
 
-    protected
-    void setUpTopBar()
-    {
+    protected void setUpTopBar() {
         MaterialToolbar mtTopBar = binding.topAppBar;
         mtTopBar.setNavigationOnClickListener(view -> {
             NavController navController = NavHostFragment.findNavController(this);
@@ -85,9 +78,7 @@ class EditTutorProfileFragment extends Fragment
         });
     }
 
-    private
-    void setUpApplyButton()
-    {
+    private void setUpApplyButton() {
         btnApply = binding.fabApply;
         btnApply.setOnClickListener(view -> {
             if (applyChanges()) {
@@ -96,15 +87,11 @@ class EditTutorProfileFragment extends Fragment
         });
     }
 
-    private
-    void goBack()
-    {
+    private void goBack() {
         NavHostFragment.findNavController(this).navigate(R.id.actionToTutorProfileSelfViewFragment);
     }
 
-    private
-    boolean applyChanges()
-    {
+    private boolean applyChanges() {
         String newName     = etName.getText().toString().trim();
         String newMajor    = etMajor.getText().toString().trim();
         String newPronouns = etPronouns.getText().toString().trim();
@@ -128,9 +115,7 @@ class EditTutorProfileFragment extends Fragment
     }
 
     @Override
-    public
-    void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
 
@@ -141,9 +126,8 @@ class EditTutorProfileFragment extends Fragment
     }
 
     @Override
-    public
-    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentEditTutorProfileBinding.inflate(inflater, container, false);
         setUpInputBoxes();
         setUpApplyButton();

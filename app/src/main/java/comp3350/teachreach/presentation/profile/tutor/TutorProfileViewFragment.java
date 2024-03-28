@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.Executors;
 
 import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
@@ -237,7 +236,7 @@ class TutorProfileViewFragment extends Fragment {
                     .makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
                     .show();
             Snackbar
-                    .make(floatingButton,  e.getMessage(), Snackbar.LENGTH_LONG)
+                    .make(floatingButton, e.getMessage(), Snackbar.LENGTH_LONG)
                     .show();
         }
     }
