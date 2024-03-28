@@ -2,36 +2,29 @@ package comp3350.teachreach.presentation.communication.IndividualChat;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
-import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentOtherGuyMessageBinding;
 import comp3350.teachreach.databinding.SingleMessageBinding;
 import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.objects.interfaces.IMessage;
-import comp3350.teachreach.presentation.profile.tutor.TutorProfileViewModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class FullMessageAdaptor
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int VIEW_TYPE_SENT_MESSAGE = 1;
+    private static final int VIEW_TYPE_SENT_MESSAGE     = 1;
     private static final int VIEW_TYPE_RECEIVED_MESSAGE = 2;
 
     private Context context;
 
 
-    private TRViewModel vm;
+    private TRViewModel  vm;
     private MessageModel mm;
 
 
@@ -41,10 +34,10 @@ public class FullMessageAdaptor
                               List<IMessage> messageList,
 
                               TRViewModel vm, MessageModel mm) {
-        this.context = context;
+        this.context     = context;
         this.messageList = messageList;
-        this.vm = vm;
-        this.mm = mm;
+        this.vm          = vm;
+        this.mm          = mm;
 
         extractMessages();
     }
@@ -104,22 +97,40 @@ public class FullMessageAdaptor
 
     @Override
     public int getItemViewType(int position) {
-        if (messageList.get(position).getSenderID() == mm.getOtherUser().getValue().getAccountID()) {
+        if (messageList.get(position).getSenderID() ==
+                mm.getOtherUser().getValue().getAccountID()) {
             return VIEW_TYPE_RECEIVED_MESSAGE;
         } else {
             return VIEW_TYPE_SENT_MESSAGE;
         }
     }
 
+    static class SendMessageViewHolder extends RecyclerView.ViewHolder {
+        private SingleMessageBinding binding;
+        private IMessageHandler      messageHandler;
+
+        SendMessageViewHolder(SingleMessageBinding singleMessageBinding) {
+            super(singleMessageBinding.getRoot());
+            binding        = singleMessageBinding;
+            messageHandler = new MessageHandler();
+        }
+
+        void setMessageData(IMessage sentMessage) {
+            binding.messageView.setText(sentMessage.getMessage());
+            binding.timeTextView.setText
+                                        (messageHandler.timeStampConverter(sentMessage.getTime()));
+
+        }
+    }
 
     class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
 
         private FragmentOtherGuyMessageBinding binding;
-        private IMessageHandler messageHandler;
+        private IMessageHandler                messageHandler;
 
         ReceivedMessageViewHolder(FragmentOtherGuyMessageBinding otherGuyMessageBinding) {
             super(otherGuyMessageBinding.getRoot());
-            binding = otherGuyMessageBinding;
+            binding        = otherGuyMessageBinding;
             messageHandler = new MessageHandler();
         }
 
@@ -130,24 +141,6 @@ public class FullMessageAdaptor
             binding.otherGuyTimeView.setText(
                     messageHandler.timeStampConverter(receivedMessage.getTime())
             );
-
-        }
-    }
-
-    class SendMessageViewHolder extends RecyclerView.ViewHolder {
-        private SingleMessageBinding binding;
-        private IMessageHandler messageHandler;
-
-        SendMessageViewHolder(SingleMessageBinding singleMessageBinding) {
-            super(singleMessageBinding.getRoot());
-            binding = singleMessageBinding;
-            messageHandler = new MessageHandler();
-        }
-
-        void setMessageData(IMessage sentMessage) {
-            binding.messageView.setText(sentMessage.getMessage());
-            binding.timeTextView.setText
-                    (messageHandler.timeStampConverter(sentMessage.getTime()));
 
         }
     }

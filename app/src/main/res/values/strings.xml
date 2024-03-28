@@ -153,4 +153,6 @@
     <string name="sessionStatus">Accepted?</string>
     <string name="btnAccepted" />
     <string name="sessionDurationText">Duration:</string>
+    <string name="tvMoneySpent">Money spent:</string>
+    <string name="tvMoneySpentField">$xx.xx</string>
 </resources>
