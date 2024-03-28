@@ -70,6 +70,9 @@ class SessionFragment extends Fragment
         binding           = FragmentSessionsBinding.inflate(inflater, container, false);
         slidingPaneLayout = binding.sessionsFragment;
         tabLayout         = binding.sessionTabs;
+        config            = getResources().getConfiguration();
+        isLarge           = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
+        isLandscape       = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
         setUpRecycler();
         setUpTabBar();
         return binding.getRoot();
@@ -80,9 +83,6 @@ class SessionFragment extends Fragment
     void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
-        config      = getResources().getConfiguration();
-        isLarge     = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
-        isLandscape = config.orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     @Override
