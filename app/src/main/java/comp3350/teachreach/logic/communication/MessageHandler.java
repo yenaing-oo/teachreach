@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
-import comp3350.teachreach.logic.DAOs.AccessMessage;
+import comp3350.teachreach.logic.DAOs.AccessMessages;
 import comp3350.teachreach.logic.DAOs.AccessStudents;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.exceptions.DataAccessException;
@@ -24,7 +24,7 @@ import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
 public class MessageHandler implements IMessageHandler {
-    private final AccessMessage accessMessage;
+    private final AccessMessages accessMessages;
 
     private final AccessStudents accessStudents;
 
@@ -33,22 +33,22 @@ public class MessageHandler implements IMessageHandler {
     private AccessAccounts accessAccounts = null;
 
     public MessageHandler() {
-        accessMessage = new AccessMessage();
+        accessMessages = new AccessMessages();
         accessStudents = new AccessStudents();
         accessTutors = new AccessTutors();
         accessAccounts = new AccessAccounts();
 
     }
 
-    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors) {
-        this.accessMessage = accessMessage;
+    public MessageHandler(AccessMessages accessMessages, AccessStudents accessStudents, AccessTutors accessTutors) {
+        this.accessMessages = accessMessages;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
 
     }
 
-    public MessageHandler(AccessMessage accessMessage, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts) {
-        this.accessMessage = accessMessage;
+    public MessageHandler(AccessMessages accessMessages, AccessStudents accessStudents, AccessTutors accessTutors, AccessAccounts accessAccounts) {
+        this.accessMessages = accessMessages;
         this.accessStudents = accessStudents;
         this.accessTutors = accessTutors;
         this.accessAccounts = accessAccounts;
@@ -62,7 +62,7 @@ public class MessageHandler implements IMessageHandler {
         int findTutorID = 0;
 
         Map<String, Integer> resultIDs;
-        resultIDs = accessMessage.searchIDsByGroupID(groupID);
+        resultIDs = accessMessages.searchIDsByGroupID(groupID);
 
         try {
             IStudent findStudent = accessStudents.getStudentByAccountID(senderAccountID);
@@ -92,21 +92,21 @@ public class MessageHandler implements IMessageHandler {
 
 
     private boolean checkExistGroup(int studentID, int tutorID) {
-        return (accessMessage.searchGroupByIDs(studentID, tutorID) > 0);
+        return (accessMessages.searchGroupByIDs(studentID, tutorID) > 0);
     }
 
 
     @Override
     public int createGroup(int studentID, int tutorID) {
 
-        return !checkExistGroup(studentID, tutorID) ? accessMessage.createGroup(studentID, tutorID) : -1;
+        return !checkExistGroup(studentID, tutorID) ? accessMessages.createGroup(studentID, tutorID) : -1;
     }
 
     @Override
     public int storeMessage(int groupID, int senderAccountID, String message) throws MessageHandleException {
         try {
             if (validateSentMessage(groupID, senderAccountID, message)) {
-                return accessMessage.storeMessage(groupID, senderAccountID, message);
+                return accessMessages.storeMessage(groupID, senderAccountID, message);
             }
         } catch (final Exception e) {
             throw new MessageHandleException("Invalid Message.", e);
@@ -116,12 +116,12 @@ public class MessageHandler implements IMessageHandler {
 
     @Override
     public int searchGroupByIDs(int studentID, int tutorID) {
-        return accessMessage.searchGroupByIDs(studentID, tutorID);
+        return accessMessages.searchGroupByIDs(studentID, tutorID);
     }
 
     @Override
     public List<IMessage> retrieveAllMessageByGroupID(int groupID) {
-        return accessMessage.retrieveAllMessageByGroupID(groupID);
+        return accessMessages.retrieveAllMessageByGroupID(groupID);
     }
 
     @Override
@@ -133,12 +133,12 @@ public class MessageHandler implements IMessageHandler {
 
     @Override
     public List<Integer> retrieveAllGroupsByTutorID(int tutorID) {
-        return accessMessage.retrieveAllGroupsByTutorID(tutorID);
+        return accessMessages.retrieveAllGroupsByTutorID(tutorID);
     }
 
     @Override
     public List<Integer> retrieveAllGroupsByStudentID(int studentID) {
-        return accessMessage.retrieveAllGroupsByStudentID(studentID);
+        return accessMessages.retrieveAllGroupsByStudentID(studentID);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class MessageHandler implements IMessageHandler {
         }
 
         if (findStudent != null && findStudent.getAccountID() == accountID) {
-            List<Integer> tutorIDs = accessMessage.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
+            List<Integer> tutorIDs = accessMessages.retrieveAllTutorIDsByStudentID(findStudent.getStudentID());
             for (int tutorID : tutorIDs) {
 
                 ITutor tutor = accessTutors.getTutorByTutorID(tutorID);
@@ -167,7 +167,7 @@ public class MessageHandler implements IMessageHandler {
                 accessAccounts.getAccountByAccountID(tutorAccountID).ifPresent(users::add);
             }
         } else if (findTutor != null && findTutor.getAccountID() == accountID) {
-            List<Integer> studentIDs = accessMessage.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
+            List<Integer> studentIDs = accessMessages.retrieveAllStudentIDsByTutorID(findTutor.getTutorID());
             for (int studentID : studentIDs) {
 
                 IStudent student = accessStudents.getStudentByStudentID(studentID);
