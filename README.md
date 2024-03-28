@@ -12,7 +12,9 @@ TeachReach is an Android app that connects students seeking academic help with q
 1. Clone this repository
 2. Open with Android Studio
 3. Do a Gradle Sync
-4. Build the [apk](https://umanitoba-my.sharepoint.com/:u:/g/personal/hokt_myumanitoba_ca/ETOBmoQlDxlFrhTerFO3VFQBiZWfZgTl6yoh_O0OLPtxcg?e=kgiEOm) or run it directly on your device/emulator.
+4. Build the app and run it directly on your device/emulator.
+
+Or you can just install this [apk](https://umanitoba-my.sharepoint.com/:u:/g/personal/hokt_myumanitoba_ca/ETOBmoQlDxlFrhTerFO3VFQBiZWfZgTl6yoh_O0OLPtxcg?e=kgiEOm).
 
 ### The Tests:
 - Unit Tests: Run AllUnitTests.java
