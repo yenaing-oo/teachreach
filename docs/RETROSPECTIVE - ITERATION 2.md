@@ -23,7 +23,7 @@ Success evaluation:
 
 - Issue Resolution Time: The average time taken to identify and resolve issues or obstacles encountered during Iteration 3 can be measured. A decrease in issue resolution time would indicatee improved responsiveness and problem-solving skills within the team.
 
-A velocity chart for the previous two iterations is attached to aid our future time estimates:
+A link to this project's velocity chart for the previous two iterations is attached to aid our future time estimates:
 
 Project Velocity:
-[Project Velocity Chart](velocity.png)
+![Project Velocity Chart](./docs/velocity.png)
