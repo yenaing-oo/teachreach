@@ -19,13 +19,17 @@ Progress Report<br>
 - As a tutor, I want to track the sessions I've provided and the income I've earned. (2 days)<br>
 
 **Booking**  <br>
+
+**Description**: The ability for tutor sessions to be requested and booked.
+
 - As a student, I want to book a session under my tutor’s availability (2 days)<br>
 - As a tutor, I want to review and either accept or reject tutoring requests. (2 days)<br>
 - As a tutor, I want to set a list of preferred tutoring locations for students to choose from. (2 days)<br>
 
-**Communication**               
+**Communication**      
 
-High Priority:
+**Description**: The ability for students to message with their desired tutor.
+
 - As a student, I want to communicate with my tutor so that we can plan out our session. (3 days)<br>
 As a student, I want to know what time a message is sent.<br>
 - As a user, I want to see my chat history.<br>
