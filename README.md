@@ -15,11 +15,10 @@ A platform to connect students easily with tutors!
 ### The tests:
 - Unit Tests: Run AllUnitTests.java
 - Integration Tests: Run AllIntegrationTests.java
-- All Tests: 
 - System (UI) Tests:
     1. Make sure you do not have TeachReach installed on your device
     2. Run AllAcceptanceTest.java
-    - It it fails, install the app, clear its storage and cache, then run AllAcceptanceTest.java
+    - Note: If it fails, install the app, clear its storage and cache, then run AllAcceptanceTest.java
 
 ## Contributing
 - [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/CONTRIBUTING.md)
