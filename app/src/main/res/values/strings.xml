@@ -157,4 +157,7 @@
     <string name="tvMoneySpentField">$xx.xx</string>
     <string name="sessionLugar">Location:</string>
     <string name="sessionLocation">Sem lugar</string>
+    <string name="tvMoneyEarned">Money Earned:</string>
+    <string name="tvMoneyEarnedField">Not Enough</string>
+    <string name="tvAvailabilityTitle">My Availability</string>
 </resources>

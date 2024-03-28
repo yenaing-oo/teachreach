@@ -36,14 +36,10 @@ import comp3350.teachreach.R;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
-import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
-import comp3350.teachreach.logic.communication.MessageHandler;
 import comp3350.teachreach.logic.interfaces.IMessageHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
-import comp3350.teachreach.logic.profile.TutorProfileHandler;
-import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITimeSlice;
@@ -54,52 +50,61 @@ import comp3350.teachreach.presentation.communication.IndividualChat.MessageMode
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class TutorProfileViewFragment extends Fragment {
-    private static final IUserProfileHandler<ITutor> profileFetcher      = new UserProfileFetcher<>();
-    private static final ITutorProfileHandler        profileHandler      = new TutorProfileHandler();
-    private static final ITutorAvailabilityManager   availabilityManager = new TutorAvailabilityManager();
-    private static final IMessageHandler             messageHandler      = new MessageHandler();
-    private              TRViewModel                 trViewModel;
-    private              BookingViewModel            bookingViewModel;
-    private              FragmentTutorProfileBinding binding;
-    private              SlidingPaneLayout           slidingPaneLayout;
-    private              ITutor                      tutor;
-    private              IStudent                    student;
-    private              IAccount                    tutorAccount;
-    private              List<String>                prefLocation;
+class TutorProfileViewFragment extends Fragment
+{
+    private static IUserProfileHandler<ITutor> profileFetcher;
+    private static ITutorProfileHandler        profileHandler;
+    private static ITutorAvailabilityManager   availabilityManager;
+    private static IMessageHandler             messageHandler;
+    private        FragmentTutorProfileBinding binding;
+    private        SlidingPaneLayout           slidingPaneLayout;
+    private        ITutor                      tutor;
+    private        IStudent                    student;
+    private        IAccount                    tutorAccount;
+    private        List<String>                prefLocation;
+    private        TRViewModel                 trViewModel;
+    private        MessageModel                messageModel;
+    private        GroupModel                  groupModel;
+    private        BookingViewModel            bookingViewModel;
+    private        TutorProfileViewModel       tutorProfileViewModel;
+    private        Configuration               config;
+    private        boolean                     isLarge, isLandscape;
 
-
-    private MessageModel messageModel;
-    private GroupModel   groupModel;
-
-
-    private Configuration config;
-    private boolean       isLarge, isLandscape;
-
-    public TutorProfileViewFragment() {
+    public
+    TutorProfileViewFragment()
+    {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public
+    void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
-        trViewModel      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
-        bookingViewModel = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
-        messageModel     = new ViewModelProvider(requireActivity()).get(
-                MessageModel.class);
-        groupModel       = new ViewModelProvider(requireActivity()).get(
-                GroupModel.class);
+        trViewModel           = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
+        bookingViewModel      = new ViewModelProvider(requireActivity()).get(BookingViewModel.class);
+        tutorProfileViewModel = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
+        messageModel          = new ViewModelProvider(requireActivity()).get(MessageModel.class);
+        groupModel            = new ViewModelProvider(requireActivity()).get(GroupModel.class);
+
+        profileFetcher      = tutorProfileViewModel.getProfileFetcher().getValue();
+        availabilityManager = tutorProfileViewModel.getAvailabilityManager().getValue();
+        profileHandler      = tutorProfileViewModel.getProfileHandler().getValue();
+        messageHandler      = messageModel.getMessageHandler().getValue();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public
+    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         binding = FragmentTutorProfileBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public
+    void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
         super.onViewCreated(view, savedInstanceState);
         config            = getResources().getConfiguration();
         isLarge           = config.isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -123,11 +128,12 @@ class TutorProfileViewFragment extends Fragment {
     }
 
 
-    private void setUpTutoredCourses() {
-        RecyclerView recyclerView = binding.rvTutoredCourses;
-        int          spanCount    = isLarge || isLandscape ? 6 : 2;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(),
-                                                                         spanCount);
+    private
+    void setUpTutoredCourses()
+    {
+        RecyclerView               recyclerView  = binding.rvTutoredCourses;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         List<String>          coursesCodes = profileHandler.getCourseCodeList(tutor);
@@ -135,7 +141,9 @@ class TutorProfileViewFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    private void setUpTopBar() {
+    private
+    void setUpTopBar()
+    {
         MaterialToolbar materialToolbar = binding.topAppBar;
         materialToolbar.setTitle(tutorAccount.getUserName());
         materialToolbar.setNavigationOnClickListener(view -> {
@@ -144,7 +152,9 @@ class TutorProfileViewFragment extends Fragment {
         });
     }
 
-    private void setUpProfile() {
+    private
+    void setUpProfile()
+    {
         TextView tvPronouns = binding.tvPronounsField;
         TextView tvMajor    = binding.tvMajorField;
         TextView tvPrice    = binding.tvRatingField;
@@ -159,11 +169,12 @@ class TutorProfileViewFragment extends Fragment {
                                         tutor.getReviewCount()));
     }
 
-    private void setUpPreferredLocations() {
-        RecyclerView recycler  = binding.rvPreferredLocations;
-        int          spanCount = isLarge || isLandscape ? 6 : 2;
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(),
-                                                                         spanCount);
+    private
+    void setUpPreferredLocations()
+    {
+        RecyclerView               recycler      = binding.rvPreferredLocations;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         prefLocation = profileHandler.getPreferredLocations(tutor);
@@ -171,20 +182,23 @@ class TutorProfileViewFragment extends Fragment {
         recycler.setAdapter(adapter);
     }
 
-    private void setUpCalendarView() {
+    private
+    void setUpCalendarView()
+    {
         CalendarView calendarView = binding.cvCalendarBook;
         Date         date         = Date.from(Instant.now());
         calendarView.setMinDate(date.getTime());
         calendarView.setOnDateChangeListener((v, y, m, d) -> goToDayFragment(y, m, d));
     }
 
-    private void goToDayFragment(int y, int m, int d) {
+    private
+    void goToDayFragment(int y, int m, int d)
+    {
         try {
-            LocalDate calDate = LocalDate.of(y, m + 1, d);
-            List<ITimeSlice> slots = availabilityManager.getAvailabilityAsSlots(tutor,
-                                                                                calDate);
-            boolean   notAvailable = slots.isEmpty();
-            LocalDate now          = LocalDate.now();
+            LocalDate        calDate      = LocalDate.of(y, m + 1, d);
+            List<ITimeSlice> slots        = availabilityManager.getAvailabilityAsSlots(tutor, calDate);
+            boolean          notAvailable = slots.isEmpty();
+            LocalDate        now          = LocalDate.now();
             if (calDate.isBefore(now) || notAvailable) {
                 String toastMsg = String.format(Locale.getDefault(),
                                                 "%s is not available on %s",
@@ -199,29 +213,30 @@ class TutorProfileViewFragment extends Fragment {
             bookingViewModel.setTutor(tutor);
             bookingViewModel.setStudent(student);
             bookingViewModel.setTutorLocations(prefLocation);
-            NavHostFragment.findNavController(this)
-                           .navigate(R.id.actionToTimeSlotSelectionFragment);
+            NavHostFragment.findNavController(this).navigate(R.id.actionToTimeSlotSelectionFragment);
         } catch (final Throwable e) {
-            Toast.makeText(requireContext(), "Something Happened! Please try again!",
-                           Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Something Happened! Please try again!", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void createGroup(ExtendedFloatingActionButton floatingButton) {
+    private
+    void createGroup(ExtendedFloatingActionButton floatingButton)
+    {
         int studentID, tutorID;
         studentID = trViewModel.getStudent().getValue().getStudentID();
         tutorID   = trViewModel.getTutor().getValue().getTutorID();
         AccessTutors   accessTutors   = new AccessTutors();
         AccessAccounts accessAccounts = new AccessAccounts();
-        messageModel.setOtherUser(accessAccounts.getAccountByAccountID(
-                accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
-        groupModel.addAccountToContactList(accessAccounts.getAccountByAccountID(
-                accessTutors.getTutorByTutorID(tutorID).getAccountID()).orElse(null));
+        messageModel.setOtherUser(accessAccounts
+                                          .getAccountByAccountID(accessTutors.getTutorByTutorID(tutorID).getAccountID())
+                                          .orElse(null));
+        groupModel.addAccountToContactList(accessAccounts
+                                                   .getAccountByAccountID(accessTutors
+                                                                                  .getTutorByTutorID(tutorID)
+                                                                                  .getAccountID())
+                                                   .orElse(null));
         floatingButton.setError(null);
         try {
-            MessageModel messageModel
-                    =
-                    new ViewModelProvider(requireActivity()).get(MessageModel.class);
             int groupID = messageHandler.searchGroupByIDs(studentID, tutorID);
             if (groupID < 0) {
                 groupID = messageHandler.createGroup(studentID, tutorID);
@@ -232,19 +247,16 @@ class TutorProfileViewFragment extends Fragment {
         } catch (final Exception e) {
             floatingButton.setError(e.getMessage());
             Log.e("GroupCreation", "Error creating group: " + e.getMessage());
-            Toast
-                    .makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG)
-                    .show();
-            Snackbar
-                    .make(floatingButton, e.getMessage(), Snackbar.LENGTH_LONG)
-                    .show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Snackbar.make(floatingButton, e.getMessage(), Snackbar.LENGTH_LONG).show();
         }
     }
 
 
-    private void chatGroupIntent(View v) {
-        ExtendedFloatingActionButton floatingButton
-                = v.findViewById(R.id.fabMsg);
+    private
+    void chatGroupIntent(View v)
+    {
+        ExtendedFloatingActionButton floatingButton = v.findViewById(R.id.fabMsg);
         floatingButton.setOnClickListener(view -> {
             createGroup(floatingButton);
             NavHostFragment

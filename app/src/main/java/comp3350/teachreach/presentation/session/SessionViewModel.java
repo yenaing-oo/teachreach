@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import comp3350.teachreach.application.Server;
+import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
@@ -27,106 +28,136 @@ import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public class SessionViewModel extends ViewModel {
+public
+class SessionViewModel extends ViewModel
+{
     private final ExecutorService          threadPool = Executors.newCachedThreadPool();
-    private final ListeningExecutorService service    = MoreExecutors.listeningDecorator(
-            threadPool);
+    private final ListeningExecutorService service    = MoreExecutors.listeningDecorator(threadPool);
 
-    private final ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
-    private final ISessionHandler           sessionHandler      = new SessionHandler(
+    private final LiveData<AccessSessions>
+                                                                    sessionsAccess
+                                                                                        =
+            new MutableLiveData<>(new AccessSessions());
+    private final ITutorAvailabilityManager
+                                                                    availabilityManager
+                                                                                        =
+            new TutorAvailabilityManager();
+    private final ISessionHandler                                   sessionHandler      = new SessionHandler(
             availabilityManager);
+    private final MutableLiveData<ConcurrentMap<Integer, IStudent>>
+                                                                    studentMap
+                                                                                        =
+            new MutableLiveData<>(new ConcurrentHashMap<>(
+            Server.getStudentDataAccess().getStudents()));
+    private final MutableLiveData<ConcurrentMap<Integer, ITutor>>
+                                                                    tutorMap
+                                                                                        =
+            new MutableLiveData<>(new ConcurrentHashMap<>(
+            Server.getTutorDataAccess().getTutors()));
+    private final MutableLiveData<List<ISession>>                   sessionsBeingViewed = new MutableLiveData<>();
+    private final MutableLiveData<String>                           err                 = new MutableLiveData<>(null);
 
-    private final MutableLiveData<ConcurrentMap<Integer, IStudent>> studentMap = new MutableLiveData<>(
-            new ConcurrentHashMap<>(Server.getStudentDataAccess()
-                                          .getStudents()));
+    public
+    LiveData<AccessSessions> getSessionsAccess()
+    {
+        return sessionsAccess;
+    }
 
-    private final MutableLiveData<ConcurrentMap<Integer, ITutor>> tutorMap = new MutableLiveData<>(
-            new ConcurrentHashMap<>(Server.getTutorDataAccess()
-                                          .getTutors()));
-
-    private final MutableLiveData<List<ISession>> sessionsBeingViewed = new MutableLiveData<>();
-
-    private final MutableLiveData<String> err = new MutableLiveData<>(null);
-
-    public void setSessionsStudent(@NonNull SessionType type, @NonNull IStudent s) {
-        ListenableFuture<List<ISession>> futureList = Futures.submitAsync(
-                Callables.asAsyncCallable(() -> {
-                    switch (type) {
-                        case pending -> {
-                            return sessionHandler.getPendingSessions(s);
-                        }
-                        case accepted -> {
-                            return sessionHandler.getAcceptedSessions(s);
-                        }
-                        case rejected -> {
-                            return sessionHandler.getRejectedSessions(s);
-                        }
-                        default -> {
-                            return sessionHandler.getSessions(s);
-                        }
-                    }
-                }, service), service);
+    public
+    void setSessionsStudent(@NonNull SessionType type, @NonNull IStudent s)
+    {
+        ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
+            switch (type) {
+                case pending -> {
+                    return sessionHandler.getPendingSessions(s);
+                }
+                case accepted -> {
+                    return sessionHandler.getAcceptedSessions(s);
+                }
+                case rejected -> {
+                    return sessionHandler.getRejectedSessions(s);
+                }
+                default -> {
+                    return sessionHandler.getSessions(s);
+                }
+            }
+        }, service), service);
         waitForUpdate(futureList);
     }
 
-    public void setSessionsTutor(@NonNull SessionType type, @NonNull ITutor t) {
-        ListenableFuture<List<ISession>> futureList = Futures.submitAsync(
-                Callables.asAsyncCallable(() -> {
-                    switch (type) {
-                        case pending -> {
-                            return sessionHandler.getPendingSessions(t);
-                        }
-                        case accepted -> {
-                            return sessionHandler.getAcceptedSessions(t);
-                        }
-                        case rejected -> {
-                            return sessionHandler.getRejectedSessions(t);
-                        }
-                        default -> {
-                            return sessionHandler.getSessions(t);
-                        }
-                    }
-                }, service), service);
+    public
+    void setSessionsTutor(@NonNull SessionType type, @NonNull ITutor t)
+    {
+        ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
+            switch (type) {
+                case pending -> {
+                    return sessionHandler.getPendingSessions(t);
+                }
+                case accepted -> {
+                    return sessionHandler.getAcceptedSessions(t);
+                }
+                case rejected -> {
+                    return sessionHandler.getRejectedSessions(t);
+                }
+                default -> {
+                    return sessionHandler.getSessions(t);
+                }
+            }
+        }, service), service);
         waitForUpdate(futureList);
     }
 
-    public LiveData<ConcurrentMap<Integer, IStudent>> getStudents() {
+    public
+    LiveData<ConcurrentMap<Integer, IStudent>> getStudents()
+    {
         return studentMap;
     }
 
-    public LiveData<ConcurrentMap<Integer, ITutor>> getTutors() {
+    public
+    LiveData<ConcurrentMap<Integer, ITutor>> getTutors()
+    {
         return tutorMap;
     }
 
-    public LiveData<List<ISession>> getSessionsBeingViewed() {
+    public
+    LiveData<List<ISession>> getSessionsBeingViewed()
+    {
         return sessionsBeingViewed;
     }
 
-    private void waitForUpdate(@NonNull ListenableFuture<List<ISession>> future) {
-        Futures.addCallback(future, new FutureCallback<>() {
+    private
+    void waitForUpdate(@NonNull ListenableFuture<List<ISession>> future)
+    {
+        Futures.addCallback(future, new FutureCallback<>()
+        {
             @Override
-            public void onSuccess(List<ISession> result) {
+            public
+            void onSuccess(List<ISession> result)
+            {
                 sessionsBeingViewed.postValue(result);
             }
 
             @Override
-            public void onFailure(@NonNull Throwable t) {
+            public
+            void onFailure(@NonNull Throwable t)
+            {
                 err.postValue(t.getMessage());
             }
         }, service);
     }
 
     @Override
-    protected void onCleared() {
+    protected
+    void onCleared()
+    {
         super.onCleared();
         threadPool.shutdown();
         service.shutdown();
     }
 
-    public enum SessionType {
-        pending,
-        accepted,
-        rejected,
-        others
+    public
+    enum SessionType
+    {
+        pending, accepted, rejected, others
     }
 }
