@@ -1,14 +1,25 @@
 ## TeachReach
-A platform to connect student easily with tutors!
+A platform to connect students easily with tutors!
 
 ## Purpose
 
-## How to run it
+## How to run TeachReach
+
+### The app:
 
 1. Clone this repository
 2. Open with Android Studio
 3. Do a Gradle Sync
 4. Build the apk or run it directly on your device/emulator.
+
+### The tests:
+- Unit Tests: Run AllUnitTests.java
+- Integration Tests: Run AllIntegrationTests.java
+- All Tests: 
+- System (UI) Tests:
+    1. Make sure you do not have TeachReach installed on your device
+    2. Run AllAcceptanceTest.java
+    - It it fails, install the app, clear its storage and cache, then run AllAcceptanceTest.java
 
 ## Contributing
 - [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/CONTRIBUTING.md)
