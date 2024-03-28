@@ -19,7 +19,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import comp3350.teachreach.application.Server;
-import comp3350.teachreach.logic.DAOs.AccessSessions;
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
@@ -34,31 +33,26 @@ class SessionViewModel extends ViewModel
     private final ExecutorService          threadPool = Executors.newCachedThreadPool();
     private final ListeningExecutorService service    = MoreExecutors.listeningDecorator(threadPool);
 
-    private final LiveData<AccessSessions>
-                                                                    sessionsAccess
-                                                                                        =
-            new MutableLiveData<>(new AccessSessions());
-    private final ITutorAvailabilityManager
-                                                                    availabilityManager
-                                                                                        =
-            new TutorAvailabilityManager();
-    private final ISessionHandler                                   sessionHandler      = new SessionHandler(
-            availabilityManager);
+
+    private final ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
+
+    private final LiveData<ISessionHandler> sessionsAccess = new MutableLiveData<>(new SessionHandler(
+            availabilityManager));
+
+
     private final MutableLiveData<ConcurrentMap<Integer, IStudent>>
-                                                                    studentMap
-                                                                                        =
-            new MutableLiveData<>(new ConcurrentHashMap<>(
-            Server.getStudentDataAccess().getStudents()));
+            studentMap
+            = new MutableLiveData<>(new ConcurrentHashMap<>(Server.getStudentDataAccess().getStudents()));
+
     private final MutableLiveData<ConcurrentMap<Integer, ITutor>>
-                                                                    tutorMap
-                                                                                        =
-            new MutableLiveData<>(new ConcurrentHashMap<>(
+                                                  tutorMap
+                                                                      = new MutableLiveData<>(new ConcurrentHashMap<>(
             Server.getTutorDataAccess().getTutors()));
-    private final MutableLiveData<List<ISession>>                   sessionsBeingViewed = new MutableLiveData<>();
-    private final MutableLiveData<String>                           err                 = new MutableLiveData<>(null);
+    private final MutableLiveData<List<ISession>> sessionsBeingViewed = new MutableLiveData<>();
+    private final MutableLiveData<String>         err                 = new MutableLiveData<>(null);
 
     public
-    LiveData<AccessSessions> getSessionsAccess()
+    LiveData<ISessionHandler> getSessionsAccess()
     {
         return sessionsAccess;
     }
@@ -69,16 +63,16 @@ class SessionViewModel extends ViewModel
         ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
             switch (type) {
                 case pending -> {
-                    return sessionHandler.getPendingSessions(s);
+                    return sessionsAccess.getValue().getPendingSessions(s);
                 }
                 case accepted -> {
-                    return sessionHandler.getAcceptedSessions(s);
+                    return sessionsAccess.getValue().getAcceptedSessions(s);
                 }
                 case rejected -> {
-                    return sessionHandler.getRejectedSessions(s);
+                    return sessionsAccess.getValue().getRejectedSessions(s);
                 }
                 default -> {
-                    return sessionHandler.getSessions(s);
+                    return sessionsAccess.getValue().getSessions(s);
                 }
             }
         }, service), service);
@@ -91,16 +85,16 @@ class SessionViewModel extends ViewModel
         ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
             switch (type) {
                 case pending -> {
-                    return sessionHandler.getPendingSessions(t);
+                    return sessionsAccess.getValue().getPendingSessions(t);
                 }
                 case accepted -> {
-                    return sessionHandler.getAcceptedSessions(t);
+                    return sessionsAccess.getValue().getAcceptedSessions(t);
                 }
                 case rejected -> {
-                    return sessionHandler.getRejectedSessions(t);
+                    return sessionsAccess.getValue().getRejectedSessions(t);
                 }
                 default -> {
-                    return sessionHandler.getSessions(t);
+                    return sessionsAccess.getValue().getSessions(t);
                 }
             }
         }, service), service);

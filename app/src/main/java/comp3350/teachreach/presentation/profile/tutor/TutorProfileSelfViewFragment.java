@@ -21,24 +21,34 @@ import com.google.android.material.appbar.MaterialToolbar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileSelfViewBinding;
+import comp3350.teachreach.logic.interfaces.ISessionHandler;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.presentation.session.SessionViewModel;
+import comp3350.teachreach.presentation.utils.TimeSliceFormatter;
 
 public
 class TutorProfileSelfViewFragment extends Fragment
 {
-    private static ITutorProfileHandler                profileHandler;
-    private static List<String>                        prefLocations;
-    private static List<String>                        tutoredCourses;
-    private        TutorProfileViewModel               profileViewModel;
-    private        FragmentTutorProfileSelfViewBinding binding;
-    private        IAccount                            account;
-    private        ITutor                              tutor;
-    private        boolean                             isLarge, isLandscape;
+    private static ITutorProfileHandler profileHandler;
+    private static ISessionHandler      sessionHandler;
+    private static List<String>         prefLocations;
+    private static List<String>         tutoredCourses;
+    private static List<String>         availStrList;
+
+    private TutorProfileViewModel               profileViewModel;
+    private SessionViewModel                    sessionViewModel;
+    private FragmentTutorProfileSelfViewBinding binding;
+    private IAccount                            account;
+    private ITutor                              tutor;
+    private boolean                             isLarge, isLandscape;
 
     public
     TutorProfileSelfViewFragment()
@@ -48,11 +58,12 @@ class TutorProfileSelfViewFragment extends Fragment
     private
     void fillUpProfileDetails()
     {
-        TextView tvName     = binding.tvNameField;
-        TextView tvPronouns = binding.tvPronounsField;
-        TextView tvMajor    = binding.tvMajorField;
-        TextView tvPrice    = binding.tvRatingField;
-        TextView tvReviews  = binding.tvReviewsField;
+        TextView tvName        = binding.tvNameField;
+        TextView tvPronouns    = binding.tvPronounsField;
+        TextView tvMajor       = binding.tvMajorField;
+        TextView tvPrice       = binding.tvRatingField;
+        TextView tvReviews     = binding.tvReviewsField;
+        TextView tvMoneyEarned = binding.tvMoneyEarnedField;
 
         tvName.setText(account.getUserName());
         tvPronouns.setText(account.getUserPronouns());
@@ -62,6 +73,13 @@ class TutorProfileSelfViewFragment extends Fragment
                                         "%.1f ⭐(%d)",
                                         profileHandler.getAvgReview(tutor),
                                         tutor.getReviewCount()));
+        tvMoneyEarned.setText(String.format(Locale.getDefault(),
+                                            "$%.02f",
+                                            sessionHandler
+                                                    .getAcceptedSessions(tutor)
+                                                    .stream()
+                                                    .mapToDouble(ISession::getSessionCost)
+                                                    .sum()));
     }
 
     private
@@ -92,8 +110,8 @@ class TutorProfileSelfViewFragment extends Fragment
         Button            btnAddCourse = binding.btnAddCourse;
         DialogueAddCourse addCourse    = new DialogueAddCourse();
         btnAddCourse.setOnClickListener(v -> addCourse.show(getChildFragmentManager(), "Add Course"));
-        RecyclerView recycler  = binding.rvTutoredCourses;
-        int          spanCount = isLarge || isLandscape ? 6 : 2;
+        RecyclerView               recycler      = binding.rvTutoredCourses;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
         profileViewModel.setTutoredCoursesCode(profileHandler.getCourseCodeList(tutor));
@@ -109,15 +127,37 @@ class TutorProfileSelfViewFragment extends Fragment
         DialogueAddLocation addLocation    = new DialogueAddLocation();
         Button              btnAddLocation = binding.btnAddLocation;
         btnAddLocation.setOnClickListener(v -> addLocation.show(getChildFragmentManager(), "Add Location"));
-        RecyclerView recycler  = binding.rvPreferredLocations;
-        int          spanCount = isLarge || isLandscape ? 6 : 2;
+        RecyclerView               recycler      = binding.rvPreferredLocations;
+        int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
         recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
-        prefLocations = profileHandler.getPreferredLocations(tutor);
+        profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
+        prefLocations = profileViewModel.getPreferredLocations().getValue();
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(prefLocations);
         recycler.setAdapter(recyclerAdapter);
         profileViewModel.getPreferredLocations().observe(getViewLifecycleOwner(), recyclerAdapter::updateData);
+    }
+
+    private
+    void setUpAvailability()
+    {
+        DialogueAddLocation addLocation = new DialogueAddLocation();
+        Button              btnAddAvail = binding.btnAddAvailability;
+        btnAddAvail.setOnClickListener(v -> addLocation.show(getChildFragmentManager(), "Add Availability"));
+        RecyclerView               recycler      = binding.rvAvailability;
+        int                        spanCount     = isLarge || isLandscape ? 2 : 1;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
+        availStrList = Server
+                .getTutorAvailabilityAccess()
+                .getAvailability(tutor)
+                .stream()
+                .map(TimeSliceFormatter::format)
+                .collect(Collectors.toList());
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(availStrList);
+        recycler.setAdapter(recyclerAdapter);
     }
 
     @Override
@@ -125,8 +165,10 @@ class TutorProfileSelfViewFragment extends Fragment
     void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        sessionViewModel = new ViewModelProvider(requireActivity()).get(SessionViewModel.class);
         profileViewModel = new ViewModelProvider(requireActivity()).get(TutorProfileViewModel.class);
         profileHandler   = profileViewModel.getProfileHandler().getValue();
+        sessionHandler   = sessionViewModel.getSessionsAccess().getValue();
     }
 
     @Override
@@ -152,5 +194,6 @@ class TutorProfileSelfViewFragment extends Fragment
         setUpTopBarMenu();
         setUpTutoredCourses();
         setUpPreferredLocations();
+        setUpAvailability();
     }
 }

@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 app:forceDefaultNavigationOnClickListener="true"
-                app:menu="@menu/top_app_bar_session"
                 app:navigationIcon="@drawable/pending_sessions_24"
                 app:title="@string/fabSessionsTitle" />
 
