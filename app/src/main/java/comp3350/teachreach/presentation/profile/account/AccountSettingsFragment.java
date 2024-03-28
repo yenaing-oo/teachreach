@@ -21,22 +21,17 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class AccountSettingsFragment extends Fragment
-{
+class AccountSettingsFragment extends Fragment {
     private FragmentAccountSettingsBinding binding;
     private TRViewModel                    vm;
     private IAccount                       account;
     private boolean                        isTutor;
 
-    public
-    AccountSettingsFragment()
-    {
+    public AccountSettingsFragment() {
     }
 
     @Override
-    public
-    void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         account = vm.getAccount().getValue();
@@ -44,30 +39,25 @@ class AccountSettingsFragment extends Fragment
     }
 
     @Override
-    public
-    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentAccountSettingsBinding.inflate(inflater, container, false);
         setUpTopBar();
         setUpButtons();
         return binding.getRoot();
     }
 
-    private
-    void setUpTopBar()
-    {
+    private void setUpTopBar() {
         MaterialToolbar materialToolbar = binding.topAppBar;
 
         NavController navController = NavHostFragment.findNavController(this);
         View.OnClickListener listener = isTutor ?
-                                        v -> navController.navigate(R.id.actionToTutorProfileSelfViewFragment) :
-                                        v -> navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
+                v -> navController.navigate(R.id.actionToTutorProfileSelfViewFragment) :
+                v -> navController.navigate(R.id.actionToStudentProfileSelfViewFragment);
         materialToolbar.setNavigationOnClickListener(listener);
     }
 
-    private
-    void setUpButtons()
-    {
+    private void setUpButtons() {
         TextView tvEmailField = binding.tvEmailField;
         tvEmailField.setText(account.getAccountEmail());
         Button btnChangeEmail    = binding.btnChangeEmail;

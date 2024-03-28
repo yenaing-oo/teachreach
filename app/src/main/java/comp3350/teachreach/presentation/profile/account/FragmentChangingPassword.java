@@ -24,47 +24,38 @@ import comp3350.teachreach.objects.interfaces.IAccount;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public
-class FragmentChangingPassword extends Fragment
-{
+class FragmentChangingPassword extends Fragment {
     private FragmentChangePasswordBinding binding;
     private TRViewModel                   vm;
     private IAccount                      account;
 
-    public
-    FragmentChangingPassword()
-    {
+    public FragmentChangingPassword() {
     }
 
     @Override
-    public
-    void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         vm      = new ViewModelProvider(requireActivity()).get(TRViewModel.class);
         account = vm.getAccount().getValue();
     }
 
     @Override
-    public
-    View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         binding = FragmentChangePasswordBinding.inflate(inflater, container, false);
         setUpTopBar();
         setUpTextFields();
         return binding.getRoot();
     }
 
-    private
-    void setUpTopBar()
-    {
+    private void setUpTopBar() {
         MaterialToolbar materialToolbar = binding.topAppBar;
         NavController   navController   = NavHostFragment.findNavController(this);
-        materialToolbar.setNavigationOnClickListener(v -> navController.navigate(R.id.actionToAccountSettingsFragment));
+        materialToolbar.setNavigationOnClickListener(
+                v -> navController.navigate(R.id.actionToAccountSettingsFragment));
     }
 
-    private
-    void setUpTextFields()
-    {
+    private void setUpTextFields() {
         TextInputLayout tvCurrentPassword = binding.tilCurrentPassword;
 
         TextInputLayout tvNewPassword = binding.tilNewValue;
