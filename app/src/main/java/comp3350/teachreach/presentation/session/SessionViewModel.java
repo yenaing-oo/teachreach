@@ -36,7 +36,7 @@ class SessionViewModel extends ViewModel
 
     private final ITutorAvailabilityManager availabilityManager = new TutorAvailabilityManager();
 
-    private final LiveData<ISessionHandler> sessionsAccess = new MutableLiveData<>(new SessionHandler(
+    private final LiveData<ISessionHandler> sessionHandler = new MutableLiveData<>(new SessionHandler(
             availabilityManager));
 
 
@@ -52,9 +52,9 @@ class SessionViewModel extends ViewModel
     private final MutableLiveData<String>         err                 = new MutableLiveData<>(null);
 
     public
-    LiveData<ISessionHandler> getSessionsAccess()
+    LiveData<ISessionHandler> getSessionHandler()
     {
-        return sessionsAccess;
+        return sessionHandler;
     }
 
     public
@@ -63,16 +63,16 @@ class SessionViewModel extends ViewModel
         ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
             switch (type) {
                 case pending -> {
-                    return sessionsAccess.getValue().getPendingSessions(s);
+                    return sessionHandler.getValue().getPendingSessions(s);
                 }
                 case accepted -> {
-                    return sessionsAccess.getValue().getAcceptedSessions(s);
+                    return sessionHandler.getValue().getAcceptedSessions(s);
                 }
                 case rejected -> {
-                    return sessionsAccess.getValue().getRejectedSessions(s);
+                    return sessionHandler.getValue().getRejectedSessions(s);
                 }
                 default -> {
-                    return sessionsAccess.getValue().getSessions(s);
+                    return sessionHandler.getValue().getSessions(s);
                 }
             }
         }, service), service);
@@ -85,16 +85,16 @@ class SessionViewModel extends ViewModel
         ListenableFuture<List<ISession>> futureList = Futures.submitAsync(Callables.asAsyncCallable(() -> {
             switch (type) {
                 case pending -> {
-                    return sessionsAccess.getValue().getPendingSessions(t);
+                    return sessionHandler.getValue().getPendingSessions(t);
                 }
                 case accepted -> {
-                    return sessionsAccess.getValue().getAcceptedSessions(t);
+                    return sessionHandler.getValue().getAcceptedSessions(t);
                 }
                 case rejected -> {
-                    return sessionsAccess.getValue().getRejectedSessions(t);
+                    return sessionHandler.getValue().getRejectedSessions(t);
                 }
                 default -> {
-                    return sessionsAccess.getValue().getSessions(t);
+                    return sessionHandler.getValue().getSessions(t);
                 }
             }
         }, service), service);

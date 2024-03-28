@@ -7,8 +7,12 @@ import comp3350.teachreach.objects.interfaces.ISession;
 import comp3350.teachreach.objects.interfaces.IStudent;
 import comp3350.teachreach.objects.interfaces.ITutor;
 
-public interface ISessionHandler {
+public
+interface ISessionHandler
+{
     ISession bookSession(ISession session) throws TutorAvailabilityManagerException;
+
+    ISession updateSession(ISession session);
 
     List<ISession> getSessions(IStudent student);
 

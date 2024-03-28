@@ -54,6 +54,9 @@
 
     <style name="Theme.TeachReach" parent="Base.Theme.TeachReach" />
 
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">cut</item>
+    </style>
 
     <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
         <item name="cornerFamily">cut</item>
@@ -113,5 +116,15 @@
         </item>
         <item name="colorOnSurfaceVariant">@color/material_dynamic_secondary30
         </item>
+    </style>
+
+
+    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+        <item name="colorPrimary">@color/material_dynamic_primary80</item>
+        <item name="colorOnPrimary">@color/material_dynamic_primary20</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent
+        </item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
     </style>
 </resources>

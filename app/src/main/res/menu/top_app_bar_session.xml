@@ -1,12 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/menuList"
+        android:id="@+id/menuSortByTimeAsc"
         android:enabled="true"
-        android:icon="@drawable/baseline_calendar_view_day_24"
-        android:title="@string/sessionList" />
+        android:title="@string/sessionSortAsc" />
     <item
-        android:id="@+id/menuCalendar"
+        android:id="@+id/menuSortByTimeDesc"
         android:enabled="true"
-        android:icon="@drawable/baseline_calendar_view_month_24"
-        android:title="@string/sessionCalendar" />
+        android:title="@string/sessionSortDesc" />
 </menu>

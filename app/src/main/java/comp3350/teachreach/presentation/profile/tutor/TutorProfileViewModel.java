@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.List;
 
 import comp3350.teachreach.logic.availability.TutorAvailabilityManager;
+import comp3350.teachreach.logic.exceptions.availability.TutorAvailabilityManagerException;
 import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.logic.interfaces.ITutorAvailabilityManager;
 import comp3350.teachreach.logic.interfaces.ITutorProfileHandler;
@@ -14,7 +15,9 @@ import comp3350.teachreach.logic.interfaces.IUserProfileHandler;
 import comp3350.teachreach.logic.profile.TutorProfileHandler;
 import comp3350.teachreach.logic.profile.UserProfileFetcher;
 import comp3350.teachreach.objects.interfaces.IAccount;
+import comp3350.teachreach.objects.interfaces.ITimeSlice;
 import comp3350.teachreach.objects.interfaces.ITutor;
+import comp3350.teachreach.presentation.utils.TimeSliceFormatter;
 
 public
 class TutorProfileViewModel extends ViewModel
@@ -33,9 +36,30 @@ class TutorProfileViewModel extends ViewModel
     private final MutableLiveData<List<String>> tutoredCoursesCode = new MutableLiveData<>();
 
     private final MutableLiveData<List<String>> preferredLocations = new MutableLiveData<>();
+    private final MutableLiveData<List<String>> availStrList       = new MutableLiveData<>();
+    private final MutableLiveData<ITutor>       tutor              = new MutableLiveData<>();
+    private final MutableLiveData<IAccount>     tutorAccount       = new MutableLiveData<>();
 
-    private final MutableLiveData<ITutor>   tutor        = new MutableLiveData<>();
-    private final MutableLiveData<IAccount> tutorAccount = new MutableLiveData<>();
+    public
+    LiveData<List<String>> getAvailStrList()
+    {
+        return availStrList;
+    }
+
+    public
+    void setAvailStrList(List<String> l)
+    {
+        availStrList.setValue(l);
+    }
+
+    public
+    void addAvailability(ITutor t, ITimeSlice ts) throws TutorAvailabilityManagerException
+    {
+        this.getAvailabilityManager().getValue().addAvailability(t, ts);
+        List<String> updated = getAvailStrList().getValue();
+        updated.add(TimeSliceFormatter.format(ts));
+        availStrList.postValue(updated);
+    }
 
     public
     LiveData<List<String>> getTutoredCoursesCode()
