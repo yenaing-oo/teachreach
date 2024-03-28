@@ -1,4 +1,4 @@
-# Retrospective: Iteration 1
+# RETROSPECTIVE: ITERATION 1
 
 Group 2 - Git Gud
 
