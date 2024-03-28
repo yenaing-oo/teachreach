@@ -155,4 +155,6 @@
     <string name="sessionDurationText">Duration:</string>
     <string name="tvMoneySpent">Money spent:</string>
     <string name="tvMoneySpentField">$xx.xx</string>
+    <string name="sessionLugar">Location:</string>
+    <string name="sessionLocation">Sem lugar</string>
 </resources>

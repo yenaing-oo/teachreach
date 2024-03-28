@@ -17,7 +17,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="12dp">
+            android:paddingHorizontal="24dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,6 +40,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
+                    android:gravity="end|center"
                     android:text="@string/sessionWithWhom" />
 
             </LinearLayout>
@@ -61,6 +64,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
+                    android:gravity="end|center"
                     android:text="@string/sessionStartDate" />
 
             </LinearLayout>
@@ -84,6 +88,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
+                    android:gravity="end|center"
                     android:text="@string/sessionStartDate" />
 
             </LinearLayout>
@@ -107,6 +112,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
+                    android:gravity="end|center"
                     android:text="@string/sessionDuration" />
 
             </LinearLayout>
@@ -130,7 +136,32 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.5"
+                    android:gravity="end|center"
                     android:text="@string/sessionCost" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:text="@string/sessionLugar" />
+
+                <TextView
+                    android:id="@+id/sessionLocation"
+                    style="@style/TextAppearance.Material3.TitleMedium"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:gravity="end|center"
+                    android:text="@string/sessionLocation" />
 
             </LinearLayout>
 
