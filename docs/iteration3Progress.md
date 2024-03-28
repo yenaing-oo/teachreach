@@ -7,8 +7,9 @@ Progress Report<br>
 
 **Description**: The ability for students to view their upcoming sessions and receive reminders.<br>
 
-* As a student or tutor, I want to receive session reminders. (2 days)<br>
-* As a student or tutor, I want to view my upcoming sessions. (1 day)<br>
+* As a student or tutor, I want to view my pending sessions. (2 days)<br>
+* As a student or tutor, I want to view my upcoming sessions. (2 days)<br>
+* As a student or tutor, I want to view my rejected sessions. (1 day)<br>
 
 **Payment**<br>
 
@@ -31,14 +32,13 @@ Progress Report<br>
 **Description**: The ability for students to message with their desired tutor.
 
 - As a student, I want to communicate with my tutor so that we can plan out our session. (3 days)<br>
-As a student, I want to know what time a message is sent.<br>
+- As a student, I want to know what time a message is sent.<br>
 - As a user, I want to see my chat history.<br>
 - As a student, I want have a contact list to keep track who I have contacted with.<br>
 
 **Account Management**
 
 **Description**: The ability for users to update important details about themselves.
-- As a user, I want to be able to update my account details. (1 day)<br>
 - As a user, I want to change my pronouns in my profile. (5 hrs)<br>
 - As a user, I want to be able to edit my login E-mail in my profile (5 hrs)<br>
 - As a user, I want to be able to change my name in my profile (5 hrs)<br>
