@@ -25,14 +25,14 @@ Or you can just install this [apk](https://umanitoba-my.sharepoint.com/:u:/g/per
     - Note: If it fails, install the app, clear its storage and cache, then run AllAcceptanceTest.java
 
 ## Contributing
-- [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/CONTRIBUTING.md)
+- [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/CONTRIBUTING.md)
 
 ## Iteration Progress and Work Analysis
-- [Iteration 3](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/docs/iteration3Progress.md)
+- [Iteration 3](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/iteration3ProgressReport.md?ref_type=heads)
 
 ## Retrospective
-- [Iteration 1](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/docs/RETROSPECTIVE%20-%20ITERATION%201.md)
-- [Iteration 2](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/docs/RETROSPECTIVE%20-%20ITERATION%202.md)
+- [Iteration 1](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/RETROSPECTIVE%20-%20ITERATION%201.md)
+- [Iteration 2](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/RETROSPECTIVE%20-%20ITERATION%202.md)
 
 ## Vision Statement
 - [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/README.md)
