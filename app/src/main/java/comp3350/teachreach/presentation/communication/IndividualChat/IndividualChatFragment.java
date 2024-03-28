@@ -5,8 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -33,15 +33,14 @@ import comp3350.teachreach.presentation.utils.TRViewModel;
 
 public class IndividualChatFragment extends Fragment {
 
+    private static final String TAG = "IndividualChatFragment";
     private IMessageHandler messageHandler;
-    private TRViewModel vm;
-
-    private MessageModel mm;
+    private TRViewModel     vm;
+    private MessageModel                  mm;
     private FragmentIndividualChatBinding binding;
-    private FullMessageAdaptor fullMessageAdaptor;
-
+    private FullMessageAdaptor            fullMessageAdaptor;
     private EditText inputMessage;
-    private ImageButton sendButton;
+    private Button   sendButton;
 
     public IndividualChatFragment() {
     }
@@ -50,20 +49,19 @@ public class IndividualChatFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         messageHandler = new MessageHandler();
-        vm = new ViewModelProvider(requireActivity()).get(
+        vm             = new ViewModelProvider(requireActivity()).get(
                 TRViewModel.class);
-        mm = new ViewModelProvider(requireActivity()).get(
+        mm             = new ViewModelProvider(requireActivity()).get(
                 MessageModel.class);
     }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentIndividualChatBinding.inflate(inflater,
-                container,
-                false);
+                                                        container,
+                                                        false);
         return binding.getRoot();
     }
 
@@ -79,9 +77,8 @@ public class IndividualChatFragment extends Fragment {
         LiveData<List<IMessage>> messagesLiveData
                 = mm.getMessageList();
         messagesLiveData.observe(getViewLifecycleOwner(),
-                messageList -> fullMessageAdaptor.setMessages());
+                                 messageList -> fullMessageAdaptor.setMessages());
     }
-
 
     private void setUpTopBar() {
         MaterialToolbar materialToolbar = binding.topAppBar;
@@ -99,9 +96,10 @@ public class IndividualChatFragment extends Fragment {
 
         RecyclerView recyclerView = binding.IndividualChatsRecycleViewFragment;
         fullMessageAdaptor = new FullMessageAdaptor(getContext(),
-                messageHandler.retrieveAllMessageByGroupID(mm.getGroupID().getValue()),
+                                                    messageHandler.retrieveAllMessageByGroupID(
+                                                            mm.getGroupID().getValue()),
 
-                vm, mm);
+                                                    vm, mm);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(fullMessageAdaptor);
@@ -109,13 +107,11 @@ public class IndividualChatFragment extends Fragment {
 
     private void setUpSendButton() {
         inputMessage = binding.inputMessage;
-        sendButton = binding.layoutSend;
+        sendButton   = binding.layoutSend;
         sendButton.setOnClickListener(view -> {
             sendMessage();
         });
     }
-
-    private static final String TAG = "IndividualChatFragment";
 
     private void sendMessage() {
         try {
