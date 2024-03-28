@@ -60,7 +60,7 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:padding="12dp"
-            android:textColor="@android:color/black" />
+            android:textColor="?attr/colorSurfaceInverse" />
 
         <Button
             android:id="@+id/layoutSend"
