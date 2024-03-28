@@ -21,13 +21,13 @@ public class TutorFilter implements ITutorFilter {
     List<SortConditionTag>                     sortCondSet     = new ArrayList<>();
     Predicate<ITutor>                          searchCondition = t -> true;
 
-    IUserProfileHandler<ITutor> userProfileHandler;
-    ITutorProfileHandler        tutorProfileHandler;
+    IUserProfileHandler<ITutor> userHandler;
+    ITutorProfileHandler        profileHandler;
 
     public TutorFilter(IUserProfileHandler<ITutor> userInfoFetcher,
                        ITutorProfileHandler tutorInfoFetcher) {
-        userProfileHandler  = userInfoFetcher;
-        tutorProfileHandler = tutorInfoFetcher;
+        userHandler    = userInfoFetcher;
+        profileHandler = tutorInfoFetcher;
     }
 
     public static TutorFilter New() {
@@ -105,7 +105,7 @@ public class TutorFilter implements ITutorFilter {
     @Override
     public TutorFilter setMinimumAvgRating(double minimumAvgRating) {
         cond.put(ConditionFilterTag.minReview,
-                 t -> tutorProfileHandler.getAvgReview(t) >= minimumAvgRating);
+                 t -> profileHandler.getAvgReview(t) >= minimumAvgRating);
         return this;
     }
 
@@ -124,28 +124,28 @@ public class TutorFilter implements ITutorFilter {
     @Override
     public TutorFilter setCourseCode(String courseCode) {
         cond.put(ConditionFilterTag.courseCode,
-                 t -> tutorProfileHandler.getCourseCodeList(t).contains(courseCode));
+                 t -> profileHandler.getCourseCodeList(t).contains(courseCode));
         return this;
     }
 
     @Override
     public TutorFilter setSearchFilter(String searchString) {
         final String s = searchString.trim().toLowerCase();
-        searchCondition = t -> tutorProfileHandler.getCourseCodeList(t)
-                                                  .stream()
-                                                  .anyMatch(code -> code.toLowerCase().contains(s))
+        searchCondition = t -> profileHandler.getCourseCodeList(t)
+                                             .stream()
+                                             .anyMatch(code -> code.toLowerCase().contains(s))
 
-                || tutorProfileHandler.getCourseDescriptionList(t)
-                                      .stream()
-                                      .anyMatch(desc -> desc.toLowerCase().contains(s))
+                || profileHandler.getCourseDescriptionList(t)
+                                 .stream()
+                                 .anyMatch(desc -> desc.toLowerCase().contains(s))
 
-                || tutorProfileHandler.getPreferredLocations(t)
-                                      .stream()
-                                      .anyMatch(l -> l.toLowerCase().contains(s))
+                || profileHandler.getPreferredLocations(t)
+                                 .stream()
+                                 .anyMatch(l -> l.toLowerCase().contains(s))
 
-                || userProfileHandler.getUserName(t).toLowerCase().contains(s)
+                || userHandler.getUserName(t).toLowerCase().contains(s)
 
-                || userProfileHandler.getUserMajor(t).toLowerCase().contains(s);
+                || userHandler.getUserMajor(t).toLowerCase().contains(s);
         return this;
     }
 
@@ -194,10 +194,9 @@ public class TutorFilter implements ITutorFilter {
     }
 
     private Comparator<ITutor> sortBy() {
-        Comparator<ITutor> result  = null;
-        Comparator<ITutor> byPrice = Comparator.comparingDouble(ITutor::getHourlyRate);
-        Comparator<ITutor> byReviews = Comparator.comparingDouble(
-                t -> tutorProfileHandler.getAvgReview(t));
+        Comparator<ITutor> result    = null;
+        Comparator<ITutor> byPrice   = Comparator.comparingDouble(ITutor::getHourlyRate);
+        Comparator<ITutor> byReviews = Comparator.comparingDouble(profileHandler::getAvgReview);
         byReviews = byReviews.reversed();
 
         for (SortConditionTag t : sortCondSet) {
