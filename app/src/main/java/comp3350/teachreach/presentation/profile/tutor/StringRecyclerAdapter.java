@@ -6,17 +6,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
 
-public
-class StringRecyclerAdapter extends RecyclerView.Adapter<StringRecyclerAdapter.ViewHolder> {
+public class StringRecyclerAdapter extends RecyclerView.Adapter<StringRecyclerAdapter.ViewHolder> {
 
-    private final List<String> stringList;
+    private List<String> stringList;
 
     public StringRecyclerAdapter(List<String> s) {
         stringList = s;
@@ -43,19 +42,32 @@ class StringRecyclerAdapter extends RecyclerView.Adapter<StringRecyclerAdapter.V
     }
 
     public void updateData(List<String> newList) {
-        newList = newList.stream()
-                         .filter(str -> !stringList.contains(str))
-                         .collect(Collectors.toList());
-        int diff = newList.size();
-        int size = stringList.size();
-        if (diff > 0) {
-            stringList.addAll(newList);
-            notifyItemRangeInserted(size, diff);
-        }
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
+            @Override
+            public int getOldListSize() {
+                return stringList.size();
+            }
+
+            @Override
+            public int getNewListSize() {
+                return newList.size();
+            }
+
+            @Override
+            public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+                return stringList.get(oldItemPosition).equals(newList.get(newItemPosition));
+            }
+
+            @Override
+            public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+                return areItemsTheSame(oldItemPosition, newItemPosition);
+            }
+        });
+        stringList = newList;
+        diffResult.dispatchUpdatesTo(this);
     }
 
-    public static
-    class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvString;
 
         public ViewHolder(View view) {

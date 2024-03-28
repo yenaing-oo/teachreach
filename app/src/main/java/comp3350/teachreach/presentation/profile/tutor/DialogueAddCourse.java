@@ -20,22 +20,17 @@ import comp3350.teachreach.logic.exceptions.input.InvalidInputException;
 import comp3350.teachreach.objects.interfaces.ITutor;
 import comp3350.teachreach.presentation.utils.TRViewModel;
 
-public
-class DialogueAddCourse extends AppCompatDialogFragment {
+public class DialogueAddCourse extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         FragmentActivity           parentActivity = requireActivity();
         MaterialAlertDialogBuilder builder        = new MaterialAlertDialogBuilder(parentActivity);
-        DialogAddCourseBinding
-                binding
-                =
-                DialogAddCourseBinding.inflate(parentActivity.getLayoutInflater());
+        DialogAddCourseBinding binding = DialogAddCourseBinding.inflate(
+                parentActivity.getLayoutInflater());
         TRViewModel trViewModel = new ViewModelProvider(parentActivity).get(TRViewModel.class);
-        TutorProfileViewModel
-                profileViewModel
-                =
-                new ViewModelProvider(parentActivity).get(TutorProfileViewModel.class);
+        TutorProfileViewModel profileViewModel = new ViewModelProvider(parentActivity).get(
+                TutorProfileViewModel.class);
         TextInputLayout tilCourseCode = binding.tilCourseCode;
         EditText        etCourseCode  = tilCourseCode.getEditText();
         TextInputLayout tilCourseName = binding.tilCourseName;
