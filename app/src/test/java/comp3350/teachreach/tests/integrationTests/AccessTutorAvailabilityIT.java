@@ -39,8 +39,8 @@ public class AccessTutorAvailabilityIT {
                         ""));
         this.accessTutorAvailability = new AccessTutorAvailability(persistence);
         this.testTutor = new Tutor(1, 3);
-        this.checkAgainstStartDate = LocalDate.of(2024, 3, 30);
-        LocalDate checkAgainstEndDate = LocalDate.of(2024, 4, 30);
+        this.checkAgainstStartDate = LocalDate.of(2024, 4, 20);
+        LocalDate checkAgainstEndDate = LocalDate.of(2024, 4, 20);
         this.checkAgainstTimeRange = new TimeSlice(checkAgainstStartDate.atTime(8, 51), checkAgainstEndDate.atTime(16, 5));
     }
 
