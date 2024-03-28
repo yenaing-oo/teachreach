@@ -29,7 +29,6 @@ import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZoneOffset;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -152,7 +151,6 @@ class TutorProfileSelfViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         profileViewModel.setPreferredLocations(profileHandler.getPreferredLocations(tutor));
         prefLocations = profileViewModel.getPreferredLocations().getValue();
         StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(prefLocations);
@@ -169,8 +167,6 @@ class TutorProfileSelfViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 2 : 1;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
-
         profileViewModel.setAvailStrList(Server
                                                  .getTutorAvailabilityAccess()
                                                  .getAvailability(tutor)

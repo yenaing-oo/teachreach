@@ -27,7 +27,6 @@ import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -137,7 +136,6 @@ class TutorProfileViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 2 : 1;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
 
         tutorProfileViewModel.setAvailStrList(Server
                                                       .getTutorAvailabilityAccess()
@@ -158,7 +156,6 @@ class TutorProfileViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         List<String>          coursesCodes = profileHandler.getCourseCodeList(tutor);
         StringRecyclerAdapter adapter      = new StringRecyclerAdapter(coursesCodes);
         recyclerView.setAdapter(adapter);
@@ -199,7 +196,6 @@ class TutorProfileViewFragment extends Fragment
         int                        spanCount     = isLarge || isLandscape ? 6 : 2;
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
         recycler.setLayoutManager(layoutManager);
-        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
         prefLocation = profileHandler.getPreferredLocations(tutor);
         StringRecyclerAdapter adapter = new StringRecyclerAdapter(prefLocation);
         recycler.setAdapter(adapter);
