@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import comp3350.teachreach.logic.DAOs.AccessCourses;
-import comp3350.teachreach.logic.DAOs.AccessTutorLocation;
+import comp3350.teachreach.logic.DAOs.AccessTutorLocations;
 import comp3350.teachreach.logic.DAOs.AccessTutoredCourses;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
 import comp3350.teachreach.logic.account.InputValidator;
@@ -20,8 +20,8 @@ class TutorProfileHandler implements ITutorProfileHandler
 {
     private final AccessTutors         accessTutors;
     private final AccessTutoredCourses accessTutoredCourses;
-    private final AccessTutorLocation  accessTutorLocation;
-    private final AccessCourses        accessCourses;
+    private final AccessTutorLocations accessTutorLocations;
+    private final AccessCourses accessCourses;
 
     public
     TutorProfileHandler()
@@ -29,16 +29,15 @@ class TutorProfileHandler implements ITutorProfileHandler
         this.accessTutors = new AccessTutors();
         this.accessTutoredCourses = new AccessTutoredCourses();
         this.accessCourses = new AccessCourses();
-        this.accessTutorLocation = new AccessTutorLocation();
+        this.accessTutorLocations = new AccessTutorLocations();
     }
 
-    public
-    TutorProfileHandler(AccessTutors accessTutors, AccessTutoredCourses accessTutoredCourses,
-                        AccessCourses accessCourses, AccessTutorLocation accessTutorLocation) {
-        this.accessTutors         = accessTutors;
+    public TutorProfileHandler(AccessTutors accessTutors, AccessTutoredCourses accessTutoredCourses,
+                               AccessCourses accessCourses, AccessTutorLocations accessTutorLocations) {
+        this.accessTutors = accessTutors;
         this.accessTutoredCourses = accessTutoredCourses;
-        this.accessCourses        = accessCourses;
-        this.accessTutorLocation  = accessTutorLocation;
+        this.accessCourses = accessCourses;
+        this.accessTutorLocations = accessTutorLocations;
     }
 
     @Override
@@ -89,7 +88,7 @@ class TutorProfileHandler implements ITutorProfileHandler
     public
     List<String> getPreferredLocations(ITutor t)
     {
-        return accessTutorLocation.getTutorLocationByTutorID(t.getTutorID());
+        return accessTutorLocations.getTutorLocationByTutorID(t.getTutorID());
     }
 
     @Override
@@ -127,7 +126,7 @@ class TutorProfileHandler implements ITutorProfileHandler
     {
         InputValidator.validateInput(preferredLocation);
 
-        accessTutorLocation.storeTutorLocation(t.getTutorID(), preferredLocation);
+        accessTutorLocations.storeTutorLocation(t.getTutorID(), preferredLocation);
 
         return this;
     }
