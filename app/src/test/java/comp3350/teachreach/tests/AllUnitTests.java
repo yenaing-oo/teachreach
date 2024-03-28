@@ -45,9 +45,10 @@ import comp3350.teachreach.tests.unitTests.object.SessionTest;
         TutorProfileHandlerTest.class,
         SessionCostCalculatorTest.class,
         SessionHandlerTest.class,
-        SessionTest.class
-})
+        SessionTest.class})
 
-public class AllTests {
+public
+class AllUnitTests
+{
 
 }

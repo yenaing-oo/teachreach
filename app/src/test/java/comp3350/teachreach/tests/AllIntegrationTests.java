@@ -23,10 +23,11 @@ import comp3350.teachreach.tests.integrationTests.AccessTutorsIT;
         AccessTutorAvailabilityIT.class,
         AccessTutoredCoursesIT.class,
         AccessTutorLocationsIT.class,
-        AccessTutorsIT.class,
-})
+        AccessTutorsIT.class,})
 
 
-public class IntegrationTests {
+public
+class AllIntegrationTests
+{
 
 }
