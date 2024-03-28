@@ -36,10 +36,10 @@ TeachReach is an Android app that connects students seeking academic help with q
 - [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/README.md)
 
 ## Features
-- [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?label_name%5B%5D=Feature)
+- [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?sort=title_asc&state=all&label_name%5B%5D=Feature&first_page_size=20)
 
 ## User Stories
-- [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?label_name%5B%5D=User%20Story)
+- [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?sort=title_asc&state=all&label_name%5B%5D=User%20Story&first_page_size=20)
 
 ## Architecture
 - [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/Architecture.md)
