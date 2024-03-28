@@ -61,6 +61,7 @@ public class SessionRecyclerAdapter extends
         TextView startTime      = holder.getStartTime();
         TextView endTime        = holder.getEndTime();
         TextView duration       = holder.getDuration();
+        TextView location       = holder.getLocation();
         TextView price          = holder.getPrice();
         TextView accepted       = holder.getAccepted();
         Button   acceptedButton = holder.getAcceptedButton();
@@ -74,6 +75,7 @@ public class SessionRecyclerAdapter extends
                         tutors.get(session.getSessionTutorID()));
 
         withWhom.setText(withUser);
+        location.setText(session.getSessionLocation());
 
         ITimeSlice sessionTime = session.getTimeRange();
         startTime.setText(sessionTime.getStartTime().format(timeFormatter));
@@ -134,7 +136,7 @@ public class SessionRecyclerAdapter extends
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView withWhom, startTime, endTime, duration, price, accepted;
+        private final TextView withWhom, startTime, endTime, duration, price, accepted, location;
         private final Button acceptedButton;
 
         public ViewHolder(View view) {
@@ -143,6 +145,7 @@ public class SessionRecyclerAdapter extends
             startTime      = view.requireViewById(R.id.sessionStartDate);
             endTime        = view.requireViewById(R.id.sessionEndDate);
             duration       = view.requireViewById(R.id.sessionDuration);
+            location       = view.requireViewById(R.id.sessionLocation);
             price          = view.requireViewById(R.id.sessionPrice);
             accepted       = view.requireViewById(R.id.sessionStatusString);
             acceptedButton = view.requireViewById(R.id.sessionStatusButton);
@@ -166,6 +169,10 @@ public class SessionRecyclerAdapter extends
 
         public TextView getPrice() {
             return price;
+        }
+
+        public TextView getLocation() {
+            return location;
         }
 
         public TextView getAccepted() {
