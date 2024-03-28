@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import comp3350.teachreach.R;
+import comp3350.teachreach.application.Server;
 import comp3350.teachreach.databinding.FragmentTutorProfileBinding;
 import comp3350.teachreach.logic.DAOs.AccessAccounts;
 import comp3350.teachreach.logic.DAOs.AccessTutors;
@@ -48,12 +50,14 @@ import comp3350.teachreach.presentation.booking.BookingViewModel;
 import comp3350.teachreach.presentation.communication.Groups.GroupModel;
 import comp3350.teachreach.presentation.communication.IndividualChat.MessageModel;
 import comp3350.teachreach.presentation.utils.TRViewModel;
+import comp3350.teachreach.presentation.utils.TimeSliceFormatter;
 
 public
 class TutorProfileViewFragment extends Fragment
 {
     private static IUserProfileHandler<ITutor> profileFetcher;
     private static ITutorProfileHandler        profileHandler;
+    private static List<String>                availStrList;
     private static ITutorAvailabilityManager   availabilityManager;
     private static IMessageHandler             messageHandler;
     private        FragmentTutorProfileBinding binding;
@@ -119,12 +123,33 @@ class TutorProfileViewFragment extends Fragment
             setUpTutoredCourses();
             setUpPreferredLocations();
             setUpCalendarView();
+            setUpAvailability();
             chatGroupIntent(view);
         } catch (final Throwable e) {
             Toast.makeText(requireContext(), "Not so fast!", Toast.LENGTH_SHORT).show();
             slidingPaneLayout.close();
             NavHostFragment.findNavController(this).navigate(R.id.actionToPlaceHolderFragment);
         }
+    }
+
+    private
+    void setUpAvailability()
+    {
+        RecyclerView               recycler      = binding.rvAvailability;
+        int                        spanCount     = isLarge || isLandscape ? 2 : 1;
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), spanCount);
+        recycler.setLayoutManager(layoutManager);
+        recycler.setAdapter(new StringRecyclerAdapter(new ArrayList<>()));
+
+        tutorProfileViewModel.setAvailStrList(Server
+                                                      .getTutorAvailabilityAccess()
+                                                      .getAvailability(tutor)
+                                                      .stream()
+                                                      .map(TimeSliceFormatter::format)
+                                                      .collect(Collectors.toList()));
+        availStrList = tutorProfileViewModel.getAvailStrList().getValue();
+        StringRecyclerAdapter recyclerAdapter = new StringRecyclerAdapter(availStrList);
+        recycler.setAdapter(recyclerAdapter);
     }
 
 

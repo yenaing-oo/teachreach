@@ -162,4 +162,5 @@
     <string name="tvAvailabilityTitle">My Availability</string>
     <string name="sessionSortAsc">Show Oldest First</string>
     <string name="sessionSortDesc">Show Latest First</string>
+    <string name="tvAvailabilityTitleStudent">Tutor Availability</string>
 </resources>

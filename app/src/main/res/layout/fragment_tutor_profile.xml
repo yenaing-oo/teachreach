@@ -34,9 +34,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingBottom="80dp">
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTutor"
@@ -44,123 +47,118 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginVertical="8dp"
-                    app:layout_constraintBottom_toTopOf="@id/cardTutoredCourses"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_marginVertical="8dp">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
                         android:padding="16dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvReviews"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="4dp"
-                            android:text="@string/tvReviews"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0125" />
+                            android:orientation="horizontal"
+                            android:padding="16dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvRating"
-                            android:layout_width="wrap_content"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvReviews"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="start|center"
+                                android:text="@string/tvReviews"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvReviewsField"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="end|center"
+                                android:text="@string/tvReviewsField"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="4dp"
-                            android:text="@string/tvRating"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvReviews"
-                            app:layout_constraintVertical_bias="0" />
+                            android:orientation="horizontal"
+                            android:padding="16dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvMajor"
-                            android:layout_width="wrap_content"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvRating"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="start|center"
+                                android:text="@string/tvRating"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvRatingField"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="end|center"
+                                android:text="@string/tvRatingField"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="4dp"
-                            android:text="@string/tvMajor"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvRating"
-                            app:layout_constraintVertical_bias="0" />
+                            android:orientation="horizontal"
+                            android:padding="16dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvPronouns"
-                            android:layout_width="wrap_content"
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvMajor"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="start|center"
+                                android:text="@string/tvMajor"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvMajorField"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="end|center"
+                                android:text="@string/tvMajorField"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginVertical="4dp"
-                            android:text="@string/tvPronouns"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.1"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tvMajor" />
+                            android:orientation="horizontal"
+                            android:padding="16dp">
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvReviewsField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tvReviewsField"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.9"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvReviews"
-                            app:layout_constraintVertical_bias="0" />
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvPronouns"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="start|center"
+                                android:text="@string/tvPronouns"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvRatingField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tvRatingField"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.9"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvRating"
-                            app:layout_constraintVertical_bias="0" />
+                            <com.google.android.material.textview.MaterialTextView
+                                android:id="@+id/tvPronounsField"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:gravity="end|center"
+                                android:text="@string/tvPronounsField"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        </LinearLayout>
+                    </LinearLayout>
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvPronounsField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tvPronounsField"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintHorizontal_bias="0.9"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvPronouns"
-                            app:layout_constraintVertical_bias="0" />
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/tvMajorField"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tvMajorField"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                            app:layout_constraintBottom_toBottomOf="@id/tvMajor"
-                            app:layout_constraintHorizontal_bias="0.9"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/tvMajor"
-                            app:layout_constraintVertical_bias="0" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
@@ -203,7 +201,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginVertical="8dp"
-                    app:layout_constraintBottom_toTopOf="@id/cardTutorCalendar"
+                    app:layout_constraintBottom_toTopOf="@id/cardAvailability"
                     app:layout_constraintTop_toBottomOf="@id/cardTutoredCourses">
 
                     <LinearLayout
@@ -234,6 +232,44 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardAvailability"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    app:layout_constraintBottom_toTopOf="@id/cardTutorCalendar"
+                    app:layout_constraintTop_toBottomOf="@id/cardPreferredLocations">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/tvAvailability"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="16dp"
+                            android:text="@string/tvAvailabilityTitleStudent"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvAvailability"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="bottom|center"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardTutorCalendar"
 
                     android:layout_width="match_parent"
@@ -241,7 +277,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="96dp"
+                    android:layout_marginBottom="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cardPreferredLocations">
 
@@ -268,7 +304,7 @@
                     </LinearLayout>
 
                 </com.google.android.material.card.MaterialCardView>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 
