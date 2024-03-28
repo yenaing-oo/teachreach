@@ -1,5 +1,14 @@
 ## TeachReach
-A platform to connect a student easily with a tutor!
+A platform to connect student easily with tutors!
+
+## Purpose
+
+## How to run it
+
+1. Clone this repository
+2. Open with Android Studio
+3. Do a Gradle Sync
+4. Build the apk or run it directly on your device/emulator.
 
 ## Contributing
 - [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/dev/CONTRIBUTING.md)
