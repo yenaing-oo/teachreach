@@ -62,7 +62,7 @@ public class SearchTutorRecyclerAdapter extends
         tvMajor.setText(profileHandler.getUserMajor(tutor));
         tvRatings.setText(String.format(Locale.getDefault(), "%.2f ⭐️",
                                         tutorProfileHandler.getAvgReview(tutor)));
-        tvPrice.setText(String.format(Locale.getDefault(), "$%.2f", tutor.getHourlyRate()));
+        tvPrice.setText(String.format(Locale.getDefault(), "$%.2f/h", tutor.getHourlyRate()));
     }
 
     @Override
