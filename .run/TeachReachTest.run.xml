@@ -3,7 +3,7 @@
     <module name="Teach_Reach.app.androidTest" />
     <option name="TESTING_TYPE" value="2" />
     <option name="METHOD_NAME" value="" />
-    <option name="CLASS_NAME" value="comp3350.teachreach.systemTest.TeachReachTest" />
+    <option name="CLASS_NAME" value="comp3350.teachreach.systemTest.AccountLoginAndAccountManagementTest" />
     <option name="PACKAGE_NAME" value="" />
     <option name="TEST_NAME_REGEX" value="" />
     <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />

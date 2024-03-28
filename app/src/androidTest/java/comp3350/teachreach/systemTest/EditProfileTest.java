@@ -24,7 +24,7 @@ import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class EditStudentProfileTest {
+public class EditProfileTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
@@ -36,7 +36,7 @@ public class EditStudentProfileTest {
     public void testSuccessfulProfileEdit() {
         // Navigate to the edit profile page
         onView(ViewMatchers.withId(R.id.btnStudentLogin)).perform(click());
-        onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student@email.com"), closeSoftKeyboard());
+        onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student1@email.com"), closeSoftKeyboard());
         onView(withId(R.id.etStudentLoginPassword)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
         onView(withId(R.id.NavBarProfile)).perform(click());

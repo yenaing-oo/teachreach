@@ -22,7 +22,7 @@ import comp3350.teachreach.presentation.MainActivity;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TeachReachTest {
+public class AccountLoginAndAccountManagementTest {
 
     @Rule
     public ActivityScenarioRule<MainActivity> activityRule
@@ -32,7 +32,7 @@ public class TeachReachTest {
     @Test
     public void testSuccessfulLogin() {
         onView(ViewMatchers.withId(R.id.btnStudentLogin)).perform(click());
-        onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student@email.com"), closeSoftKeyboard());
+        onView(withId(R.id.etStudentLoginEmail)).perform(typeText("student1@email.com"), closeSoftKeyboard());
         onView(withId(R.id.etStudentLoginPassword)).perform(typeText("123"), closeSoftKeyboard());
         onView(withId(R.id.btnLoginAsStudent)).perform(click());
         onView(withId(R.id.navigationMenu)).check(matches(isDisplayed()));
