@@ -125,3 +125,7 @@
 **Course**
 **Session**
 **TimeSlice**
+
+
+**============================================ITERATION 3==============================================**
+![Iteration3Arch](/uploads/afa865f55cd79ff407dc2ffd17fdae17/Iteration3Arch.png)
