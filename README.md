@@ -39,37 +39,29 @@ this [apk](https://umanitoba-my.sharepoint.com/:u:/g/personal/hokt_myumanitoba_c
 
 ## Contributing
 
-- [See here](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/CONTRIBUTING.md)
+- [See here](docs/Contributing.md)
 
 ## Iteration Progress and Work Analysis
 
-- [Iteration 3](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/iteration3ProgressReport.md?ref_type=heads)
+- [Iteration 3](./docs/iteration3ProgressReport.md)
 
 ## Retrospective
 
-- [Iteration 1](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/RETROSPECTIVE%20-%20ITERATION%201.md)
-- [Iteration 2](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/RETROSPECTIVE%20-%20ITERATION%202.md)
+- [Iteration 1](./docs/RETROSPECTIVE%20-%20ITERATION%201.md)
+- [Iteration 2](./docs/RETROSPECTIVE%20-%20ITERATION%202.md)
 
 ## Vision Statement
 
-- [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/README.md)
-
-## Features
-
-- [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?sort=title_asc&state=all&label_name%5B%5D=Feature&first_page_size=20)
-
-## User Stories
-
-- [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/issues/?sort=title_asc&state=all&label_name%5B%5D=User%20Story&first_page_size=20)
+- [Vision Statement](docs/Vision%20Statement.md)
 
 ## Architecture
 
-- [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration3-rc0/docs/Architecture.md)
+- [Architecture](docs/Architecture.md)
 
 ## Coding Style
 
-- [Coding Style](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/Iteration1-release/docs/CodingStyle.md)
+- [Coding Style](docs/CodingStyle.md)
 
 ## Work Flow
 
-- [Our work flow](https://code.cs.umanitoba.ca/comp3350-winter2024/git-gud-a02-2/-/blob/main/docs/Contributing.md)
+- [Our work flow](docs/Contributing.md)
