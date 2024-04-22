@@ -14,6 +14,12 @@ platform. TeachReach aims to address the challenges of post-secondary education 
 to select suitable tutors based on detailed profiles and offering tutors a flexible income
 opportunity.
 
+## Website
+
+Explore our app presentation on our official website: [TeachReach](https://teachreachdev.wixsite.com/home).
+
+![Website Screenshot](images/website_sc.png)
+
 ## How to Run TeachReach
 
 ### The App:
@@ -24,7 +30,7 @@ opportunity.
 4. Build the app and run it directly on your device/emulator.
 
 Or you can just install
-this [apk](https://umanitoba-my.sharepoint.com/:u:/g/personal/hokt_myumanitoba_ca/ETOBmoQlDxlFrhTerFO3VFQBiZWfZgTl6yoh_O0OLPtxcg?e=kgiEOm).
+this [apk](https://umanitoba-my.sharepoint.com/personal/hokt_myumanitoba_ca/_layouts/15/download.aspx?SourceUrl=%2Fpersonal%2Fhokt%5Fmyumanitoba%5Fca%2FDocuments%2Fapp%2Drelease%2Eapk).
 
 ### The Tests:
 
