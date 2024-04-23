@@ -2,7 +2,7 @@
 ### **Iteration One Architecture**
 
 
-![iter1At](/uploads/6433922d23cc5828ad32d8f54d9fdba6/iter1At.jpg)
+![Iteration1Architecture](../images/iteration1Arch.png)
 
 
 
@@ -87,7 +87,7 @@
 
 **============================================ITERATION 2==============================================**
 ### **Iteration Two Architecture**
-![Iteration2Architm2](/uploads/8de416dd05cd84f917f708bc4ed3a4b0/Iteration2Architm2.png)
+![Iteration2Architecture](../images/iteration2Arch.png)
 
 ### **Presentation Layer**
 **Search**
@@ -128,4 +128,4 @@
 
 
 **============================================ITERATION 3==============================================**
-![Iteration3Arch](/uploads/afa865f55cd79ff407dc2ffd17fdae17/Iteration3Arch.png)
+![Iteration3Architecture](../images/iteration3Arch.png)
