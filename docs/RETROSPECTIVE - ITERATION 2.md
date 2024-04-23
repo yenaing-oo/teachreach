@@ -26,4 +26,4 @@ Success evaluation:
 A link to this project's velocity chart for the previous two iterations is attached to aid our future time estimates:
 
 Project Velocity:
-![Project Velocity Chart](./docs/velocity.png)
+![Project Velocity Chart](./velocity.png)
